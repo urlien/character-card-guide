@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>引导向导侧边栏编辑器</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#1a1a2e;
+  color:#e0e0e0;
+  font-family: "PingFang SC","Microsoft YaHei",sans-serif;
+  height:100vh;height:100dvh;overflow:hidden;
+  display:flex;flex-direction:column;
+  user-select:none;-webkit-user-select:none;
+}
+/* header */
+.ge-header{
+  background:#16213e;border-bottom:1px solid #0f3460;
+  padding:8px 12px;display:flex;align-items:center;
+  gap:6px;flex-shrink:0;flex-wrap:wrap;
+  position:relative;z-index:10;
+  max-height:40vh;overflow-y:auto;
+}
+.ge-header .ge-logo{
+  font-size:18px;font-weight:700;
+  background:linear-gradient(135deg,#e94560,#f5a623);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.ge-header select,.ge-header input[type=color]{
+  background:#1a1a2e;color:#e0e0e0;border:1px solid #0f3460;
+  border-radius:6px;padding:4px 8px;font-size:13px;
+}
+.ge-header input[type=color]{width:36px;height:28px;padding:2px;cursor:pointer}
+.ge-header label{font-size:12px;color:#888;display:flex;align-items:center;gap:4px}
+.ge-header input[type=range]{width:80px;accent-color:#e94560}
+/* tabs */
+.ge-tabs{
+  display:flex;gap:0;flex-shrink:0;
+  border-bottom:2px solid #0f3460;background:#16213e;
+}
+.ge-tab{
+  padding:10px 24px;cursor:pointer;font-size:14px;
+  color:#888;border-bottom:2px solid transparent;
+  margin-bottom:-2px;transition:all .2s;
+  display:flex;align-items:center;gap:6px;
+}
+.ge-tab.active{color:#e94560;border-bottom-color:#e94560}
+.ge-tab .badge{
+  background:#e94560;color:#fff;font-size:10px;
+  padding:1px 6px;border-radius:10px;
+}
+/* main content */
+.ge-main{flex:1;overflow:hidden;display:flex;position:relative;min-height:0}
+/* edit panel */
+.ge-edit{
+  flex:1;overflow-y:auto;padding:16px;
+  -webkit-overflow-scrolling:touch;
+}
+.ge-edit.hidden{display:none}
+/* preview panel */
+.ge-preview{
+  flex:1;position:relative;background:#0d1117;
+  overflow:hidden;
+}
+.ge-preview.hidden{display:none}
+.ge-preview iframe{
+  width:100%;height:100%;border:none;
+}
+/* section card */
+.ge-section{
+  background:#16213e;border:1px solid #0f3460;
+  border-radius:10px;padding:14px;margin-bottom:14px;
+}
+.ge-section h3{
+  font-size:14px;font-weight:600;margin-bottom:12px;
+  color:#e94560;display:flex;align-items:center;gap:6px;
+}
+.ge-section h3 .ge-icon{font-size:16px}
+/* step cards */
+.ge-step-card{
+  background:#1a1a2e;border:1px solid #0f3460;
+  border-radius:8px;padding:12px;margin-bottom:10px;
+  position:relative;
+}
+.ge-step-card .ge-step-header{
+  display:flex;align-items:center;gap:8px;margin-bottom:8px;
+}
+.ge-step-card .ge-step-num{
+  width:24px;height:24px;border-radius:50%;
+  background:#e94560;color:#fff;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.ge-step-card input,.ge-step-card textarea{
+  background:#0d1117;color:#e0e0e0;
+  border:1px solid #0f3460;border-radius:5px;
+  padding:6px 10px;font-size:13px;width:100%;
+  font-family:inherit;
+}
+.ge-step-card textarea{resize:vertical;min-height:50px}
+.ge-step-card .ge-field{margin-bottom:6px}
+.ge-step-card .ge-field label{
+  display:block;font-size:11px;color:#888;margin-bottom:3px;
+}
+.ge-step-card .ge-step-actions{
+  display:flex;gap:6px;justify-content:flex-end;margin-top:8px;
+}
+/* buttons */
+.ge-btn{
+  padding:6px 14px;border-radius:6px;border:1px solid;
+  cursor:pointer;font-size:12px;transition:all .2s;
+  font-family:inherit;display:inline-flex;align-items:center;gap:4px;
+}
+.ge-btn-primary{
+  background:#e94560;color:#fff;border-color:#e94560;
+}
+.ge-btn-primary:hover{opacity:.85}
+.ge-btn-outline{
+  background:transparent;color:#e94560;border-color:#e94560;
+}
+.ge-btn-outline:hover{background:rgba(233,69,96,.1)}
+.ge-btn-danger{
+  background:transparent;color:#ff6b6b;border-color:#ff6b6b;
+}
+.ge-btn-danger:hover{background:rgba(255,107,107,.1)}
+.ge-btn-sm{padding:3px 8px;font-size:11px}
+.ge-btn-xs{padding:2px 6px;font-size:10px;border-radius:4px}
+.ge-btn-add{
+  width:100%;border-style:dashed;justify-content:center;
+}
+/* color rows */
+.ge-color-row{
+  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+}
+.ge-color-item{
+  display:flex;align-items:center;gap:6px;font-size:12px;
+}
+/* slider row */
+.ge-slider-row{
+  display:flex;align-items:center;gap:8px;font-size:12px;
+}
+.ge-slider-row span{color:#888;white-space:nowrap}
+.ge-slider-row .ge-val{
+  color:#e94560;min-width:36px;text-align:right;font-size:13px;
+}
+/* shape selector */
+.ge-shape-grid{
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+.ge-shape-opt{
+  width:50px;height:36px;border:2px solid #0f3460;
+  border-radius:4px;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;
+  font-size:11px;background:#1a1a2e;color:#888;
+  transition:all .2s;
+}
+.ge-shape-opt.active{border-color:#e94560;color:#e94560}
+.ge-shape-preview{
+  width:24px;height:24px;background:#e94560;
+}
+.ge-shape-preview.s-rect{border-radius:6px 0 0 6px}
+.ge-shape-preview.s-pill{border-radius:20px 0 0 20px}
+.ge-shape-preview.s-circle{border-radius:50%}
+.ge-shape-preview.s-square{border-radius:0}
+.ge-shape-preview.s-custom{border-radius:var(--custom-rad, 10px) 0 0 var(--custom-rad, 10px)}
+/* style presets */
+.ge-preset-grid{display:flex;gap:8px;flex-wrap:wrap}
+.ge-preset-card{
+  padding:10px 14px;border:2px solid #0f3460;
+  border-radius:8px;cursor:pointer;text-align:center;
+  font-size:13px;transition:all .2s;min-width:80px;
+}
+.ge-preset-card.active{border-color:#e94560}
+.ge-preset-card .ge-preset-preview{font-size:20px;margin-bottom:4px}
+/* modal */
+.ge-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:100;display:flex;align-items:center;justify-content:center;
+}
+.ge-modal{
+  background:#16213e;border:1px solid #0f3460;
+  border-radius:12px;padding:20px;min-width:300px;max-width:90vw;
+}
+.ge-modal h4{color:#e94560;margin-bottom:12px}
+.ge-modal input{width:100%;margin-bottom:12px}
+.ge-modal .ge-modal-actions{display:flex;gap:8px;justify-content:flex-end}
+/* scrollbar */
+.ge-edit::-webkit-scrollbar{width:4px}
+.ge-edit::-webkit-scrollbar-track{background:transparent}
+.ge-edit::-webkit-scrollbar-thumb{background:#0f3460;border-radius:2px}
+/* resp */
+@media(max-width:600px){
+  .ge-header{flex-wrap:wrap;gap:6px}
+  .ge-header label{font-size:11px}
+  .ge-color-row{gap:8px}
+  .ge-slider-row input[type=range]{width:60px}
+}
+</style>
+</head>
+<body>
+<div class="ge-header">
+  <span class="ge-logo">✦ 引导向导编辑器</span>
+  <label>风格预设
+    <select id="presetStyle" onchange="applyPreset()">
+      <option value="custom">不选（自定义）</option>
+      <option value="dark-game">暗色游戏风</option>
+      <option value="soft-ui">柔和UI风</option>
+      <option value="cyber">赛博朋克风</option>
+      <option value="classic-chinese">拟物古风</option>
+      <option value="parchment">羊皮纸·浮雕</option>
+      <option value="fluent">玻璃态 Fluent</option>
+      <option value="soft-light">半透·柔光</option>
+      <option value="material">Material 卡片</option>
+      <option value="neon">霓虹·发光</option>
+      <option value="green-mono">绿光·等宽</option>
+    </select>
+  </label>
+  <label>按钮形状
+    <select id="btnShape" onchange="onShapeChange()">
+      <option value="rect">右侧圆角</option>
+      <option value="pill">药丸形</option>
+      <option value="circle">正圆形</option>
+      <option value="square">方形直角</option>
+      <option value="custom">自定义</option>
+    </select>
+  </label>
+  <label id="customRadLabel" style="display:none">圆角
+    <input type="range" id="customRadius" min="0" max="30" value="8" oninput="onCustomRadius()">
+    <span id="radVal" class="ge-val" style="display:inline;min-width:auto">8px</span>
+  </label>
+  <label>文字方向
+    <select id="btnTextDir" onchange="onTextDirChange()">
+      <option value="vertical">纵向</option>
+      <option value="horizontal">横向</option>
+    </select>
+  </label>
+  <label>按钮左右
+    <select id="btnSide" onchange="onBtnSideChange()">
+      <option value="right">右侧</option>
+      <option value="left">左侧</option>
+    </select>
+  </label>
+  <label>按钮色<input type="color" id="btnColor" value="#e94560" onchange="onColorChange()"></label>
+  <label>字体色<input type="color" id="btnTextColor" value="#ffffff" onchange="onColorChange()"></label>
+  <label>边框色<input type="color" id="btnBorderColor" value="#e94560" onchange="onColorChange()"></label>
+  <label>按钮位置
+    <input type="range" id="btnTop" min="2" max="80" value="15" oninput="onSlider('btnTop','btnTopVal','%')">
+    <span id="btnTopVal" class="ge-val">15%</span>
+  </label>
+  <label>按钮宽度
+    <input type="range" id="btnWidth" min="8" max="32" value="16" oninput="onSlider('btnWidth','btnWidthVal','px')">
+    <span id="btnWidthVal" class="ge-val">42px</span>
+  </label>
+  <label>面板宽度
+    <input type="range" id="panelWidth" min="200" max="500" value="300" oninput="onSlider('panelWidth','panelWidthVal','px')">
+    <span id="panelWidthVal" class="ge-val">340px</span>
+  </label>
+  <button class="ge-btn ge-btn-outline" onclick="exportHTML()">💾 导出HTML</button>
+  <button class="ge-btn ge-btn-outline" onclick="copyCode()">📋 复制代码</button>
+</div>
+
+<div class="ge-tabs">
+  <div class="ge-tab active" onclick="switchTab('edit')" id="tabEdit">✏️ 编辑 <span class="badge" id="stepBadge">4步</span></div>
+  <div class="ge-tab" onclick="switchTab('preview')" id="tabPreview">👁 预览</div>
+</div>
+
+<div class="ge-main">
+  <div class="ge-edit" id="editPanel">
+    <!-- Title & Intro -->
+    <div class="ge-section">
+      <h3><span class="ge-icon">📌</span> 基本设置</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="ge-field"><label>引导标题</label><input id="guideTitle" value="新手导览" oninput="updatePreview()"></div>
+        <div class="ge-field"><label>按钮文字（用|分隔竖排行）</label><input id="btnLabel" value="新|手|导|览" oninput="updatePreview()"></div>
+      </div>
+    </div>
+
+    <!-- Steps Container -->
+    <div class="ge-section" id="stepsSection">
+      <h3><span class="ge-icon">📋</span> 引导步骤</h3>
+      <div id="stepsContainer"></div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:10px">
+        <button class="ge-btn ge-btn-outline ge-btn-sm" id="btnDecPage" onclick="showPageModal(-1)" style="font-size:18px;min-width:36px">−</button>
+        <span style="font-size:15px;font-weight:700;color:#e0e0e0" id="pageCountLabel">1</span>
+        <button class="ge-btn ge-btn-outline ge-btn-sm" id="btnIncPage" onclick="showPageModal(1)" style="font-size:18px;min-width:36px">+</button>
+      </div>
+    </div>
+
+    <!-- How to use -->
+    <div class="ge-section" style="border-color:#f5a62340">
+      <h3 style="color:#f5a623"><span class="ge-icon">💡</span> 使用说明</h3>
+      <div style="font-size:12px;line-height:1.8;color:#aaa">
+        <p><b style="color:#f5a623">🎯 这个编辑器做什么的？</b><br>生成一个<b>侧边竖排按钮 + 弹窗分步引导</b>的 HTML 页面。适合放在网页/游戏中作为新手教程引导。</p>
+        <p style="margin-top:8px"><b style="color:#f5a623">📝 怎么编辑步骤？</b><br>
+        ① 点击 <b style="color:#e0e0e0">− +</b> 调整步骤总数（最小1页），弹窗确认后自动增减<br>
+        ② 点击每步右边的 <b style="color:#e94560">✏️</b> 编辑标题和内容<br>
+        ③ 用 <b style="color:#e0e0e0">▲▼</b> 调整步骤顺序<br>
+        ④ 点 <b style="color:#ff6b6b">✕</b> 删除单个步骤</p>
+        <p style="margin-top:8px"><b style="color:#f5a623">🎨 外观怎么调？</b><br>
+        <b style="color:#e0e0e0">风格预设</b>：10种一键换肤（暗色游戏/柔和UI/赛博朋克/拟物古风/羊皮纸/玻璃态/半透柔光/Material/霓虹/绿光等宽）<br>
+        <b style="color:#e0e0e0">按钮形状</b>：右侧圆角/药丸形/正圆形/方形直角/自定义圆角<br>
+        <b style="color:#e0e0e0">文字方向</b>：纵向（竖排侧边栏风格）/横向<br>
+        <b style="color:#e0e0e0">按钮左右</b>：按钮在屏幕左侧还是右侧<br>
+        <b style="color:#e0e0e0">按钮颜色</b>：背景色/字体色/边框色<br>
+        <b style="color:#e0e0e0">按钮位置</b>：距顶部距离（2%-80%）<br>
+        <b style="color:#e0e0e0">按钮宽度</b>：8-32px，高度等比缩放<br>
+        <b style="color:#e0e0e0">面板宽度</b>：弹窗引导面板的宽度（200-500px，点预览看效果）</p>
+        <p style="margin-top:8px"><b style="color:#f5a623">👁 预览</b> — 点「👁 预览」标签看效果，点击按钮弹出引导面板可翻页查看，「引导标题」显示在弹窗左上角。</p>
+        <p style="margin-top:8px"><b style="color:#f5a623">📦 导出</b> — 点「💾 导出HTML」下载完整文件，或「📋 复制代码」复制到剪贴板。</p>
+        <p style="margin-top:8px"><b style="color:#f5a623">💡 提示</b> — 按钮文字用 <b style="color:#e0e0e0">|</b> 分隔竖排行，如「新|手|导|览」纵向模式竖排四字，横向模式合并为「新手导览」。每一步可以配上图片URL。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ge-preview hidden" id="previewPanel">
+    <iframe id="previewFrame"></iframe>
+  </div>
+</div>
+
+<!-- Add Step Modal -->
+<div class="ge-modal-overlay" id="modalOverlay" style="display:none" onclick="closeModal()">
+  <div class="ge-modal" onclick="event.stopPropagation()">
+    <h4 id="modalTitle">添加引导步骤</h4>
+    <div class="ge-field"><label>步骤标题</label><input id="modalStepTitle" value="新步骤"></div>
+    <div class="ge-field"><label>引导内容</label><textarea id="modalStepContent" style="min-height:60px">这里是引导内容...</textarea></div>
+    <div class="ge-field"><label>图片URL（可选）</label><input id="modalStepImg" value=""></div>
+    <div class="ge-modal-actions">
+      <button class="ge-btn ge-btn-outline" onclick="closeModal()">取消</button>
+      <button class="ge-btn ge-btn-primary" id="modalConfirmBtn" onclick="confirmModal()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- Page count modal -->
+<div class="ge-modal-overlay" id="pageModalOverlay" style="display:none" onclick="closePageModal()">
+  <div class="ge-modal" onclick="event.stopPropagation()">
+    <h4 id="pageModalTitle">调整页数</h4>
+    <p id="pageModalMsg" style="font-size:13px;margin-bottom:16px;color:#aaa"></p>
+    <div class="ge-modal-actions">
+      <button class="ge-btn ge-btn-outline" onclick="closePageModal()">取消</button>
+      <button class="ge-btn ge-btn-primary" id="pageModalConfirm" onclick="confirmPageModal()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm modal -->
+<div class="ge-modal-overlay" id="delModalOverlay" style="display:none" onclick="closeDelModal()">
+  <div class="ge-modal" onclick="event.stopPropagation()" style="border-color:#ff6b6b">
+    <h4 style="color:#ff6b6b">确认删除</h4>
+    <p style="font-size:13px;margin-bottom:12px">确定要删除这个步骤吗？此操作不可撤销。</p>
+    <div class="ge-modal-actions">
+      <button class="ge-btn ge-btn-outline" onclick="closeDelModal()">取消</button>
+      <button class="ge-btn ge-btn-danger" id="delConfirmBtn" onclick="confirmDelete()">确定删除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ DATA MODEL ============
+let steps = [
+  {title:"", content:"", img:""}
+];
+
+let deleteTarget = null;
+let editTarget = null;
+
+// Style state
+let styleState = {
+  btnShape:'rect',
+  customRadius:8,
+  btnColor:'#e94560',
+  btnTextColor:'#ffffff',
+  btnBorderColor:'#e94560',
+  btnTop:15,
+  btnWidth:16,
+  btnTextDir:'vertical',
+  btnSide:'right',
+  guideTitle:'新手导览',
+  btnLabel:'新|手|导|览',
+  panelWidth:300,
+  preset:'custom'
+};
+
+const presets = {
+  'dark-game':{
+    btnColor:'#e94560',btnTextColor:'#ffffff',btnBorderColor:'#e94560',
+    panelBg:'#16213e',panelBorder:'#0f3460',panelText:'#e0e0e0',
+    btnShape:'rect',customRadius:8,accentColor:'#e94560',
+    stepNumBg:'#e94560',stepNumColor:'#fff'
+  },
+  'soft-ui':{
+    btnColor:'#6366f1',btnTextColor:'#ffffff',btnBorderColor:'#818cf8',
+    panelBg:'#f8fafc',panelBorder:'#e2e8f0',panelText:'#334155',
+    btnShape:'pill',customRadius:20,accentColor:'#6366f1',
+    stepNumBg:'#6366f1',stepNumColor:'#fff'
+  },
+  'cyber':{
+    btnColor:'#00ff88',btnTextColor:'#0a0a0a',btnBorderColor:'#00ff88',
+    panelBg:'#0a0a0a',panelBorder:'#00ff88',panelText:'#00ff88',
+    btnShape:'square',customRadius:0,accentColor:'#00ff88',
+    stepNumBg:'#00ff88',stepNumColor:'#0a0a0a'
+  },
+  'classic-chinese':{
+    btnColor:'#8b4513',btnTextColor:'#f5e6c8',btnBorderColor:'#c8a45c',
+    panelBg:'#fdf5e6',panelBorder:'#c8a45c',panelText:'#3c2a1a',
+    btnShape:'rect',customRadius:6,accentColor:'#8b4513',
+    stepNumBg:'#8b4513',stepNumColor:'#f5e6c8',
+    panelCss:'font-family:"KaiTi","STKaiti","SimSun",serif;',
+    btnCss:'font-family:"KaiTi","STKaiti","SimSun",serif;letter-spacing:4px;'
+  },
+  'parchment':{
+    btnColor:'#6b4423',btnTextColor:'#f4e4c1',btnBorderColor:'#8b6914',
+    panelBg:'#f4e4c1',panelBorder:'#8b6914',panelText:'#3b2f1e',
+    btnShape:'rect',customRadius:8,accentColor:'#8b6914',
+    stepNumBg:'#6b4423',stepNumColor:'#f4e4c1',
+    panelCss:'background:linear-gradient(135deg,#f4e4c1 0%,#e8d5a3 50%,#f0ddb5 100%);',
+    btnCss:'box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 2px 4px rgba(0,0,0,.3);'
+  },
+  'fluent':{
+    btnColor:'rgba(255,255,255,.15)',btnTextColor:'#ffffff',btnBorderColor:'rgba(255,255,255,.25)',
+    panelBg:'rgba(30,30,50,.85)',panelBorder:'rgba(255,255,255,.12)',panelText:'#e8e8f0',
+    btnShape:'pill',customRadius:20,accentColor:'#7eb8ff',
+    stepNumBg:'rgba(126,184,255,.3)',stepNumColor:'#fff',
+    panelCss:'backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);',
+    btnCss:'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);'
+  },
+  'soft-light':{
+    btnColor:'rgba(255,255,255,.2)',btnTextColor:'rgba(255,255,255,.9)',btnBorderColor:'rgba(255,255,255,.15)',
+    panelBg:'rgba(20,20,30,.7)',panelBorder:'rgba(255,255,255,.08)',panelText:'rgba(255,255,255,.85)',
+    btnShape:'pill',customRadius:16,accentColor:'#c4b5fd',
+    stepNumBg:'rgba(196,181,253,.35)',stepNumColor:'#fff',
+    panelCss:'backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);',
+    btnCss:'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-shadow:0 0 8px rgba(196,181,253,.4);'
+  },
+  'material':{
+    btnColor:'#6200ee',btnTextColor:'#ffffff',btnBorderColor:'#6200ee',
+    panelBg:'#ffffff',panelBorder:'#e0e0e0',panelText:'#212121',
+    btnShape:'rect',customRadius:4,accentColor:'#6200ee',
+    stepNumBg:'#6200ee',stepNumColor:'#fff',
+    panelCss:'box-shadow:0 8px 32px rgba(0,0,0,.18);border-radius:8px;',
+    btnCss:'box-shadow:0 2px 8px rgba(98,0,238,.3);text-transform:uppercase;'
+  },
+  'neon':{
+    btnColor:'transparent',btnTextColor:'#ff2d95',btnBorderColor:'#ff2d95',
+    panelBg:'#0a0a0f',panelBorder:'#ff2d95',panelText:'#e0e0ff',
+    btnShape:'rect',customRadius:2,accentColor:'#ff2d95',
+    stepNumBg:'#ff2d95',stepNumColor:'#0a0a0f',
+    panelCss:'box-shadow:0 0 30px rgba(255,45,149,.15),inset 0 0 30px rgba(255,45,149,.03);',
+    btnCss:'box-shadow:0 0 12px rgba(255,45,149,.5),0 0 24px rgba(255,45,149,.25);text-shadow:0 0 8px #ff2d95;'
+  },
+  'green-mono':{
+    btnColor:'#0a0a0a',btnTextColor:'#00ff41',btnBorderColor:'#00ff41',
+    panelBg:'#0a0a0a',panelBorder:'#00ff41',panelText:'#00ff41',
+    btnShape:'square',customRadius:0,accentColor:'#00ff41',
+    stepNumBg:'#00ff41',stepNumColor:'#0a0a0a',
+    panelCss:'font-family:"Courier New","SF Mono","Menlo",monospace;box-shadow:0 0 8px rgba(0,255,65,.1);',
+    btnCss:'font-family:"Courier New","SF Mono","Menlo",monospace;text-shadow:0 0 4px #00ff41;'
+  }
+};
+
+// ============ INIT ============
+function init(){
+  document.getElementById('btnShape').value = styleState.btnShape;
+  document.getElementById('customRadius').value = styleState.customRadius;
+  document.getElementById('btnColor').value = styleState.btnColor;
+  document.getElementById('btnTextColor').value = styleState.btnTextColor;
+  document.getElementById('btnBorderColor').value = styleState.btnBorderColor;
+  document.getElementById('btnTop').value = styleState.btnTop;
+  document.getElementById('btnWidth').value = styleState.btnWidth;
+  document.getElementById('btnTextDir').value = styleState.btnTextDir;
+  document.getElementById('btnSide').value = styleState.btnSide;
+  document.getElementById('guideTitle').value = styleState.guideTitle;
+  document.getElementById('btnLabel').value = styleState.btnLabel;
+  document.getElementById('panelWidth').value = styleState.panelWidth;
+  document.getElementById('presetStyle').value = styleState.preset;
+  updateSliderDisplay();
+  onShapeChange();
+  renderSteps();
+  updatePreview();
+}
+
+// ============ TAB SWITCHING ============
+function switchTab(tab){
+  document.querySelectorAll('.ge-tab').forEach(t=>t.classList.remove('active'));
+  if(tab==='edit'){
+    document.getElementById('tabEdit').classList.add('active');
+    document.getElementById('editPanel').classList.remove('hidden');
+    document.getElementById('previewPanel').classList.add('hidden');
+  } else {
+    document.getElementById('tabPreview').classList.add('active');
+    document.getElementById('editPanel').classList.add('hidden');
+    document.getElementById('previewPanel').classList.remove('hidden');
+    updatePreview();
+  }
+}
+
+// ============ STEP MANAGEMENT ============
+function renderSteps(){
+  var container = document.getElementById('stepsContainer');
+  var html = '';
+  steps.forEach(function(step,i){
+    html += '<div class="ge-step-card">';
+    html += '<div class="ge-step-header">';
+    html += '<span class="ge-step-num">'+(i+1)+'</span>';
+    html += '<span style="font-size:13px;font-weight:600;flex:1">步骤 '+(i+1)+'</span>';
+    html += '<button class="ge-btn ge-btn-outline ge-btn-xs" onclick="editStep('+i+')">✏️</button>';
+    html += '<button class="ge-btn ge-btn-outline ge-btn-xs" onclick="moveStep('+i+',-1)" '+(i===0?'disabled':'')+'>▲</button>';
+    html += '<button class="ge-btn ge-btn-outline ge-btn-xs" onclick="moveStep('+i+',1)" '+(i===steps.length-1?'disabled':'')+'>▼</button>';
+    html += '<button class="ge-btn ge-btn-danger ge-btn-xs" onclick="askDeleteStep('+i+')">✕</button>';
+    html += '</div>';
+    html += '<div class="ge-field"><label>步骤标题</label><div style="font-size:13px;color:#e0e0e0">'+escHtml(step.title)+'</div></div>';
+    html += '<div class="ge-field"><label>引导内容</label><div style="font-size:12px;color:#aaa">'+escHtml(step.content.substring(0,80))+(step.content.length>80?'...':'')+'</div></div>';
+    if(step.img){
+      html += '<div class="ge-field"><label>图片</label><div style="font-size:11px;color:#e94560;word-break:break-all">'+escHtml(step.img.substring(0,60))+'...</div></div>';
+    }
+    html += '</div>';
+  });
+  container.innerHTML = html;
+  document.getElementById('stepBadge').textContent = steps.length+'步';
+  document.getElementById('pageCountLabel').textContent = steps.length;
+  document.getElementById('btnDecPage').disabled = steps.length <= 1;
+}
+
+function escHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function addStep(){
+  editTarget = null;
+  document.getElementById('modalTitle').textContent = '添加引导步骤';
+  document.getElementById('modalStepTitle').value = '';
+  document.getElementById('modalStepContent').value = '';
+  document.getElementById('modalStepImg').value = '';
+  document.getElementById('modalConfirmBtn').textContent = '添加';
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+// ============ PAGE COUNT MODAL ============
+let pageModalDelta = 0;
+function showPageModal(delta){
+  var cur = steps.length;
+  var next = cur + delta;
+  if(next < 1) return; // minimum 1 page
+  pageModalDelta = delta;
+  document.getElementById('pageModalTitle').textContent = delta > 0 ? '增加页数' : '减少页数';
+  document.getElementById('pageModalMsg').textContent = '页数从 '+cur+' '+(delta>0?'增加到':'减少到')+' '+next+'。'+
+    (delta>0 ? '将新增一个空白步骤。' : '将删除最后一个步骤（内容不可恢复）。');
+  document.getElementById('pageModalOverlay').style.display = 'flex';
+}
+function closePageModal(){
+  document.getElementById('pageModalOverlay').style.display = 'none';
+  pageModalDelta = 0;
+}
+function confirmPageModal(){
+  var delta = pageModalDelta;
+  if(delta > 0){
+    steps.push({title:'新步骤', content:'引导内容...', img:''});
+  } else if(delta < 0 && steps.length > 1){
+    steps.pop();
+  }
+  closePageModal();
+  renderSteps();
+  updatePreview();
+}
+
+function editStep(i){
+  editTarget = i;
+  var step = steps[i];
+  document.getElementById('modalTitle').textContent = '编辑步骤 '+(i+1);
+  document.getElementById('modalStepTitle').value = step.title;
+  document.getElementById('modalStepContent').value = step.content;
+  document.getElementById('modalStepImg').value = step.img || '';
+  document.getElementById('modalConfirmBtn').textContent = '保存';
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').style.display = 'none';
+  editTarget = null;
+}
+
+function confirmModal(){
+  var title = document.getElementById('modalStepTitle').value.trim();
+  var content = document.getElementById('modalStepContent').value.trim();
+  var img = document.getElementById('modalStepImg').value.trim();
+  if(!title){title='新步骤'}
+  if(!content){content='引导内容...'}
+
+  if(editTarget !== null){
+    steps[editTarget] = {title:title, content:content, img:img};
+  } else {
+    steps.push({title:title, content:content, img:img});
+  }
+  closeModal();
+  renderSteps();
+  updatePreview();
+}
+
+function askDeleteStep(i){
+  deleteTarget = i;
+  document.getElementById('delModalOverlay').style.display = 'flex';
+}
+
+function closeDelModal(){
+  document.getElementById('delModalOverlay').style.display = 'none';
+  deleteTarget = null;
+}
+
+function confirmDelete(){
+  if(deleteTarget !== null){
+    steps.splice(deleteTarget,1);
+    deleteTarget = null;
+    renderSteps();
+    updatePreview();
+  }
+  closeDelModal();
+}
+
+function moveStep(i,dir){
+  var j = i + dir;
+  if(j<0 || j>=steps.length) return;
+  var tmp = steps[i];
+  steps[i] = steps[j];
+  steps[j] = tmp;
+  renderSteps();
+  updatePreview();
+}
+
+// ============ STYLE ============
+function applyPreset(){
+  var key = document.getElementById('presetStyle').value;
+  if(key==='custom'){styleState.preset='custom';return}
+  var p = presets[key];
+  styleState.preset = key;
+  styleState.btnColor = p.btnColor;
+  styleState.btnTextColor = p.btnTextColor;
+  styleState.btnBorderColor = p.btnBorderColor;
+  styleState.btnShape = p.btnShape;
+  styleState.customRadius = p.customRadius;
+
+  document.getElementById('btnColor').value = p.btnColor;
+  document.getElementById('btnTextColor').value = p.btnTextColor;
+  document.getElementById('btnBorderColor').value = p.btnBorderColor;
+  document.getElementById('btnShape').value = p.btnShape;
+  document.getElementById('customRadius').value = p.customRadius;
+  updateSliderDisplay();
+  onShapeChange();
+  updatePreview();
+}
+
+function onShapeChange(){
+  var val = document.getElementById('btnShape').value;
+  styleState.btnShape = val;
+  var radLabel = document.getElementById('customRadLabel');
+  radLabel.style.display = val==='custom' ? '' : 'none';
+  updatePreview();
+}
+
+function onTextDirChange(){
+  styleState.btnTextDir = document.getElementById('btnTextDir').value;
+  updatePreview();
+}
+
+function onBtnSideChange(){
+  styleState.btnSide = document.getElementById('btnSide').value;
+  updatePreview();
+}
+
+function onCustomRadius(){
+  styleState.customRadius = parseInt(document.getElementById('customRadius').value);
+  document.getElementById('radVal').textContent = styleState.customRadius+'px';
+  updatePreview();
+}
+
+function onColorChange(){
+  styleState.btnColor = document.getElementById('btnColor').value;
+  styleState.btnTextColor = document.getElementById('btnTextColor').value;
+  styleState.btnBorderColor = document.getElementById('btnBorderColor').value;
+  updatePreview();
+}
+
+function onSlider(id,valId,unit){
+  var val = document.getElementById(id).value;
+  if(id==='btnTop'){styleState.btnTop = parseInt(val)}
+  else if(id==='btnWidth'){styleState.btnWidth = parseInt(val)}
+  else if(id==='panelWidth'){styleState.panelWidth = parseInt(val)}
+  document.getElementById(valId).textContent = val + unit;
+  updatePreview();
+}
+
+function updateSliderDisplay(){
+  document.getElementById('btnTopVal').textContent = styleState.btnTop + '%';
+  document.getElementById('btnWidthVal').textContent = styleState.btnWidth + 'px';
+  document.getElementById('panelWidthVal').textContent = styleState.panelWidth + 'px';
+  document.getElementById('radVal').textContent = styleState.customRadius + 'px';
+}
+
+// ============ PREVIEW ============
+function updatePreview(){
+  styleState.guideTitle = document.getElementById('guideTitle').value || '新手导览';
+  styleState.btnLabel = document.getElementById('btnLabel').value || '导览';
+  var html = generatePreviewHTML();
+  var frame = document.getElementById('previewFrame');
+  frame.srcdoc = html;
+}
+
+function getBtnBorderRadius(){
+  var s = styleState.btnShape;
+  if(s==='rect') return '8px 0 0 8px';
+  if(s==='pill') return '24px 0 0 24px';
+  if(s==='circle') return '50%';
+  if(s==='square') return '0';
+  if(s==='custom') return styleState.customRadius+'px 0 0 '+styleState.customRadius+'px';
+  return '8px 0 0 8px';
+}
+
+function generatePreviewHTML(){
+  var title = styleState.guideTitle;
+  var btnLabel = styleState.btnLabel;
+  var btnTop = styleState.btnTop;
+  var panelW = styleState.panelWidth;
+  var btnW = styleState.btnWidth || 42;
+  var btnColor = styleState.btnColor;
+  var btnTextColor = styleState.btnTextColor;
+  var btnBorderColor = styleState.btnBorderColor;
+  var borderRadius = getBtnBorderRadius();
+  var btnLabelLines = btnLabel.split('|');
+  var isVertical = styleState.btnTextDir !== 'horizontal';
+  var isLeft = styleState.btnSide === 'left';
+  var sideProp = isLeft ? 'left:0;' : 'right:0;';
+  var writingMode = isVertical ? 'writing-mode:vertical-rl;' : 'writing-mode:horizontal-tb;';
+  var btnContentHTML = isVertical ? btnLabel.replace(/\|/g,'') : btnLabel.replace(/\|/g,'');
+  // Adjust border-radius for left/right side
+  var sideBorderRadius = borderRadius;
+  if(isLeft && borderRadius.indexOf('0 0') >= 0){
+    // flip: '6px 0 0 6px' -> '0 6px 6px 0', '50%' stays
+    sideBorderRadius = borderRadius === '50%' ? '50%' : borderRadius.replace(/^(\S+) 0 0 (\S+)$/,'0 $1 $1 0');
+  }
+  var btnMinH = isVertical ? Math.max(8, Math.round(btnW * 1.2)) : Math.max(8, Math.round(btnW * 0.8));
+  var btnMinW = isVertical ? Math.max(8, btnW) : Math.max(8, Math.round(btnLabel.replace(/\|/g,'').length * btnW * 0.25));
+
+  var preset = styleState.preset;
+  var p = presets[preset] || null;
+  // If custom or preset missing, derive from current styleState
+  var panelBg = p ? p.panelBg : '#16213e';
+  var panelBorder = p ? p.panelBorder : '#0f3460';
+  var panelText = p ? p.panelText : '#e0e0e0';
+  var panelExtraCss = p && p.panelCss ? p.panelCss : '';
+  var btnExtraCss = p && p.btnCss ? p.btnCss : '';
+  var btnFontFamily = (p && p.btnCss) ? (p.btnCss.match(/font-family:[^;]+/) || [''])[0].replace(/font-family:/,'').trim() : '';
+  var accent = styleState.btnColor;
+  var stepNumBg = styleState.btnColor;
+  var stepNumColor = styleState.btnTextColor;
+
+  var stepsHTML = '';
+  for(var i=0;i<steps.length;i++){
+    var s = steps[i];
+    stepsHTML += '<div class="ge-guide-page" data-page="'+i+'" style="'+(i===0?'':'display:none')+'">';
+    stepsHTML += '<div class="ge-guide-step-num">'+(i+1)+' / '+steps.length+'</div>';
+    stepsHTML += '<h2 class="ge-guide-step-title">'+escHtml(s.title)+'</h2>';
+    if(s.img){
+      stepsHTML += '<div class="ge-guide-img-wrap"><img src="'+escHtml(s.img)+'" class="ge-guide-img" onerror="this.style.display=\'none\'"></div>';
+    }
+    stepsHTML += '<p class="ge-guide-step-content">'+escHtml(s.content)+'</p>';
+    stepsHTML += '</div>';
+  }
+
+  var dotsHTML = '';
+  for(var j=0;j<steps.length;j++){
+    dotsHTML += '<span class="ge-guide-dot'+(j===0?' active':'')+'" onclick="goToPage('+j+')"></span>';
+  }
+
+  // Extract body font from panelCss if present
+  var bodyFont = (panelExtraCss.match(/font-family:[^;]+/) || [''])[0].replace(/font-family:/,'').trim();
+  if(!bodyFont){bodyFont='"PingFang SC","Microsoft YaHei",sans-serif'}
+  
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><style>'+
+'*{margin:0;padding:0;box-sizing:border-box}'+
+'body{background:#0d1117;font-family:'+bodyFont+';height:100vh;overflow:hidden;position:relative;color:'+panelText+'}'+
+/* Side button */
+'.ge-btn-trigger{position:fixed;'+sideProp+'top:'+btnTop+'%;transform:translateY(-50%);'+
+  'background:'+btnColor+';color:'+btnTextColor+';border:2px solid '+btnBorderColor+';'+
+  'border-radius:'+sideBorderRadius+';padding:'+Math.round(btnW*0.25)+'px '+Math.round(btnW*0.15)+'px;cursor:pointer;z-index:1000;'+
+  writingMode+'font-size:'+Math.max(10,Math.round(btnW*0.35))+'px;font-weight:600;letter-spacing:2px;'+
+  'transition:all .25s;min-height:'+btnMinH+'px;min-width:'+btnMinW+'px;display:inline-block;text-align:center;text-orientation:upright;'+
+  'box-shadow:0 0 12px '+btnColor+'40;'+
+  'border-'+(isLeft?'left':'right')+':none;'+(btnExtraCss ? btnExtraCss+';' : '')+'}'+
+  (btnFontFamily ? '.ge-btn-trigger{font-family:'+btnFontFamily+'}' : '')+
+'.ge-btn-trigger:hover{opacity:.9;transform:translateY(-50%) scale(1.05)}'+
+/* Overlay */
+'.ge-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:2000;display:none;align-items:center;justify-content:center}'+
+'.ge-overlay.open{display:flex}'+
+/* Panel */
+'.ge-panel{background:'+panelBg+';border:1px solid '+panelBorder+';'+
+  'border-radius:16px;width:'+panelW+'px;max-width:96vw;max-height:80vh;overflow-y:auto;'+
+  'padding:24px 20px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.5);'+
+  'animation:geFadeIn .3s ease;'+(panelExtraCss ? panelExtraCss : '')+'}'+
+'@keyframes geFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}'+
+'.ge-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border-bottom:1px solid '+panelBorder+';padding-bottom:12px}'+
+'.ge-panel-header h2{font-size:18px;color:'+accent+';margin:0}'+
+'.ge-panel-skip{background:transparent;border:none;color:#888;cursor:pointer;font-size:13px;font-family:inherit;padding:4px 8px}'+
+'.ge-panel-skip:hover{color:'+panelText+'}'+
+/* Page content */
+'.ge-guide-page{animation:geFadeIn .3s ease}'+
+'.ge-guide-step-num{font-size:12px;color:#888;margin-bottom:8px}'+
+'.ge-guide-step-title{font-size:17px;font-weight:700;color:'+accent+';margin-bottom:12px}'+
+'.ge-guide-img-wrap{margin-bottom:14px;text-align:center}'+
+'.ge-guide-img{max-width:100%;max-height:200px;border-radius:8px;object-fit:contain}'+
+'.ge-guide-step-content{font-size:14px;line-height:1.8;color:'+panelText+'}'+
+/* Footer */
+'.ge-panel-footer{display:flex;align-items:center;justify-content:space-between;position:sticky;bottom:0;background:'+panelBg+';margin-top:20px;padding-top:14px;padding-bottom:8px;border-top:1px solid '+panelBorder+'}'+
+'.ge-btn-next{background:'+btnColor+';color:'+btnTextColor+';border:none;'+
+  'padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;'+
+  'font-family:inherit;transition:opacity .2s;min-width:80px}'+
+'.ge-btn-next:hover{opacity:.85}'+
+'.ge-btn-back{background:transparent;color:#888;border:1px solid #444;'+
+  'padding:10px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit;min-width:60px}'+
+'.ge-btn-back:hover{color:'+panelText+';border-color:#888}'+
+'.ge-dots{display:flex;gap:6px}'+
+'.ge-guide-dot{width:8px;height:8px;border-radius:50%;background:#444;cursor:pointer;transition:all .2s}'+
+'.ge-guide-dot.active{background:'+accent+';width:24px;border-radius:4px}'+
+'.ge-panel::-webkit-scrollbar{width:3px}'+
+'.ge-panel::-webkit-scrollbar-thumb{background:'+panelBorder+';border-radius:2px}'+
+'</style></head><body>'+
+/* Trigger button */
+'<div class="ge-btn-trigger" onclick="togglePanel()">'+btnContentHTML+'</div>'+
+/* Overlay + Panel */
+'<div class="ge-overlay" id="overlay" onclick="closePanel(event)">'+
+'<div class="ge-panel" onclick="event.stopPropagation()">'+
+'<div class="ge-panel-header">'+
+'<h2>'+escHtml(title)+'</h2>'+
+'<button class="ge-panel-skip" onclick="closePanelDirect()">跳过 ✕</button>'+
+'</div>'+
+'<div id="pagesContainer">'+stepsHTML+'</div>'+
+'<div class="ge-panel-footer">'+
+'<button class="ge-btn-back" id="btnBack" onclick="prevPage()" style="visibility:hidden">← 上一步</button>'+
+'<div class="ge-dots">'+dotsHTML+'</div>'+
+'<button class="ge-btn-next" id="btnNext" onclick="nextPage()">下一步 →</button>'+
+'</div>'+
+'</div></div>'+
+'<script>'+
+'var currentPage=0;var totalPages='+steps.length+';'+
+'function togglePanel(){'+
+  'var ov=document.getElementById("overlay");'+
+  'if(ov.classList.contains("open")){ov.classList.remove("open")}'+
+  'else{ov.classList.add("open");showPage(0)}'+
+'}'+
+'function closePanelDirect(){document.getElementById("overlay").classList.remove("open")}'+
+'function closePanel(e){if(e.target===e.currentTarget){closePanelDirect()}}'+
+'function showPage(n){'+
+  'currentPage=n;'+
+  'var pages=document.querySelectorAll(".ge-guide-page");'+
+  'for(var i=0;i<pages.length;i++){pages[i].style.display=i===n?"":"none"}'+
+  'var dots=document.querySelectorAll(".ge-guide-dot");'+
+  'for(var j=0;j<dots.length;j++){dots[j].classList.toggle("active",j===n)}'+
+  'var back=document.getElementById("btnBack");'+
+  'var next=document.getElementById("btnNext");'+
+  'if(n===0){back.style.visibility="hidden"}'+
+  'else{back.style.visibility=""}'+
+  'if(n===totalPages-1){next.textContent="✓ 完成";next.onclick=closePanelDirect}'+
+  'else{next.textContent="下一步 \\u2192";next.onclick=nextPage}'+
+'}'+
+'function nextPage(){if(currentPage<totalPages-1){showPage(currentPage+1)}}'+
+'function prevPage(){if(currentPage>0){showPage(currentPage-1)}}'+
+'function goToPage(n){showPage(n)}'+
+'<\/script>'+
+'</body></html>';
+}
+
+// ============ EXPORT ============
+function exportHTML(){
+  var html = generatePreviewHTML();
+  // Create a blob and trigger download via the browser
+  // We use a data URI approach
+  var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = (styleState.guideTitle || 'guide') + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function copyCode(){
+  var html = generatePreviewHTML();
+  // Use Clipboard API with fallback
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(html).then(function(){
+      showToast('✅ 已复制到剪贴板！');
+    }).catch(function(){
+      fallbackCopy(html);
+    });
+  } else {
+    fallbackCopy(html);
+  }
+}
+
+function fallbackCopy(text){
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try{document.execCommand('copy');showToast('✅ 已复制到剪贴板！')}
+  catch(e){showToast('❌ 复制失败，请尝试导出HTML')}
+  document.body.removeChild(ta);
+}
+
+function showToast(msg){
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);'+
+    'background:#16213e;color:#e0e0e0;border:1px solid #e94560;padding:10px 24px;'+
+    'border-radius:24px;font-size:14px;z-index:9999;pointer-events:none;'+
+    'animation:geFadeIn .3s ease';
+  document.body.appendChild(t);
+  setTimeout(function(){t.remove()},2000);
+}
+
+// ============ INIT ============
+init();
+</script>
+</body>
+</html>

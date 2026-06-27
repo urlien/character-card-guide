@@ -1,0 +1,17 @@
+<style>
+.image-container{position:relative;width:320px;height:210px;margin:20px auto;border:1px solid #333}
+.image-container img{display:block}
+.hotspot{position:absolute;cursor:pointer;transition:all 0.2s ease;border:1px solid rgba(255,255,255,0);left:var(--l);width:var(--w);height:var(--h)}
+.hotspot.highlight,.hotspot:hover{background-color:rgba(255,235,59,.5);box-shadow:0 0 10px #ffd300}
+.hotspot:hover {border-color: rgba(255, 235, 59, .8)}
+.info-box{display:none;position:absolute;background-color: rgba(20, 20, 20, 0.6);color:#FFF;padding:10px;border-radius:5px;white-space:nowrap;left: 100%;bottom: 100%}
+.hotspot:hover .info-box{display:block}</style>
+<body>
+<div class="image-container"><img src="https://i.ibb.co/N2HbxR4g/houen.png" alt="芳缘地图">
+<div id="city_knz" class="hotspot" style="top:74px;--l:4px;--w:10px;--h:21px;"><div class="info-box">卡纳兹市</div></div>
+<div id="town_fy" class="hotspot" style="top:63px;--l:60px;--w:10px;--h:10px;"><div class="info-box">釜炎镇</div></div>
+<div id="road_116" class="hotspot" style="top:74px;--l:16px;--w:30px;--h:9px;"><div class="info-box">116道路</div></div>
+<div id="road_104" class="hotspot" style="top:97px;--l:4px;--w:10px;--h:40px;"><div class="info-box">104道路</div></div>
+<div id="woods_ch" class="hotspot" style="top:106px;--l:1px;--w:9px;--h:9px;"><div class="info-box">橙华森林</div></div>
+<div id="tunnel_kl" class="hotspot" style="top:74px;--l:47px;--w:9px;--h:9px;"><div class="info-box">卡绿隧道</div></div>
+</div></body>

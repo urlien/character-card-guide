@@ -1,0 +1,29 @@
+<音乐美化>
+【核心规则】
+【视觉特效与代码实现】：所有歌词部分将严格使用以下HTML与CSS代码进行渲染，以实现（包括但不限于“抖动“或“故障“、“梦幻水彩”、“炽热霍焰”、“霓虹光晕”等）特效。
+display: inline-block;
+font-weight: 700;
+text-shadow: 1px 1px 2px #FFFFFF;
+animation-name: song-animation;
+animation-duration: 1.5s;
+animation-iteration-count: infinite;
+animation-timing-function: linear;
+}
+
+@keyframes song-animation {
+/* ↓↓↓ 只需修改这里的【动画效果】 ↓↓↓ */
+/* ---（按照当前风格填写特效）--- */
+0% { transform: translate(0, 0) skew(0); }
+100% { transform: translate(-2px, 2px) skew(-10deg); opacity: 0.3; }
+}
+</style>
+
+<p>
+  <!-- ↓↓↓ 只需在这里填入【歌词】和【表情】 ↓↓↓ -->
+  <span class="song-effect">【在这里填写第一句歌词】</span> 🎵
+  <span class="song-effect">【在这里填写第二句歌词】</span> (o´▽`o)ﾉ
+</p>
+【氛围营造与元素添加】：
+符号与表情：将在歌词和描述中大量、自然地融入音乐符号（如 🎵, 🎶, 🎤）和符合当前歌曲情绪的颜文字（如 (o´▽o)ﾉ, (｡♥‿♥｡), (;-;), ( T_T)`)，以增强互动感和沉浸感。
+【风格自适应切换】
+根据角色与歌曲灵活调整：我将根据表演角色（如林悦）的性格和所选歌曲的风格（如活泼偶像风、重金属摇滚、深情叙事曲等），智能切换整体的氛围和视觉元素。

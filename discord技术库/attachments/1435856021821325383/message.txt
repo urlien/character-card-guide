@@ -1,0 +1,189 @@
+<!-- 容器 -->
+<div>
+  <!-- 筛选和搜索区域 -->
+  <div class="j k" id="tab-demon">
+    <!-- 搜索框 -->
+    <div class="p">
+      <div class="r">🔍</div>
+      <input type="text" class="q" placeholder="搜索神魔..." 
+             oninput="const term=this.value.toLowerCase();document.querySelectorAll('.w').forEach(card=>{const name=card.getAttribute('data-name').toLowerCase();const desc=card.getAttribute('data-desc').toLowerCase();if(name.includes(term)||desc.includes(term)){card.style.display='block'}else{card.style.display='none'}})"/>
+    </div>
+    <!-- 筛选按钮组 -->
+    <div class="s">
+      <!-- 类型筛选 -->
+      <div class="t">
+        <div class="u k" onclick="event.stopPropagation();document.querySelectorAll('.t:first-child .u').forEach(btn=>btn.classList.remove('k'));this.classList.add('k');const activeRankBtn=document.querySelector('.t:last-child .u.k');const rankFilter=activeRankBtn?activeRankBtn.getAttribute('data-rank'):'all';document.querySelectorAll('.w').forEach(card=>{const cardType=card.getAttribute('data-type');const cardRank=card.getAttribute('data-rank');const typeMatch='all'==='all'||cardType==='all';const rankMatch=rankFilter==='all'||cardRank===rankFilter;card.style.display=(typeMatch&&rankMatch)?'block':'none'})">全部</div>
+        <div class="u" onclick="event.stopPropagation();document.querySelectorAll('.t:first-child .u').forEach(btn=>btn.classList.remove('k'));this.classList.add('k');const activeRankBtn=document.querySelector('.t:last-child .u.k');const rankFilter=activeRankBtn?activeRankBtn.getAttribute('data-rank'):'all';document.querySelectorAll('.w').forEach(card=>{const cardType=card.getAttribute('data-type');const cardRank=card.getAttribute('data-rank');const typeMatch='god'==='all'||cardType==='god';const rankMatch=rankFilter==='all'||cardRank===rankFilter;card.style.display=(typeMatch&&rankMatch)?'block':'none'})">神明</div>
+        <div class="u" onclick="event.stopPropagation();document.querySelectorAll('.t:first-child .u').forEach(btn=>btn.classList.remove('k'));this.classList.add('k');const activeRankBtn=document.querySelector('.t:last-child .u.k');const rankFilter=activeRankBtn?activeRankBtn.getAttribute('data-rank'):'all';document.querySelectorAll('.w').forEach(card=>{const cardType=card.getAttribute('data-type');const cardRank=card.getAttribute('data-rank');const typeMatch='恶魔'==='all'||cardType==='恶魔';const rankMatch=rankFilter==='all'||cardRank===rankFilter;card.style.display=(typeMatch&&rankMatch)?'block':'none'})">邪魔</div>
+      </div>
+      <!-- 等级筛选 -->
+      <div class="t">
+        <div class="u k" data-rank="all" onclick="event.stopPropagation();document.querySelectorAll('.u[data-rank]').forEach(btn=>btn.classList.remove('k'));this.classList.add('k');const activeTypeBtn=document.querySelector('.t:first-child .u.k');let typeFilter='all';if(activeTypeBtn.textContent==='神明')typeFilter='god';if(activeTypeBtn.textContent==='邪魔')typeFilter='恶魔';document.querySelectorAll('.w').forEach(card=>{const cardType=card.getAttribute('data-type');const cardRank=card.getAttribute('data-rank');const typeMatch=typeFilter==='all'||cardType===typeFilter;const rankMatch='all'==='all'||cardRank==='all';card.style.display=(typeMatch&&rankMatch)?'block':'none'})">所有等级</div>
+        <div class="u" data-rank="1" onclick="event.stopPropagation();document.querySelectorAll('.u[data-rank]').forEach(btn=>btn.classList.remove('k'));this.classList.add('k');const activeTypeBtn=document.querySelector('.t:first-child .u.k');let typeFilter='all';if(activeTypeBtn.textContent==='神明')typeFilter='god';if(activeTypeBtn.textContent==='邪魔')typeFilter='恶魔';document.querySelectorAll('.w').forEach(card=>{const cardType=card.getAttribute('data-type');const cardRank=card.getAttribute('data-rank');const typeMatch=typeFilter==='all'||cardType===typeFilter;const rankMatch='1'==='all'||cardRank==='1';card.style.display=(typeMatch&&rankMatch)?'block':'none'})">一等</div>
+        <!-- 可继续添加二等、三等...按钮 -->
+      </div>
+    </div>
+
+    <!-- 卡片展示区域 -->
+    <div class="v">
+      <!-- 卡片示例 -->
+      <div class="w" data-name="一等神：剑一" data-desc="“一仙”之剑仙。神塑为白衣仗剑的绝代女仙，气质清冷，遗世独立。其道统追求'一剑破万法'，信徒皆为剑道奇才，心性纯粹，剑意凌霄，能引动天地之金气化为无匹剑罡，斩断因果，破灭万物。死敌为血颅。" data-type="god" data-rank="1" onclick="event.stopPropagation();const name=this.getAttribute('data-name');const desc=this.getAttribute('data-desc');const preview=document.querySelector('.preview');const current=preview.value;if(!current.includes(name)){const addition=`\n【求神拜魔】\n选择的魔神：${name}\n描述：${desc}\n`;preview.value=current+addition}">
+        <div class="x">仙</div>
+        <div class="y">剑一</div>
+        <div class="aa ab">神明</div>
+        <div class="ad">一等</div>
+        <div class="z">“一仙”之剑仙。神塑为白衣仗剑的绝代女仙，气质清冷，遗世独立。其道统追求'一剑破万法'，信徒皆为剑道奇才，心性纯粹，剑意凌霄，能引动天地之金气化为无匹剑罡，斩断因果，破灭万物。死敌为血颅。</div>
+      </div>
+      <!-- 可添加更多卡片 -->
+    </div>
+  </div>
+</div>
+
+<!-- 样式 -->
+<style>
+{
+  background: linear-gradient(145deg, #2a0c08, #1c0806);
+  color: #f5e5d1;
+  padding: 20px;
+  font-family: 'EB Garamond', serif;
+}
+.j { display: none; }
+.j.k { display: block; }
+.p, .s {
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(3px);
+  border: 1px solid rgba(154, 63, 63, 0.6);
+}
+.r {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9A3F3F;
+  font-size: 1.2rem;
+  z-index: 6;
+}
+.q {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border-radius: 25px;
+  border: 1px solid #9A3F3F;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 1rem;
+}
+.t {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.t:last-child {
+  margin-top: 15px;
+  border-top: 1px solid #9A3F3F;
+  padding-top: 15px;
+}
+.u {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(154, 63, 63, 0.3);
+  border: 1px solid #9A3F3F;
+  color: #E6CFA9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 10;
+}
+.u:hover, .u.k {
+  background: #9A3F3F;
+  color: #fff;
+}
+.u[data-rank] {
+  background: rgba(230, 207, 169, 0.2);
+  border: 1px solid #E6CFA9;
+  color: #E6CFA9;
+}
+.u[data-rank]:hover, .u[data-rank].k {
+  background: #E6CFA9;
+  color: #1c0806;
+}
+.v {
+  max-height: 1200px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+.w {
+  background: linear-gradient(145deg, rgba(26,26,46,0.8), rgba(22,33,62,0.8));
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #9A3F3F;
+  position: relative;
+  z-index: 5;
+}
+.w:hover {
+  transform: translateY(-5px);
+  border-color: #E6CFA9;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+.x {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  background: linear-gradient(45deg, #9A3F3F, #b85a5a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #E6CFA9;
+  font-family: 'Cinzel', serif;
+}
+.y {
+  color: #E6CFA9;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-family: 'Cinzel', serif;
+}
+.aa {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.ab {
+  background: rgba(230, 207, 169, 0.2);
+  color: #E6CFA9;
+  border: 1px solid #E6CFA9;
+}
+.ad {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  background: rgba(180, 160, 140, 0.3);
+  color: #d4c8bf;
+  border: 1px solid #d4c8bf;
+}
+.z {
+  color: #d8c8b4;
+  font-size: 13px;
+  line-height: 1.4;
+}
+</style>

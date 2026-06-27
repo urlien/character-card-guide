@@ -1,0 +1,186 @@
+<style>
+/* 状态栏整体容器 */
+#protagonist-status {
+    box-sizing: border-box;
+    width: 90%;
+    max-width: 550px;
+    margin: 20px auto;
+    padding: 20px;
+    /* 半透明模糊黑色背景 */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    /* 紫色边框 */
+    border: 2px solid #9933ff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(153, 51, 255, 0.2);
+    font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+}
+
+/* 状态栏主标题（主角状态栏-粗体橙色大字） */
+#status-main-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ff7f00;
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #9933ff;
+}
+
+/* 子分类标题样式（如-基础信息-） */
+.status-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #cc66ff;
+    margin: 12px 0 8px 0;
+}
+
+/* 字段容器（每行一个字段） */
+.status-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+}
+
+/* 字段标签（灰白色小字） */
+.status-label {
+    flex-shrink: 0;
+    width: 100px;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+/* 字段值（灰白色小字，与标签区分） */
+.status-value {
+    color: #f0f0f0;
+    font-size: 14px;
+    word-break: break-all;
+}
+
+/* 物品栏特殊样式（多物品标签化） */
+.status-items-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+.status-item-tag {
+    background: rgba(153, 51, 255, 0.3);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #f0f0f0;
+    font-size: 12px;
+}
+</style>
+
+<div id="protagonist-status">
+    <div id="status-main-title">主角状态栏</div>
+
+    <!-- 基础信息分类 -->
+    <div class="status-subtitle">-基础信息-</div>
+    <div class="status-item">
+        <span class="status-label">姓名：</span>
+        <span class="status-value">$1</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">性别：</span>
+        <span class="status-value">$2</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">年龄：</span>
+        <span class="status-value">$3</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">职业：</span>
+        <span class="status-value">$4</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">职阶：</span>
+        <span class="status-value">$5</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">掌握的技能：</span>
+        <span class="status-value">$6</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">所持武器：</span>
+        <span class="status-value">$7</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">物品栏：</span>
+        <div class="status-value status-items-box">$8</div>
+    </div>
+    <div class="status-item">
+        <span class="status-label">货币：</span>
+        <span class="status-value">$9</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">状态：</span>
+        <span class="status-value">$10</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">衣着：</span>
+        <span class="status-value">$11</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">体温：</span>
+        <span class="status-value">$12</span>
+    </div>
+
+    <!-- 数值信息分类 -->
+    <div class="status-subtitle">-数值信息-</div>
+    <div class="status-item">
+        <span class="status-label">护甲值：</span>
+        <span class="status-value">$13</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">饥饿值：</span>
+        <span class="status-value">$14</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">饮水值：</span>
+        <span class="status-value">$15</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">健康值：</span>
+        <span class="status-value">$16</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">体力值：</span>
+        <span class="status-value">$17</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">法力值：</span>
+        <span class="status-value">$18</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">疲劳值：</span>
+        <span class="status-value">$19</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">精力值：</span>
+        <span class="status-value">$20</span>
+    </div>
+
+    <!-- 关系行为分类 -->
+    <div class="status-subtitle">-关系行为-</div>
+    <div class="status-item">
+        <span class="status-label">人物关系：</span>
+        <span class="status-value">$21</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">行为描述：</span>
+        <span class="status-value">$22</span>
+    </div>
+
+    <!-- 隐私信息分类 -->
+    <div class="status-subtitle">-隐私信息-</div>
+    <div class="status-item">
+        <span class="status-label">性器描述：</span>
+        <span class="status-value">$23</span>
+    </div>
+    <div class="status-item">
+        <span class="status-label">累计射出ml：</span>
+        <span class="status-value">$24</span>
+    </div>
+</div>

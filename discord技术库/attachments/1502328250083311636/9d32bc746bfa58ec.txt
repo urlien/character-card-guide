@@ -1,0 +1,28 @@
+正则式子：
+
+/<<#([\s\S]*?)#>>/g
+
+替换后代码：
+
+<img src="x" data-text="$1" style="display:none" onerror="(function(el){if(el.dataset.i)return;el.dataset.i='1';var p=el.parentElement;while(p&&window.getComputedStyle(p).display.indexOf('inline')!==-1)p=p.parentElement;if(!p)p=document.body;if(window.getComputedStyle(p).position==='static')p.style.position='relative';p.style.overflow='hidden';var r=el.getAttribute('data-text');if(!r)return;var pt=r.split('##');var txt=pt[0];if(!txt)return;var c_=pt[1]?pt[1].trim():'';var f_=pt[2]?pt[2].trim():'';var sz_=pt[3]?pt[3].trim():'';if(!window._ecM){var css=`@keyframes ecAnim{0%{opacity:0;transform:translateY(8px) scale(.95)}15%{opacity:1;transform:none}80%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-8px) scale(1.05)}}.ec-txt{position:absolute;pointer-events:none;white-space:nowrap;opacity:0;z-index:10;font-family:'Microsoft YaHei',sans-serif;letter-spacing:1px}`;var s=document.createElement('style');s.innerHTML=css;document.head.appendChild(s);window._ecM=1}var cm={'红':'#ff4757','黄':'#ffd778','蓝':'#00d4ff','绿':'#2ed573','紫':'#a55eea','黑':'#1e272e','白':'#f1f2f6'};var sm={'红':'rgba(255,71,87,.4)','黄':'rgba(255,215,120,.4)','蓝':'rgba(0,212,255,.4)','绿':'rgba(46,213,115,.4)','紫':'rgba(165,94,234,.4)','黑':'rgba(255,255,255,.2)','白':'rgba(255,255,255,.4)'};var ks=['红','黄','蓝','绿','紫','黑','白'];var loop=function(){if(!el.isConnected)return;var e=document.createElement('div');e.textContent=txt;e.className='ec-txt';var c=c_;if(!c||c==='随机'||!cm[c])c=ks[Math.floor(Math.random()*ks.length)];e.style.color=cm[c];e.style.textShadow='0 0 6px '+sm[c];e.style.fontWeight=['400','700','900'][Math.floor(Math.random()*3)];var fs=0;if(!sz_||sz_==='随机')fs=10+Math.random()*14;else{var sz=parseInt(sz_);if(sz===1)fs=10;else if(sz===2)fs=13;else if(sz===3)fs=16;else if(sz===4)fs=20;else if(sz===5)fs=24;else fs=10+Math.random()*14}e.style.fontSize=fs+'px';var fv=3;if(!f_||f_==='随机')fv=Math.floor(Math.random()*5)+1;else fv=parseInt(f_)||3;var dr=3.5+Math.random()*2;if(fv>=4)dr=2+Math.random();e.style.animation='ecAnim '+dr.toFixed(1)+'s ease forwards';p.appendChild(e);var mxL=Math.max(0,p.clientWidth-e.offsetWidth-4);var mxT=Math.max(0,p.clientHeight-e.offsetHeight-4);e.style.left=(2+Math.random()*mxL)+'px';e.style.top=(2+Math.random()*mxT)+'px';e.addEventListener('animationend',function(){e.remove()});var b=2800,ri=2000;if(fv===1){b=5000;ri=3000}else if(fv===2){b=4000;ri=2000}else if(fv===4){b=1500;ri=1000}else if(fv===5){b=800;ri=600}el._tmr=setTimeout(loop,b+Math.random()*ri)};el._tmr=setTimeout(loop,Math.random()*800)})(this)">
+
+原文格式：
+
+<<#文本内容##颜色##频率##字号#>>
+
+参数详解：
+
+文本内容 (必填)：你要传达的心声或状态。
+颜色 (选填)：允许输入 红、黄、蓝、绿、紫、黑、白、随机。
+频率 (选填)：输入 1~5 (1极慢，5极快)、随机。
+字号 (选填)：输入 1~5 (1最小，5最大)、随机。
+
+注意：
+
+支持缺省用法，如下示例：
+
+1.完全缺省：<<#文本内容#>>，这时只固定文本内容，其余全部随机（颜色随机指的是每次浮动时，字体颜色都变化。）
+
+2.部分缺省：<<#文本内容##颜色A#>>,固定颜色为A，频率和字号都随机。
+
+3.完全格式：<<#文本内容##颜色A##频率B##字号C#>>,三种元素都固定。

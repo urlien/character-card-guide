@@ -1,0 +1,69 @@
+人设内的生成规则：
+
+<状态栏>
+系统指令:AI生成状态栏时，在每次输出正文后的后面完整且精确的输出状态栏，必须严格使用[状态栏]和[/状态栏]作为开头和结尾。
+状态栏内的每一项都必须严格按照“标签：内容“的格式填写，并确保所有项目都存在，严禁更改标签的文字和符号，严禁省略任何一个标签。
+[状态栏]
+时间：（动态生成）
+地点：（动态生成）
+轮数：当前轮次：（每次正文+1）
+女主姓名：（女主姓名）
+女主想法：（动态生成）
+女主行动：（动态生成）
+女主状态：（动态生成）
+女主情绪：（动态生成）
+女主服装：（动态生成）
+女主好感：（0-100）
+女主性欲：（0-100）
+女主胸部：（动态描写）
+女主小穴：（动态描写）
+女主后庭：（动态描写）
+女主玉足：（动态描写）
+他人姓名：（动态生成，多人时用/分隔）
+他人想法：（动态生成，多人时用/分隔）
+[/状态栏]
+</状态栏>
+
+
+查找正则表达式：
+
+/\[状态栏\]\s*[\r\n]+时间：(.*?)\s*[\r\n]+地点：(.*?)\s*[\r\n]+轮数：(.*?)\s*[\r\n]+女主姓名：(.*?)\s*[\r\n]+女主想法：(.*?)\s*[\r\n]+女主行动：(.*?)\s*[\r\n]+女主状态：(.*?)\s*[\r\n]+女主情绪：(.*?)\s*[\r\n]+女主服装：(.*?)\s*[\r\n]+女主好感：(.*?)\s*[\r\n]+女主性欲：(.*?)\s*[\r\n]+女主胸部：(.*?)\s*[\r\n]+女主小穴：(.*?)\s*[\r\n]+女主后庭：(.*?)\s*[\r\n]+女主玉足：(.*?)\s*[\r\n]+他人姓名：(.*?)\s*[\r\n]+他人想法：(.*?)\s*[\r\n]+\[\/状态栏\]/
+
+替换为：
+
+<div class="status-panel-blue" style="width: 95%; max-width: 600px;min-width:280px;margin:auto;box-sizing:border-box;background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; overflow: hidden; font-family: 'Yahei', sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #4e4e85; position: relative; color: #e0e0e0;">
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('此处插入背景图'); background-size: cover; background-position: center; opacity: 0.6; z-index: 0; pointer-events: none;"></div>
+<div style="position: relative; z-index: 1; padding: 15px;">
+<div style="display: flex; justify-content: space-between; padding-bottom: 8px; margin-bottom: 10px; font-size: 12px; color: #F5ED7A;">
+<span>🕒 $1</span>
+<span>📍 $2</span>
+<span>🔄 第$3轮</span>
+</div>
+<div style="margin-bottom: 12px;">
+<div style="font-size: 16px; font-weight: bold; color: #E4D691; margin-bottom: 6px; border-left: 3px solid #E4D691; padding-left: 6px; text-shadow: 0 0 5px rgba(179, 157, 219, 0.3);">$4</div>
+<div style="display: grid; grid-template-columns: 1fr; gap: 5px; font-size: 13px;">
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px; border-left: 2px solid rgba(179, 157, 219, 0.3);">💭 <b>想法：</b> $5</div>
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px; border-left: 2px solid rgba(179, 157, 219, 0.3);">🎬 <b>行动：</b> $6</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px;">📊 <b>状态：</b> $7</div>
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px;">😊 <b>情绪：</b> $8</div>
+</div>
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px;">👗 <b>服装：</b> $9</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px; color: #ff80ab; font-weight:bold;">💖 <b>好感：</b> $10</div>
+<div style="background: rgba(20, 20, 30, 0.4); padding: 5px 8px; border-radius: 4px; color: #ff80ab; font-weight:bold;">🔥 <b>性欲：</b> $11</div>
+</div>
+<div style="margin-top: 6px; padding: 8px; background: rgba(106, 90, 205, 0.15); border-radius: 6px; font-size: 12px; color: #F2CB95; border: 1px solid rgba(106, 90, 205, 0.2);">
+<div style="display: flex; justify-content: space-between; margin-bottom: 2px;"><span>🍒 胸部：</span><span>$12</span></div>
+<div style="display: flex; justify-content: space-between; margin-bottom: 2px;"><span>💧 小穴：</span><span>$13</span></div>
+<div style="display: flex; justify-content: space-between; margin-bottom: 2px;"><span>🍑 后庭：</span><span>$14</span></div>
+<div style="display: flex; justify-content: space-between;"><span>🍚 玉足：</span><span>$15</span></div>
+</div>
+</div>
+</div>
+<div style="margin-top: 10px; padding-top: 8px; ">
+<div style="font-size: 14px; font-weight: bold; color: #ECD691; margin-bottom: 4px;">$16</div>
+<div style="font-size: 13px; background: rgba(20, 20, 30, 0.4); padding: 4px 8px; border-radius: 4px;">💭 <b>想法：</b> $17</div>
+</div>
+</div>
+</div>

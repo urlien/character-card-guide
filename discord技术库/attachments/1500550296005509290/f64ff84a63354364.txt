@@ -1,0 +1,375 @@
+<div class="linggen-panel">
+    <style>
+        :root {
+            --accent: #e0b860;
+            --input-bg: #151530;
+            --border: #3a3a60;
+            --text: #ddd;
+            --chat-bg: rgba(20,20,50,0.95);
+            --chat-border: #4a4a7a;
+            --gold: #e0b860;
+            --wood: #5cb85c;
+            --water: #5bc0de;
+            --fire: #d9534f;
+            --earth: #b89b5b;
+            --ice: #a5d6e0;
+            --thunder: #c0a0ff;
+            --light: #f0e68c;
+            --dark: #3a3a6a;
+            --poison: #9b59b6;
+            --blood: #b22222;
+        }
+        .section-title {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 600;
+            margin: 8px 0 6px;
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(224,184,96,0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(224,184,96,0.3), transparent);
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: border .3s, box-shadow .3s;
+        }
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px rgba(224,184,96,0.2);
+        }
+        input::placeholder {
+            color: #8a8ab0;
+            opacity: .5;
+        }
+        .linggen-section {
+            position: relative;
+            margin-top: 4px;
+        }
+        .chat-float {
+            position: relative;
+            z-index: 0;
+            pointer-events: none;
+            height: 0;
+        }
+        .chat-bubble {
+            display: none;
+            background: var(--chat-bg);
+            border: 1px solid var(--chat-border);
+            border-radius: 6px;
+            padding: 5px 14px;
+            font-size: 13px;
+            color: #e0d8c0;
+            position: absolute;
+            top: -42px;
+            left: 0;
+            white-space: nowrap;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.7);
+            text-shadow: 0 0 5px rgba(255,220,150,0.3);
+            background-image: linear-gradient(180deg, rgba(30,30,60,0.9), rgba(20,20,50,0.95));
+        }
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 18px;
+            width: 12px;
+            height: 12px;
+            background: var(--chat-bg);
+            border: 1px solid var(--chat-border);
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg);
+        }
+        .lg-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+            margin-top: 4px;
+        }
+        .lg-list input[type="radio"] {
+            display: none;
+        }
+        .lg-list label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #8a8ab0;
+            background: var(--input-bg);
+            transition: all .25s;
+            user-select: none;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        .lg-list label:hover {
+            border-color: rgba(200,170,80,0.8);
+            color: #e8d8b8;
+            box-shadow: 0 0 14px rgba(224,184,96,0.3);
+        }
+        .lg-list input:checked+label {
+            background: #222248;
+            border-color: var(--accent);
+            color: #e8d8b8;
+            font-weight: 600;
+            box-shadow: 0 0 18px rgba(224,184,96,0.5), inset 0 0 8px rgba(224,184,96,0.1);
+        }
+        .gear-svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            opacity: .8;
+            flex-shrink: 0;
+        }
+        .orb-zone {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+            position: relative;
+            z-index: 3;
+        }
+        .orb-disp {
+            display: none;
+        }
+        .orb-disp .orb-chip {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 0 14px currentColor;
+        }
+        .wuling-disp .orb-chip.jin {
+            background: var(--gold);
+            box-shadow: 0 0 18px var(--gold);
+        }
+        .wuling-disp .orb-chip.mu {
+            background: var(--wood);
+            box-shadow: 0 0 18px var(--wood);
+        }
+        .wuling-disp .orb-chip.shui {
+            background: var(--water);
+            box-shadow: 0 0 18px var(--water);
+        }
+        .wuling-disp .orb-chip.huo {
+            background: var(--fire);
+            box-shadow: 0 0 18px var(--fire);
+        }
+        .wuling-disp .orb-chip.tu {
+            background: var(--earth);
+            box-shadow: 0 0 18px var(--earth);
+        }
+        .orb-sel {
+            display: none;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .orb-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+            background: #1a1a36;
+            border: 2px solid #3a3a60;
+            cursor: pointer;
+            user-select: none;
+            transition: all .25s;
+            text-decoration: none;
+            box-shadow: 0 0 6px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .orb-dot:hover {
+            border-color: #8a8ab0;
+            color: #bbb;
+            box-shadow: 0 0 12px rgba(220,200,150,0.2);
+        }
+        .orb-dot.on {
+            color: #fff;
+            border-color: transparent;
+            animation: orbGlow 2s infinite alternate;
+        }
+        @keyframes orbGlow {
+            0% { box-shadow: 0 0 10px currentColor; }
+            100% { box-shadow: 0 0 28px currentColor, 0 0 45px currentColor; }
+        }
+        .orb-dot.jin.on { background: var(--gold); color: #1a1a00; }
+        .orb-dot.mu.on { background: var(--wood); }
+        .orb-dot.shui.on { background: var(--water); }
+        .orb-dot.huo.on { background: var(--fire); }
+        .orb-dot.tu.on { background: var(--earth); }
+        .orb-dot.bing.on { background: var(--ice); }
+        .orb-dot.lei.on { background: var(--thunder); }
+        .orb-dot.guang.on { background: var(--light); color: #3a3a30; }
+        .orb-dot.an.on { background: var(--dark); color: #ddd; border: 2px solid #555; }
+        .orb-dot.du.on { background: var(--poison); }
+        .orb-dot.xue.on { background: var(--blood); }
+        .orb-sel input[type="radio"] {
+            display: none;
+        }
+        .orb-sel input[type="radio"]+label {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+            background: #1a1a36;
+            border: 2px solid #3a3a60;
+            cursor: pointer;
+            user-select: none;
+            transition: all .25s;
+            box-shadow: 0 0 6px rgba(0,0,0,0.3);
+        }
+        .orb-sel input[type="radio"]:checked+label {
+            color: #fff;
+            border-color: transparent;
+            animation: orbGlow 2s infinite alternate;
+        }
+        .wuxing input:checked+label.jin { background: var(--gold); color: #1a1a00; }
+        .wuxing input:checked+label.mu { background: var(--wood); }
+        .wuxing input:checked+label.shui { background: var(--water); }
+        .wuxing input:checked+label.huo { background: var(--fire); }
+        .wuxing input:checked+label.tu { background: var(--earth); }
+        .bianyi input:checked+label.bing { background: var(--ice); }
+        .bianyi input:checked+label.lei { background: var(--thunder); }
+        .bianyi input:checked+label.guang { background: var(--light); color: #3a3a30; }
+        .bianyi input:checked+label.an { background: var(--dark); color: #ddd; border: 2px solid #555; }
+        .bianyi input:checked+label.du { background: var(--poison); }
+        .bianyi input:checked+label.xue { background: var(--blood); }
+        .custom-inp-wrap {
+            display: none;
+            width: 100%;
+        }
+        .custom-inp-wrap input {
+            width: 100%;
+        }
+        .linggen-section:has(#lg-custom:checked) .chat-custom { display: block; }
+        .linggen-section:has(#lg-custom:checked) .custom-inp-wrap { display: block; }
+        .linggen-section:has(#lg-unknown:checked) .chat-unknown { display: block; }
+        .linggen-section:has(#lg-wuling:checked) .chat-wuling { display: block; }
+        .linggen-section:has(#lg-wuling:checked) .wuling-disp { display: flex; }
+        .linggen-section:has(#lg-siling:checked) .chat-siling { display: block; }
+        .linggen-section:has(#lg-siling:checked) .siling-sel { display: flex; }
+        .linggen-section:has(#lg-sanling:checked) .chat-sanling { display: block; }
+        .linggen-section:has(#lg-sanling:checked) .sanling-sel { display: flex; }
+        .linggen-section:has(#lg-shuangling:checked) .chat-shuangling { display: block; }
+        .linggen-section:has(#lg-shuangling:checked) .shuangling-sel { display: flex; }
+        .linggen-section:has(#lg-tianling:checked) .chat-tianling { display: block; }
+        .linggen-section:has(#lg-tianling:checked) .tianling-sel { display: flex; }
+        .linggen-section:has(#lg-bianyi:checked) .chat-bianyi { display: block; }
+        .linggen-section:has(#lg-bianyi:checked) .bianyi-sel { display: flex; }
+    </style>
+
+    <div class="section-title">灵根</div>
+    <div class="linggen-section">
+        <div class="chat-float">
+            <div class="chat-bubble chat-custom">自定义你的专属灵根</div>
+            <div class="chat-bubble chat-unknown">随机灵根，适合选择困难症的你</div>
+            <div class="chat-bubble chat-wuling">五行灵根俱全，修行缓慢</div>
+            <div class="chat-bubble chat-siling">具备四种属性，多为散修，或入小宗小派</div>
+            <div class="chat-bubble chat-sanling">具备三种属性，已有一定天赋，通常为大门派招收门槛</div>
+            <div class="chat-bubble chat-shuangling">具备两种属性，已经是少数人才能达到的天赋</div>
+            <div class="chat-bubble chat-tianling">身具单一属性，已超过修仙界绝大部分人</div>
+            <div class="chat-bubble chat-bianyi">两种以上灵根属性组合变异而成，修行速度与天灵根无异</div>
+        </div>
+
+        <div class="lg-list">
+            <input type="radio" name="linggen" id="lg-custom"><label for="lg-custom">自定义<svg class="gear-svg" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></label>
+            <input type="radio" name="linggen" id="lg-unknown"><label for="lg-unknown">未知灵根</label>
+            <input type="radio" name="linggen" id="lg-wuling"><label for="lg-wuling">五灵根</label>
+            <input type="radio" name="linggen" id="lg-siling"><label for="lg-siling">四灵根</label>
+            <input type="radio" name="linggen" id="lg-sanling"><label for="lg-sanling">三灵根</label>
+            <input type="radio" name="linggen" id="lg-shuangling"><label for="lg-shuangling">双灵根</label>
+            <input type="radio" name="linggen" id="lg-tianling"><label for="lg-tianling">天灵根</label>
+            <input type="radio" name="linggen" id="lg-bianyi"><label for="lg-bianyi">变异灵根</label>
+        </div>
+
+        <div class="orb-zone">
+            <div class="orb-disp wuling-disp">
+                <span class="orb-chip jin">金</span>
+                <span class="orb-chip mu">木</span>
+                <span class="orb-chip shui">水</span>
+                <span class="orb-chip huo">火</span>
+                <span class="orb-chip tu">土</span>
+            </div>
+
+            <div class="orb-sel siling-sel wuxing">
+                <a class="orb-dot jin" onclick="var g=this.parentElement;var m=4;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">金</a>
+                <a class="orb-dot mu" onclick="var g=this.parentElement;var m=4;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">木</a>
+                <a class="orb-dot shui" onclick="var g=this.parentElement;var m=4;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">水</a>
+                <a class="orb-dot huo" onclick="var g=this.parentElement;var m=4;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">火</a>
+                <a class="orb-dot tu" onclick="var g=this.parentElement;var m=4;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">土</a>
+            </div>
+
+            <div class="orb-sel sanling-sel wuxing">
+                <a class="orb-dot jin" onclick="var g=this.parentElement;var m=3;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">金</a>
+                <a class="orb-dot mu" onclick="var g=this.parentElement;var m=3;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">木</a>
+                <a class="orb-dot shui" onclick="var g=this.parentElement;var m=3;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">水</a>
+                <a class="orb-dot huo" onclick="var g=this.parentElement;var m=3;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">火</a>
+                <a class="orb-dot tu" onclick="var g=this.parentElement;var m=3;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">土</a>
+            </div>
+
+            <div class="orb-sel shuangling-sel wuxing">
+                <a class="orb-dot jin" onclick="var g=this.parentElement;var m=2;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">金</a>
+                <a class="orb-dot mu" onclick="var g=this.parentElement;var m=2;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">木</a>
+                <a class="orb-dot shui" onclick="var g=this.parentElement;var m=2;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">水</a>
+                <a class="orb-dot huo" onclick="var g=this.parentElement;var m=2;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">火</a>
+                <a class="orb-dot tu" onclick="var g=this.parentElement;var m=2;var t=this.textContent.trim();var o=g.getAttribute('data-order')||'';var a=o?o.split(','):[];if(this.classList.contains('on')){this.classList.remove('on');var i=a.indexOf(t);if(i!==-1)a.splice(i,1)}else{this.classList.add('on');a.push(t);if(a.length>m){var old=a.shift();var all=g.querySelectorAll('.orb-dot');for(var j=0;j<all.length;j++){if(all[j].textContent.trim()===old&&all[j].classList.contains('on')){all[j].classList.remove('on');break}}}}g.setAttribute('data-order',a.join(','));return false;">土</a>
+            </div>
+
+            <div class="orb-sel tianling-sel wuxing">
+                <input type="radio" name="tianling" id="t1-jin"><label for="t1-jin" class="jin">金</label>
+                <input type="radio" name="tianling" id="t1-mu"><label for="t1-mu" class="mu">木</label>
+                <input type="radio" name="tianling" id="t1-shui"><label for="t1-shui" class="shui">水</label>
+                <input type="radio" name="tianling" id="t1-huo"><label for="t1-huo" class="huo">火</label>
+                <input type="radio" name="tianling" id="t1-tu"><label for="t1-tu" class="tu">土</label>
+            </div>
+
+            <div class="orb-sel bianyi-sel bianyi">
+                <input type="radio" name="bianyi" id="b-bing"><label for="b-bing" class="bing">冰</label>
+                <input type="radio" name="bianyi" id="b-lei"><label for="b-lei" class="lei">雷</label>
+                <input type="radio" name="bianyi" id="b-guang"><label for="b-guang" class="guang">光</label>
+                <input type="radio" name="bianyi" id="b-an"><label for="b-an" class="an">暗</label>
+                <input type="radio" name="bianyi" id="b-du"><label for="b-du" class="du">毒</label>
+                <input type="radio" name="bianyi" id="b-xue"><label for="b-xue" class="xue">血</label>
+            </div>
+
+            <div class="custom-inp-wrap"><input type="text" placeholder="xx灵根（请输入）"></div>
+        </div>
+    </div>
+</div>

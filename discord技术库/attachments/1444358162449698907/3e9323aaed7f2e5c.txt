@@ -1,0 +1,32 @@
+核心引擎
+<img src="x" style="display:none" onerror="window.CFG={
+    // [自定义] 根节点名称 (例如 'World', 'System', 'Shared')
+    rootKey: 'World', 
+    // [自定义] 初始数值 (注意第一项必须和 rootKey 一致!)
+    def: {
+        World: { HP: 100, Money: 0, Time: 'Day 1' }, 
+        Alice: { Love: 0, State: 'Normal' },
+        Bob: { Trust: 10 }
+    },
+    // [自定义] 角色映射
+    keys: {
+        'Alice': ['Alice', '爱丽丝', '女主'],
+        'Bob': ['Bob', '老板']
+    },
+    // [正则] 通用指令: [角色:属性:+/-:数值]
+    rCmd: /\[(.*?):(.*?):([+\-])(\d+)\]/g,
+    // [系统] 数值胶囊正则 (用于识别并删除旧数值)
+    rSys: /\<span style='display:none' class='sys-state'>\[Memory: (.*?)\]\<\/span\>/,
+    // [标签生成器]
+    tagState: function(s){ return '<span style=\'display:none\' class=\'sys-state\'>[Memory: '+JSON.stringify(s)+']</span>' },
+    tagLog: function(t){ return '<span style=\'display:none\' class=\'sys-log\'>[Log: '+t+']</span>' }
+};
+window.SYS={t:null,pool:[],map:{},s:JSON.parse(JSON.stringify(window.CFG.def))}">
+
+<img src="x" style="display:none" onerror="window.Logic={calc:function(base,txt){var s=JSON.parse(JSON.stringify(base));var m;var rC=new RegExp(window.CFG.rCmd);while((m=rC.exec(txt))!==null){var c=m[1];var a=m[2];var op=m[3];var v=parseInt(m[4]);if(!s[c])s[c]={};if(s[c][a]===undefined)s[c][a]=0;if(op=='+')s[c][a]+=v;else s[c][a]-=v}return s},filter:function(fullState,txt){var rk=window.CFG.rootKey||'global';var final={};final[rk]=fullState[rk];var active=[rk];for(var char in window.CFG.keys){var keywords=window.CFG.keys[char];var mentioned=keywords.some(function(k){return txt.indexOf(k)>-1});var modified=txt.indexOf('['+char+':')>-1;if(mentioned||modified){final[char]=fullState[char];active.push(char)}}return {data:final, list:active}}}">
+
+<img src="x" style="display:none" onerror="var r=indexedDB.open('GAL_V35_KERNEL',1);r.onupgradeneeded=function(e){var d=e.target.result;d.createObjectStore('map')};r.onsuccess=function(e){window.DB=e.target.result};var push=function(id,c){if(!id||!c)return;var fp=c.substring(0,15).trim();window.SYS.pool.push({id:id,fp:fp})};var proc=function(d){try{if(!d)return;var j=JSON.parse(d);var id=j.id||(j.data?j.data.id:null);if(id){push(id,j.content||(j.data?j.data.content:''));if(j.data&&j.data.list){j.data.list.forEach(function(i){push(i.id,i.content)})}}}catch(e){}};var os=XMLHttpRequest.prototype.setRequestHeader;XMLHttpRequest.prototype.setRequestHeader=function(k,v){if(k=='Authorization'){window.SYS.t=v}return os.apply(this,arguments)};var ox=XMLHttpRequest.prototype.send;XMLHttpRequest.prototype.send=function(d){proc(d);this.addEventListener('load',function(){proc(this.responseText)});return ox.apply(this,arguments)};var of=window.fetch;window.fetch=function(u,o){if(o&&o.headers&&o.headers.Authorization)window.SYS.t=o.headers.Authorization;return of.apply(this,arguments).then(function(r){var c=r.clone();c.text().then(function(t){proc(t)});return r})}">
+
+<img src="x" style="display:none" onerror="window.Engine={lastHash:'',queue:[],cleaning:{},tick:function(){var nodes=document.querySelectorAll('uni-view[id^=\'q\']');var state=JSON.parse(JSON.stringify(window.CFG.def));if(window.DB){var tx=window.DB.transaction(['map'],'readwrite');var st=tx.objectStore('map');nodes.forEach(function(n,i){var did=n.id;var txt=n.innerText;if(!txt)return;if(!window.SYS.map[did]){var fp=txt.substring(0,15).trim();var m=window.SYS.pool.find(function(p){return p.fp==fp});if(m){window.SYS.map[did]=m.id;st.put(m.id,did)}else{st.get(did).onsuccess=function(e){if(e.target.result)window.SYS.map[did]=e.target.result}}}var aid=window.SYS.map[did];var mh=n.innerHTML.match(window.CFG.rSys);if(mh){try{var tmp=JSON.parse(mh[1]);for(var k in tmp)state[k]=tmp[k]}catch(e){}}if(txt.indexOf('[')>-1){state=window.Logic.calc(state,txt)};if(i<nodes.length-1&&aid&&mh&&!window.Engine.cleaning[aid]){window.Engine.addTask('CLEAN',aid,window.Engine.cleanContent(n.innerHTML));window.Engine.cleaning[aid]=true}})}var lastNode=nodes.length?nodes[nodes.length-1]:null;if(lastNode){var lastTxt=lastNode.innerText;var filtered=window.Logic.filter(state,lastTxt);var cleanTxt=window.Engine.cleanContent(lastNode.innerHTML);var currHash=cleanTxt+JSON.stringify(filtered.data);if(currHash!==window.Engine.lastHash){var laid=window.SYS.map[lastNode.id];if(laid){window.Engine.lastHash=currHash;window.Engine.addTask('SAVE',laid,cleanTxt+window.CFG.tagState(filtered.data))}}}window.Engine.processQ()},cleanContent:function(html){var div=document.createElement('div');div.innerHTML=html;var spans=div.querySelectorAll('.sys-state');spans.forEach(function(s){s.remove()});return div.innerText},addTask:function(type,id,content){window.Engine.queue.push({type:type,id:id,content:content})},processQ:function(){if(window.Engine.busy||window.Engine.queue.length===0)return;var task=window.Engine.queue.shift();window.Engine.busy=true;if(!window.SYS.t){window.Engine.busy=false;return}var x=new XMLHttpRequest();x.open('POST','/api/message2/edit');x.setRequestHeader('Content-Type','application/json');x.setRequestHeader('Authorization',window.SYS.t);x.onload=function(){window.Engine.busy=false;window.Engine.processQ()};x.onerror=function(){window.Engine.busy=false;window.Engine.processQ()};x.send(JSON.stringify({id:task.id,content:task.content}))},init:function(){setInterval(this.tick,1000)}};setTimeout(function(){window.Engine.init()},1000)">
+
+<img src="x" style="display:none" onerror="window.Injector={addLog:function(msg){var nodes=document.querySelectorAll('uni-view[id^=\'q\']');var last=nodes[nodes.length-1];if(!last)return;var aid=window.SYS.map[last.id];if(!aid)return;var tag=window.CFG.tagLog(msg);var txt=last.innerText;window.Engine.addTask('LOG',aid,txt+tag)}}">

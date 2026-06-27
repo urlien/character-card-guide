@@ -1,0 +1,184 @@
+<div class="dayong-assistant-pro" onclick="event.stopPropagation()">
+<style>
+    @keyframes dy-slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes dy-fade-up { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    
+    .dy-btn { transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; border-radius: 6px; }
+    .dy-btn:active { transform: scale(0.95); filter: brightness(0.8); }
+    .dy-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); background: #2a1616 !important; border-color: #ffd700 !important; color: #fff !important;}
+    
+    .dy-tab-btn { transition: all 0.3s ease; position: relative; }
+    .dy-tab-btn::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: #d4af37; transition: all 0.3s ease; transform: translateX(-50%); }
+    .dy-tab-btn.active::after { width: 80%; }
+    
+    .dy-content { animation: dy-fade-up 0.4s ease-out forwards; }
+    .dy-scroll::-webkit-scrollbar { width: 4px; }
+    .dy-scroll::-webkit-scrollbar-track { background: transparent; }
+    .dy-scroll::-webkit-scrollbar-thumb { background: #8b6508; border-radius: 2px; }
+    .dy-scroll::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+    
+    /* 注入面板特化样式 */
+    .dy-inj-sec { background: #1c1111; padding: 10px; border-radius: 8px; border: 1px solid #3a2020; margin-bottom: 10px; }
+    .dy-inj-title { font-size: 12px; color: #d4af37; font-weight: bold; border-bottom: 1px dashed #8b6508; padding-bottom: 4px; margin-bottom: 8px; display: inline-block; }
+    .dy-inj-btn { padding: 6px 10px; background: #110808; border: 1px solid #8b6508; border-radius: 6px; font-size: 11px; color: #eeddcc; cursor: pointer; transition: all 0.2s; margin: 3px; display: inline-block; position: relative; user-select: none; }
+    .dy-inj-btn:hover { background: #2a1616; border-color: #ffd700; transform: translateY(-1px); }
+    .dy-inj-btn.active { background: linear-gradient(135deg, #d4af37, #8b6508); color: #110808; border-color: #ffd700; font-weight: bold; box-shadow: 0 0 8px rgba(212,175,55,0.4); }
+    
+    /* 悬浮提示 (Tooltip) */
+    .dy-inj-btn::after { content: attr(data-tip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(5px); background: rgba(20,10,15,0.95); border: 1px solid #d4af37; color: #eeddcc; padding: 8px; border-radius: 6px; font-size: 10px; white-space: pre-wrap; width: 180px; line-height: 1.4; text-align: left; z-index: 100; opacity: 0; visibility: hidden; transition: 0.2s; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5); font-weight: normal; }
+    .dy-inj-btn:hover::after { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    
+    .dy-preview-box { background: #0a0505; border: 1px dashed #8b6508; padding: 10px; border-radius: 6px; min-height: 40px; font-size: 11px; color: #ffd700; white-space: pre-wrap; word-break: break-all; }
+    
+    /* 自动注入开关 */
+    .dy-switch { display: flex; align-items: center; justify-content: space-between; background: rgba(212,175,55,0.1); padding: 8px 12px; border-radius: 6px; border: 1px solid #8b6508; margin-bottom: 10px; cursor: pointer; }
+    .dy-switch-track { width: 34px; height: 18px; background: #110808; border-radius: 10px; position: relative; border: 1px solid #8b6508; transition: 0.3s; }
+    .dy-switch-ball { width: 12px; height: 12px; background: #8b6508; border-radius: 50%; position: absolute; left: 2px; top: 2px; transition: 0.3s; }
+    .dy-switch.on .dy-switch-track { background: #2a1616; border-color: #ffd700; }
+    .dy-switch.on .dy-switch-ball { left: 18px; background: #ffd700; box-shadow: 0 0 5px #ffd700; }
+    .dy-switch-text { font-size: 12px; color: #eeddcc; font-weight: bold; }
+    .dy-switch.on .dy-switch-text { color: #ffd700; }
+
+    /* 折叠面板 Q&A */
+    details { margin-bottom: 8px; background: #1c1111; border-radius: 6px; border: 1px solid #8b6508; transition: all 0.2s; overflow: hidden; }
+    details[open] { background: #2a1616; border-color: #d4af37; }
+    summary { padding: 10px; cursor: pointer; color: #eeddcc; font-weight: bold; list-style: none; position: relative; padding-right: 25px; user-select: none; font-size: 0.95em; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #d4af37; font-weight: bold; transition: transform 0.2s; }
+    details[open] summary::after { transform: translateY(-50%) rotate(45deg); color: #ffd700; }
+    details[open] summary { border-bottom: 1px dashed rgba(212, 175, 55, 0.3); color: #ffd700; }
+    .qa-answer { padding: 12px; color: #ccc; line-height: 1.6; font-size: 0.9em; background: #110808; }
+</style>
+
+<img src="x" style="display:none" onerror="(function(){var w=window;if(w.dy_inj_init)return;w.dy_auto_on=false;w.dy_inj_pool=[];w.dy_update_view=function(){var p=document.getElementById('dy-preview-box');if(p)p.textContent=w.dy_inj_pool.join('')||'（暂无启用的特化指令）'};w.dy_toggle_inj=function(btn,kw){ev=window.event;if(ev)ev.stopPropagation();var i=w.dy_inj_pool.indexOf(kw);if(i===-1){w.dy_inj_pool.push(kw);btn.className+=' active'}else{w.dy_inj_pool.splice(i,1);btn.className=btn.className.replace(' active','')}w.dy_update_view()};var inject=function(){if(!w.dy_auto_on||w.dy_inj_pool.length===0)return;var ta=document.querySelector('.uni-textarea-textarea textarea')||document.querySelector('textarea');if(!ta)return;var val=ta.value;var added=false;for(var i=0;i!=w.dy_inj_pool.length;i++){if(val.indexOf(w.dy_inj_pool[i])===-1){val+='\n'+w.dy_inj_pool[i];added=true}}if(added){var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value');if(ns&&ns.set){ns.set.call(ta,val)}else{ta.value=val}ta.dispatchEvent(new Event('input',{bubbles:true}))}};document.addEventListener('click',function(e){var btn=e.target.closest('.chat-input-scope .btn-icon')||e.target.closest('.send-btn')||e.target.closest('[class*=send]');if(btn&&!e.target.closest('.uni-textarea-textarea'))inject()},true);w.dy_inj_init=true})()">
+
+<div class="assist-trigger" style="position: fixed; right: 0px; top: 16%; z-index: 9999; display: flex; align-items: center; justify-content: center; width: 22px; padding: 15px 2px; background: linear-gradient(135deg, #2a1616, #160b0b); border: 1px solid #d4af37; border-right: none; border-radius: 8px 0px 0px 8px; cursor: pointer; color: #ffd700; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(0px); opacity: 1; box-shadow: -2px 0 8px rgba(212,175,55,0.2);" onclick="this.style.transform='translateX(100%)'; this.style.opacity='0'; setTimeout(()=>{this.style.display='none';this.nextElementSibling.style.display='flex'}, 200)">
+    <div style="writing-mode: vertical-rl; text-orientation: mixed; font-weight: bold; letter-spacing: 3px; font-size: 13px; text-shadow: 0 1px 2px #000;">◀ 游玩助手</div>
+</div>
+
+<div class="assist-panel" style="position: fixed; right: 0px; top: 8%; z-index: 9999; display: none; flex-direction: column; width: 320px; background: #110808; border: 1px solid #d4af37; border-right: none; border-radius: 8px 0px 0px 8px; box-shadow: rgba(0, 0, 0, 0.8) -5px 5px 25px; overflow: hidden; animation: dy-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: linear-gradient(135deg, #2a1616, #160b0b); border-bottom: 1px solid #8b6508;">
+        <span style="color: #ffd700; font-weight: bold; font-size: 0.9em; letter-spacing: 1px; display: flex; align-items: center; gap: 5px; text-shadow: 0 1px 2px #000;">
+            <span style="display: inline-block; width: 6px; height: 6px; background: #ffd700; border-radius: 50%; box-shadow: 0 0 5px #ffd700;"></span>
+            大雍·全能助手
+        </span><button style="background: transparent; border: none; color: #d4af37; cursor: pointer; font-size: 16px; padding: 0 5px; transition: 0.2s;" onclick="var p=this.closest('.assist-panel'); p.style.animation='none'; p.offsetHeight; p.style.animation='dy-slide-in 0.3s reverse forwards'; setTimeout(()=>{p.style.display='none'; var t=p.previousElementSibling; t.style.display='flex'; t.offsetHeight; t.style.transform='translateX(0)'; t.style.opacity='1'; p.style.animation='dy-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1)'}, 300)">✖</button>
+    </div>
+
+    <div class="tab-header" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; border-bottom: 1px solid #8b6508; background: #1c1111;">
+        <button class="dy-tab-btn active" style="background: rgba(212, 175, 55, 0.15); color: #ffd700; border: none; padding: 12px 0px; font-size: 11px; cursor: pointer; font-weight: bold;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.dy-content').forEach(function(e){e.style.display='none'}); var t=p.querySelector('.content-1'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='dy-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(function(b){b.classList.remove('active');b.style.color='#eeddcc';b.style.background='transparent'}); this.classList.add('active'); this.style.color='#ffd700';this.style.background='rgba(212, 175, 55, 0.15)';">自动注入</button>
+        <button class="dy-tab-btn" style="background: transparent; color: #eeddcc; border: none; padding: 12px 0px; font-size: 11px; cursor: pointer; font-weight: bold;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.dy-content').forEach(function(e){e.style.display='none'}); var t=p.querySelector('.content-2'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='dy-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(function(b){b.classList.remove('active');b.style.color='#eeddcc';b.style.background='transparent'}); this.classList.add('active'); this.style.color='#ffd700';this.style.background='rgba(212, 175, 55, 0.15)';">单次指令</button>
+        <button class="dy-tab-btn" style="background: transparent; color: #eeddcc; border: none; padding: 12px 0px; font-size: 11px; cursor: pointer; font-weight: bold;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.dy-content').forEach(function(e){e.style.display='none'}); var t=p.querySelector('.content-3'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='dy-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(function(b){b.classList.remove('active');b.style.color='#eeddcc';b.style.background='transparent'}); this.classList.add('active'); this.style.color='#ffd700';this.style.background='rgba(212, 175, 55, 0.15)';">游玩指南</button>
+        <button class="dy-tab-btn" style="background: transparent; color: #eeddcc; border: none; padding: 12px 0px; font-size: 11px; cursor: pointer; font-weight: bold;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.dy-content').forEach(function(e){e.style.display='none'}); var t=p.querySelector('.content-4'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='dy-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(function(b){b.classList.remove('active');b.style.color='#eeddcc';b.style.background='transparent'}); this.classList.add('active'); this.style.color='#ffd700';this.style.background='rgba(212, 175, 55, 0.15)';">相关答疑</button>
+    </div>
+
+    <div class="dy-scroll" style="padding: 15px; color: #eeddcc; font-size: 12px; height: 380px; overflow-y: auto;">
+        
+        <div class="dy-content content-1" style="display: block;">
+            
+            <div id="dy-toggle-switch" class="dy-switch" onclick="event.stopPropagation(); this.classList.toggle('on'); window.dy_auto_on = this.classList.contains('on');">
+                <span class="dy-switch-text">发送时自动拼接注入</span>
+                <div class="dy-switch-track"><div class="dy-switch-ball"></div></div>
+            </div>
+
+            <div class="dy-inj-sec">
+                <span class="dy-inj-title">联动人物 (点击登场)</span><br>
+                <div class="dy-inj-btn" data-tip="春香楼异域清倌人" onclick="window.dy_toggle_inj(this, '莫尼')">莫尼</div>
+                <div class="dy-inj-btn" data-tip="万商汇厌世清音" onclick="window.dy_toggle_inj(this, '宁汐汐')">宁汐汐</div>
+                <div class="dy-inj-btn" data-tip="清欢阁情报茶娘" onclick="window.dy_toggle_inj(this, '苏米拉')">苏米拉</div>
+                <div class="dy-inj-btn" data-tip="太常寺笨蛋女司乐" onclick="window.dy_toggle_inj(this, '海月姬')">海月姬</div>
+                <div class="dy-inj-btn" data-tip="皇室绝色药鼎" onclick="window.dy_toggle_inj(this, '伏华')">伏华</div>
+                <div class="dy-inj-btn" data-tip="尚食局粘人掌膳" onclick="window.dy_toggle_inj(this, '宋墨')">宋墨</div>
+                <div class="dy-inj-btn" data-tip="柳林隐士夜魔女" onclick="window.dy_toggle_inj(this, '薇')">薇</div>
+            </div>
+
+            <div class="dy-inj-sec">
+                <span class="dy-inj-title">小助手</span><br>
+                <div class="dy-inj-btn" data-tip="召唤助手提出要求纠正错误" onclick="window.dy_toggle_inj(this, '【召唤助手星】')">召唤助手</div>
+            </div>
+
+            <div class="dy-inj-sec">
+                <span class="dy-inj-title">深层特化模式 (可多选)</span><br>
+                <div class="dy-inj-btn" data-tip="情感与身体的融合，通过细腻的情感描写与直白的生理反应结合，营造沉浸式体验" onclick="window.dy_toggle_inj(this, '【恋爱特化】')">恋爱特化</div>
+                <div class="dy-inj-btn" data-tip="还原性爱作为亲密互动的本质。需双方参与、沟通配合的身体对话" onclick="window.dy_toggle_inj(this, '【真实特化】')">真实特化</div>
+                <div class="dy-inj-btn" data-tip="还原初次体验的真实感受，着重刻画陌生感、紧张感以及从不适到接纳的转变" onclick="window.dy_toggle_inj(this, '【处女特化】')">处女特化</div>
+                <div class="dy-inj-btn" data-tip="激活女性身体细节描写模块。对各部位、体态、情动变化进行毫米级特写，展现而非告知" onclick="window.dy_toggle_inj(this, '【女体描写特化】')">女体描写特化</div>
+                <div class="dy-inj-btn" data-tip="专注性爱中语言刺激，对通过淫秽语言进行心理刺激和羞辱的技巧进行特写" onclick="window.dy_toggle_inj(this, '【淫语特化】')">淫语特化</div>
+                <div class="dy-inj-btn" data-tip="专注口腔与咽喉的描写，对最温暖的洞穴进行毫米级特写" onclick="window.dy_toggle_inj(this, '【口交特化】')">口交特化</div>
+                <div class="dy-inj-btn" data-tip="经典戏剧冲突，核心在于权力关系的倒置和认知的滞后性" onclick="window.dy_toggle_inj(this, '【追夫火葬场特化】')">追夫火葬场</div>
+                <div class="dy-inj-btn" data-tip="抛弃一切背景，直接进入极致淫靡的百合交互描写" onclick="window.dy_toggle_inj(this, '【女同特化】')">女同特化</div>
+            </div>
+
+            <div class="dy-inj-sec" style="background:transparent; border:none; padding:0;">
+                <span class="dy-inj-title">注入内容预览</span>
+                <div id="dy-preview-box" class="dy-preview-box">（暂无启用的特化指令）</div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top: 10px;">
+                <button class="dy-btn" onclick="window.dy_inj_pool=[]; document.querySelectorAll('.dy-inj-btn').forEach(function(b){b.classList.remove('active')}); window.dy_update_view();" style="flex:1; padding:10px; background:#110808; color:#8b6508; border:1px solid #3a2020; cursor:pointer; font-weight:bold;">一键清空</button>
+                <button class="dy-btn" onclick="document.getElementById('dy-toggle-switch').classList.add('on'); window.dy_auto_on=true;" style="flex:1; padding:10px; background:linear-gradient(135deg, #d4af37, #8b6508); color:#110808; border:1px solid #ffd700; cursor:pointer; font-weight:bold;">开启自动注入</button>
+            </div>
+        </div>
+
+        <div class="dy-content content-2" style="display: none;">
+            <div style="color: #ffd700; margin-bottom: 10px; font-weight: bold; border-left: 2px solid #d4af37; padding-left: 6px;">场景与调教指令 </div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 15px;">
+                
+                <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n停止生成剧情，然后照抄旧的总结内容，并在此基础上回顾已发生的剧情，总结目前为止我已接触到的所有事件和信息（严禁记录还未知晓的内容），确保完整清晰，不要省略或遗漏。\n【总结要求：以如下的纯文本格式整理（如无变化则不更新），严禁擅自使用任何html代码进行排版美化，严禁反复提及同一内容。以“总结完毕“为结尾。若模型违背任意一条，用户会掐死手上的小猫，并将小狗当成流星锤甩飞】\n总结格式：\n一、 剧情\n{{根据上文总结目前为止发生过的剧情事件，将每次回复中发生的剧情总结为1条，然后以①②③等序号按发生顺序罗列}}\n二、我的信息\n三、所有已知的女主角信息，不要精简、整合\n♣角色名：\n♣身份：\n♣已知外貌：\n{{对已展露出的角色外在的相貌、身材、衣着进行50字内的总结，未知部分则写其余尚未知晓}}\n♣已知性格：\n{{对已展露出的角色性格进行70字内的总结，未知部分则写其余尚未知晓}}\n♥ 已知语言风格：\n{{对已展露出的角色语言风格进行50字内的总结，未知部分则写其余尚未知晓}}\n♥ 已知性相关：\n{{对已获知的该角色突出性特征、性爱观念、性癖进行70字内的总结描述，未知部分则写其余尚未知晓}}\n★已知和我的关系：\n{{对已获知的该角色如何看我，及和我的关系70字内的客观总结，未知部分则写其余尚未知晓}}\n★已知近况：\n{{以旁观者角度对角色在输出内容中发生的事件进行200字内的总结，如没有更新则照抄之前总结的内容。}}'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="background: linear-gradient(135deg, #8b0000, #4a0000); color: #ffd700; border: 1px solid #ff4757; padding: 12px 5px; cursor: pointer; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(139,0,0,0.5);">总结模板</button>
+
+                <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n【切换至助手模式】：描述遇到的情况、想要的效果，AI告诉我为什么会这样，要如何调整。'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="background: linear-gradient(135deg, #2a1616, #160b0b); color: #eeddcc; border: 1px solid #8b6508; padding: 10px 5px; cursor: pointer;">拷打AI专用</button>
+
+                <div style="display: flex; gap: 8px;">
+                    <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n（请立刻严格按照设定中状态栏标签的要求，全面审查并修正所有字段。在下一次回复中，必须按顺序生成格式正确、内容完整的：状态栏与选项）'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="flex:1; background: linear-gradient(135deg, #2a1616, #160b0b); color: #eeddcc; border: 1px solid #8b6508; padding: 10px 5px; cursor: pointer;">状态栏修复</button>
+
+                    <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n（严禁使用逗号或省略号来刻意制造不必要的停顿，确保句子完整性与流畅度）'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="flex:1; background: linear-gradient(135deg, #2a1616, #160b0b); color: #eeddcc; border: 1px solid #8b6508; padding: 10px 5px; cursor: pointer;">逗号修复</button>
+                </div>
+            </div>
+
+            <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, '');} else {t.value = '';} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="width: 100%; background: transparent; color: #8b6508; border: 1px dashed #8b6508; padding: 8px; cursor: pointer; margin-bottom: 15px; font-weight: bold; letter-spacing: 2px;">✖ 彻底清空输入框</button>
+
+            <div style="border-top: 1px dashed #8b6508; padding-top: 12px;">
+                <div style="color: #ffd700; margin-bottom: 4px; font-weight: bold; border-left: 2px solid #d4af37; padding-left: 6px; font-size: 0.95em;">字数调控限制 (安全追加)</div>
+                <div style="color: #8b6508; font-size: 0.8em; margin-bottom: 10px; padding-left: 8px;">请根据当前所用模型自行选择追加</div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
+                    <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n（输出2800-3400字原创剧情，确保状态栏完整)'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="padding: 8px 4px; background: #1c1111; border: 1px solid #8b6508; cursor: pointer;">
+                        <div style="color: #ffd700; font-weight: bold;">2800 - 3400</div>
+                        <div style="color: #8b6508; font-size: 0.75em;">Gemini 系列适宜</div>
+                    </button>
+                    <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n（输出3800-4400字原创剧情，确保状态栏完整)'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="padding: 8px 4px; background: #1c1111; border: 1px solid #8b6508; cursor: pointer;">
+                        <div style="color: #ffd700; font-weight: bold;">3800 - 4400</div>
+                        <div style="color: #8b6508; font-size: 0.75em;">Grok 适宜</div>
+                    </button>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                    <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n（输出1600字原创剧情，确保状态栏完整)'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="padding: 8px 4px; background: #1c1111; border: 1px solid #8b6508; cursor: pointer;">
+                        <div style="color: #ffd700; font-weight: bold;">1600 左右</div>
+                        <div style="color: #8b6508; font-size: 0.75em;">DeepSeek 适宜</div>
+                    </button>
+                    <button class="dy-btn" onclick="var t=document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea'); if(t){ var txt = '\n（输出4500-5000字原创剧情，确保状态栏完整)'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set){ns.set.call(t, t.value + txt);} else {t.value += txt;} t.dispatchEvent(new Event('input', {bubbles:true})); }" style="padding: 8px 4px; background: #1c1111; border: 1px solid #8b6508; cursor: pointer;">
+                        <div style="color: #ffd700; font-weight: bold;">4500 - 5000</div>
+                        <div style="color: #8b6508; font-size: 0.75em;">Claude 适宜</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dy-content content-3" style="display: none;">
+            <div style="color: #ffd700; margin-bottom: 6px; font-weight: bold; border-left: 2px solid #d4af37; padding-left: 6px;">温馨提醒</div>
+            <div style="background:rgba(212, 175, 55, 0.1); color:#d4af37; padding:8px; border: 1px solid #8b6508; border-radius:4px; margin-bottom:12px;">每次进入本卡先按右上角刷新，养成好习惯。</div>
+            <div style="color: #ffd700; margin-bottom: 6px; font-weight: bold; border-left: 2px solid #d4af37; padding-left: 6px;">关于游玩</div>
+            <div style="color: #ccc; line-height: 1.6; margin-bottom: 12px; font-size: 13px;">1. 可以在【自动注入】中勾选你喜欢的特化标签。<br>2. 建议每隔6-8轮去【单次指令】里点一下总结模板，防止失忆。<br>3. 遇到结构错误、文言文、乱码记得及时回溯。<br>4. 如果状态栏错乱，请回溯至失效前重新生成。<br>5. 推荐使用:<br><span style="color:#ffd700; font-weight:bold;">最推荐: Claude 4.6 Sonnet / Opus</span><br><span style="color:#d4af37;">次推荐: Gemini 3.1 Pro</span></div>
+        </div>
+
+        <div class="dy-content content-4" style="display: none;">
+            <div style="color: #ffd700; margin-bottom: 8px; font-weight: bold; border-left: 2px solid #d4af37; padding-left: 6px;">Q & A (点击展开)</div>
+            <details><summary>Q1: AI回复出问题！</summary><div class="qa-answer">回复截断、空白回复等是API普遍现象。若被秒打回，可能是触发了审核。</div></details>
+            <details><summary>Q2: 状态栏美化失效？</summary><div class="qa-answer">AI没正确输出标签格式，建议直接回溯。也可以在单次指令里点【状态栏修复】拷打它。</div></details>
+            <details><summary>Q3: 为什么有的按钮点不了？</summary><div class="qa-answer">这是纯前端注入逻辑，如果卡住了，请刷新页面重新进卡即可恢复。</div></details>
+            <details><summary>Q4: 对话太长剧情乱了？</summary><div class="qa-answer">这是大模型的通病，请使用【终极总结模板】提取记忆并开新档。</div></details>
+        </div>
+
+    </div>
+</div>
+</div>

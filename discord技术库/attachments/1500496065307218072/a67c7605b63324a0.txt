@@ -1,0 +1,30 @@
+<style>
+.xr-root{max-width:520px;margin:0 auto;font-family:'Microsoft YaHei',serif;color:/*【填入主文字颜色】*/;padding:8px}
+.xr-shell{background:linear-gradient(175deg,/*【填入背景渐变色1】*/,/*【填入背景渐变色2】*/,/*【填入背景渐变色3】*/);border:2px solid /*【填入边框颜色】*/;border-radius:16px;padding:16px 14px;box-shadow:0 4px 20px rgba(/*【填入阴影RGBA】*/);position:relative;overflow:hidden}
+.xr-shell::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:url('/*【此处可填入装饰纹理SVG或删除整行】*/') repeat;pointer-events:none;z-index:0}
+.xr-content{position:relative;z-index:1}
+.xr-title{text-align:center;font-size:20px;font-weight:bold;color:/*【填入标题颜色】*/;letter-spacing:6px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid rgba(/*【填入标题下划线RGBA】*/)}
+.xr-card{background:/*【填入卡片背景色】*/;border:1px solid rgba(/*【填入卡片边框RGBA】*/);border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:0 2px 6px rgba(/*【填入卡片阴影RGBA】*/)}
+.xr-card-title{font-size:11px;color:/*【填入卡片标题颜色】*/;font-weight:bold;letter-spacing:2px;margin-bottom:8px;padding-left:6px;border-left:3px solid /*【填入标题左边框颜色】*/}
+.xr-row{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap;align-items:center}
+.xr-input{flex:1;min-width:100px;padding:8px 10px;background:/*【填入输入框背景色】*/;border:1px solid /*【填入输入框边框色】*/;border-radius:8px;font-size:10px;color:/*【填入输入框文字色】*/;outline:none;transition:0.2s;font-family:'Microsoft YaHei',serif}
+.xr-input:focus{border-color:/*【填入输入框聚焦边框色】*/;box-shadow:0 0 8px rgba(/*【填入输入框聚焦阴影RGBA】*/)}
+.xr-btn{display:inline-block;padding:8px 16px;background:linear-gradient(135deg,/*【填入按钮渐变色1】*/,/*【填入按钮渐变色2】*/);border:1px solid /*【填入按钮边框色】*/;border-radius:8px;font-size:10px;color:/*【填入按钮文字色】*/;cursor:pointer;transition:0.2s;font-weight:bold;letter-spacing:2px;text-align:center;white-space:nowrap}
+.xr-btn:hover{background:linear-gradient(135deg,/*【填入按钮悬停渐变色1】*/,/*【填入按钮悬停渐变色2】*/);color:/*【填入按钮悬停文字色】*/;box-shadow:0 2px 8px rgba(/*【填入按钮悬停阴影RGBA】*/)}
+.xr-tag{display:inline-block;padding:6px 12px;background:/*【填入标签背景色】*/;border:1px solid /*【填入标签边框色】*/;border-radius:20px;font-size:9px;color:/*【填入标签文字色】*/;cursor:pointer;transition:0.2s;margin:2px}
+.xr-tag:hover{background:/*【填入标签悬停背景色】*/;border-color:/*【填入标签悬停边框色】*/;color:/*【填入标签悬停文字色】*/}
+.xr-tag.active{background:/*【填入标签激活背景色】*/;border-color:/*【填入标签激活边框色】*/;color:/*【填入标签激活文字色】*/;font-weight:bold}
+.xr-fold{display:none;margin-top:6px;padding:8px;background:/*【填入折叠区背景色】*/;border-radius:8px}
+.xr-slider-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.xr-slider-label{font-size:9px;color:/*【填入滑块标签色】*/;min-width:50px;text-align:right}
+.xr-slider{flex:1;height:6px;-webkit-appearance:none;background:linear-gradient(90deg,/*【填入滑块底色1】*/,/*【填入滑块底色2】*/);border-radius:3px;outline:none;min-width:80px}
+.xr-slider::-webkit-slider-thumb{width:18px;height:18px;background:/*【填入滑块拖拽点颜色】*/;border-radius:50%;cursor:pointer;border:2px solid /*【填入滑块拖拽点边框色】*/}
+.xr-slider-val{font-size:9px;color:/*【填入滑块数值颜色】*/;font-weight:bold;min-width:40px}
+.xr-slider-desc{font-size:8px;color:/*【填入滑块描述颜色】*/;font-style:italic;text-align:center;margin-top:2px;width:100%}
+.xr-scroll{max-height:250px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:/*【填入滚动条色】*/ transparent}
+.xr-scroll::-webkit-scrollbar{width:4px}
+.xr-scroll::-webkit-scrollbar-thumb{background:/*【填入滚动条色】*/;border-radius:2px}
+</style>
+<div class="xr-root" onclick="event.stopPropagation()">
+<div class="xr-shell"><div class="xr-content">
+<div class="xr-title">/*【此处填入面板标题，如：逍遥仙途】*/</div>

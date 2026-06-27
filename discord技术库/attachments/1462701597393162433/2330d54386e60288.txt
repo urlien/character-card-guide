@@ -1,0 +1,46 @@
+```html
+<div class="button-container" onclick="event.stopPropagation();const btn=event.target.closest('.action-button');if(btn){const textToAdd=btn.getAttribute('data-t');if(textToAdd){let container=document.querySelector('.chatMsgTextarea');if(container){let inputField=container.querySelector('textarea')||container;if(btn.classList.contains('selected')){inputField.value=inputField.value.replace('\n'+textToAdd,'').replace(textToAdd,'');btn.classList.remove('selected');}else{document.querySelectorAll('.button-container .action-button.selected').forEach(b=>{const t=b.getAttribute('data-t');inputField.value=inputField.value.replace('\n'+t,'').replace(t,'');b.classList.remove('selected');});const current=inputField.value;inputField.value=current?current+'\n'+textToAdd:textToAdd;btn.classList.add('selected');}inputField.dispatchEvent(new Event('input',{bubbles:true}));}}}">
+<div class="action-button" data-t="$2">$1</div>
+<div class="action-button" data-t="$4">$3</div>
+<div class="action-button" data-t="$6">$5</div>
+</div>
+<style>
+.button-container {
+width: 100%;
+display: flex;
+flex-direction: row;
+margin-bottom: 30px;
+}
+.action-button {
+width: 100%;
+padding: 18px 25px;
+background-color: #222836;
+border: 2px solid #2D3748;
+border-radius: 10px;
+color: #E2E8F0;
+font-size: 18px;
+font-weight: 600;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+letter-spacing: 1px;
+position: relative;
+overflow: hidden;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.action-button:hover {
+background-color: #2A4365;
+border-color: #4C51BF;
+transform: translateY(-3px);
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.action-button:active {
+transform: translateY(-1px);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.action-button.selected {
+background-color: #2A4365;
+border-color: #4C51BF;
+}
+</style>
+```

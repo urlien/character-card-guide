@@ -1,0 +1,174 @@
+<!-- 侧边灵感重组唤醒按钮 (位置: top 63%，宽度: 26px) -->
+<div class="teapot-rand-sidebar" onclick="event.stopPropagation()">
+    <!-- 唤醒时自动触发一次混沌重组 -->
+    <div class="teapot-rand-btn" onclick="var m=document.getElementById('hu-rand-modal');m.style.display='flex';var u=document.getElementById('hu-r-updater');if(u)u.click();">重组</div>
+</div>
+
+<!-- 隐藏的重组碎片库：纯 DOM 存储，15个高反差事件用于打散缝合 -->
+<div id="hu-r-data" style="display:none;">
+    <div data-tag="[ 艺人日常行程 ]" data-title="粉丝接机狂潮" data-quote="站姐的镜头快怼到脸上了，注意表情管理！" data-desc="机场到达大厅被粉丝围得水泄不通，安保人员正努力维持秩序。是一次极佳的固粉机会，但也暗藏踩踏风险。"></div>
+    <div data-tag="[ S级公关危机 ]" data-title="地下恋情疑云" data-quote="那张同框照片真的是角度问题！我们只是剧组的普通同事！" data-desc="狗仔八卦号爆出极其暧昧的错位抓拍图，瞬间登顶热搜。唯粉大面积破防，商业代言方开始施压要求出具澄清声明。"></div>
+    <div data-tag="[ SS级生死存亡 ]" data-title="黑公关闪击战" data-quote="热搜榜前十，有六个是我们的黑热搜，对家这是要下死手了。" data-desc="竞争对手娱乐公司投入海量资金购买水军，全网散布半真半假的黑料。星尘娱乐的股价应声下跌，企划面临生死存亡。"></div>
+    <div data-tag="[ 突发后勤状况 ]" data-title="练习室意外停电" data-quote="怎么在这个节骨眼上停电了？不要停，跟着我的节拍继续练！" data-desc="备战打歌舞台期间，大楼突发局部停电。黑暗中只剩下微弱的手机手电筒光源，考验着团队的默契与抗压能力。"></div>
+    <div data-tag="[ 桃色绯闻 ]" data-title="消失的监控录像" data-quote="后台更衣室的那个监控死角，昨晚停留了整整四十分钟。" data-desc="八卦媒体收到匿名爆料，直指两名人气偶像在拼盘演唱会后台的监控死角独处。虽然没有直接画面流出，但双方团队在事后的反常沉默引发了全网疯狂的遐想与扒皮。"></div>
+    <div data-tag="[ 舞台设备调试 ]" data-title="磁悬浮舞台失帧" data-quote="告诉技术部，电音BPM超过140的时候，舞台震动频率不能乱！" data-desc="星洲城的霓境浮空舞台正在进行日常检修。由于昨晚的极光狂欢夜负荷过大，磁悬浮模块出现轻微延迟失帧，需要紧急协调技术团队重新校准。"></div>
+    <div data-tag="[ 大型演出事故 ]" data-title="极光狂欢夜的停电" data-quote="整个海港的无人机全部失控坠海，全城的灯光都灭了！" data-desc="星洲城一年一度的盛典“极光狂欢夜”遭遇史无前例的大规模黑客攻击。电网系统崩溃，数以万计的发光无人机失控坠落，数万名粉丝被困在黑暗的游轮与海港中。"></div>
+    <div data-tag="[ 极限诱惑 ]" data-title="午夜香水大片" data-quote="导演要求再靠近一点，水面要沾湿衬衫的下摆，眼神要表现出绝对的占有欲。" data-desc="为了拿下一支顶级奢牌的成人香水代言，偶像被迫在拍摄现场挑战突破尺度的湿身互动企划。荷尔蒙爆棚的拍摄花絮意外泄露，引发了唯粉与CP粉的大战。"></div>
+    <div data-tag="[ 商业模式颠覆 ]" data-title="虚拟数字人入侵" data-quote="没有绯闻、不需要休息、永远完美……我们干脆把星洲唱片大厦的数据直接全息化吧。" data-desc="一家神秘的科技资本强势入局，推出了一批搭载顶级AI的虚拟偶像组合。他们在星律大剧院的首次全息投影秀展现了碾压真人的视听效果，真人偶像产业面临降维打击。"></div>
+    <div data-cat="char" data-tag="[ 狂热应援反噬 ]" data-title="万众齐鸣的狂热" data-quote="应援声浪太大了，他耳返里的伴奏完全被盖住，导致了严重的跑调！" data-desc="在星律集团举办的“万众齐鸣日”上，由于现场粉丝的应援声势过于浩大，造成了强烈的声学干扰。一位以实力著称的主唱因此出现重大舞台车祸，遭遇全网群嘲。"></div>
+    <div data-tag="[ 疯狂私生 ]" data-title="酒店床底的呼吸声" data-quote="我确定门已经反锁了，但我好像听到……床底下有别人的呼吸声。" data-desc="海外巡演入住星级酒店期间，艺人在极度疲惫的情况下察觉到房间内有异样。安保团队介入后，在套房隐秘角落发现了潜伏多时的极端私生饭，造成了严重的心理创伤。"></div>
+    <div data-tag="[ 底层生态抗争 ]" data-title="景明镇的独立宣言" data-quote="偶像不该是流水线上的工业商品！我们要拿回属于人类的温度和治愈！" data-desc="以琉光偶像事务所为首的景明镇生态圈，公开抵制明昼城星律集团的“零延迟工业化”并购案。全镇居民和粉丝自发组成人墙，保护星空露天剧场免受推土机破坏。"></div>
+    <div data-tag="[ 暧昧营业 ]" data-title="擦枪走火的双人舞" data-quote="彩排时明明没有这个抚摸脸颊的动作……他是故意的。" data-desc="在星律大剧院的特别合作舞台上，两位平时主打“死敌”人设的偶像，在激烈的舞蹈编排中意外发生了极度亲密的肢体接触与肌肤相亲。全场尖叫失控，热度瞬间爆表。"></div>
+    <div data-tag="[ 隐私黑产 ]" data-title="被明码标价的私生活" data-quote="暗网上有人在拍卖那个被偷走的工作手机，里面有未公开的私信和照片。" data-desc="某位顶流的备用手机在化妆间不翼而飞。几小时后，海外暗网论坛出现了声称包含该偶像“绝对私密社交记录”的数据包拍卖。公司必须决定是支付天价赎金还是报警。"></div>
+    <div data-tag="[ 世纪大和解 ]" data-title="双塔联合企划" data-quote="雾镜的高冷与星律的工业……这两家水火不容的巨头，居然宣布推出联合限定团？" data-desc="在全球娱乐圈面临整体下行周期的巨大压力下，明昼城的两大死敌——雾镜娱乐与星律集团，史无前例地宣布搁置争议，从双方挑选最顶尖的练习生组成联合限定团“破晓双星”，震撼全球。"></div>
+</div>
+
+<!-- 核心重组处理器：每一次点击，都独立抽取标题、台词、描述进行缝合 -->
+<div id="hu-r-updater" style="display:none;" onclick="var m=document.getElementById('hu-rand-modal');var all=document.getElementById('hu-r-data').children;var L=all.length;if(L!=0){m.querySelector('.r-tag').innerText=all[Math.floor(Math.random()*L)].getAttribute('data-tag');m.querySelector('.r-title').innerText=all[Math.floor(Math.random()*L)].getAttribute('data-title');m.querySelector('.r-quote').innerText=all[Math.floor(Math.random()*L)].getAttribute('data-quote');m.querySelector('.r-desc').innerText=all[Math.floor(Math.random()*L)].getAttribute('data-desc');}"></div>
+
+<!-- 全局重组终端模态框 -->
+<div id="hu-rand-modal" data-theme="warm" style="display:none;" onclick="event.stopPropagation()">
+    <div class="hu-r-container">
+        
+        <!-- 顶栏与主题切换按钮 -->
+        <div class="hu-r-header">
+            <div style="flex:1;"></div>
+            <div class="hu-r-header-title">灵感重组终端</div>
+            <div style="flex:1; display:flex; justify-content:flex-end; gap:8px;">
+                <div class="hu-r-theme-btn" onclick="var m=document.getElementById('hu-rand-modal');var t=m.getAttribute('data-theme');if(t=='warm'){m.setAttribute('data-theme','dark');this.innerText='暗黑';}else{m.setAttribute('data-theme','warm');this.innerText='暖杏';}">暖杏</div>
+                <div class="hu-r-close" onclick="document.getElementById('hu-rand-modal').style.display='none'">✖</div>
+            </div>
+        </div>
+
+        <!-- 焦点档案区 (移除了分类Nav，保持绝对清爽) -->
+        <div class="hu-r-body">
+            
+            <div class="hu-r-archive">
+                <div class="r-tag">[ 混沌重组 ]</div>
+                <div class="r-title">系统连接中</div>
+                <div class="r-divider"></div>
+                <div class="r-counter">【 无序重组模式激活 】</div>
+            </div>
+            
+            <!-- 情报简报模块 -->
+            <div class="hu-r-intel">
+                <div class="r-quote-wrapper">
+                    <div class="r-quote">启动随机碎片缝合...</div>
+                </div>
+                <div class="r-desc">正在重组星尘娱乐内网异常数据，请稍候...</div>
+            </div>
+        </div>
+
+        <!-- 底部执行区 -->
+        <div class="hu-r-footer">
+            <div class="hu-r-btn btn-roll" onclick="document.getElementById('hu-r-updater').click();">进行混沌重组</div>
+            
+            <!-- 发送按钮：优化格式 -->
+            <div class="hu-r-btn btn-apply" onclick="var m=document.getElementById('hu-rand-modal');var a=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(a){var txt='触发事件『'+m.querySelector('.r-title').innerText+'』\n【详细状况】：'+m.querySelector('.r-desc').innerText+'\n\n立即在两轮内合理的引入';a.value=txt;a.dispatchEvent(new Event('input'));}m.style.display='none';">下达应对预案</div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+/* CSS 主题变量体系 */
+#hu-rand-modal[data-theme="warm"] {
+    --r-bg: #FDF6F0; --r-card: #FFFCFA; --r-border: #D4A5A5; --r-border-strong: #C27D7D; 
+    --r-text: #594D46; --r-text-light: #A68D81; --r-header-text: #FFF; --r-radius: 12px; 
+    --r-shadow: rgba(212, 165, 165, 0.4); --r-quote-bg: rgba(253, 246, 240, 1);
+}
+#hu-rand-modal[data-theme="dark"] {
+    --r-bg: #000; --r-card: #0A0A0A; --r-border: #ff3333; --r-border-strong: #ff3333; 
+    --r-text: #EAEAEA; --r-text-light: #888; --r-header-text: #000; --r-radius: 4px; 
+    --r-shadow: rgba(255, 51, 51, 0.4); --r-quote-bg: rgba(20, 20, 20, 1);
+}
+
+/* 侧边唤醒按钮 (定位: top 63%，宽度 26px) */
+.teapot-rand-sidebar { position: fixed; left: 0; top: 63%; transform: translateY(-50%); z-index: 9999; }
+.teapot-rand-btn {
+    box-sizing: border-box; width: 26px; padding: 15px 4px; 
+    background: #D4A5A5; border: 1.5px solid #594D46; border-left: none; 
+    border-radius: 0 8px 8px 0; color: #FFF; cursor: pointer; 
+    writing-mode: vertical-rl; font-size: 14px; letter-spacing: 3px; 
+    text-align: center; box-shadow: 2px 0 10px rgba(212, 165, 165, 0.4); 
+    transition: all 0.3s; font-weight: bold;
+}
+.teapot-rand-btn:hover { background: #C27D7D; width: 32px; }
+
+/* 模态框全屏遮罩 */
+#hu-rand-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6); z-index: 10000;
+    display: flex; justify-content: center; align-items: center; backdrop-filter: blur(2px);
+    transition: background 0.3s;
+}
+
+/* 核心容器 */
+.hu-r-container {
+    width: 90vw; max-width: 500px; 
+    background: var(--r-bg); border: 2px solid var(--r-border); border-radius: var(--r-radius);
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 0 20px var(--r-shadow); transition: all 0.3s ease;
+}
+
+/* 顶栏与控制按钮 */
+.hu-r-header {
+    background: var(--r-border); color: var(--r-header-text); padding: 8px 15px;
+    display: flex; align-items: center; justify-content: space-between; transition: all 0.3s;
+}
+.hu-r-header-title { font-weight: 900; font-size: 16px; letter-spacing: 2px; }
+.hu-r-theme-btn, .hu-r-close {
+    background: var(--r-card); color: var(--r-border-strong); height: 26px; 
+    border-radius: var(--r-radius); text-align: center; line-height: 24px; 
+    font-size: 12px; cursor: pointer; border: 1px solid var(--r-card); font-weight: bold;
+    padding: 0 10px; transition: all 0.2s; box-sizing: border-box;
+}
+.hu-r-close { padding: 0; width: 26px; font-size: 14px; }
+.hu-r-theme-btn:hover, .hu-r-close:hover { background: var(--r-border-strong); color: var(--r-card); }
+
+/* 主体内容区 */
+.hu-r-body { padding: 35px 20px; display: flex; flex-direction: column; gap: 25px; flex: 1; }
+
+/* 档案标题排版 */
+.hu-r-archive { flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.r-tag {
+    font-size: 12px; font-weight: bold; color: var(--r-border-strong);
+    border: 1px solid var(--r-border-strong); padding: 2px 8px; border-radius: 4px; letter-spacing: 1px;
+}
+.r-title { font-size: 26px; font-weight: 900; color: var(--r-text); letter-spacing: 2px; line-height: 1.2; }
+.r-divider { width: 40px; height: 3px; background: var(--r-border-strong); border-radius: 2px; }
+/* 编号指示器 */
+.r-counter { font-size: 13px; color: var(--r-text-light); margin-top: 5px; font-weight: 900; letter-spacing: 2px; font-family: monospace; }
+
+/* 情报简报区 */
+.hu-r-intel { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+.r-quote-wrapper { position: relative; margin-bottom: 5px; }
+.r-quote {
+    background: var(--r-quote-bg); color: var(--r-text); font-weight: bold; font-size: 14px;
+    padding: 15px; border: 1.5px solid var(--r-border); border-radius: var(--r-radius);
+    line-height: 1.5; font-style: italic; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.r-quote::after {
+    content: ''; position: absolute; bottom: -8px; left: 20px;
+    border-width: 8px 8px 0; border-style: solid; border-color: var(--r-border) transparent transparent transparent;
+}
+.r-desc {
+    background: var(--r-card); color: var(--r-text); font-size: 13px; line-height: 1.8;
+    padding: 15px; border-radius: var(--r-radius); text-align: justify;
+    border-left: 4px solid var(--r-border-strong); opacity: 0.95;
+}
+
+/* 底部执行区 */
+.hu-r-footer {
+    display: flex; gap: 15px; padding: 15px 20px 20px; background: var(--r-card);
+    border-top: 1px dashed var(--r-border);
+}
+.hu-r-btn {
+    flex: 1; text-align: center; padding: 12px 0; font-size: 14px; font-weight: bold;
+    border-radius: var(--r-radius); cursor: pointer; transition: all 0.2s; border: 2px solid var(--r-border-strong);
+}
+.btn-roll { background: var(--r-bg); color: var(--r-border-strong); }
+.btn-roll:active { background: var(--r-border-strong); color: var(--r-bg); }
+.btn-apply { background: var(--r-border-strong); color: var(--r-bg); box-shadow: 0 4px 10px var(--r-shadow); }
+.btn-apply:active { transform: translateY(-2px); box-shadow: 0 6px 15px var(--r-shadow); }
+</style>

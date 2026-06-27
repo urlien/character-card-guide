@@ -1,0 +1,1024 @@
+AI监听创建提示词文档
+====================
+
+用途
+----
+你需要帮我基于已有的 ButtonListenModule 监听管理器，编写一段新的监听创建代码。
+
+这套代码运行在 AI 聊天平台页面中，可以监听按钮、图片、文字、快捷键或其他 DOM 事件，并在命中后执行指定功能。
+
+它可以用于页面美化、按钮增强、状态栏生成、输入框注入、主题切换、自动点击、快捷键操作、阻止原网页按钮行为、临时监听、销毁监听等场景。
+
+注意：你只需要写“监听创建代码”，不要重复输出监听管理器本体，除非我明确要求。
+
+基础接口
+--------
+使用以下接口创建监听：
+
+
+ButtonListenModule.listen({
+    name: '',
+    eventName: '',
+    eventNames: null,
+    customMatch: null,
+    match: null,
+    selector: '',
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    preventDefault: false,
+    stopPropagation: false,
+    stopImmediatePropagation: false,
+    stopOriginalEvent: false,
+
+    onTrigger: function (context) {
+        // 命中后执行逻辑
+    }
+});
+
+
+必须假设页面中已经存在：
+
+
+window.ButtonListenModule
+
+
+如果需要完整代码，可以用：
+
+
+<script>
+ButtonListenModule.listen({
+    // 配置
+});
+</script>
+
+
+配置项说明
+----------
+name
+监听器名称。用于日志和区分监听器。建议填写简短英文或拼音名。
+
+例如：
+
+name: 'listen-send-button'
+name: 'theme-toggle'
+name: 'inject-text'
+
+
+eventName
+单个事件名。例如：
+
+eventName: 'click'
+eventName: 'pointerup'
+eventName: 'keydown'
+eventName: 'keyup'
+
+
+可留空。留空时，管理器默认：
+- 支持 PointerEvent：监听 pointerup
+- 不支持 PointerEvent：监听 touchend 和 click
+
+eventNames
+多个事件名数组。例如：
+
+eventNames: ['click', 'touchend']
+eventNames: ['mousedown', 'mouseup']
+eventNames: ['keydown', 'keyup']
+
+
+优先级高于 eventName。如果 eventNames 有有效内容，会忽略 eventName。
+
+customMatch
+自定义匹配函数。适合快捷键、复杂条件、动态判断，或无法用普通规则判断的场景。
+
+格式：
+
+customMatch: function (context) {
+    return true;
+}
+
+
+返回 true 表示命中。
+返回 false 表示不命中，并继续检测 match 或 selector。
+
+customMatch 的 context 包含：
+
+{
+    event: 原始事件对象,
+    eventType: 事件类型,
+    target: 最初触发事件的元素,
+    currentElement: 当前正在向上匹配的元素,
+    listener: 当前监听器配置
+}
+
+
+示例：
+
+customMatch: function (context) {
+    return context.event.key === 'Escape';
+}
+
+
+match
+对象式元素匹配规则。适合匹配按钮、图片、文本、属性等。
+
+格式：
+
+match: {
+    tagName: '',
+    id: '',
+    classIncludes: '',
+    textIncludes: '',
+    srcIncludes: '',
+    styleIncludes: '',
+    attrName: '',
+    attrValueIncludes: ''
+}
+
+
+字段说明：
+
+tagName
+匹配标签名，不区分大小写。例如 img、button、div、span、textarea、input。
+
+id
+匹配元素 id，必须完全相同。
+
+classIncludes
+匹配 class 字符串是否包含指定内容。
+
+textIncludes
+匹配元素文本内容是否包含指定文字。
+
+srcIncludes
+匹配元素 src 属性是否包含指定内容，常用于图片按钮。
+
+styleIncludes
+匹配元素内联 style 属性是否包含指定内容。
+
+attrName
+匹配元素是否存在某个属性。
+
+attrValueIncludes
+匹配指定属性值是否包含某内容，必须配合 attrName 使用。
+
+selector
+CSS 选择器匹配。例如：
+
+selector: '.send-button'
+selector: '#submit'
+selector: 'img[src*="ico_send"]'
+selector: 'button[data-type*="send"]'
+selector: 'textarea[placeholder*="输入"]'
+
+
+如果使用 selector，建议将 match 设置为 null 或 {}，避免被 match 优先级影响。
+
+once
+是否只触发一次。
+
+once: true
+once: false
+
+
+true 表示命中一次后停用监听器。
+false 表示可以重复触发。
+
+throttle
+节流时间，单位毫秒。
+
+throttle: 300
+
+
+表示 300 毫秒内最多触发一次。
+
+可设置为：
+
+throttle: 0
+
+
+表示不限制频率。
+
+debug
+是否输出调试日志。
+
+debug: true
+debug: false
+
+
+调试时建议 true，稳定后可改为 false。
+
+preventDefault
+是否阻止事件默认行为。
+
+preventDefault: true
+preventDefault: false
+
+
+作用等价于：
+
+context.event.preventDefault();
+
+
+常见用途：
+- 阻止 a 标签跳转
+- 阻止表单提交
+- 阻止某些按键触发浏览器默认行为
+- 阻止按钮原本的默认动作
+
+注意：
+preventDefault 只阻止默认行为，不阻止事件继续传播。
+
+stopPropagation
+是否阻止事件继续传播。
+
+stopPropagation: true
+stopPropagation: false
+
+
+作用等价于：
+
+context.event.stopPropagation();
+
+
+常见用途：
+- 阻止事件继续冒泡到父级元素
+- 阻止事件继续沿事件流传播
+- 避免外层容器收到同一次点击事件
+
+注意：
+stopPropagation 不一定会阻止当前元素上其他已注册的同类型监听器。
+
+stopImmediatePropagation
+是否立即阻止事件继续传播，并阻止当前事件后续监听器继续执行。
+
+stopImmediatePropagation: true
+stopImmediatePropagation: false
+
+
+作用等价于：
+
+context.event.stopImmediatePropagation();
+
+
+常见用途：
+- 更强力地拦截原网页已有监听
+- 防止同一事件上的其他监听器继续执行
+- 需要完全接管某个点击、按键或触摸行为
+
+注意：
+这是比 stopPropagation 更强的阻止方式。
+
+stopOriginalEvent
+是否一键阻止原事件。
+
+stopOriginalEvent: true
+stopOriginalEvent: false
+
+
+当 stopOriginalEvent 为 true 时，等价于同时执行：
+
+context.event.preventDefault();
+context.event.stopPropagation();
+context.event.stopImmediatePropagation();
+
+
+常见用途：
+- 完全接管按钮点击
+- 阻止原网页按钮逻辑
+- 阻止链接跳转和后续监听
+- 自己执行替代逻辑
+
+如果只想简单粗暴地拦截原网页原本行为，优先使用：
+
+stopOriginalEvent: true
+
+
+onTrigger
+命中监听后执行的函数。
+
+格式：
+
+onTrigger: function (context) {
+    // 写功能逻辑
+}
+
+
+onTrigger 的 context 包含：
+
+{
+    event: 原始事件对象,
+    eventType: 事件类型,
+    target: 最初触发事件的元素,
+    matchedElement: 最终匹配成功的元素,
+    listener: 当前监听器配置,
+    stopOriginalEvent: 阻止原事件的函数,
+    preventDefault: 阻止默认行为的函数,
+    stopPropagation: 阻止传播的函数,
+    stopImmediatePropagation: 阻止后续监听的函数
+}
+
+
+可在 onTrigger 内手动调用：
+
+context.preventDefault();
+context.stopPropagation();
+context.stopImmediatePropagation();
+context.stopOriginalEvent();
+
+
+当需要根据条件决定是否阻止事件时，适合在 onTrigger 内手动调用。
+
+例如：
+
+onTrigger: function (context) {
+    if (someCondition) {
+        context.stopOriginalEvent();
+    }
+
+    // 执行自定义逻辑
+}
+
+
+匹配和检测优先级
+----------------
+监听管理器的判断顺序如下：
+
+1. 判断事件类型是否在当前监听器的 eventNames 中。
+2. 从 event.target 开始，向父级元素逐层查找，直到 document。
+3. 对每个元素先执行 customMatch。
+4. 如果 customMatch 返回 true，直接命中。
+5. 如果 customMatch 没有返回 true，并且 match 存在且有字段，则检测 match。
+6. 如果 match 存在但检测失败，不会继续检测 selector。
+7. 只有在 match 不存在或为空对象时，才检测 selector。
+8. 命中后再检查 throttle 节流。
+9. 节流通过后，根据配置执行 preventDefault / stopPropagation / stopImmediatePropagation / stopOriginalEvent。
+10. 执行 onTrigger。
+11. 如果 once: true，执行后停用该监听器。
+
+重要注意：
+- customMatch 的优先级最高。
+- match 的优先级高于 selector。
+- 如果同时写了 match 和 selector，通常只有 match 会生效。
+- 不建议同时写复杂 customMatch、match 和 selector，除非明确知道优先级。
+- 如果只想用 CSS 选择器，应该让 match 为 null 或 {}。
+- 如果 customMatch 返回 false，不会阻止后续 match / selector 检测。
+- 如果 customMatch 返回 true，不再检测 match / selector。
+- stopOriginalEvent 会优先于单独的 preventDefault、stopPropagation、stopImmediatePropagation。
+
+留空规则
+--------
+可以留空：
+- name 可留空，但不推荐。
+- eventName 可留空。
+- eventNames 可为 null 或空数组。
+- customMatch 可为 null。
+- match 可为 null 或 {}。
+- selector 可为空字符串。
+- onTrigger 可为 null，但不会执行功能。
+
+不能全部无效：
+- customMatch
+- match
+- selector
+
+这三者至少要有一个有效，否则监听器不会命中任何目标。
+
+事件默认规则
+------------
+如果没有提供 eventName 和有效的 eventNames：
+
+支持 PointerEvent 的环境默认：
+
+eventNames: ['pointerup']
+
+
+不支持 PointerEvent 的环境默认：
+
+eventNames: ['touchend', 'click']
+
+
+移动端重复点击处理
+------------------
+管理器会记录最近的 touchend 时间。
+
+如果 touchend 后 700ms 内又触发 click，会自动忽略这个重复 click。
+
+这用于避免移动端一次点击触发两次逻辑。
+
+事件阻止规则
+------------
+如果需要阻止原网页按钮、链接、快捷键或其他 DOM 行为，可以使用以下配置：
+
+只阻止默认行为：
+
+preventDefault: true
+
+
+阻止事件传播：
+
+stopPropagation: true
+
+
+阻止后续监听器：
+
+stopImmediatePropagation: true
+
+
+完全阻止原事件：
+
+stopOriginalEvent: true
+
+
+推荐用法：
+
+1. 只是阻止链接跳转、表单提交、按键默认行为：
+   使用 preventDefault: true
+
+2. 不希望父级元素收到事件：
+   使用 stopPropagation: true
+
+3. 不希望同一事件上的其他监听继续执行：
+   使用 stopImmediatePropagation: true
+
+4. 想完全接管原按钮或原网页行为：
+   使用 stopOriginalEvent: true
+
+也可以在 onTrigger 中按条件手动阻止：
+
+onTrigger: function (context) {
+    if (context.matchedElement.textContent.includes('删除')) {
+        context.stopOriginalEvent();
+    }
+
+    // 执行逻辑
+}
+
+
+监听管理接口
+------------
+除了创建监听，管理器还支持移除、清空和销毁。
+
+创建监听并保存引用：
+
+const listener = ButtonListenModule.listen({
+    name: 'my-listener',
+    selector: 'button',
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+移除指定监听器对象：
+
+ButtonListenModule.remove(listener);
+
+
+按名称移除监听器：
+
+ButtonListenModule.remove('my-listener');
+
+
+清空所有监听器：
+
+ButtonListenModule.clear();
+
+
+彻底销毁监听模块：
+
+ButtonListenModule.destroy();
+
+
+接口说明：
+
+remove(listener)
+移除指定监听器对象。适合在临时监听完成后主动释放。
+
+remove(name)
+移除名称匹配的监听器。适合按名称批量移除同名监听。
+
+clear()
+清空所有监听器，并移除全局事件监听。模块仍然保留，之后可以继续使用 ButtonListenModule.listen 创建新监听。
+
+destroy()
+清空所有监听器，移除全局事件监听，并删除 window.ButtonListenModule。适合彻底停用监听系统。
+
+注意：
+- 如果只是临时取消某个监听，使用 remove。
+- 如果要清空当前所有监听，但之后还可能继续创建监听，使用 clear。
+- 如果要彻底停用模块，使用 destroy。
+- 一般监听创建代码不需要主动调用 destroy，除非用户明确要求。
+
+常用监听写法
+------------
+监听图片按钮：
+
+ButtonListenModule.listen({
+    name: 'listen-img',
+    match: {
+        tagName: 'img',
+        srcIncludes: '关键词'
+    },
+    once: false,
+    throttle: 300,
+    debug: true,
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听文字按钮：
+
+ButtonListenModule.listen({
+    name: 'listen-text-button',
+    match: {
+        tagName: 'button',
+        textIncludes: '按钮文字'
+    },
+    once: false,
+    throttle: 300,
+    debug: true,
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听 class：
+
+ButtonListenModule.listen({
+    name: 'listen-class',
+    match: {
+        classIncludes: 'class关键词'
+    },
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听 id：
+
+ButtonListenModule.listen({
+    name: 'listen-id',
+    match: {
+        id: '元素id'
+    },
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听属性：
+
+ButtonListenModule.listen({
+    name: 'listen-attr',
+    match: {
+        attrName: 'data-type',
+        attrValueIncludes: '关键词'
+    },
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+使用 CSS 选择器监听：
+
+ButtonListenModule.listen({
+    name: 'listen-selector',
+    match: null,
+    selector: 'CSS选择器',
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听快捷键：
+
+ButtonListenModule.listen({
+    name: 'listen-key',
+    eventName: 'keydown',
+    customMatch: function (context) {
+        return context.event.key === 'Escape';
+    },
+    once: false,
+    throttle: 300,
+    debug: true,
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听组合快捷键：
+
+ButtonListenModule.listen({
+    name: 'listen-combo-key',
+    eventName: 'keydown',
+    preventDefault: true,
+    customMatch: function (context) {
+        return context.event.ctrlKey && context.event.key.toLowerCase() === 's';
+    },
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+监听任意点击后按条件判断：
+
+ButtonListenModule.listen({
+    name: 'listen-custom-click',
+    eventName: 'click',
+    customMatch: function (context) {
+        return context.target && context.target.textContent.includes('关键词');
+    },
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+
+拦截原网页按钮并执行自己的逻辑：
+
+ButtonListenModule.listen({
+    name: 'replace-original-button',
+    match: {
+        tagName: 'button',
+        textIncludes: '按钮文字'
+    },
+    stopOriginalEvent: true,
+    once: false,
+    throttle: 300,
+    debug: true,
+    onTrigger: function (context) {
+        // 原按钮行为已被阻止
+        // 在这里执行自定义逻辑
+    }
+});
+
+
+只阻止链接跳转：
+
+ButtonListenModule.listen({
+    name: 'prevent-link',
+    match: null,
+    selector: 'a[href*="关键词"]',
+    preventDefault: true,
+    onTrigger: function (context) {
+        // 链接不会跳转
+        // 执行自定义逻辑
+    }
+});
+
+
+按条件阻止原事件：
+
+ButtonListenModule.listen({
+    name: 'conditional-stop',
+    match: {
+        tagName: 'button'
+    },
+    onTrigger: function (context) {
+        if (context.matchedElement.textContent.includes('关键词')) {
+            context.stopOriginalEvent();
+        }
+
+        // 执行逻辑
+    }
+});
+
+
+创建后稍后移除监听：
+
+const listener = ButtonListenModule.listen({
+    name: 'temporary-listener',
+    match: {
+        tagName: 'button',
+        textIncludes: '按钮文字'
+    },
+    onTrigger: function (context) {
+        // 执行逻辑
+        ButtonListenModule.remove(listener);
+    }
+});
+
+
+按名称移除监听：
+
+ButtonListenModule.listen({
+    name: 'removable-listener',
+    selector: '.some-button',
+    match: null,
+    onTrigger: function (context) {
+        // 执行逻辑
+    }
+});
+
+ButtonListenModule.remove('removable-listener');
+
+
+可执行的功能类型
+----------------
+onTrigger 中不一定是注入文字，也可以是任何逻辑，例如：
+
+- 修改页面颜色
+- 添加/删除 class
+- 修改字体
+- 显示状态栏
+- 隐藏元素
+- 自动点击按钮
+- 注入文字到聊天输入框
+- 复制内容
+- 弹出提示
+- 执行异步请求
+- 保存状态到 localStorage
+- 调用其他自定义函数
+- 阻止原网页按钮行为
+- 替换原网页交互逻辑
+- 创建临时监听并在完成后移除
+- 清理已有监听
+
+示例：
+
+onTrigger: function (context) {
+    document.body.style.backgroundColor = '#111827';
+}
+
+
+onTrigger: function (context) {
+    context.matchedElement.style.outline = '2px solid red';
+}
+
+
+onTrigger: function (context) {
+    localStorage.setItem('my_state', '1');
+}
+
+
+onTrigger: function (context) {
+    context.stopOriginalEvent();
+    console.log('原事件已阻止');
+}
+
+
+生成代码要求
+------------
+当我要求你生成监听代码时，请遵守：
+
+1. 默认只输出监听创建代码，不重复输出监听管理器。
+2. 如果我要求“完整代码”，再包裹 <script>...</script>。
+3. 不要省略已有功能。
+4. 如果需要注入文字，可以附带必要的辅助函数。
+5. 如果只是监听后执行简单逻辑，不要额外添加无关函数。
+6. 如果使用 selector，请将 match 设置为 null 或 {}，避免被 match 优先级影响。
+7. 如果使用 match，不要同时写无意义的 selector。
+8. 如果使用快捷键，必须设置 eventName: 'keydown' 或其他键盘事件。
+9. 如果需要阻止默认行为，优先使用配置：
+
+
+preventDefault: true
+
+
+也可以在 onTrigger 中使用：
+
+
+context.preventDefault();
+
+
+10. 如果需要阻止事件继续传播，优先使用配置：
+
+
+stopPropagation: true
+
+
+也可以在 onTrigger 中使用：
+
+
+context.stopPropagation();
+
+
+11. 如果需要阻止同一事件后续监听器，优先使用配置：
+
+
+stopImmediatePropagation: true
+
+
+也可以在 onTrigger 中使用：
+
+
+context.stopImmediatePropagation();
+
+
+12. 如果需要完全阻止原网页事件，优先使用配置：
+
+
+stopOriginalEvent: true
+
+
+也可以在 onTrigger 中使用：
+
+
+context.stopOriginalEvent();
+
+
+13. 输出代码应保持可直接复制使用。
+14. 如果用户没有说明事件类型，按钮/图片点击优先使用默认事件，不必强制写 eventName。
+15. 如果用户没有说明是否只执行一次，默认 once: false。
+16. 如果用户没有说明节流，默认 throttle: 300。
+17. 如果用户没有说明 debug，默认调试阶段使用 debug: true。
+18. 如果用户要求临时监听，应该保存 listen 返回值，并在合适时机 ButtonListenModule.remove(listener)。
+19. 如果用户要求移除某个监听，可以使用 ButtonListenModule.remove(listener) 或 ButtonListenModule.remove('监听器名称')。
+20. 如果用户要求清空所有监听，使用 ButtonListenModule.clear()。
+21. 如果用户要求彻底停用监听模块，使用 ButtonListenModule.destroy()。
+22. 不要在普通监听代码中随意调用 clear 或 destroy，除非用户明确要求。
+
+推荐输出模板
+------------
+
+普通按钮监听：
+
+<script>
+ButtonListenModule.listen({
+    name: 'listener-name',
+
+    match: {
+        tagName: 'button',
+        textIncludes: '按钮文字'
+    },
+
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    onTrigger: function (context) {
+        // 在这里执行功能逻辑
+    }
+});
+</script>
+
+
+如果使用选择器：
+
+<script>
+ButtonListenModule.listen({
+    name: 'listener-name',
+
+    match: null,
+    selector: 'CSS选择器',
+
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    onTrigger: function (context) {
+        // 在这里执行功能逻辑
+    }
+});
+</script>
+
+
+如果使用快捷键：
+
+<script>
+ButtonListenModule.listen({
+    name: 'listener-name',
+    eventName: 'keydown',
+
+    customMatch: function (context) {
+        return context.event.key === 'Escape';
+    },
+
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    onTrigger: function (context) {
+        // 在这里执行功能逻辑
+    }
+});
+</script>
+
+
+如果需要完全阻止原网页按钮行为：
+
+<script>
+ButtonListenModule.listen({
+    name: 'block-original-button',
+
+    match: {
+        tagName: 'button',
+        textIncludes: '按钮文字'
+    },
+
+    stopOriginalEvent: true,
+
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    onTrigger: function (context) {
+        // 原网页按钮行为已被阻止
+        // 在这里执行自定义功能
+    }
+});
+</script>
+
+
+如果需要按条件阻止原事件：
+
+<script>
+ButtonListenModule.listen({
+    name: 'conditional-block',
+
+    match: {
+        tagName: 'button'
+    },
+
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    onTrigger: function (context) {
+        if (context.matchedElement.textContent.includes('按钮文字')) {
+            context.stopOriginalEvent();
+        }
+
+        // 在这里执行功能逻辑
+    }
+});
+</script>
+
+
+如果需要临时监听并自动移除：
+
+<script>
+const listener = ButtonListenModule.listen({
+    name: 'temporary-listener',
+
+    match: {
+        tagName: 'button',
+        textIncludes: '按钮文字'
+    },
+
+    once: false,
+    throttle: 300,
+    debug: true,
+
+    onTrigger: function (context) {
+        // 在这里执行功能逻辑
+
+        ButtonListenModule.remove(listener);
+    }
+});
+</script>
+
+
+如果只需要移除某个监听：
+
+<script>
+ButtonListenModule.remove('listener-name');
+</script>
+
+
+如果需要清空所有监听：
+
+<script>
+ButtonListenModule.clear();
+</script>
+
+
+如果需要彻底销毁监听模块：
+
+<script>
+ButtonListenModule.destroy();
+</script>
+
+
+排查方式
+--------
+如果监听没有生效：
+
+1. 确认监听管理器已先加载。
+2. 确认页面存在 window.ButtonListenModule。
+3. 打开控制台查看是否有 [按钮监听] 已注册。
+4. 设置 debug: true 查看是否有 [按钮监听] 命中。
+5. 检查 eventName / eventNames 是否正确。
+6. 检查 match 字段是否过多导致条件太严格。
+7. 如果使用 selector，确认 match 是 null 或 {}。
+8. 如果是快捷键，确认当前页面焦点允许触发 keydown。
+9. 如果功能执行了但没效果，检查 onTrigger 内部逻辑。
+10. 如果输入框找不到，检查输入框选择器是否匹配当前平台页面。
+11. 如果原网页按钮仍然触发，尝试使用 stopOriginalEvent: true。
+12. 如果只想阻止跳转或提交，检查是否设置 preventDefault: true。
+13. 如果父级元素仍然收到事件，检查是否设置 stopPropagation: true。
+14. 如果同一事件上的其他监听仍然执行，检查是否设置 stopImmediatePropagation: true。
+15. 如果监听被移除后仍触发，确认 remove 传入的是正确的监听器对象或 name。
+16. 如果 clear 后还要继续创建监听，直接重新调用 ButtonListenModule.listen。
+17. 如果 destroy 后还想继续使用，需要重新加载监听管理器本体。

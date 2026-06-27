@@ -1,0 +1,48 @@
+“请阅读我的 SillyTavern 开发协议。我现在需要你在这个框架下，帮我增加一个 [这里填你想要的新功能] 功能。请确保所有 JS 逻辑符合局部刷新和拦截注入规范，并保持代码压缩，防止被编辑器吞掉。”
+🤖 AI 开发者协议：SillyTavern & SexyAI 跨平台兼容组件规范
+目标： 开发一个具备「逻辑拦截」、「本地持久化」与「响应式布局」的 HTML Block 组件。
+
+1. 脚本生存与逻辑执行 (Logic & Security)
+【极简主义】：禁止冗余函数定义。由于 SillyTavern 会审查长脚本，必须将 JS 逻辑压缩至 onclick 或极短的 <script> 中。变量名必须极短（如 s 代替 storage）。
+
+【局部重绘】：严禁 location.reload()。必须使用数据驱动的局部 DOM 更新（例如通过 innerHTML = '' 清空后重新 append 元素）。
+
+【拦截机制】：监听 keydown 必须在捕获阶段（true）。当外层 Checkbox (id="t") 为 checked 时，执行 e.preventDefault() 拦截 Enter 发送。
+
+【双击发送】：拦截逻辑应包含 indexOf 检测。若注入文字已存在，则允许发送。注入后必须执行 t.dispatchEvent(new Event('input', {bubbles:true})) 触发平台同步。
+
+2. UI 渲染与布局对抗 (Layout & CSS)
+【Flex 对抗】：平台默认容器多为 Flex。若组件错位，需对父级强制使用 display: block !important; 或 clear: both;。
+
+【横向排列】：标签（Tags）容器需声明 display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px;。
+
+【移动端适配】：禁止使用固定像素宽度。使用 width: 100%; 或 aspect-ratio，按钮宽度建议设为 width: 32%（三列）或根据 Flex 自动分配。
+
+【原子化 CSS】：标签应自带 white-space: nowrap;。z-index 必须设为 999999 以覆盖平台原生 UI。
+
+3. 组件结构经验 (Structure)
+【折叠交互】：使用 details / summary 实现。利用 name 属性（在测试中有效）实现多个折叠组件的「互斥展开」效果。
+
+【样式隔离】：避免重复注入 <style>。最佳实践是：初始加载一次全量 CSS，后续消息仅输出 HTML 结构。
+
+【资源引用】：优先使用内部图床资源，通过 class 的 background-image 引用以提高稳定性。
+
+4. 数据持久化 (Storage)
+【延迟回显】：由于酒馆/SexyAI 的 DOM 渲染有延迟，读取 localStorage 的初始化脚本必须封装在 setTimeout(fn, 500) 中，否则无法找到挂载点。
+
+【状态同步】：利用外层隐藏的 input[type="checkbox"] 作为总控开关。CSS 负责 UI 的 .tp { display: flex } 切换，JS 负责 .checked 逻辑判断。
+
+💡 如何对 AI 下达指令？
+你可以将上述规范粘贴给 AI，然后补充你的需求，例如：
+
+“请阅读上述 AI 开发者协议。我现在需要你基于此规范，为我编写一个具备 [XXX功能] 的 HTML 插件。
+
+要求：
+
+包含『按钮名』和『规则内容』的输入框。
+
+标签显示在同一排，点击即在预览区合并为 【名称】内容。
+
+当外层紫色按钮激活时，启动『双击 Enter 发送』的拦截保全逻辑。
+
+必须符合移动端响应式布局。”

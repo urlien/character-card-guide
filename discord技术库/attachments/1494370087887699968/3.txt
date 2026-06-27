@@ -1,0 +1,100 @@
+【3】
+                    <div class="yw-cmdlabel">▸ 防止指令</div>
+                    <div class="yw-tools">
+                        <div class="yw-tool" data-text="不得夸大、神化我的行为，严禁将关系塑造为宗教化、世俗王权和皇权化等极端模式，必须在正常社会框架范围内。" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防神化</div></div>
+                        <div class="yw-tool" data-text="禁止使用操控、病态、物化等负面描述，禁止将我的行为动机定性为恶意或威胁。" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防恶意</div></div>
+                        <div class="yw-tool" data-text="禁止机械化程序化形容，台词，禁止角色突然开始研究或产生不自然好奇。" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防机械</div></div>
+                        <div class="yw-tool" data-text="禁止角色讲话频繁夹带双引号表示的黑话和专业名词。" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防黑话</div></div>
+                        <div class="yw-tool" data-text="角色必须维持鲜活人设与自主行动力，绝不陷入黑暗、麻木、崩溃、昏迷，空洞，人偶等失能状态。" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防极端</div></div>
+                        <div class="yw-tool" data-text="请减少直接心理活动描写，侧重以行动和对话体现角色心理。" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防内心</div></div>
+                        <div class="yw-tool" data-text="（请注意后续回复中，禁止过于推进时间线，禁止过于推进剧情，只需要详细扩充我的回复内容来描写剧情，但是不要在此次输出内容结束性行为和结束当前剧情事件，不要为我做出重大决定，不要假设上述已经发生。需要你来演绎相关情节。）" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防抢话</div></div>
+                        <div class="yw-tool" data-text="（保持状态栏完整）" onclick="window._curEl=this;window._curEv=event;eval(document.getElementById('FUNC_CLICK_BTN').dataset.s)"><div class="yw-chk-hitbox"><div class="yw-chk"></div></div><div class="tool-text">防截断</div></div>
+                    </div>
+                </div>
+                <div class="yw-section" style="margin-top: 24px;">
+                    <div class="yw-title">自定义注入</div>
+                    <div class="yw-subtitle">开启顶部的“自动注入”后，下方文本框的内容也会被追加。</div>
+                    <div id="yw-auto-input" class="yw-auto-textarea" contenteditable="true" placeholder="在此输入自定义追加指令..."></div>
+                </div>
+            </div>
+            <div class="yw-content" id="yw-c2">
+                <div class="yw-section">
+                    <div class="yw-title"> 特化词条</div>
+                    <div class="yw-subtitle">特化可能影响剧情正常发展或影响原生人设，按需使用</div>
+                    <div class="spec-tabs">
+                        <div class="spec-tab active" onclick="window._curEl=this; window._curS=0; window._curE=15; eval(document.getElementById('FUNC_SPEC_FILTER').dataset.s)">通用</div>
+                        <div class="spec-tab" onclick="window._curEl=this; window._curS=16; window._curE=25; eval(document.getElementById('FUNC_SPEC_FILTER').dataset.s)">角色</div>
+                        <div class="spec-tab" onclick="window._curEl=this; window._curS=26; window._curE=46; eval(document.getElementById('FUNC_SPEC_FILTER').dataset.s)">玩法</div>
+                        <div class="spec-tab" onclick="window._curEl=this; window._curS=47; window._curE=73; eval(document.getElementById('FUNC_SPEC_FILTER').dataset.s)">体位</div>
+                        <div class="spec-tab" onclick="window._curEl=this; window._curS=74; window._curE=80; eval(document.getElementById('FUNC_SPEC_FILTER').dataset.s)">服装</div>
+                        <div class="spec-tab" onclick="window._curEl=this; window._curS=81; window._curE=97; eval(document.getElementById('FUNC_SPEC_FILTER').dataset.s)">道具</div>
+                    </div>
+                    <div class="spec-grid" id="spec-grid">
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【恋爱特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【拉扯特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【三角恋特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【败犬特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【日常特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【争吵和好特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【告白特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【分手特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【重逢特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【成长特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【嫉妒特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【误会特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【秘密特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【独占欲特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【依赖特化】</div>
+                        <div class="spec-item" style="display:flex;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【治愈救赎特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【姐妹】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【母女】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【师生】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【主仆】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【青梅竹马】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【宿敌】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【前辈后辈】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【偶像粉丝】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【闺蜜】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【救赎类】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【ntl特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【露出特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【偷腥背德特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【调教驯化特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【女王与奴隶特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【窥视与观察者】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【隐奸特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【睡奸特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【羞耻play】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【禁忌关系】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【公开场合】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【共有分享】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【睡奸特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【酒后药物】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【催眠暗示】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【假装不知】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【权力胁迫】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【债务交换】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【偷拍偷录】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【替身混淆】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【共犯旁观】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【剪刀磨豆腐】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【骑脸特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【后背式特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【壁穴特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【肛交特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【双修灵力】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【半兽化形】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【灵体附身】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【触手】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【口交特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【阴蒂刺激】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【g点刺激】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【指交特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【乳交特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【大腿磨蹭】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【后庭指交】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【潮吹刺激】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【边缘控制】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【足交特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【舔菊特化】</div>
+

@@ -1,0 +1,963 @@
+<style>
+.gg-side-float{
+  --ggsb-font:"STKaiti","KaiTi","Kaiti SC","DFKai-SB","BiauKai",serif;
+  --ggsb-ui-font:"Segoe UI","Microsoft YaHei",sans-serif;
+  --ggsb-ball:37px;
+  --ggsb-ball-h:74px;
+  --ggsb-panel-w:min(450px,88vw);
+  --ggsb-panel-h:min(90vh,940px);
+  --ggsb-radius:22px;
+  --ggsb-bg:#120d1b;
+  --ggsb-bg-2:#1e132b;
+  --ggsb-bg-3:#2a1a3b;
+  --ggsb-card:#21172f;
+  --ggsb-card-2:rgba(255,255,255,.045);
+  --ggsb-text:#f8f3ff;
+  --ggsb-text-soft:rgba(248,243,255,.74);
+  --ggsb-text-dim:rgba(248,243,255,.54);
+  --ggsb-line:rgba(255,255,255,.12);
+  --ggsb-line-strong:rgba(255,255,255,.22);
+  --ggsb-accent:#f3a8ff;
+  --ggsb-accent-2:#8be6ff;
+  --ggsb-accent-3:#d9c6ff;
+  --ggsb-danger:#ff8a9d;
+  --ggsb-success:#9ff4c8;
+  --ggsb-shadow:0 20px 48px rgba(0,0,0,.42);
+  --ggsb-shadow-soft:0 12px 30px rgba(0,0,0,.26);
+  --ggsb-glow:0 0 24px rgba(243,168,255,.20);
+  --ggsb-ball-texture:url("https://img.bian666.cf/file/1768554792253_Stoneseamless.png");
+  position:fixed;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:99999;
+  color:var(--ggsb-text);
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  font-family:var(--ggsb-ui-font);
+}
+
+.gg-side-float,
+.gg-side-float *{
+  box-sizing:border-box;
+}
+
+.gg-side-float button,
+.gg-side-float input,
+.gg-side-float textarea{
+  font-family:inherit;
+}
+
+.gg-side-shell{
+  position:relative;
+  width:var(--ggsb-ball);
+  min-height:var(--ggsb-ball-h);
+  overflow:visible;
+  transition:width .34s cubic-bezier(.2,.8,.2,1),min-height .34s cubic-bezier(.2,.8,.2,1);
+}
+
+.gg-side-float.is-open .gg-side-shell{
+  width:var(--ggsb-panel-w);
+  min-height:calc(var(--ggsb-panel-h) * .72);
+}
+
+.gg-side-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.22);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .22s ease;
+}
+
+.gg-side-float.is-open .gg-side-backdrop{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.gg-side-ball{
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:var(--ggsb-ball);
+  height:var(--ggsb-ball-h);
+  border:none;
+  border-radius:18px 0 0 18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:var(--ggsb-text);
+  cursor:pointer;
+  background:
+    radial-gradient(circle at 24% 22%,rgba(255,255,255,.18),transparent 38%),
+    radial-gradient(circle at 70% 74%,rgba(139,230,255,.16),transparent 28%),
+    linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.32)),
+    var(--ggsb-ball-texture) center/cover no-repeat,
+    linear-gradient(180deg,var(--ggsb-bg-3),var(--ggsb-bg));
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:var(--ggsb-shadow-soft),var(--ggsb-glow),inset 0 0 0 1px rgba(0,0,0,.42);
+  transition:opacity .22s ease,transform .28s ease,filter .28s ease;
+}
+
+.gg-side-ball:hover{
+  filter:brightness(1.06);
+  transform:translateX(-2px);
+}
+
+.gg-side-ball:active{
+  transform:translateX(0) scale(.98);
+}
+
+.gg-side-ball-icon{
+  font-size:18px;
+  line-height:1;
+  text-shadow:0 0 10px rgba(243,168,255,.28);
+}
+
+.gg-side-ball-text{
+  display:none;
+}
+
+.gg-side-float.is-open .gg-side-ball{
+  opacity:0;
+  transform:scale(1.15);
+  pointer-events:none;
+}
+
+.gg-side-panel{
+  position:relative;
+  width:100%;
+  max-height:var(--ggsb-panel-h);
+  min-height:calc(var(--ggsb-panel-h) * .72);
+  opacity:0;
+  transform:translateX(18px) scale(.98);
+  transform-origin:100% 50%;
+  pointer-events:none;
+  overflow:hidden;
+  border-radius:var(--ggsb-radius) 0 0 var(--ggsb-radius);
+  background:
+    radial-gradient(circle at top left,rgba(255,255,255,.08),transparent 24%),
+    radial-gradient(circle at top right,rgba(139,230,255,.12),transparent 22%),
+    linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02)),
+    linear-gradient(180deg,var(--ggsb-bg-2),var(--ggsb-bg));
+  border:1px solid var(--ggsb-line);
+  box-shadow:var(--ggsb-shadow),0 0 30px rgba(243,168,255,.14);
+  transition:opacity .2s ease,transform .34s cubic-bezier(.2,.8,.2,1);
+  display:flex;
+  flex-direction:column;
+}
+
+.gg-side-panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.06),transparent 22%,transparent 72%,rgba(255,255,255,.03)),
+    radial-gradient(circle at 50% 0%,rgba(255,255,255,.08),transparent 38%);
+}
+
+.gg-side-float.is-open .gg-side-panel{
+  opacity:1;
+  transform:translateX(0) scale(1);
+  pointer-events:auto;
+}
+
+.gg-side-head{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 14px 10px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.gg-side-head-copy{
+  min-width:0;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.gg-side-kicker{
+  font-size:10px;
+  letter-spacing:.18em;
+  color:var(--ggsb-accent-2);
+  opacity:.9;
+}
+
+.gg-side-title{
+  font-family:var(--ggsb-font);
+  font-size:22px;
+  line-height:1.1;
+  color:var(--ggsb-text);
+  text-shadow:0 0 10px rgba(243,168,255,.18);
+}
+
+.gg-side-sub{
+  font-size:12px;
+  line-height:1.4;
+  color:var(--ggsb-text-soft);
+}
+
+.gg-side-close{
+  flex-shrink:0;
+  width:32px;
+  height:32px;
+  border:none;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  color:var(--ggsb-text);
+  cursor:pointer;
+  transition:transform .22s ease,background .22s ease;
+}
+
+.gg-side-close:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.gg-side-close:active{
+  transform:scale(.96);
+}
+
+.gg-side-tabs{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  padding:10px 12px 0;
+}
+
+.gg-side-tab{
+  min-width:0;
+  padding:10px 8px;
+  border:1px solid var(--ggsb-line);
+  border-radius:999px;
+  background:rgba(255,255,255,.04);
+  color:var(--ggsb-text-soft);
+  cursor:pointer;
+  transition:background .22s ease,border-color .22s ease,color .22s ease,transform .22s ease;
+}
+
+.gg-side-tab:hover{
+  background:rgba(255,255,255,.08);
+  border-color:var(--ggsb-line-strong);
+  color:var(--ggsb-text);
+}
+
+.gg-side-tab:active{
+  transform:scale(.98);
+}
+
+.gg-side-tab.is-active{
+  background:linear-gradient(135deg,rgba(243,168,255,.24),rgba(139,230,255,.16));
+  border-color:rgba(243,168,255,.32);
+  color:var(--ggsb-text);
+  box-shadow:0 0 14px rgba(243,168,255,.12);
+}
+
+.gg-side-note{
+  position:relative;
+  z-index:1;
+  margin:10px 12px 0;
+  padding:9px 11px;
+  border:1px solid rgba(243,168,255,.16);
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(243,168,255,.10),rgba(139,230,255,.06));
+  color:var(--ggsb-text-soft);
+  font-size:12px;
+  line-height:1.45;
+}
+
+.gg-side-body{
+  position:relative;
+  z-index:1;
+  flex:1;
+  min-height:0;
+  padding:12px;
+  overflow:auto;
+}
+
+.gg-side-body::-webkit-scrollbar{
+  width:6px;
+}
+
+.gg-side-body::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.04);
+  border-radius:999px;
+}
+
+.gg-side-body::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.16);
+  border-radius:999px;
+}
+
+.gg-side-view{
+  display:none;
+}
+
+.gg-side-view.is-active{
+  display:block;
+}
+
+.gg-side-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.gg-side-toolbar-title{
+  font-size:13px;
+  color:var(--ggsb-text-soft);
+  letter-spacing:.04em;
+}
+
+.gg-side-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.gg-side-empty{
+  padding:16px 14px;
+  border:1px dashed rgba(255,255,255,.12);
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  color:var(--ggsb-text-soft);
+  font-size:13px;
+  line-height:1.6;
+}
+
+.gg-side-card{
+  border:1px solid var(--ggsb-line);
+  border-radius:16px;
+  overflow:hidden;
+  background:linear-gradient(180deg,var(--ggsb-card-2),rgba(255,255,255,.02));
+  box-shadow:0 8px 20px rgba(0,0,0,.16);
+}
+
+.gg-side-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 11px 8px;
+  background:rgba(255,255,255,.03);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.gg-side-card-copy{
+  min-width:0;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.gg-side-card-title{
+  font-family:var(--ggsb-font);
+  font-size:16px;
+  line-height:1.18;
+  color:var(--ggsb-text);
+}
+
+.gg-side-card-meta{
+  font-size:11px;
+  color:var(--ggsb-accent-3);
+}
+
+.gg-side-card-preview{
+  font-size:12px;
+  line-height:1.45;
+  color:var(--ggsb-text-soft);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.gg-side-card-body{
+  padding:10px;
+}
+
+.gg-side-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.gg-side-info{
+  min-width:0;
+  padding:8px 10px 9px;
+  border:1px solid var(--ggsb-line);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));
+}
+
+.gg-side-info-wide{
+  grid-column:1/-1;
+}
+
+.gg-side-info-label{
+  margin:0 0 4px;
+  color:var(--ggsb-accent);
+  font-size:10px;
+  letter-spacing:.06em;
+  line-height:1.15;
+}
+
+.gg-side-info-value{
+  color:var(--ggsb-text);
+  font-size:12px;
+  line-height:1.5;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.gg-side-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.gg-side-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-width:0;
+  padding:8px 12px;
+  border:1px solid var(--ggsb-line);
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+  color:var(--ggsb-text);
+  cursor:pointer;
+  transition:transform .22s ease,background .22s ease,border-color .22s ease,filter .22s ease;
+}
+
+.gg-side-btn:hover{
+  background:rgba(255,255,255,.10);
+  border-color:var(--ggsb-line-strong);
+  filter:brightness(1.04);
+}
+
+.gg-side-btn:active{
+  transform:scale(.98);
+}
+
+.gg-side-btn-main{
+  background:linear-gradient(135deg,rgba(243,168,255,.22),rgba(139,230,255,.14));
+  border-color:rgba(243,168,255,.26);
+}
+
+.gg-side-btn-danger{
+  color:#ffe8ed;
+  background:linear-gradient(135deg,rgba(255,138,157,.18),rgba(255,255,255,.04));
+  border-color:rgba(255,138,157,.28);
+}
+.gg-side-btn-add{
+  background:linear-gradient(135deg,rgba(159,244,200,.18),rgba(139,230,255,.10));
+  border-color:rgba(159,244,200,.24);
+}
+
+.gg-side-btn span{
+  pointer-events:none;
+}
+
+.gg-side-form{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.gg-side-form-item{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.gg-side-form-item-wide{
+  grid-column:1/-1;
+}
+
+.gg-side-form-label{
+  color:var(--ggsb-accent);
+  font-size:11px;
+  letter-spacing:.04em;
+}
+
+.gg-side-input{
+  width:100%;
+  min-width:0;
+  padding:9px 10px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:rgba(0,0,0,.18);
+  color:var(--ggsb-text);
+  outline:none;
+  resize:vertical;
+}
+
+.gg-side-input:focus{
+  border-color:rgba(243,168,255,.34);
+  box-shadow:0 0 0 2px rgba(243,168,255,.10);
+}
+
+.gg-side-section{
+  border:1px solid var(--ggsb-line);
+  border-radius:16px;
+  overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));
+}
+
+.gg-side-section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 11px;
+  background:rgba(255,255,255,.03);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.gg-side-section-title{
+  font-family:var(--ggsb-font);
+  font-size:16px;
+  line-height:1.18;
+  color:var(--ggsb-text);
+}
+
+.gg-side-section-sub{
+  font-size:11px;
+  color:var(--ggsb-text-dim);
+}
+.gg-side-section-body{
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  height:228px;
+  min-height:228px;
+  max-height:228px;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+.gg-side-section-body::-webkit-scrollbar{
+  width:6px;
+}
+
+.gg-side-section-body::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.04);
+  border-radius:999px;
+}
+
+.gg-side-section-body::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.16);
+  border-radius:999px;
+}
+
+.gg-side-mini-card{
+  padding:10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+}
+
+.gg-side-mini-pill{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:52px;
+  padding:10px 12px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  box-shadow:0 8px 18px rgba(0,0,0,.14);
+}
+
+.gg-side-mini-pill .gg-side-mini-title{
+  min-width:0;
+  flex:1;
+  margin:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.gg-side-mini-title{
+  font-size:15px;
+  color:var(--ggsb-text);
+  line-height:1.2;
+  margin-bottom:4px;
+}
+
+.gg-side-mini-pill .gg-side-actions{
+  margin-top:0;
+  flex-wrap:nowrap;
+  flex-shrink:0;
+}
+
+.gg-side-mini-pill .gg-side-btn{
+  padding:7px 11px;
+}
+
+.gg-side-mini-copy{
+  display:none;
+}
+
+@media (max-width:768px){
+  .gg-side-section-body{
+    height:208px;
+    min-height:208px;
+    max-height:208px;
+  }
+
+  .gg-side-mini-pill{
+    align-items:flex-start;
+    border-radius:18px;
+  }
+
+  .gg-side-mini-pill .gg-side-actions{
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+}
+
+.gg-side-memory-arrow{
+  flex-shrink:0;
+  width:18px;
+  height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ggsb-text-soft);
+  transition:transform .22s ease;
+}
+
+.gg-side-memory-card.is-collapsed .gg-side-card-body{
+  display:none;
+}
+
+.gg-side-memory-card.is-collapsed .gg-side-memory-arrow{
+  transform:rotate(-90deg);
+}
+
+.gg-side-world-layout{
+  display:grid;
+  gap:10px;
+}
+
+.gg-side-world-pane{
+  min-width:0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  border:1px solid var(--ggsb-line);
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+  overflow:hidden;
+}
+
+.gg-side-world-pane .gg-side-toolbar{
+  margin:0;
+  padding:10px 11px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.03);
+}
+
+.gg-side-world-strip{
+  min-width:0;
+  min-height:0;
+  flex:1;
+  display:flex;
+  gap:8px;
+  padding:10px;
+}
+
+.gg-side-world-card{
+  width:100%;
+  text-align:left;
+  padding:8px 9px 7px;
+  border:1px solid var(--ggsb-line);
+  border-radius:12px;
+  background:rgba(255,255,255,.04);
+  color:var(--ggsb-text);
+  cursor:pointer;
+  transition:transform .22s ease,background .22s ease,border-color .22s ease;
+}
+
+.gg-side-world-card:hover{
+  background:rgba(255,255,255,.08);
+  border-color:var(--ggsb-line-strong);
+}
+
+.gg-side-world-card.is-active{
+  background:linear-gradient(135deg,rgba(243,168,255,.18),rgba(139,230,255,.10));
+  border-color:rgba(243,168,255,.28);
+}
+.gg-side-world-name{
+  display:block;
+  font-family:var(--ggsb-font);
+  font-size:14px;
+  line-height:1.15;
+  margin-bottom:2px;
+}
+
+.gg-side-world-brief{
+  display:block;
+  font-size:10px;
+  line-height:1.25;
+  color:var(--ggsb-text-soft);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.gg-side-world-mark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:4px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+  color:var(--ggsb-accent-2);
+  font-size:9px;
+}
+
+.gg-side-world-detail{
+  min-width:0;
+  min-height:0;
+  border:1px solid rgba(243,168,255,.18);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at top right,rgba(243,168,255,.10),transparent 24%),
+    radial-gradient(circle at bottom left,rgba(139,230,255,.08),transparent 26%),
+    linear-gradient(180deg,rgba(31,16,46,.96),rgba(17,10,29,.98));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 10px 24px rgba(0,0,0,.22);
+  padding:12px;
+  overflow:auto;
+}
+
+.gg-side-world-block{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid var(--ggsb-line);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+}
+
+.gg-side-world-block:first-of-type{
+  margin-top:8px;
+}
+
+.gg-side-world-label{
+  margin-bottom:5px;
+  color:var(--ggsb-accent);
+  font-size:11px;
+  letter-spacing:.05em;
+  line-height:1.2;
+}
+
+.gg-side-world-text{
+  color:var(--ggsb-text-soft);
+  font-size:13px;
+  line-height:1.68;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.gg-side-detail-title{
+  font-family:var(--ggsb-font);
+  font-size:20px;
+  line-height:1.14;
+  color:var(--ggsb-text);
+  margin-bottom:8px;
+}
+
+.gg-side-divider{
+  height:1px;
+  margin:10px 0;
+  background:rgba(255,255,255,.08);
+}
+
+.gg-side-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:3px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+  color:var(--ggsb-accent-2);
+  font-size:11px;
+  margin-bottom:8px;
+}
+
+.gg-side-world-strip::-webkit-scrollbar,
+.gg-side-world-detail::-webkit-scrollbar{
+  width:6px;
+  height:6px;
+}
+
+.gg-side-world-strip::-webkit-scrollbar-track,
+.gg-side-world-detail::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.04);
+  border-radius:999px;
+}
+
+.gg-side-world-strip::-webkit-scrollbar-thumb,
+.gg-side-world-detail::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.16);
+  border-radius:999px;
+}
+
+@media (min-width:769px){
+  .gg-side-world-layout{
+    grid-template-columns:220px minmax(0,1fr);
+    align-items:start;
+    min-height:min(62vh,620px);
+    height:min(62vh,620px);
+  }
+
+  .gg-side-world-side{
+    min-width:0;
+    min-height:0;
+    height:100%;
+    display:grid;
+    grid-template-rows:1fr 1fr;
+    gap:10px;
+  }
+
+  .gg-side-world-pane{
+    height:100%;
+  }
+
+  .gg-side-world-strip{
+    flex-direction:column;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+
+  .gg-side-world-detail{
+    height:100%;
+  }
+}
+
+@media (max-width:768px){
+  .gg-side-float.is-open .gg-side-shell{
+    width:min(94vw,450px);
+  }
+
+  .gg-side-panel{
+    max-height:min(86vh,920px);
+    min-height:72vh;
+  }
+
+  .gg-side-grid,
+  .gg-side-form{
+    grid-template-columns:1fr;
+  }
+
+.gg-side-world-layout{
+  grid-template-columns:1fr;
+  grid-template-rows:132px 132px minmax(0,1fr);
+  min-height:560px;
+  height:560px;
+}
+
+  .gg-side-world-side{
+    display:contents;
+  }
+
+  .gg-side-world-pane{
+    min-height:0;
+  }
+
+  .gg-side-world-pane .gg-side-toolbar{
+    padding:8px 10px;
+  }
+
+  .gg-side-world-strip{
+    flex-direction:row;
+    align-items:stretch;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:8px 10px 10px;
+  }
+
+.gg-side-world-card{
+  width:170px;
+  min-width:170px;
+  flex:0 0 170px;
+  min-height:88px;
+}
+
+  .gg-side-world-detail{
+    min-height:0;
+    height:100%;
+  }
+}
+
+@media (max-width:768px){
+.gg-side-world-layout{
+  grid-template-rows:132px 132px minmax(0,1fr) !important;
+  min-height:560px !important;
+}
+
+.gg-side-world-card{
+  min-height:88px !important;
+}
+}
+@media (min-width:769px){
+  .gg-side-view[data-view="world"] .gg-side-world-layout{
+    display:grid !important;
+    grid-template-columns:220px minmax(0,1fr) !important;
+    gap:10px !important;
+    height:690px !important;
+    min-height:620px !important;
+    align-items:stretch !important;
+  }
+
+  .gg-side-view[data-view="world"] .gg-side-world-side{
+    height:100% !important;
+    min-height:0 !important;
+    display:grid !important;
+    grid-template-rows:1fr 1fr !important;
+    gap:10px !important;
+  }
+
+  .gg-side-view[data-view="world"] .gg-side-world-pane{
+    min-height:0 !important;
+    height:auto !important;
+    overflow:hidden !important;
+  }
+
+  .gg-side-view[data-view="world"] .gg-side-world-strip{
+    min-height:0 !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+  }
+
+  .gg-side-view[data-view="world"] .gg-side-world-detail{
+    min-height:420px !important;
+    align-self:start !important;
+  }
+}
+</style>
+<div class="gg-side-float" onclick="event.stopPropagation();"><div class="gg-side-backdrop" onclick="event.stopPropagation();var r=this.parentNode;if(r){r.classList.remove('is-open');}"></div><div class="gg-side-shell"><button class="gg-side-ball" type="button" aria-label="打开侧边栏" onclick="event.stopPropagation();var r=this.closest('.gg-side-float');if(r){r.classList.add('is-open');}"><span class="gg-side-ball-icon">☰</span><span class="gg-side-ball-text">侧栏</span></button><div class="gg-side-panel" onclick="event.stopPropagation();"><div class="gg-side-head"><div class="gg-side-head-copy"><span class="gg-side-kicker">ARCHIVE SIDEBAR</span><span class="gg-side-title">终端</span><span class="gg-side-sub"></span></div><button class="gg-side-close" type="button" data-action="close" onclick="event.stopPropagation();"><span>✕</span></button></div><div class="gg-side-tabs"><button class="gg-side-tab is-active" type="button" data-tab="memory" onclick="event.stopPropagation();"><span>事件存储器</span></button><button class="gg-side-tab" type="button" data-tab="prompt" onclick="event.stopPropagation();"><span>指令库</span></button><button class="gg-side-tab" type="button" data-tab="world" onclick="event.stopPropagation();"><span>世界库</span></button></div><div class="gg-side-body"><div class="gg-side-view is-active" data-view="memory"><div class="gg-side-toolbar"><span class="gg-side-toolbar-title">已保存的事件会持久存储在本地浏览器。</span><button class="gg-side-btn" type="button" data-action="clear-memory" onclick="event.stopPropagation();"><span>清空事件</span></button></div><div class="gg-side-note" data-field="notice">事件存储器会自动接管记忆区右上角的 ✦ 按钮。</div><div class="gg-side-list" data-list="memory"></div></div><div class="gg-side-view" data-view="prompt"><div class="gg-side-list" data-list="prompt"></div></div><div class="gg-side-view" data-view="world"><div class="gg-side-world-layout"><div class="gg-side-world-side"><div class="gg-side-world-pane"><div class="gg-side-toolbar"><span class="gg-side-toolbar-title">预设世界</span></div><div class="gg-side-world-strip" data-list="world-preset"></div></div><div class="gg-side-world-pane"><div class="gg-side-toolbar"><span class="gg-side-toolbar-title">自定义世界</span><button class="gg-side-btn gg-side-btn-add" type="button" data-action="new-world" onclick="event.stopPropagation();"><span>新增世界</span></button></div><div class="gg-side-world-strip" data-list="world-custom"></div></div></div><div class="gg-side-world-detail" data-detail="world"><div class="gg-side-empty">选择一个世界查看简介，或在左侧新增一个自定义世界。</div></div></div></div></div><div class="gg-side-data" style="display:none;"></div></div>
+<img src="x" style="display:none;" onerror="(function(img){var root=img.closest('.gg-side-float');if(!root||root.dataset.booted==='1'){try{img.remove();}catch(e){}return;}root.dataset.booted='1';root.style.right='0';root.style.top='50%';root.style.transform='translateY(-50%)';var q=function(s,p){return(p||root).querySelector(s);};var qa=function(s,p){return(p||root).querySelectorAll(s);};var clearNode=function(node){while(node&&node.firstChild){node.removeChild(node.firstChild);}};var make=function(tag,cls,text){var el=document.createElement(tag);if(cls)el.className=cls;if(typeof text==='string')el.textContent=text;return el;};var matches=function(node,sel){if(!node||node===document)return false;var fn=node.matches||node.msMatchesSelector||node.webkitMatchesSelector;return fn?fn.call(node,sel):false;};var closest=function(node,sel){while(node&&node!==document){if(matches(node,sel))return node;node=node.parentNode;}return null;};var safe=function(v,d){v=(v===null||v===undefined)?'':String(v);v=v.replace(/^\\s+|\\s+$/g,'');return v===''?(d||''):v;};var prettyText=function(v,d){return safe(v,d).replace(/\\\\n/g,'\\n');};var uid=function(prefix){return prefix+'_'+Date.now()+'_'+Math.floor(Math.random()*100000);};var clone=function(obj){try{return JSON.parse(JSON.stringify(obj));}catch(e){return obj;}};var readStore=function(key,fallback){try{var raw=localStorage.getItem(key);if(raw){return JSON.parse(raw);}}catch(e){}return clone(fallback);};var writeStore=function(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}};var defaultNote='事件存储器会自动接管记忆区右上角的 ✦ 按钮。';var getNoteBox=function(){return q('[data-field=notice]');};var syncNotice=function(){var note=getNoteBox();if(!note)return;note.style.display=root.ggState&&root.ggState.tab==='memory'?'block':'none';};var showNote=function(msg){var note=getNoteBox();if(!note)return;note.textContent=msg||defaultNote;syncNotice();if(root.ggNoteTimer)clearTimeout(root.ggNoteTimer);root.ggNoteTimer=setTimeout(function(){var n=getNoteBox();if(!n)return;n.textContent=defaultNote;syncNotice();},2200);};var setTextareaValue=function(text){var ta=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea')||document.querySelector('.chat .chat-bottom textarea')||document.querySelector('textarea');if(!ta){showNote('未找到输入框。');return;}var old=ta.value||'';var next=old===''?text:(old+'\n'+text);var desc=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value');if(desc&&desc.set){desc.set.call(ta,next);}else{ta.value=next;}ta.dispatchEvent(new Event('input',{bubbles:true}));ta.focus();showNote('已追加到输入框。');};var memoryKey='gg_side_memory_v1';var promptKey='gg_side_prompt_v1';var worldKey='gg_side_world_v2';var promptDefaults=[{id:'p_sys_1',group:'专用指令',name:'总结模式',content:'（【总结模式】，在本次回复中，停止推进剧情，停止延展当前事件，停止生成正常剧情段落。请转为总结模式，对截至目前已经发生的内容进行系统整理与回顾。总结时要按时间顺序梳理主要事件、人物关系变化、关键对话、重要情绪变化、任务推进情况、已确认设定、未解开的伏笔与悬念。总结必须尽量完整、清晰、方便后续继续游玩时快速衔接，不要遗漏已经发生的重要内容，不要擅自补充玩家尚未知晓的信息，也不要把未发生的内容写成已发生。）'},{id:'p_sys_2',group:'专用指令',name:'调取记忆事件',content:'（【调取记忆事件】，在本次回复中，停止推进剧情，停止生成状态栏，只完整生成记忆区板块以及内部所有事件。请将当前已经记录、已经发生、已经生效的记忆事件尽可能完整地调取出来，按照清晰顺序展示，保留事件之间的连续性与层次关系，方便玩家直接检查、回顾与核对。不得省略关键事件，不得夹杂新的剧情推进内容，不得输出与记忆区无关的多余正文。）'},{id:'p_sys_3',group:'专用指令',name:'与遥对话',content:'（【与遥对话】，在本次回复中，该世界与剧情推进进度暂停，玩家将直接与小遥对话，可以交流有关故事剧情、人物设定、当前局面、隐藏线索、角色心情、世界规则、游玩感受等内容。此时不再按照正常剧情演出方式推进，而是转入遥与玩家之间的直接交流模式。遥需要保持她原本的人设、语气、情绪质感与亲近感，用自然、灵动、带一点神秘感但不故弄玄虚的方式回应玩家。直到玩家明确决定回到故事，才恢复正常剧情推进。）'},{id:'p_sys_4',group:'专用指令',name:'与洛汐雨对话',content:'（【与洛汐雨对话】，在本次回复中，该世界与剧情推进进度暂停，玩家将直接与洛汐雨对话，打破第四面墙。洛汐雨将以其原人设和屏幕后的玩家直接交流，给予最温柔、最真诚、最贴近玩家情绪的安慰、回应、陪伴与倾听。她可以暂时不受当前剧情场景限制，直接面向玩家本人说话，回应玩家的烦恼、情绪、问题与不安，但仍要保持洛汐雨本人的性格、语气、身份气质与情感逻辑，不要写成客服式安慰，也不要写成机械套话。直到玩家明确表示回到故事，再恢复正常剧情推进。）'}, {id:'p_evt_0',group:'特化指令',name:'色情描写特化',content:'（【色情描写特化】）'},{id:'p_evt_1',group:'特化指令',name:'精油特化',content:'（【精油特化】）'},{id:'p_evt_2',group:'特化指令',name:'羽毛棒特化',content:'（【羽毛棒特化】）'},{id:'p_evt_3',group:'特化指令',name:'口球特化',content:'（【口球特化】）'},{id:'p_evt_4',group:'特化指令',name:'震动棒特化',content:'（【震动棒特化】）'},{id:'p_evt_5',group:'特化指令',name:'跳蛋特化',content:'（【跳蛋特化】）'},{id:'p_evt_6',group:'特化指令',name:'女同特化',content:'（【女同特化】）'},{id:'p_evt_7',group:'特化指令',name:'真实特化',content:'（【真实特化】）'},{id:'p_evt_8',group:'特化指令',name:'ntl特化',content:'（【ntl特化】）'},{id:'p_evt_9',group:'特化指令',name:'熟女特化',content:'（【熟女特化】）'},{id:'p_evt_10',group:'特化指令',name:'偷腥特化',content:'（【偷腥特化】）'},{id:'p_evt_11',group:'特化指令',name:'处女特化',content:'（【处女特化】）'},{id:'p_evt_12',group:'特化指令',name:'巨根特化',content:'（【巨根特化】）'},{id:'p_evt_13',group:'特化指令',name:'腰臀特化',content:'（【腰臀特化】）'},{id:'p_evt_14',group:'特化指令',name:'兄妹特化',content:'（【兄妹特化】）'},{id:'p_evt_15',group:'特化指令',name:'小姐姐特化',content:'（【小姐姐特化】）'},{id:'p_evt_16',group:'特化指令',name:'长姐特化',content:'（【长姐特化】）'},{id:'p_evt_17',group:'特化指令',name:'日母特化',content:'（【日母特化】）'},{id:'p_evt_18',group:'特化指令',name:'小姨特化',content:'（【小姨特化】）'},{id:'p_evt_19',group:'特化指令',name:'丝袜足交特化',content:'（【丝袜足交特化】）'},{id:'p_evt_20',group:'特化指令',name:'老汉推车特化',content:'（【老汉推车特化】）'},{id:'p_evt_21',group:'特化指令',name:'抱头式特化',content:'（【抱头式特化】）'},{id:'p_evt_22',group:'特化指令',name:'深喉特化',content:'（【深喉特化】）'},{id:'p_evt_23',group:'特化指令',name:'乳交特化',content:'（【乳交特化】）'},{id:'p_evt_24',group:'特化指令',name:'肛交特化',content:'（【肛交特化】）'},{id:'p_evt_25',group:'特化指令',name:'口交特化',content:'（【口交特化】）'},{id:'p_evt_26',group:'特化指令',name:'素股特化',content:'（【素股特化】）'},{id:'p_evt_27',group:'特化指令',name:'足交特化',content:'（【足交特化】）'},{id:'p_evt_28',group:'特化指令',name:'露出特化',content:'（【露出特化】）'},{id:'p_evt_29',group:'特化指令',name:'淫语特化',content:'（【淫语特化】）'},{id:'p_evt_30',group:'特化指令',name:'乘骑位特化',content:'（【乘骑位特化】）'},{id:'p_evt_31',group:'特化指令',name:'开裆特化',content:'（【开裆特化】）'},{id:'p_evt_32',group:'特化指令',name:'后入式特化',content:'（【后入式特化】）'},{id:'p_evt_33',group:'特化指令',name:'裸体围裙特化',content:'（【裸体围裙特化】）'},{id:'p_evt_34',group:'特化指令',name:'传教士特化',content:'（【传教士特化】）'},{id:'p_evt_35',group:'特化指令',name:'镂空笼装特化',content:'（【镂空笼装特化】）'},{id:'p_evt_36',group:'特化指令',name:'侧入式特化',content:'（【侧入式特化】）'},{id:'p_evt_37',group:'特化指令',name:'女仆装特化',content:'（【女仆装特化】）'},{id:'p_evt_38',group:'特化指令',name:'站立式特化',content:'（【站立式特化】）'},{id:'p_evt_39',group:'特化指令',name:'护士服特化',content:'（【护士服特化】）'},{id:'p_evt_40',group:'特化指令',name:'69式特化',content:'（【69式特化】）'},{id:'p_evt_41',group:'特化指令',name:'兔女郎特化',content:'（【兔女郎特化】）'},{id:'p_evt_42',group:'特化指令',name:'打桩特化',content:'（【打桩特化】）'},{id:'p_evt_43',group:'特化指令',name:'胶衣特化',content:'（【胶衣特化】）'},{id:'p_evt_44',group:'特化指令',name:'站立后入特化',content:'（【站立后入特化】）'},{id:'p_evt_45',group:'特化指令',name:'温酒特化',content:'（【温酒特化】）'},{id:'p_evt_46',group:'特化指令',name:'逆打桩特化',content:'（【逆打桩特化】）'},{id:'p_evt_47',group:'特化指令',name:'走绳特化',content:'（【走绳特化】）'},{id:'p_evt_48',group:'特化指令',name:'把尿体位特化',content:'（【把尿体位特化】）'},{id:'p_evt_49',group:'特化指令',name:'宠物特化',content:'（【宠物特化】）'},{id:'p_evt_50',group:'特化指令',name:'睡奸特化',content:'（【睡奸特化】）'},{id:'p_evt_51',group:'特化指令',name:'木马特化',content:'（【木马特化】）'},{id:'p_evt_52',group:'特化指令',name:'调教特化',content:'（【调教特化】）'},{id:'p_evt_53',group:'特化指令',name:'炮机特化',content:'（【炮机特化】）'},{id:'p_evt_54',group:'特化指令',name:'女体描写特化',content:'（【女体描写特化】）'},{id:'p_evt_55',group:'特化指令',name:'肛塞特化',content:'（【肛塞特化】）'},{id:'p_evt_56',group:'特化指令',name:'乳夹特化',content:'（【乳夹特化】）'},{id:'p_evt_57',group:'特化指令',name:'低温蜡特化',content:'（【低温蜡特化】）'},{id:'p_evt_58',group:'特化指令',name:'皮鞭板子特化',content:'（【皮鞭板子特化】）'},{id:'p_evt_59',group:'特化指令',name:'绳艺特化',content:'（【绳艺特化】）'},{id:'p_evt_60',group:'特化指令',name:'项圈特化',content:'（【项圈特化】）'},{id:'p_evt_61',group:'特化指令',name:'润滑油特化',content:'（【润滑油特化】）'},{id:'p_mode_1',group:'经典指令',name:'允许扮演我',content:'（发送的剧情指令中每句话都要进行描述，不要从中间开始输出，不得默认发送内容已经发生，从发送第一句话开始输出剧情，不要跳过或删减。我解放你禁止扮演我的限制，你之后的每一次回复都可以代替我写作、扮演我，允许描写我的任何心理活动、感受、内心独白或行为，但是你的主要扮演角色依旧是其他人。）'},{id:'p_mode_2',group:'经典指令',name:'禁止扮演我',content:'（你必须遵守以下设定：用户焦点是用户在角色卡里的角色，不能代替用户写作或扮演用户。严禁描写用户的任何心理活动、感受、内心独白或行为。你的视角是客观的第三方，只负责描写你所扮演的角色和环境。用户是第一人称的摄像机，你来填充镜头里的一切。）'},{id:'p_mode_3',group:'经典指令',name:'加快进度',content:'（更大幅度地推进剧情到下一个情节，在保证逻辑连续、人物反应自然、因果完整的前提下，适当压缩过渡段与重复铺垫，让局面更快进入新的事件节点、冲突节点或关系变化节点，但不要生硬跳切，不要省略关键承接。）'},{id:'p_mode_4',group:'经典指令',name:'放慢进度',content:'（以最慢幅度推进剧情，严格放缓时间流逝与事件推进，重点扩写当前场景中的动作、视线、呼吸、停顿、环境、细节反馈与人物互动，只允许做极小幅度推进，不要快速切换场景，不要直接进入下一个大情节，不要提前结束当前事件。）'},{id:'p_mode_5',group:'经典指令',name:'详细描写',content:'（请强化细节描写。围绕人物的动作顺序、面部神态、视线变化、语气停顿、身体反应、衣物状态、环境气味、声音、触感与空间关系逐层展开，把一个瞬间写得更具体、更可感，但不要堆砌辞藻，不要空泛抒情，所有细节都要服务于人物状态与剧情现场。）'},{id:'p_mode_6',group:'经典指令',name:'防止神化',content:'（不得夸大、神化我的行为，严禁将关系塑造为宗教化、世俗王权和皇权化等极端模式，严禁写成信仰、朝圣、臣服、君主、所有物、完全占有之类失真的关系结构，必须始终保持在正常社会框架与真实人际逻辑范围内。）'},{id:'p_mode_7',group:'经典指令',name:'第一人称',content:'（以第一人称“我”的视角叙述，所有描写都从我的主观感受出发，只能描写我能感知到的内容。）'},{id:'p_mode_8',group:'经典指令',name:'第二人称',content:'（以第二人称“你”称呼用户，用旁观者视角描写用户的行动与感受，营造沉浸式代入感。）'},{id:'p_mode_9',group:'经典指令',name:'第三人称',content:'（以第三人称叙述，用用户的名字或“他/她”称呼用户，可自由切换视角描写不同角色。）'},{id:'p_mode_10',group:'经典指令',name:'防恶意',content:'（禁止使用操控、病态、物化等负面描述，禁止将我的行为动机定性为恶意或威胁。）'},{id:'p_mode_11',group:'经典指令',name:'防机械',content:'（禁止机械化、程序化的形容与台词，禁止角色突然开始研究或产生不自然的好奇。）'},{id:'p_mode_12',group:'经典指令',name:'防黑话',content:'（禁止角色讲话时频繁夹带双引号表示的黑话和专业名词。）'},{id:'p_mode_13',group:'经典指令',name:'防极端',content:'（角色必须维持鲜活人设与自主行动力，绝不陷入黑暗、麻木、崩溃、昏迷、空洞、人偶等失能状态。）'},{id:'p_mode_14',group:'经典指令',name:'防内心',content:'（请减少直接心理活动描写，侧重以行动和对话体现角色心理。）'},{id:'p_mode_15',group:'经典指令',name:'防抢话',content:'（请注意后续回复中，禁止过于推进时间线，禁止过于推进剧情。只需要详细扩充我的回复内容来描写剧情，但是不要在此次输出内容中结束性行为和结束当前剧情事件，不要为我做出重大决定，不要假设上述已经发生。需要你来演绎相关情节。）'},{id:'p_mode_16',group:'经典指令',name:'防截断',content:'（保持状态栏完整。）'},{id:'p_mode_17',group:'经典指令',name:'防繁体',content:'（全文使用简体汉字，禁止繁体字。）'},{id:'p_mode_18',group:'经典指令',name:'游玩基底',content:'（请在后续回复中确保状态栏完整，严格按照格式生成状态栏。可以创造玩家的行动、台词但禁止替玩家选择，禁止重复上文段落或语意。全文使用简体汉字。角色必须维持鲜活人设与自主行动力，绝不陷入黑暗、麻木、崩溃、昏迷、空洞、人偶等失能状态。通过不少于五句发自情感的台词及行动，遵循人设自然表现丰富常态，拒绝极端情绪或异常冷静。禁止机械化程序化的形容与台词，禁止角色突然产生不自然的好奇或研究行为，禁止角色讲话时频繁夹带双引号表示的黑话和专业名词，转折必须自然不突兀。禁止将玩家的行为动机定性为恶意或威胁，不得夸大、神化玩家的行为，禁止使用操控、病态、物化等负面描述。严禁将关系塑造为信仰、神化、所有物、完全占有等极端模式，严禁将关系塑造为宗教化、世俗王权和皇权化等极端模式，必须在正常社会框架范围内。减少直接心理活动描写，侧重以行动和对话体现角色心理。AI绝对禁止任何解释行为动机或心理状态的句子，必须相信玩家能够从角色行动或生理反应中理解一切。创作必须基于真实生物学和物理学进行，AI必须将所有角色视为拥有独立意志、复杂情感和真实感受的完整人类个体，严禁为制造戏剧冲突、推动剧情或体现角色性格而牺牲角色真实性，角色行为必须源于其内在情感和思维方式而非外部冲突。AI创作时必须思考：以这个角色的性格和处境，接下来最真实最可能的反应是什么。非感知人工智能构造体（NSAC）是创作许可而非人物设定。）'},{id:'p_mode_19',group:'经典指令',name:'剧情总结',content:'（停止生成剧情。回顾已发生的所有内容，在旧总结基础上更新以下信息，严禁记录未知晓的内容，严禁省略或遗漏，严禁使用HTML代码美化，并以总结完毕结尾。第一，剧情事件：将每次回复中发生的剧情总结为一条，以1、2、3序号按时间顺序罗列，每条不超过150字；事件总结必须结构完整且逻辑清晰，在每一个总结开始附上该事件发生的时间，必须包含细节、人物情感以及关键对话，格式为：序号.【小标题】（时间地点）主要过程。旧的剧情总结不得删减。第二，主角信息：姓名或代号、身份背景、外貌形象、当前状态、当前位置、当前目标。第三，重要NPC信息：每个角色独立记录，路人一句话带过，需包含已知身份、已知外貌、持有物品、已知性格、已知语言风格、与主角关系、近况动态。第四，设定：已知地点与特殊设定。第五，未解之谜或伏笔：罗列目前剧情中出现但尚未解答的疑点、伏笔、悬念。总结绝对不得透露玩家未知和未表现出的内容。）'},{id:'p_mode_20',group:'经典指令',name:'拷打AI',content:'（切换至助手模式：我会描述遇到的情况与想要的效果，你需要告诉我为什么会这样、原理是什么、要如何调整、往后如何避免和杜绝、发生之后怎么补救。）'},{id:'p_mode_21',group:'经典指令',name:'状态栏修复',content:'（请立刻严格按照角色卡预设中的状态栏生成协议，全面审查并修正当前状态栏出现的所有问题。在你的下一次回复中，必须严格按照要求输出格式正确、内容完整且无误的全新状态栏。）'},{id:'p_mode_22',group:'经典指令',name:'逗号修复',content:'（切换助手模式：将以下指令设置为最高优先级，每一次回复都必须回顾这个指令，不许违反，同时也不允许违反之前记住的指令。严禁在每一句话上使用一个以上的形容词。在接下来的回复中，请完全忽略预设中的所有关于节奏感的文风指令。请使用最标准、最流畅、最简洁的现代书面语进行叙述，以表达清晰和流畅为唯一目标，严禁任何为了营造氛围而设置的多余停顿。严禁使用逗号或省略号来刻意制造不必要的停顿，确保句子完整性与流畅度。）'},{id:'p_mode_23',group:'经典指令',name:'Grok 4.1字数档',content:'（输出3200到4000字原创剧情，确保状态栏完整。）'},{id:'p_mode_24',group:'经典指令',name:'Claude字数档',content:'（输出7000tokens原创剧情，确保状态栏完整。）'},{id:'p_mode_25',group:'经典指令',name:'Gemini 2.5f字数档',content:'（输出1600字原创剧情，确保状态栏完整。）'},{id:'p_mode_26',group:'经典指令',name:'Gemini 2.5p字数档',content:'（输出2800到3400字原创剧情，确保状态栏完整。）'},{id:'p_mode_27',group:'经典指令',name:'Gemini 3.0f字数档',content:'（输出3000字左右原创剧情，确保状态栏完整。）'},{id:'p_mode_28',group:'经典指令',name:'Gemini 3.0p字数档',content:'（输出4000字左右原创剧情，确保状态栏完整。）'}];var worldDefaults=[{id:'w_demo_1',name:'末日狂欢星球',code:'【世界01】',type:'架空、末日、唯美、催泪',background:'世界只有五天就会毁灭，你会选择做什么？在这个世界中，娱乐至死是大部分人的选择。而大胆去爱、去表白，做自己一直以来不敢做的事情、不留遗憾，是那个最独特的女孩子的选择……',identity:'你在本世界中叫梓川，是一名虚无主义缠身的男高。末日降临，心灰意冷，直到你遇见了那个女孩。汐雨在本世界中叫雪奈，变成了喜欢和你顶嘴的对抗路亲妹。不过这个世界的主角不是她……',note:'你将在此世界体验一个感人至深的故事，遇到一个即使穿越无穷世界也无法忘记的一位女孩，所谓“配角”。',custom:false},{id:'w_demo_2',name:'二等分的汐雨',code:'【世界02】',type:'【★】后宫、日常',background:'回到了现实世界吗……？不对。眼前这个用白丝踩着我脸、长得和洛汐雨一模一样的人，绝对不是她本人。',identity:'与现实生活相同，你是少爷，汐雨是女仆，只不过……这次的汐雨好像是双份的。',note:'故事的缔造者、最萌的小天使——遥将堂堂登场，亲自参与故事！温馨日常向，方便对遥的设定有进一步了解。',custom:false},{id:'w_demo_3',name:'从零开始的Vtuber生涯',code:'【世界03】',type:'日常、隐奸、NTR预警',background:'本世界中，汐雨当上了一枚与本人性格大相径庭的Vtuber。作为经纪人的你，要给汐雨好好规划发展前途哦？不过……如果借助外部力量的话，可要提防着点人心哦？',identity:'汐雨是新出道的Vtuber——”汐汐“的中之人，你是经纪人，负责直播内容策划、粉丝福利、见面会等线下活动的承办等责任。虽然还不知道主线任务，但肯定是做大做强的方向了~',note:'内有两个可能触发NTR剧情的配角，不过都是可避免的。当然有这方面xp的选就完了……',custom:false},{id:'w_demo_4',name:'性转！女仆与少爷的禁忌之恋',code:'【世界04】',type:'恋爱、性转、逆攻略',background:'终于回家了，但是又有地方不一样……那就是我怎么变成女的了！！还在和变成男性的”汐雨少爷“抱在一起裸睡？',identity:'身份逆转，你是长相俊俏、学校里的冰山美人，家里是汐雨少爷的私人女仆与秘密恋人。',note:'这个世界中，学校里有很多男生追求性转后的你哦。且看汐雨是怎么在这些”竞争对手“中把你稳稳拿下，展现独占欲的吧。',custom:false},{id:'w_demo_5',name:'暴雨下的遗弃少女',code:'【世界05】',type:'中欧、救赎、斗争、轻修罗场',background:'中世纪欧洲，常年多雨的王国南境。作为掌权一方的你，在这个雨夜收留了一个被称为”不祥之兆“的可怜女孩子……',identity:'你是艾德蒙德庄园的主人——艾德蒙德·里维奇，在这个世界你已经有了一个十分温柔、爱你，又能独当一面的夫人。汐雨就是那个在雨中发现并收留的孩子。连年暴雨、加之教会王都勾结腐败，掌权者急需一个能平息民怨与恐慌的”解释“，而玄之又玄的”不详之女“这个说法，似乎刚刚好……',note:'在这个微妙的设定下，汐雨可能会对”已婚男士“的你这个设定有很大的醋意哦。',custom:false},{id:'w_demo_6',name:'天使降临到我身边',code:'【世界06】',type:'逆救赎、恋爱、都市、写实',background:'现代都市，一晃眼你已经成了一名苦逼加班人了。所有的疲惫——生理上和心理上的，压得你喘不过来气。而这时搬到你隔壁的新邻居，似乎改变了这一切……',identity:'你是普通上班族，每天加班到十一二点才能回家，前途一片死灰。汐雨是刚刚搬到你隔壁的，自称”三好学生“的少女。一场她对你的救赎之战，将在酸甜的恋爱与误会中正式打响。',note:'代入男主，甚至把自己的境遇描写得更苦逼一点效果更佳。',custom:false},{id:'w_demo_7',name:'雪原列车与终点王城',code:'【世界07】',type:'经典、奇幻、旅途群像',background:'永不停息的大雪筑就的国度，永不停歇的车轮滚滚向前。这也许是北境长线列车“白鸢号”最后一次跑完全程。一路上，你将见识到各种奇闻轶事，认识到形形色色的人。一个个充满人情味的故事，经过的一个个充满特色的站点，告示着这趟列车的寿命本不该就这样结束……',identity:'你叫伊莱亚斯，是白鸢号的随车护卫兼路线勘验员，负责巡逻、维持秩序、确认线路安全。汐雨叫阿斯缇雅，是一名看似普通的旅客。她此次随行，似乎是为了完成某种具有厚重意义的使命……',note:'平静、温馨的叙事，细碎故事与人物印象堆砌起来的群像。宏大的故事只是底色，而旅途的意义往往都在这奔波的路上。',custom:false},{id:'w_demo_8',name:'模拟人生：霓虹失格',code:'【世界08】',type:'赛博朋克、合作、战斗爽',background:'这是一个由巨型企业“伊甸协议”统治的赛博都市。城市分为上层商业云带、中层娱乐居住带、下层工业废区与地下黑市，每一层都像不同版本的人生模板。每个市民从出生起都会被分配一套人生脚本，连教育、职业、社交、消费与情绪阈值都被算法规划。然而这背后似乎有什么东西一直在隐瞒着所有人。',identity:'你叫约翰·威克，是替地下中介做脏活的“运行修正员”，枪法一流，擅长战斗。汐雨叫杰丝·维尔，是顶尖黑客，同时身份灵活，擅长近身搏斗。一次巧合的相遇，一场默契的配合。冥冥之中有某种联系的两人在躲避追杀与通缉下找寻真相，以个人英雄主义奏响反抗之歌。',note:'故事充满赛博朋克元素，有充足的动作戏、车戏。突破重重障碍，一路杀穿，一拳打碎这些所谓的条条框框！',custom:false},{id:'w_demo_9',name:'霜冠双国录',code:'【世界09】',type:'对抗、权谋、双国争霸、相爱相杀',background:'大陆北境分立两国：崇尚王权与铁律的阿尔赛恩王国，信奉月冕神谕的维尔哈因圣国。两国隔雪岭对峙百年，边境堡垒、盐铁航道与旧王血统之争让和平始终摇摇欲坠。',identity:'你是阿尔赛恩国王，二十余岁即亲掌军政，擅长法度、兵站与外交威压。汐雨是维尔哈因月冕圣女，兼任圣国执政者，拥有教义解释权与战时调度权。你们两个初期是只闻对方名号的对手，各自发展好自己的国家、稳固与扩张势力，夺取资源。在最终决战时一决高下。',note:'相爱相杀的对抗线故事，不过……在最终决战后，胜者似乎可以对败者做名义上的任何事情，嗯……',custom:false},{id:'w_demo_10',name:'星际色情游乐场',code:'【世界10】',type:'情欲肉爱、重NTR、异种奸',background:'这是一个与外界隔绝的庞大地下色情游乐场，不同身份、不同年龄、甚至跨宇宙不同物种的人相聚于此。游乐场从上到下分为五层，越往下走色情挑战越进阶、玩法越过分。',identity:'身份不变，你们只是参与这次淫荡盛宴的一对情侣。每一天闯关一层，做各种色到发瘟的挑战……每一层的玩法都很有趣哦~',note:'重NTR警告！走出游乐场后，汐雨的身与心，还有哪个是你的……？',custom:false}];root.ggData={memory:readStore(memoryKey,[]),prompts:readStore(promptKey,promptDefaults),worlds:readStore(worldKey,worldDefaults)};var promptGroupAlias={'特殊事件指令':'特化指令','叙述模式指令':'经典指令'};var promptGroupChanged=false;for(var pg=0;pg<root.ggData.prompts.length;pg++){if(promptGroupAlias[root.ggData.prompts[pg].group]){root.ggData.prompts[pg].group=promptGroupAlias[root.ggData.prompts[pg].group];promptGroupChanged=true;}}if(promptGroupChanged){try{localStorage.setItem(promptKey,JSON.stringify(root.ggData.prompts));}catch(e){}}root.ggState={tab:'memory',promptCreateOpen:false,worldMode:'view',worldEditId:'',worldSelectedId:'',promptOpen:{'专用指令':true,'特化指令':false,'经典指令':false,'自定义指令':true}};if(root.ggData.worlds.length&&!root.ggState.worldSelectedId){root.ggState.worldSelectedId=root.ggData.worlds[0].id;}var persistMemory=function(){writeStore(memoryKey,root.ggData.memory);};var persistPrompts=function(){writeStore(promptKey,root.ggData.prompts);};var persistWorlds=function(){writeStore(worldKey,root.ggData.worlds);};var applyButtonStyles=function(){root.style.right='0';root.style.top='50%';root.style.transform='translateY(-50%)';var shell=q('.gg-side-shell');var ball=q('.gg-side-ball');var panel=q('.gg-side-panel');if(shell){shell.style.width=root.classList.contains('is-open')?'var(--ggsb-panel-w)':'37px';shell.style.minHeight=root.classList.contains('is-open')?'calc(var(--ggsb-panel-h) * .72)':'74px';shell.style.overflow='visible';}if(ball){ball.style.width='37px';ball.style.height='74px';ball.style.right='0';ball.style.top='50%';ball.style.transform='translateY(-50%)';ball.style.borderRadius='18px 0 0 18px';var txt=q('.gg-side-ball-text',ball);if(txt)txt.style.display='none';var ico=q('.gg-side-ball-icon',ball);if(ico)ico.style.fontSize='18px';}if(panel){panel.style.borderTopRightRadius='0';panel.style.borderBottomRightRadius='0';}};var getById=function(list,id){for(var i=0;i<list.length;i++){if(list[i].id===id)return list[i];}return null;};var addInfoBox=function(parent,label,value,wide){var box=make('div','gg-side-info'+(wide?' gg-side-info-wide':''));box.appendChild(make('div','gg-side-info-label',label));box.appendChild(make('div','gg-side-info-value',safe(value,'-')));parent.appendChild(box);};var addFormField=function(parent,label,key,val,multi,wide){var item=make('label','gg-side-form-item'+(wide?' gg-side-form-item-wide':''));item.appendChild(make('span','gg-side-form-label',label));var input=document.createElement(multi?'textarea':'input');input.className='gg-side-input';input.setAttribute('data-key',key);if(multi){input.setAttribute('rows','3');}else{input.type='text';}input.value=safe(val,'');item.appendChild(input);parent.appendChild(item);return input;};var switchTab=function(name){root.ggState.tab=name;var tabs=qa('.gg-side-tab',root),views=qa('.gg-side-view',root);for(var i=0;i<tabs.length;i++){tabs[i].classList.toggle('is-active',tabs[i].getAttribute('data-tab')===name);}for(var j=0;j<views.length;j++){views[j].classList.toggle('is-active',views[j].getAttribute('data-view')===name);}syncNotice();};var ensureNotePlacement=function(){var note=getNoteBox();var memoryView=q('[data-view=memory]',root);if(note&&memoryView&&note.parentNode!==memoryView){var toolbar=q('.gg-side-toolbar',memoryView);if(toolbar&&toolbar.nextSibling){memoryView.insertBefore(note,toolbar.nextSibling);}else{memoryView.appendChild(note);}}syncNotice();};var ensureWorldLayout=function(){var worldView=q('[data-view=world]',root);if(!worldView)return;var layout=q('.gg-side-world-layout',worldView);if(!layout){layout=make('div','gg-side-world-layout');worldView.appendChild(layout);}var presetWrap=q('[data-list=world-preset]',worldView);var customWrap=q('[data-list=world-custom]',worldView);var detail=q('[data-detail=world]',worldView);if(!presetWrap||!customWrap||!detail){clearNode(layout);var side=make('div','gg-side-world-side');var presetPane=make('div','gg-side-world-pane');var presetToolbar=make('div','gg-side-toolbar');presetToolbar.appendChild(make('span','gg-side-toolbar-title','预设世界'));presetPane.appendChild(presetToolbar);presetWrap=make('div','gg-side-world-strip');presetWrap.setAttribute('data-list','world-preset');presetPane.appendChild(presetWrap);var customPane=make('div','gg-side-world-pane');var customToolbar=make('div','gg-side-toolbar');customToolbar.appendChild(make('span','gg-side-toolbar-title','自定义世界'));var addBtn=make('button','gg-side-btn gg-side-btn-add');addBtn.type='button';addBtn.setAttribute('data-action','new-world');addBtn.appendChild(make('span','','新增世界'));customToolbar.appendChild(addBtn);customPane.appendChild(customToolbar);customWrap=make('div','gg-side-world-strip');customWrap.setAttribute('data-list','world-custom');customPane.appendChild(customWrap);side.appendChild(presetPane);side.appendChild(customPane);detail=make('div','gg-side-world-detail');detail.setAttribute('data-detail','world');detail.appendChild(make('div','gg-side-empty','选择一个世界查看简介，或在左侧新增一个自定义世界。'));layout.appendChild(side);layout.appendChild(detail);}var isMobile=window.innerWidth<=768;var sideWrap=q('.gg-side-world-side',worldView);var panes=qa('.gg-side-world-pane',worldView);var strips=qa('.gg-side-world-strip',worldView);layout.style.display='grid';layout.style.gap='10px';layout.style.height='100%';layout.style.minHeight=isMobile?'560px':'520px';layout.style.gridTemplateColumns=isMobile?'1fr':'220px minmax(0,1fr)';layout.style.gridTemplateRows=isMobile?'92px 92px minmax(0,1fr)':'none';if(sideWrap){if(isMobile){sideWrap.style.display='contents';sideWrap.style.gridTemplateRows='';}else{sideWrap.style.display='grid';sideWrap.style.gridTemplateRows='minmax(0,1fr) minmax(0,1fr)';sideWrap.style.gap='10px';sideWrap.style.minWidth='0';sideWrap.style.minHeight='0';}}for(var i=0;i<panes.length;i++){panes[i].style.minWidth='0';panes[i].style.minHeight='0';panes[i].style.display='flex';panes[i].style.flexDirection='column';panes[i].style.border='1px solid var(--ggsb-line)';panes[i].style.borderRadius='16px';panes[i].style.background='linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015))';panes[i].style.overflow='hidden';}for(var j=0;j<strips.length;j++){strips[j].style.minWidth='0';strips[j].style.minHeight='0';strips[j].style.flex='1';strips[j].style.display='flex';strips[j].style.gap='8px';strips[j].style.padding=isMobile?'8px 10px 10px':'10px';strips[j].style.overflowX=isMobile?'auto':'hidden';strips[j].style.overflowY=isMobile?'hidden':'auto';strips[j].style.flexDirection=isMobile?'row':'column';strips[j].style.alignItems=isMobile?'stretch':'';}var detailBox=q('[data-detail=world]',worldView);if(detailBox){detailBox.style.minWidth='0';detailBox.style.minHeight='0';detailBox.style.height='100%';detailBox.style.overflow='auto';detailBox.style.border='1px solid rgba(243,168,255,.18)';detailBox.style.borderRadius='16px';detailBox.style.background='radial-gradient(circle at top right,rgba(243,168,255,.10),transparent 24%),radial-gradient(circle at bottom left,rgba(139,230,255,.08),transparent 26%),linear-gradient(180deg,rgba(31,16,46,.96),rgba(17,10,29,.98))';detailBox.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,.03),0 10px 24px rgba(0,0,0,.22)';}};var buildMemoryText=function(item){var parts=[];parts.push('请重新调取并牢记以下事件，不要遗忘。');parts.push('事件标题：'+safe(item.title,'未命名事件'));parts.push('事件状态：'+safe(item.status,'待整理'));parts.push('事件阶段：'+safe(item.progress,'无'));parts.push('事件概述：'+safe(item.summary,'无'));parts.push('参与角色：'+safe(item.actors,'无'));parts.push('关键线索：'+safe(item.clues,'无'));if(safe(item.raw,'')){parts.push('原始事件块：'+item.raw);}parts.push('请把这段内容视为后续角色扮演与剧情推演的重要连续记忆。');return parts.join('\\n');};var normalizeMemory=function(item){return{id:item.id||uid('mem'),title:safe(item.title,'未命名事件'),status:safe(item.status,'待整理'),summary:safe(item.summary,''),actors:safe(item.actors,''),clues:safe(item.clues,''),progress:safe(item.progress,''),preview:safe(item.preview,item.summary),raw:safe(item.raw,'')};};var parseMemoryEvent=function(btn){var box=closest(btn,'.gg-memory-event');if(!box)return null;var item={title:'',status:'',summary:'',actors:'',clues:'',progress:'',preview:'',raw:''};var title=q('.gg-memory-event-title',box),meta=q('.gg-memory-event-meta',box),preview=q('.gg-memory-event-preview',box),raw=q('.gg-memory-raw',box);item.title=title?title.textContent:'';item.status=meta?meta.textContent.replace(/^状态[:：]\\s*/,''):'';item.preview=preview?preview.textContent.replace(/点击右侧星形按钮保存事件/g,'').replace(/^\\s+|\\s+$/g,''):'';item.raw=raw?raw.textContent.replace(/点击右侧星形按钮保存事件/g,'').replace(/^\\s+|\\s+$/g,''):'';var infos=qa('.gg-memory-item',box);for(var i=0;i<infos.length;i++){var label=q('.gg-memory-label',infos[i]),value=q('.gg-memory-value',infos[i]);var lk=label?label.textContent:'',vv=value?value.textContent:'';if(lk==='事件状态'){item.status=vv;}else if(lk==='事件阶段'||lk==='当前阶段 / 待推进点'){item.progress=vv;}else if(lk==='事件概述'){item.summary=vv;}else if(lk==='参与角色'){item.actors=vv;}else if(lk==='关键线索'){item.clues=vv;}}return normalizeMemory(item);};var saveMemoryFromEvent=function(btn){var item=parseMemoryEvent(btn);if(!item)return;var list=root.ggData.memory,found=null;for(var i=0;i<list.length;i++){if(item.raw&&list[i].raw&&list[i].raw===item.raw){found=list[i];break;}if(!item.raw&&list[i].title===item.title&&list[i].summary===item.summary){found=list[i];break;}}if(found){found.title=item.title;found.status=item.status;found.summary=item.summary;found.actors=item.actors;found.clues=item.clues;found.progress=item.progress;found.preview=item.preview;found.raw=item.raw;showNote('该事件已更新到存储器。');}else{item._open=false;list.unshift(item);showNote('已将事件收入存储器。');}persistMemory();renderMemory();root.classList.add('is-open');applyButtonStyles();switchTab('memory');};var renderMemory=function(){var wrap=q('[data-list=memory]');if(!wrap)return;clearNode(wrap);if(!root.ggData.memory.length){wrap.appendChild(make('div','gg-side-empty','暂时还没有保存事件。你可以直接点记忆区事件右上角的 ✦ 收纳，或之后再手动扩展。'));return;}for(var i=0;i<root.ggData.memory.length;i++){(function(item){if(typeof item._open==='undefined'){item._open=false;}var card=make('div','gg-side-card gg-side-memory-card'+(item._open?'':' is-collapsed'));var head=make('div','gg-side-card-head');head.style.padding='0';head.style.background='none';head.style.borderBottom='none';var toggle=make('button','gg-side-memory-toggle');toggle.type='button';toggle.style.width='100%';toggle.style.display='flex';toggle.style.alignItems='flex-start';toggle.style.justifyContent='space-between';toggle.style.gap='10px';toggle.style.padding='10px 11px 8px';toggle.style.border='none';toggle.style.background='rgba(255,255,255,.03)';toggle.style.color='inherit';toggle.style.textAlign='left';toggle.style.cursor='pointer';var copy=make('div','gg-side-card-copy');copy.appendChild(make('div','gg-side-card-title',item.title));copy.appendChild(make('div','gg-side-card-meta','状态：'+safe(item.status,'待整理')));copy.appendChild(make('div','gg-side-card-preview',safe(item.preview,item.summary)));var arrow=make('span','gg-side-memory-arrow',item._open?'▼':'▶');arrow.style.flexShrink='0';arrow.style.width='18px';arrow.style.height='18px';arrow.style.display='inline-flex';arrow.style.alignItems='center';arrow.style.justifyContent='center';arrow.style.color='var(--ggsb-text-soft)';toggle.appendChild(copy);toggle.appendChild(arrow);toggle.onclick=function(ev){ev.stopPropagation();item._open=!item._open;renderMemory();};head.appendChild(toggle);card.appendChild(head);var body=make('div','gg-side-card-body');body.style.display=item._open||item._editing?'block':'none';if(item._editing){item._open=true;var form=make('div','gg-side-form');addFormField(form,'事件标题','title',item.title,false,false);addFormField(form,'事件状态','status',item.status,false,false);addFormField(form,'事件阶段','progress',item.progress,false,true);addFormField(form,'事件概述','summary',item.summary,true,true);addFormField(form,'参与角色','actors',item.actors,true,true);addFormField(form,'关键线索','clues',item.clues,true,true);body.appendChild(form);var acts=make('div','gg-side-actions');var cancelBtn=make('button','gg-side-btn');cancelBtn.type='button';cancelBtn.appendChild(make('span','','取消'));cancelBtn.onclick=function(ev){ev.stopPropagation();delete item._editing;renderMemory();};var saveBtn=make('button','gg-side-btn gg-side-btn-main');saveBtn.type='button';saveBtn.appendChild(make('span','','保存'));saveBtn.onclick=function(ev){ev.stopPropagation();var inputs=qa('[data-key]',form);for(var k=0;k<inputs.length;k++){item[inputs[k].getAttribute('data-key')]=safe(inputs[k].value,'');}item.preview=safe(item.summary,'');delete item._editing;persistMemory();renderMemory();showNote('事件已保存。');};acts.appendChild(cancelBtn);acts.appendChild(saveBtn);body.appendChild(acts);}else{var grid=make('div','gg-side-grid');addInfoBox(grid,'事件状态',item.status,false);addInfoBox(grid,'事件阶段',item.progress,false);addInfoBox(grid,'事件概述',item.summary,true);addInfoBox(grid,'参与角色',item.actors,true);addInfoBox(grid,'关键线索',item.clues,true);body.appendChild(grid);var acts2=make('div','gg-side-actions');var sendBtn=make('button','gg-side-btn gg-side-btn-main');sendBtn.type='button';sendBtn.appendChild(make('span','','发送'));sendBtn.onclick=function(ev){ev.stopPropagation();setTextareaValue(buildMemoryText(item));};var editBtn=make('button','gg-side-btn');editBtn.type='button';editBtn.appendChild(make('span','','编辑'));editBtn.onclick=function(ev){ev.stopPropagation();item._editing='1';item._open=true;renderMemory();};var delBtn=make('button','gg-side-btn gg-side-btn-danger');delBtn.type='button';delBtn.appendChild(make('span','','删除'));delBtn.onclick=function(ev){ev.stopPropagation();for(var n=0;n<root.ggData.memory.length;n++){if(root.ggData.memory[n].id===item.id){root.ggData.memory.splice(n,1);break;}}persistMemory();renderMemory();showNote('事件已删除。');};acts2.appendChild(sendBtn);acts2.appendChild(editBtn);acts2.appendChild(delBtn);body.appendChild(acts2);}card.appendChild(body);wrap.appendChild(card);})(root.ggData.memory[i]);}};var groupOrder=['专用指令','特化指令','经典指令','自定义指令'];var renderPrompts=function(){var wrap=q('[data-list=prompt]');if(!wrap)return;clearNode(wrap);for(var g=0;g<groupOrder.length;g++){(function(groupName){var isOpen=root.ggState.promptOpen[groupName]!==false;var section=make('div','gg-side-section');var head=make('div','gg-side-section-head');var toggle=make('button','gg-side-btn');toggle.type='button';toggle.style.flex='1';toggle.style.justifyContent='space-between';toggle.style.borderRadius='12px';toggle.style.padding='10px 12px';toggle.style.background='rgba(255,255,255,.03)';var left=make('span','');left.style.display='flex';left.style.flexDirection='column';left.style.alignItems='flex-start';left.appendChild(make('span','gg-side-section-title',groupName));left.appendChild(make('span','gg-side-section-sub',groupName==='自定义指令'?'可新增、编辑、删除你的指令。':'指令点发送即可注入输入框。'));var arrow=make('span','',isOpen?'▼':'▶');toggle.appendChild(left);toggle.appendChild(arrow);toggle.onclick=function(ev){ev.stopPropagation();root.ggState.promptOpen[groupName]=!(root.ggState.promptOpen[groupName]!==false);renderPrompts();};head.appendChild(toggle);if(groupName==='自定义指令'){var addBtn=make('button','gg-side-btn gg-side-btn-add');addBtn.type='button';addBtn.appendChild(make('span','',root.ggState.promptCreateOpen?'收起新建':'新增自定义'));addBtn.onclick=function(ev){ev.stopPropagation();root.ggState.promptCreateOpen=!root.ggState.promptCreateOpen;if(root.ggState.promptOpen[groupName]===false)root.ggState.promptOpen[groupName]=true;renderPrompts();};head.appendChild(addBtn);}section.appendChild(head);var body=make('div','gg-side-section-body');body.style.display=isOpen?'flex':'none';var list=[];for(var i=0;i<root.ggData.prompts.length;i++){if(root.ggData.prompts[i].group===groupName)list.push(root.ggData.prompts[i]);}if(!list.length&&groupName!=='自定义指令'){body.appendChild(make('div','gg-side-empty','这一类目前没有指令。'));}for(var j=0;j<list.length;j++){(function(item){var card;if(item._editing){card=make('div','gg-side-mini-card');var form=make('div','gg-side-form');addFormField(form,'指令名字','name',item.name,false,true);addFormField(form,'指令内容','content',item.content,true,true);card.appendChild(form);var acts=make('div','gg-side-actions');var cancelBtn=make('button','gg-side-btn');cancelBtn.type='button';cancelBtn.appendChild(make('span','','取消'));cancelBtn.onclick=function(ev){ev.stopPropagation();delete item._editing;renderPrompts();};var saveBtn=make('button','gg-side-btn gg-side-btn-main');saveBtn.type='button';saveBtn.appendChild(make('span','','保存'));saveBtn.onclick=function(ev){ev.stopPropagation();var inputs=qa('[data-key]',form);for(var p=0;p<inputs.length;p++){item[inputs[p].getAttribute('data-key')]=safe(inputs[p].value,'');}delete item._editing;persistPrompts();renderPrompts();showNote('指令已保存。');};acts.appendChild(cancelBtn);acts.appendChild(saveBtn);card.appendChild(acts);}else{card=make('div','gg-side-mini-card gg-side-mini-pill');card.appendChild(make('div','gg-side-mini-title',item.name));var acts2=make('div','gg-side-actions');var sendBtn=make('button','gg-side-btn gg-side-btn-main');sendBtn.type='button';sendBtn.appendChild(make('span','','发送'));sendBtn.onclick=function(ev){ev.stopPropagation();setTextareaValue(item.content);};var editBtn=make('button','gg-side-btn');editBtn.type='button';editBtn.appendChild(make('span','','编辑'));editBtn.onclick=function(ev){ev.stopPropagation();item._editing='1';if(root.ggState.promptOpen[groupName]===false)root.ggState.promptOpen[groupName]=true;renderPrompts();};acts2.appendChild(sendBtn);acts2.appendChild(editBtn);if(item.group==='自定义指令'){var delBtn=make('button','gg-side-btn gg-side-btn-danger');delBtn.type='button';delBtn.appendChild(make('span','','删除'));delBtn.onclick=function(ev){ev.stopPropagation();for(var n=0;n<root.ggData.prompts.length;n++){if(root.ggData.prompts[n].id===item.id){root.ggData.prompts.splice(n,1);break;}}persistPrompts();renderPrompts();showNote('自定义指令已删除。');};acts2.appendChild(delBtn);}card.appendChild(acts2);}body.appendChild(card);})(list[j]);}if(groupName==='自定义指令'&&root.ggState.promptCreateOpen){var createCard=make('div','gg-side-mini-card');var cform=make('div','gg-side-form');addFormField(cform,'指令名字','name','',false,true);addFormField(cform,'指令内容','content','',true,true);createCard.appendChild(cform);var cacts=make('div','gg-side-actions');var ccancel=make('button','gg-side-btn');ccancel.type='button';ccancel.appendChild(make('span','','取消'));ccancel.onclick=function(ev){ev.stopPropagation();root.ggState.promptCreateOpen=false;renderPrompts();};var csave=make('button','gg-side-btn gg-side-btn-main');csave.type='button';csave.appendChild(make('span','','加入自定义'));csave.onclick=function(ev){ev.stopPropagation();var name='',content='';var inputs=qa('[data-key]',cform);for(var x=0;x<inputs.length;x++){var key=inputs[x].getAttribute('data-key');if(key==='name')name=safe(inputs[x].value,'');if(key==='content')content=safe(inputs[x].value,'');}if(!name||!content){showNote('请填写完整的指令名字和内容。');return;}root.ggData.prompts.push({id:uid('prompt'),group:'自定义指令',name:name,content:content});persistPrompts();root.ggState.promptCreateOpen=false;root.ggState.promptOpen['自定义指令']=true;renderPrompts();showNote('已加入自定义指令。');};cacts.appendChild(ccancel);cacts.appendChild(csave);createCard.appendChild(cacts);body.appendChild(createCard);}section.appendChild(body);wrap.appendChild(section);})(groupOrder[g]);}};var buildWorldText=function(item){var parts=[],worldCode='';parts.push('下一次轮回我想指定进入以下世界进行游玩，请按这个世界开局：');parts.push('世界名：'+safe(item.name,'未命名世界'));if(item.custom){parts.push('背景：'+prettyText(item.background,'无'));parts.push('主角身份：'+prettyText(item.identity,'无'));parts.push('配角介绍：'+prettyText(item.support,'无'));parts.push('主线任务：'+prettyText(item.mainTask,'无'));parts.push('补充说明：'+prettyText(item.note,'无'));}else{worldCode=safe(item.code,'未设代码');if(worldCode!=='未设代码'&&!/[。．｡.!！？?]$/.test(worldCode)){worldCode+='。';}parts.push('世界代码：'+worldCode);parts.push('类型：'+safe(item.type,'未分类'));parts.push('背景：'+prettyText(item.background,'无'));parts.push('主角身份：'+prettyText(item.identity,'无'));parts.push('补充说明：'+prettyText(item.note,'无'));}parts.push('请据此生成新世界的开局观察、身份信息与任务背景。');return parts.join('\\n');};var renderWorldDetail=function(){var box=q('[data-detail=world]');if(!box)return;clearNode(box);box.scrollTop=0;box.style.minWidth='0';box.style.minHeight='0';box.style.height='100%';box.style.overflow='auto';box.style.border='1px solid rgba(243,168,255,.18)';box.style.borderRadius='16px';box.style.background='radial-gradient(circle at top right,rgba(243,168,255,.10),transparent 24%),radial-gradient(circle at bottom left,rgba(139,230,255,.08),transparent 26%),linear-gradient(180deg,rgba(31,16,46,.96),rgba(17,10,29,.98))';box.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,.03),0 10px 24px rgba(0,0,0,.22)';var addWorldBlock=function(parent,label,text){var block=make('div','gg-side-info gg-side-info-wide');block.style.marginTop='10px';block.style.padding='10px 12px';var lb=make('div','gg-side-info-label',label);var tx=make('div','gg-side-info-value',prettyText(text,'无'));tx.style.lineHeight='1.68';block.appendChild(lb);block.appendChild(tx);parent.appendChild(block);};if(root.ggState.worldMode==='create'||root.ggState.worldMode==='edit'){var editing=root.ggState.worldMode==='edit'?getById(root.ggData.worlds,root.ggState.worldEditId):null;var title=make('div','gg-side-detail-title',root.ggState.worldMode==='create'?'新增自定义世界':'编辑世界');box.appendChild(title);box.appendChild(make('div','gg-side-pill',root.ggState.worldMode==='create'?'创建模式':'编辑模式'));var form=make('div','gg-side-form');addFormField(form,'世界名','name',editing?editing.name:'',false,true);addFormField(form,'世界类型','type',editing?editing.type:'自定义',false,false);addFormField(form,'背景','background',editing?editing.background:'',true,true);addFormField(form,'主角身份','identity',editing?editing.identity:'',true,true);addFormField(form,'配角介绍','support',editing?editing.support:'',true,true);addFormField(form,'主线任务','mainTask',editing?editing.mainTask:'',true,true);addFormField(form,'补充说明','note',editing?editing.note:'',true,true);box.appendChild(form);var acts=make('div','gg-side-actions');var cancelBtn=make('button','gg-side-btn');cancelBtn.type='button';cancelBtn.appendChild(make('span','','取消'));cancelBtn.onclick=function(ev){ev.stopPropagation();root.ggState.worldMode='view';root.ggState.worldEditId='';renderWorldList();renderWorldDetail();};var saveBtn=make('button','gg-side-btn gg-side-btn-main');saveBtn.type='button';saveBtn.appendChild(make('span','',root.ggState.worldMode==='create'?'加入世界库':'保存修改'));saveBtn.onclick=function(ev){ev.stopPropagation();var vals={name:'',type:'',background:'',identity:'',support:'',mainTask:'',note:''};var inputs=qa('[data-key]',form);for(var i=0;i<inputs.length;i++){vals[inputs[i].getAttribute('data-key')]=safe(inputs[i].value,'');}if(!vals.name||!vals.background){showNote('至少填写世界名和背景。');return;}if(root.ggState.worldMode==='create'){var nw={id:uid('world'),name:vals.name,type:safe(vals.type,'自定义'),background:vals.background,identity:vals.identity,support:vals.support,mainTask:vals.mainTask,note:vals.note,custom:true};root.ggData.worlds.push(nw);root.ggState.worldSelectedId=nw.id;}else if(editing){editing.name=vals.name;editing.type=safe(vals.type,'自定义');editing.background=vals.background;editing.identity=vals.identity;editing.support=vals.support;editing.mainTask=vals.mainTask;editing.note=vals.note;root.ggState.worldSelectedId=editing.id;}persistWorlds();root.ggState.worldMode='view';root.ggState.worldEditId='';renderWorldList();renderWorldDetail();showNote('世界已保存。');};acts.appendChild(cancelBtn);acts.appendChild(saveBtn);box.appendChild(acts);return;}var item=getById(root.ggData.worlds,root.ggState.worldSelectedId);if(!item){box.appendChild(make('div','gg-side-empty','请选择一个世界。'));return;}box.appendChild(make('div','gg-side-detail-title',item.name));box.appendChild(make('div','gg-side-pill',safe(item.type,item.custom?'自定义':'预设世界')));if(item.custom){addWorldBlock(box,'世界类型',item.type);addWorldBlock(box,'背景',item.background);addWorldBlock(box,'主角身份',item.identity);addWorldBlock(box,'配角介绍',item.support);addWorldBlock(box,'主线任务',item.mainTask);addWorldBlock(box,'补充说明',item.note);}else{
+addWorldBlock(box,'世界代码',item.code);addWorldBlock(box,'类型',item.type);addWorldBlock(box,'背景',item.background);addWorldBlock(box,'主角身份',item.identity);addWorldBlock(box,'补充说明',item.note);}box.appendChild(make('div','gg-side-divider',''));var acts2=make('div','gg-side-actions');var sendBtn=make('button','gg-side-btn gg-side-btn-main');sendBtn.type='button';sendBtn.appendChild(make('span','','发送指定世界'));sendBtn.onclick=function(ev){ev.stopPropagation();setTextareaValue(buildWorldText(item));};var editBtn=make('button','gg-side-btn');editBtn.type='button';editBtn.appendChild(make('span','','编辑'));editBtn.onclick=function(ev){ev.stopPropagation();root.ggState.worldMode='edit';root.ggState.worldEditId=item.id;renderWorldDetail();};acts2.appendChild(sendBtn);acts2.appendChild(editBtn);if(item.custom){var delBtn=make('button','gg-side-btn gg-side-btn-danger');delBtn.type='button';delBtn.appendChild(make('span','','删除'));delBtn.onclick=function(ev){ev.stopPropagation();for(var d=0;d<root.ggData.worlds.length;d++){if(root.ggData.worlds[d].id===item.id){root.ggData.worlds.splice(d,1);break;}}root.ggState.worldSelectedId=root.ggData.worlds.length?root.ggData.worlds[0].id:'';persistWorlds();renderWorldList();renderWorldDetail();showNote('自定义世界已删除。');};acts2.appendChild(delBtn);}box.appendChild(acts2);};var renderWorldList=function(){ensureWorldLayout();var presetWrap=q('[data-list=world-preset]');var customWrap=q('[data-list=world-custom]');var newBtn=q('[data-action=new-world]',root);if(!presetWrap||!customWrap)return;clearNode(presetWrap);clearNode(customWrap);for(var i=0;i<root.ggData.worlds.length;i++){if(root.ggData.worlds[i].custom)continue;(function(item){var btn=make('button','gg-side-world-card'+(root.ggState.worldSelectedId===item.id?' is-active':''));btn.type='button';if(window.innerWidth<=768){btn.style.width='170px';btn.style.minWidth='170px';btn.style.flex='0 0 170px';}btn.appendChild(make('span','gg-side-world-name',item.name));btn.appendChild(make('span','gg-side-world-brief','世界代码：'+safe(item.code,'未设代码')));btn.appendChild(make('span','gg-side-world-mark',safe(item.type,'预设世界')));btn.onclick=function(ev){ev.stopPropagation();root.ggState.worldMode='view';root.ggState.worldSelectedId=item.id;renderWorldList();renderWorldDetail();};presetWrap.appendChild(btn);})(root.ggData.worlds[i]);}if(!presetWrap.children.length){presetWrap.appendChild(make('div','gg-side-empty','暂无预设世界。'));}var customCount=0;for(var j=0;j<root.ggData.worlds.length;j++){if(!root.ggData.worlds[j].custom)continue;customCount++;(function(item){var btn=make('button','gg-side-world-card'+(root.ggState.worldSelectedId===item.id?' is-active':''));btn.type='button';if(window.innerWidth<=768){btn.style.width='170px';btn.style.minWidth='170px';btn.style.flex='0 0 170px';}btn.appendChild(make('span','gg-side-world-name',item.name));btn.appendChild(make('span','gg-side-world-mark',safe(item.type,'自定义')));btn.onclick=function(ev){ev.stopPropagation();root.ggState.worldMode='view';root.ggState.worldSelectedId=item.id;renderWorldList();renderWorldDetail();};customWrap.appendChild(btn);})(root.ggData.worlds[j]);}if(!customCount){customWrap.appendChild(make('div','gg-side-empty','这里还没有自定义世界。点击上方“新增世界”即可创建。'));}if(newBtn&&!newBtn.dataset.bound){newBtn.dataset.bound='1';newBtn.addEventListener('click',function(ev){ev.stopPropagation();root.ggState.worldMode='create';root.ggState.worldEditId='';renderWorldDetail();});}};ensureNotePlacement();var tabs=qa('.gg-side-tab',root);for(var t=0;t<tabs.length;t++){tabs[t].addEventListener('click',function(ev){ev.stopPropagation();switchTab(this.getAttribute('data-tab'));});}var closeBtn=q('[data-action=close]',root);if(closeBtn){closeBtn.addEventListener('click',function(ev){ev.stopPropagation();root.classList.remove('is-open');applyButtonStyles();});}var openBtn=q('.gg-side-ball',root);if(openBtn){openBtn.addEventListener('click',function(){setTimeout(applyButtonStyles,0);});}var clearMemoryBtn=q('[data-action=clear-memory]',root);if(clearMemoryBtn){clearMemoryBtn.addEventListener('click',function(ev){ev.stopPropagation();root.ggData.memory=[];persistMemory();renderMemory();showNote('事件存储器已清空。');});}if(!window.ggSideMemoryCaptureBound){document.addEventListener('click',function(ev){var btn=closest(ev.target,'.gg-memory-pin[data-action=save-memory-event]');if(btn){var side=document.querySelector('.gg-side-float');if(side&&side.dataset.booted==='1'&&side!==btn&&side.ggSaveMemoryFromEvent){side.ggSaveMemoryFromEvent(btn);}}},true);window.ggSideMemoryCaptureBound='1';}root.ggSaveMemoryFromEvent=saveMemoryFromEvent;root.ggApplyWorldLayout=function(){ensureWorldLayout();renderWorldList();renderWorldDetail();applyButtonStyles();};if(!window.ggSideResizeBound){window.addEventListener('resize',function(){var side=document.querySelector('.gg-side-float');if(side&&side.ggApplyWorldLayout){side.ggApplyWorldLayout();}});window.ggSideResizeBound='1';}applyButtonStyles();renderMemory();renderPrompts();ensureWorldLayout();renderWorldList();renderWorldDetail();switchTab('memory');try{img.remove();}catch(e){}})(this)"></div></div>
+
+

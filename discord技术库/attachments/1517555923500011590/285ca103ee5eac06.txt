@@ -1,0 +1,87 @@
+上下暂停
+<style>
+  #scroll_final_1719829000000 {
+    position: fixed;
+    right: 12px;
+    bottom: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+  }
+  .scroll-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 300;
+    font-family: "Noto Serif JP", "游明朝", "Times New Roman", serif;
+    transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+    box-shadow: 0 4px 10px rgba(190, 200, 210, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border: 1.5px solid rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.5px;
+    user-select: none;
+  }
+  .scroll-btn.btn-up {
+    background: linear-gradient(145deg, rgba(248, 214, 226, 0.7), rgba(252, 249, 251, 0.5)) !important;
+    color: #8A6E7A !important;
+  }
+  .scroll-btn.btn-down {
+    background: linear-gradient(145deg, rgba(212, 231, 248, 0.7), rgba(252, 249, 251, 0.5)) !important;
+    color: #6E8A9A !important;
+  }
+  .scroll-btn.btn-pause {
+    background: linear-gradient(145deg, rgba(230, 218, 242, 0.7), rgba(252, 249, 251, 0.5)) !important;
+    color: #8A7A9A !important;
+    font-size: 14px;
+    letter-spacing: -1px;
+  }
+  .scroll-btn.btn-pause.paused {
+    background: linear-gradient(145deg, rgba(216, 196, 234, 0.85), rgba(242, 235, 248, 0.6)) !important;
+    color: #6E5A82 !important;
+    box-shadow: 0 4px 14px rgba(180, 160, 210, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .scroll-btn:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 8px 16px rgba(190, 200, 210, 0.35), inset 0 1px 0 #FFFFFF;
+    border-color: #FFFFFF;
+  }
+  .scroll-btn.btn-up:hover {
+    background: linear-gradient(145deg, rgba(248, 214, 226, 0.85), rgba(255, 255, 255, 0.6)) !important;
+  }
+  .scroll-btn.btn-down:hover {
+    background: linear-gradient(145deg, rgba(212, 231, 248, 0.85), rgba(255, 255, 255, 0.6)) !important;
+  }
+  .scroll-btn.btn-pause:hover {
+    background: linear-gradient(145deg, rgba(230, 218, 242, 0.85), rgba(255, 255, 255, 0.6)) !important;
+  }
+  .scroll-btn.btn-pause.paused:hover {
+    background: linear-gradient(145deg, rgba(216, 196, 234, 0.95), rgba(242, 235, 248, 0.7)) !important;
+  }
+  .scroll-btn:active {
+    transition: transform 0.08s ease;
+    transform: scale(0.92);
+    box-shadow: 0 2px 6px rgba(190, 200, 210, 0.3), inset 0 1px 2px #FFFFFF;
+  }
+  @media (max-width: 480px) {
+    #scroll_final_1719829000000 { right: 10px; gap: 7px; }
+    .scroll-btn { width: 32px; height: 32px; font-size: 18px; }
+    .scroll-btn.btn-pause { font-size: 12px; }
+  }
+  @media (min-width: 481px) and (max-width: 1024px) {
+    #scroll_final_1719829000000 { right: 14px; }
+  }
+</style>
+<div id="scroll_final_1719829000000" onclick="event.stopPropagation()">
+  <div class="scroll-btn btn-up" onclick="var list=document.querySelectorAll('*');var max=0;var tgt=null;for(var i=0;i&lt;list.length;i++){var e=list[i];if(e.scrollHeight&gt;e.clientHeight&amp;&amp;(getComputedStyle(e).overflowY==='auto'||getComputedStyle(e).overflowY==='scroll')){var area=e.clientWidth*e.clientHeight;if(area&gt;max){max=area;tgt=e;}}}if(tgt)tgt.scrollTo({top:0,behavior:'smooth'});else window.scrollTo({top:0,behavior:'smooth'});this.parentNode.querySelector('.btn-pause').classList.remove('paused');">▲</div>
+  <div class="scroll-btn btn-pause" onclick="var list=document.querySelectorAll('*');var max=0;var tgt=null;for(var i=0;i&lt;list.length;i++){var e=list[i];if(e.scrollHeight&gt;e.clientHeight&amp;&amp;(getComputedStyle(e).overflowY==='auto'||getComputedStyle(e).overflowY==='scroll')){var area=e.clientWidth*e.clientHeight;if(area&gt;max){max=area;tgt=e;}}}if(tgt)tgt.scrollTo({top:tgt.scrollTop,behavior:'auto'});window.scrollTo({top:window.scrollY,behavior:'auto'});this.classList.toggle('paused');">❚❚</div>
+  <div class="scroll-btn btn-down" onclick="var list=document.querySelectorAll('*');var max=0;var tgt=null;for(var i=0;i&lt;list.length;i++){var e=list[i];if(e.scrollHeight&gt;e.clientHeight&amp;&amp;(getComputedStyle(e).overflowY==='auto'||getComputedStyle(e).overflowY==='scroll')){var area=e.clientWidth*e.clientHeight;if(area&gt;max){max=area;tgt=e;}}}if(tgt)tgt.scrollTo({top:tgt.scrollHeight,behavior:'smooth'});else window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});this.parentNode.querySelector('.btn-pause').classList.remove('paused');">▼</div>
+</div>
+

@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>宣读卡片 · 翻页编辑器</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+  background:#0a0f18;color:#c5d6e8;
+  display:flex;flex-direction:column
+}
+
+/* ===== top tab bar ===== */
+.tab-bar{
+  display:flex;flex-shrink:0;
+  background:#0d1322;border-bottom:1px solid rgba(86,216,255,.12)
+}
+.tab-bar .tab{
+  flex:1;text-align:center;padding:11px 0;font-size:13px;font-weight:600;
+  letter-spacing:1px;cursor:pointer;
+  font-family:"SF Mono","Consolas",monospace;
+  color:#5f7e9c;border-bottom:2px solid transparent;
+  transition:all .2s
+}
+.tab-bar .tab.active{
+  color:#56d8ff;border-bottom-color:#56d8ff;
+  text-shadow:0 0 10px rgba(86,216,255,.4)
+}
+.tab-bar .tab .badge-tab{
+  font-size:10px;background:rgba(86,216,255,.15);padding:1px 7px;border-radius:8px;
+  margin-left:4px;font-weight:400
+}
+
+/* ===== tab panels ===== */
+.tab-content{flex:1;overflow:hidden;position:relative}
+.tab-panel{
+  position:absolute;inset:0;overflow-y:auto;display:none;
+  flex-direction:column
+}
+.tab-panel.active{display:flex}
+
+/* ===== EDIT TAB ===== */
+.edit-panel{
+  background:#0d1322;padding-bottom:60px
+}
+.edit-section{
+  padding:10px 14px;border-bottom:1px solid rgba(86,216,255,.08)
+}
+.edit-section .sect-label{
+  font-size:10px;color:#4a6a85;letter-spacing:1px;margin-bottom:6px;
+  text-transform:uppercase;display:flex;align-items:center;gap:6px
+}
+.edit-section .sect-label .icon{font-size:13px}
+
+.title-row{display:flex;align-items:center;gap:8px}
+.title-row label{font-size:10px;color:#6a8ba0;letter-spacing:.5px;white-space:nowrap}
+.title-row input[type="text"]{
+  flex:1;background:#060b14;color:#bfe6ff;border:1px solid rgba(86,216,255,.2);border-radius:5px;
+  padding:8px 10px;font-size:14px;font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+  outline:none;letter-spacing:2px
+}
+.title-row input[type="text"]:focus{border-color:#56d8ff}
+
+.color-row{display:flex;gap:14px;flex-wrap:wrap}
+.color-item{display:flex;align-items:center;gap:5px}
+.color-item label{font-size:10px;color:#6a8ba0;letter-spacing:.5px;white-space:nowrap}
+.color-item input[type="color"]{
+  -webkit-appearance:none;width:28px;height:22px;border:1px solid rgba(86,216,255,.25);
+  border-radius:4px;background:transparent;cursor:pointer;padding:0
+}
+.color-item input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
+.color-item input[type="color"]::-webkit-color-swatch{border-radius:3px;border:none}
+.color-item .color-hex{
+  font-family:"SF Mono","Consolas",monospace;font-size:9px;color:#5f7e9c;
+  background:rgba(86,216,255,.05);padding:2px 5px;border-radius:3px;width:50px;text-align:center
+}
+
+/* ===== skin presets ===== */
+.skin-grid{display:flex;gap:7px;flex-wrap:wrap}
+.skin-opt{
+  flex:1;min-width:90px;cursor:pointer;border:1px solid rgba(86,216,255,.15);
+  border-radius:7px;padding:7px 6px;transition:all .2s;background:rgba(86,216,255,.03);
+  display:flex;align-items:center;gap:7px
+}
+.skin-opt:hover{border-color:rgba(86,216,255,.35);background:rgba(86,216,255,.08)}
+.skin-opt.on{border-color:#56d8ff;background:rgba(86,216,255,.12);box-shadow:0 0 0 1px #56d8ff inset}
+.skin-opt .swatch{display:flex;gap:0;border-radius:4px;overflow:hidden;flex:0 0 auto}
+.skin-opt .swatch span{width:8px;height:22px}
+.skin-opt .nm{
+  font-size:11px;font-weight:700;color:#bfe6ff;letter-spacing:1px;
+  font-family:"SF Mono","Consolas",monospace
+}
+.skin-opt .nm small{display:block;font-size:9px;font-weight:400;color:#5f7e9c;letter-spacing:0}
+
+.page-hint{
+  font-size:10px;color:#4a6a85;margin-bottom:4px
+}
+.page-hint code{
+  font-family:"SF Mono","Consolas",monospace;color:#56d8ff;background:rgba(86,216,255,.08);
+  padding:1px 5px;border-radius:3px;font-size:9px
+}
+
+/* per-page image rows */
+.page-img-row{
+  display:flex;gap:5px;align-items:center;margin-bottom:4px;flex-wrap:wrap
+}
+.page-img-row .page-num{
+  font-family:"SF Mono","Consolas",monospace;font-size:9px;color:#5f7e9c;
+  background:rgba(86,216,255,.08);padding:3px 7px;border-radius:3px;min-width:34px;text-align:center
+}
+.page-img-row input[type="text"]{
+  flex:1;min-width:100px;background:#060b14;color:#aebfd0;
+  border:1px solid rgba(86,216,255,.12);border-radius:4px;
+  padding:6px 8px;font-size:10px;font-family:"SF Mono","Consolas",monospace;
+  outline:none
+}
+.page-img-row input[type="text"]:focus{border-color:#56d8ff}
+.page-img-row input[type="text"]::placeholder{color:#3a4d5e}
+.page-img-row select{
+  background:#060b14;color:#56d8ff;border:1px solid rgba(86,216,255,.2);
+  border-radius:4px;padding:6px;font-size:10px;outline:none;font-family:"SF Mono","Consolas",monospace
+}
+.page-img-row .btn-remove{
+  background:rgba(255,70,70,.1);color:#ff5e5e;border:1px solid rgba(255,70,70,.2);
+  border-radius:4px;padding:4px 9px;font-size:10px;cursor:pointer;font-family:"SF Mono","Consolas",monospace
+}
+.page-img-row .btn-remove:hover{background:rgba(255,70,70,.2)}
+
+/* live preview inline (颜色区下方内嵌，改色改文即时变) */
+.live-embed{
+  margin:14px 0 0;border:1px solid rgba(86,216,255,.18);border-radius:11px;
+  background:#060b14;overflow:hidden;
+}
+.live-embed-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 12px;background:rgba(86,216,255,.05);
+  border-bottom:1px solid rgba(86,216,255,.1);
+  font-size:10px;color:#5f7e9c;letter-spacing:1px;
+  font-family:"SF Mono","Consolas",monospace
+}
+.live-embed-head .dot{color:#56d8ff}
+.live-embed-head .pgs{display:flex;gap:3px}
+.live-embed-head .pg-mini{
+  width:20px;height:18px;border:1px solid rgba(86,216,255,.2);border-radius:4px;
+  background:rgba(86,216,255,.06);color:#5f7e9c;font-size:9px;cursor:pointer;
+  display:grid;place-items:center;font-family:"SF Mono","Consolas",monospace
+}
+.live-embed-head .pg-mini:hover{background:rgba(86,216,255,.18);color:#bfe6ff;border-color:#56d8ff}
+.live-embed-head .pg-mini.on{background:rgba(86,216,255,.25);color:#06141c;border-color:#56d8ff;font-weight:700}
+.live-embed-body{padding:10px;max-height:340px;overflow:auto}
+.live-embed-body .xs-panel{margin:0;max-width:none}
+/* textarea area */
+.textarea-wrap{flex:1;padding:0 14px 14px;display:flex;flex-direction:column}
+.textarea-toolbar{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;
+  padding:7px 9px;border:1px solid rgba(86,216,255,.12);border-radius:8px;
+  background:rgba(86,216,255,.03)
+}
+.tt-hint{font-size:10px;color:#5f7e9c;line-height:1.5;flex:1;min-width:120px}
+.tt-hint b{color:#bfe6ff;font-weight:600}
+.tt-hint code{
+  font-family:"SF Mono","Consolas",monospace;font-size:9px;color:#56d8ff;
+  background:rgba(86,216,255,.1);padding:1px 4px;border-radius:3px
+}
+.tt-btn{
+  font-family:"SF Mono","Consolas",monospace;font-size:10px;font-weight:600;
+  color:#56d8ff;background:rgba(86,216,255,.08);border:1px solid rgba(86,216,255,.25);
+  border-radius:5px;padding:5px 9px;cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:4px
+}
+.tt-btn:hover{background:rgba(86,216,255,.18);border-color:#56d8ff}
+.tt-btn .mark{color:#ff9d3c;font-weight:700}
+.textarea-wrap textarea{
+  flex:1;width:100%;min-height:300px;background:#060b14;color:#aebfd0;
+  border:1px solid rgba(86,216,255,.15);border-radius:9px;padding:14px;
+  font-size:14px;line-height:1.9;font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+  resize:none;outline:none;transition:border-color .2s
+}
+.textarea-wrap textarea:focus{border-color:#56d8ff;box-shadow:0 0 20px rgba(86,216,255,.08)}
+.textarea-wrap .char-count{
+  font-size:10px;color:#3a4d5e;text-align:right;margin-top:4px;font-family:"SF Mono","Consolas",monospace
+}
+
+/* page count control row */
+.page-ctrl-row{
+  display:flex;align-items:center;gap:8px
+}
+.page-ctrl-row .pg-num{font-size:14px;color:#bfe6ff;min-width:36px;text-align:center;font-weight:700}
+.page-ctrl-row .pg-btn{
+  width:30px;height:30px;border-radius:50%;border:1px solid rgba(86,216,255,.2);
+  background:rgba(86,216,255,.06);color:#56d8ff;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s
+}
+.page-ctrl-row .pg-btn:hover{background:rgba(86,216,255,.18);border-color:#56d8ff}
+.page-ctrl-row .pg-btn.danger{color:#ff5e5e;border-color:rgba(255,70,70,.2);background:rgba(255,70,70,.06)}
+.page-ctrl-row .pg-btn.danger:hover{background:rgba(255,70,70,.18);border-color:#ff5e5e}
+
+/* modal overlay */
+.modal-overlay{
+  position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s
+}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal-box{
+  background:#0d1322;border:1px solid rgba(86,216,255,.2);border-radius:11px;
+  padding:22px 24px;max-width:320px;width:90%;text-align:center;
+  box-shadow:0 16px 48px rgba(0,0,0,.6)
+}
+.modal-box .modal-title{font-size:14px;font-weight:700;color:#bfe6ff;margin-bottom:6px}
+.modal-box .modal-desc{font-size:11px;color:#5f7e9c;line-height:1.5;margin-bottom:16px}
+.modal-box .modal-actions{display:flex;gap:8px;justify-content:center}
+.modal-box .modal-actions button{
+  padding:8px 20px;border-radius:7px;font-size:12px;font-weight:600;
+  letter-spacing:1px;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  font-family:"SF Mono","Consolas",monospace
+}
+.modal-btn-cancel{background:rgba(255,255,255,.05);color:#7a8ea0;border-color:rgba(255,255,255,.12)}
+.modal-btn-cancel:hover{background:rgba(255,255,255,.1);color:#aebfd0}
+.modal-btn-confirm{background:rgba(86,216,255,.12);color:#56d8ff;border-color:rgba(86,216,255,.25)}
+.modal-btn-confirm:hover{background:rgba(86,216,255,.22);border-color:#56d8ff}
+.modal-btn-danger{background:rgba(255,70,70,.12);color:#ff5e5e;border-color:rgba(255,70,70,.2)}
+.modal-btn-danger:hover{background:rgba(255,70,70,.22);border-color:#ff5e5e}
+
+/* sticky bottom bar */
+.edit-foot{
+  position:sticky;bottom:0;z-index:10;
+  padding:10px 14px;border-top:1px solid rgba(86,216,255,.1);
+  background:#0d1322;display:flex;gap:8px
+}
+.edit-foot button{
+  flex:1;padding:10px;border-radius:7px;font-size:12px;font-weight:600;
+  letter-spacing:1px;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  font-family:"SF Mono","Consolas",monospace
+}
+.btn-reset{background:rgba(255,255,255,.04);color:#7a8ea0;border-color:rgba(255,255,255,.1)}
+.btn-reset:hover{background:rgba(255,255,255,.08);color:#aebfd0}
+.btn-export{background:rgba(86,216,255,.1);color:#56d8ff;border-color:rgba(86,216,255,.25)}
+.btn-export:hover{background:rgba(86,216,255,.2);border-color:#56d8ff}
+
+/* ===== PREVIEW TAB ===== */
+.preview-panel{
+  background:#060b14;padding:20px 14px;align-items:flex-start;justify-content:center
+}
+
+/* ===== card styles ===== */
+.xs-root{
+  font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-user-select:none;user-select:none;width:100%
+}
+.xs-panel{
+  max-width:560px;margin:0 auto;position:relative;
+  background:var(--card-bg);border:1px solid var(--main-color);
+  border-radius:13px;overflow:hidden;
+  box-shadow:0 12px 38px rgba(0,0,0,.6),inset 0 0 70px rgba(86,216,255,.03);
+  color:var(--body-color)
+}
+.xs-panel *{box-sizing:border-box}
+.xs-scan{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:repeating-linear-gradient(0deg,var(--scan-color) 0,var(--scan-color) 1px,transparent 1px,transparent 4px);
+  opacity:.7
+}
+.xs-hd{
+  position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border-color);
+  background:linear-gradient(180deg,var(--hd-glow),transparent)
+}
+.xs-hd-l{display:flex;align-items:center;gap:9px}
+.xs-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--main-color);
+  box-shadow:0 0 9px var(--main-color);animation:xs-blink 2.4s ease-in-out infinite
+}
+@keyframes xs-blink{0%,100%{opacity:1}50%{opacity:.25}}
+.xs-hd-t{
+  font-family:"SF Mono","Consolas",monospace;font-size:12.5px;font-weight:700;
+  letter-spacing:3px;color:var(--title-color);text-shadow:0 0 11px var(--title-glow)
+}
+.xs-hd-n{
+  font-family:"SF Mono","Consolas",monospace;font-size:11px;color:rgba(174,191,208,.6);letter-spacing:1px
+}
+.xs-body{position:relative;z-index:1;padding:20px 22px;min-height:100px}
+.xs-page{display:none;position:relative}
+.xs-page.on{display:block;animation:xs-fade .45s ease}
+@keyframes xs-fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.xs-page-bg{
+  position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  border-radius:0 0 10px 10px;opacity:.55;pointer-events:none
+}
+.xs-page-bg.gradient{
+  -webkit-mask-image:linear-gradient(to bottom,black 40%,transparent 100%);
+  mask-image:linear-gradient(to bottom,black 40%,transparent 100%)
+}
+.xs-page-content{position:relative;z-index:1}
+.xs-p{
+  font-size:13.5px;line-height:1.92;color:var(--body-color);margin:0 0 13px;
+  text-align:justify;letter-spacing:.3px
+}
+.xs-p:last-child{margin-bottom:0}
+.xs-god{
+  font-size:13.5px;line-height:1.85;color:var(--god-color);border-left:2px solid var(--main-color);
+  padding:8px 0 8px 14px;margin:13px 0;
+  background:linear-gradient(90deg,var(--god-glow),transparent);
+  text-shadow:0 0 9px var(--god-shadow);letter-spacing:.6px
+}
+.xs-god:last-child{margin-bottom:0}
+.xs-foot{
+  position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;
+  padding:13px 18px;border-top:1px solid var(--border-color);
+  background:rgba(0,0,0,.28)
+}
+.xs-btn{
+  font-family:"SF Mono","Consolas",monospace;font-size:12px;letter-spacing:1px;
+  color:var(--btn-text);background:var(--btn-bg);border:1px solid var(--btn-border);
+  border-radius:7px;padding:8px 16px;cursor:pointer;transition:all .2s
+}
+.xs-btn:hover{background:var(--btn-hover-bg);border-color:var(--main-color)}
+.xs-btn.dim{opacity:.3;pointer-events:none}
+.xs-btn.go{
+  color:var(--go-text);background:linear-gradient(180deg,var(--main-color),var(--go-end));
+  border-color:transparent;font-weight:700;box-shadow:0 0 14px var(--go-glow)
+}
+.xs-dots{display:flex;gap:5px}
+.xs-dot2{
+  width:6px;height:6px;border-radius:50%;background:var(--dot-off);transition:.25s
+}
+.xs-dot2.on{background:var(--main-color);width:17px;border-radius:3px;box-shadow:0 0 7px var(--dot-on-glow)}
+</style>
+</head>
+<body>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <div class="tab active" data-tab="edit" onclick="switchTab('edit')">✏️ 编辑<span class="badge-tab" id="pageBadge">8页</span></div>
+  <div class="tab" data-tab="preview" onclick="switchTab('preview')">👁 预览</div>
+</div>
+
+<div class="tab-content">
+  <!-- ===== EDIT TAB ===== -->
+  <div class="tab-panel active edit-panel" id="tabEdit">
+    <div class="edit-section">
+      <div class="sect-label"><span class="icon">🏷️</span> 卡片标题</div>
+      <div class="title-row">
+        <input type="text" id="titleInput" value="主神 · 投放宣读" maxlength="30">
+      </div>
+    </div>
+    <div class="edit-section">
+      <div class="sect-label"><span class="icon">🎛️</span> 预设皮肤 <span style="font-weight:400;color:#3a4d5e;font-size:9px">(一键套用，再微调)</span></div>
+      <div class="skin-grid" id="skinGrid"></div>
+    </div>
+    <div class="edit-section">
+      <div class="sect-label"><span class="icon">🎨</span> 颜色 <span style="font-weight:400;color:#3a4d5e;font-size:9px">(六处可调，余者自动派生)</span></div>
+      <div class="color-row">
+        <div class="color-item">
+          <label>主色调</label>
+          <input type="color" id="mainColor" value="#56d8ff">
+          <span class="color-hex" id="mainHex">#56d8ff</span>
+        </div>
+        <div class="color-item">
+          <label>背板色</label>
+          <input type="color" id="cardBg" value="#0c141e">
+          <span class="color-hex" id="cardBgHex">#0c141e</span>
+        </div>
+        <div class="color-item">
+          <label>标题色</label>
+          <input type="color" id="titleColor" value="#bfe6ff">
+          <span class="color-hex" id="titleHex">#bfe6ff</span>
+        </div>
+        <div class="color-item">
+          <label>正文色</label>
+          <input type="color" id="bodyColor" value="#aebfd0">
+          <span class="color-hex" id="bodyHex">#aebfd0</span>
+        </div>
+        <div class="color-item">
+          <label>边框色</label>
+          <input type="color" id="borderColor" value="#1a4a5a">
+          <span class="color-hex" id="borderHex">#1a4a5a</span>
+        </div>
+        <div class="color-item">
+          <label>神言色</label>
+          <input type="color" id="godColor" value="#cfeaff">
+          <span class="color-hex" id="godHex">#cfeaff</span>
+        </div>
+      </div>
+    </div>
+    <div class="edit-section">
+      <div class="sect-label"><span class="icon">👁</span> 实时预览 <span style="font-weight:400;color:#3a4d5e;font-size:9px">(改色改文即时变，点页码切换)</span></div>
+      <div class="live-embed">
+        <div class="live-embed-head">
+          <span><span class="dot">●</span> 预览</span>
+          <div class="pgs" id="livePgs"></div>
+        </div>
+        <div class="live-embed-body" id="liveBody"></div>
+      </div>
+    </div>
+    <div class="edit-section" id="pageImgSection">
+      <div class="sect-label"><span class="icon">🖼️</span> 页面背景图 <span style="font-weight:400;color:#3a4d5e;font-size:9px">(链接+模式，不填无影响)</span></div>
+      <div id="pageImgRows"></div>
+    </div>
+    <div class="edit-section">
+      <div class="sect-label"><span class="icon">📝</span> 宣读文本 · 页面管理</div>
+      <div class="page-hint" style="margin-bottom:8px">手动用分隔符分页分段（见下方说明），不填则自动均分；增减页由弹窗确认（最少2页）</div>
+      <div class="page-ctrl-row">
+        <button class="pg-btn danger" onclick="showPageModal(-1)" title="减少1页">−</button>
+        <span class="pg-num" id="pageCountDisplay">8</span>
+        <button class="pg-btn" onclick="showPageModal(1)" title="增加1页">+</button>
+        <span style="font-size:10px;color:#4a6a85">页</span>
+      </div>
+    </div>
+    <div class="textarea-wrap">
+      <div class="textarea-toolbar">
+        <span class="tt-hint"><b>分页符</b> <code>◈</code> 切页 · <b>分段符</b> <code>◇</code> 段落空行 · 〔开头为主神言</span>
+        <button class="tt-btn" onclick="insertMark('◈')" title="在光标处插入分页符"><span class="mark">◈</span> 插入分页</button>
+        <button class="tt-btn" onclick="insertMark('◇')" title="在光标处插入分段符"><span class="mark">◇</span> 插入分段</button>
+      </div>
+      <textarea id="sourceInput" spellcheck="false"></textarea>
+      <div class="char-count" id="charCount">0 字 / 0 页</div>
+    </div>
+    <div class="edit-foot">
+      <button class="btn-reset" onclick="resetToDefault()">↺ 重置默认</button>
+      <button class="btn-export" onclick="exportCode()">📋 导出代码</button>
+    </div>
+  </div>
+
+  <!-- ===== PREVIEW TAB ===== -->
+  <div class="tab-panel preview-panel" id="tabPreview"></div>
+</div>
+
+<!-- ===== Page count modal ===== -->
+<div class="modal-overlay" id="pageModal">
+  <div class="modal-box">
+    <div class="modal-title" id="modalTitle">确认操作</div>
+    <div class="modal-desc" id="modalDesc"></div>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="closeModal()">取消</button>
+      <button class="modal-btn-confirm" id="modalConfirmBtn" onclick="confirmPageChange()">确认</button>
+    </div>
+  </div>
+</div>
+<script>
+var DT='某一刻，没有预兆。◇前一息，你还嵌在自己世界的肌理里——也许握着一只温热的杯盏，也许踏过一段熟悉的街角，也许正要对某个人开口。下一息，一股庞大到不容你生出半点抗拒的力量，自四面八方攥住了你的意识，像一只无形的手把你从所有熟悉的一切里连根拔起。没有疼痛，没有缓冲，没有一句解释。光、声、重量、方向被一寸寸抽走，原本的世界在你身后塌缩成一个迅速远去的光点，然后熄灭。◇你坠落。或者说——你被投放。◈当感官重新接通，你站在——或者说，存在于——一片无边无际的灰白之中。这里没有天，没有地，没有日月，没有东南西北。目光投向任何一处，都只撞上同一种近乎实质的苍茫，分不清那是雾、是光，还是虚无本身。◇最先压上来的不是恐惧，是沉默——一种厚重得几乎能听见自己血液流动的寂静，压在你的肩、你的后颈、你的天灵盖。你不知道这是哪里，只隐约觉出：自己已经不在原来的世界了——而且，回不去了。◈就在这时，那个声音降临。它不从某个方向传来，而是直接在你的颅骨内部、在这整片灰白的每一寸里同时响起。平直，冷硬，不带一丝起伏与温度，不像言语，更像一份早已拟好、与你生死攸关却与它毫不相干的条款被逐字念出。它自称——◇〔主神。〕◇〔编号确认。你已被选中，列为新晋轮回者。以下为既定法则，不接受质询，不予以重复。〕◈那声音一字一句砸在你心上，像凿进石碑的刻痕：你将被它一次又一次强制投入由它具现的任务世界。那里可能是腐尸遍地的恐怖之境，可能是星海死寂的科幻位面，可能是人相为食的灾难废土，可能是刀光剑影的江湖，也可能是远比这些更不可名状之地。◇它们不是故事，不是幻象——那里的獠牙会真的撕开你的喉咙，陷阱会真的绞断你的骨头。你唯一要做的就是：活下来，达成它指定的通关条件，撑到它把你拽回为止。活着归来，你方有资格换取强化；而后，再被推入下一个、往往更接近死亡的世界。如此往复，没有终点。◈它的语调没有半分起伏，可正是这种近乎数学的冷漠，让接下来的每个字都重若千钧——◇〔此地无读档，无复活，无转圜。〕◇〔于任务世界中死亡——无论被獠牙撕碎、被同伴自背后捅穿，抑或死于你自己的一个误判——皆为真死。魂飞魄散，不留尸首，不返此地。你的本局，到此终结，不再重来。〕◇你忽然明白那片沉默为何如此沉重：死亡不是一个可以重来的节点，而是一道彻底而干净的句号。你的每一次呼吸、每一个抉择，都将拥有真实的、不可挽回的重量。◈〔主神不因你弱而手下留情，不因你强而格外开恩，不因你的哀求、愤怒或眼泪而改动半字。它只下达，只结算，只传送；不解释，不预警，不申辩。〕◇这里没有恶意——恶意尚且需要一张有血有肉的面孔去承载——这里只有规则，冷得像数学，硬得像铁律。你能读懂它，能利用它，却永远不可能感动它。◇〔另——凡成败未定之关键举动，皆由检定裁夺。强者多成，弱者多败，掷数为凭，不偏不倚，亦无温情。〕◇在这里没有奇迹，只有概率：你准备得越充分、判断得越冷静、出手得越狠辣，命运的天平才向你倾斜一分——也仅仅一分。◈〔归来之后，你可凭存活所得之奖励点数，于此地诸设施内强化备战：商店兑换属性、技艺与能力，情报站窥探前路之底细——哪怕那底细常常残缺、滞后、甚至掺着谎，修炼室打磨己身，个人房间整备休整。点数有限，取舍由你，后果亦由你自负。〕◇你彻底懂了这片空间的运转：没有眷顾，只有公式。你越弱、越是莽撞侥幸，死期就越近。◈那声音再度响起，这一次收束到你的脚下——◇〔首个新手世界，即将开启。〕◇你能感觉到，灰白的某一处正悄然震颤，一扇你看不见的门，正一寸寸朝你拉开。◇〔入场之前，登记你的起手配置——来历、属性、初始技能、金手指、随身装备，逐项录入。此为你首次踏入任务世界所凭恃的全部本钱。慎重，它不会给你第二次填写的机会。〕◇声音消散，灰白重归死寂。没有人告诉你该选什么。你能做的，只有抓紧此刻——在下方〔轮回者·初始化登记〕面板，郑重写下你活下去的本钱。';
+
+var pageImages = {};
+var pageCount = 8;
+var pendingPageDelta = 0;
+
+// ===== skin presets (6 颜色：main / bg / title / body / border / god) =====
+var SKINS = [
+  {id:'cyan',   name:'青蓝霓虹', sub:'原版',   c:['#56d8ff','#0c141e','#bfe6ff','#aebfd0','#1a4a5a','#cfeaff']},
+  {id:'amber',  name:'赛博橙焰', sub:'暖核',   c:['#ff9d3c','#140d08','#ffd9a8','#c9b59c','#5a3a1a','#ffe2c0']},
+  {id:'violet', name:'紫黑魔渊', sub:'秘仪',   c:['#a77bff','#0e0a1a','#dccaff','#b0a3cf','#3a2a5a','#e8d6ff']},
+  {id:'matrix', name:'终端翠绿', sub:'数据流', c:['#33ff88','#08120c','#b6ffce','#86b89a','#1a4a2a','#d4ffe0']},
+  {id:'gold',   name:'金黑古典', sub:'碑铭',   c:['#e8c069','#100c06','#f2dca0','#c2b08c','#5a4a1a','#fbeec0']},
+  {id:'ice',    name:'冰蓝极光', sub:'寒境',   c:['#9fe6ff','#0a1218','#dff6ff','#a8c4cf','#1a3a48','#ecffff']},
+  {id:'crimson',name:'血月赤',   sub:'残阳',   c:['#ff5470','#14080a','#ffc4cc','#c9a0a6','#5a1a26','#ffe0e4']},
+  {id:'ocean',  name:'深海幽蓝', sub:'沉渊',   c:['#4d8bff','#0a0f1c','#c4d8ff','#8a9cc0','#1a2a52','#e0eaff']},
+  {id:'silver', name:'星尘银',   sub:'银灰',   c:['#c8d4e0','#12161c','#f0f4fa','#b0bcc8','#3a444f','#ffffff']}
+];
+var currentSkin = 'cyan';
+
+function eH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function h2r(h,a){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return 'rgba('+r+','+g+','+b+','+a+')';}
+function darker(h,d){var r=Math.max(0,parseInt(h.slice(1,3),16)-d),g=Math.max(0,parseInt(h.slice(3,5),16)-d),b=Math.max(0,parseInt(h.slice(5,7),16)-d);return '#'+r.toString(16).padStart(2,'0')+g.toString(16).padStart(2,'0')+b.toString(16).padStart(2,'0');}
+function lighter(h,d){var r=Math.min(255,parseInt(h.slice(1,3),16)+d),g=Math.min(255,parseInt(h.slice(3,5),16)+d),b=Math.min(255,parseInt(h.slice(5,7),16)+d);return '#'+r.toString(16).padStart(2,'0')+g.toString(16).padStart(2,'0')+b.toString(16).padStart(2,'0');}
+
+// ===== auto-distribute =====
+function getRawText(){return document.getElementById('sourceInput').value.replace(/◈/g,'').replace(/◇/g,'');}
+
+// 手动分页符优先：含 ◈(页) 则按其切页，否则自动均分
+function splitPages(rawText,N){
+  if(rawText.indexOf('◈')>=0){
+    var pages=rawText.split('◈').filter(function(p){return p.replace(/◇/g,'').trim().length>0;});
+    if(pages.length<2){pages=rawText.split('◈');}
+    return pages.map(function(p){return p.replace(/^\s+|\s+$/g,'');});
+  }
+  var clean=rawText.replace(/◇/g,'');
+  var sentences=[],buf='';
+  for(var i=0;i<clean.length;i++){buf+=clean[i];if(clean[i]==='。'||clean[i]==='！'||clean[i]==='？'||clean[i]==='\n'){if(buf.trim())sentences.push(buf.trim());buf='';}}
+  if(buf.trim())sentences.push(buf.trim());
+  if(sentences.length<N*2){sentences=[];var cs=Math.ceil(clean.length/(N*3));for(var j=0;j<clean.length;j+=cs)sentences.push(clean.substring(j,Math.min(j+cs,clean.length)));}
+  var pp=Math.ceil(sentences.length/N),pages=[];
+  for(var p=0;p<N;p++){var s=p*pp,e=Math.min(s+pp,sentences.length);pages.push(s<e?sentences.slice(s,e).join('◇'):'(第'+(p+1)+'页)');}
+  return pages;
+}
+
+// 在光标处插入分隔符
+function rebuildDisplayText(){return splitPages(getRawText(),pageCount).join('◈');}
+
+// ===== modal =====
+function showPageModal(delta){
+  var nc=pageCount+delta;if(nc<2)return;
+  pendingPageDelta=delta;
+  document.getElementById('modalTitle').textContent=delta>0?'增加页面':'减少页面';
+  document.getElementById('modalDesc').innerHTML='页数从 <b style="color:#56d8ff">'+pageCount+'</b> '+(delta>0?'增加到':'减少到')+' <b style="color:'+(delta>0?'#56d8ff':'#ff5e5e')+'">'+nc+'</b><br>文本将自动'+(delta>0?'均分到 '+nc+' 页':'合并重组为 '+nc+' 页');
+  var btn=document.getElementById('modalConfirmBtn');
+  btn.className=delta>0?'modal-btn-confirm':'modal-btn-danger';
+  btn.textContent='确认 ('+nc+'页)';
+  document.getElementById('pageModal').classList.add('show');
+}
+
+function closeModal(){document.getElementById('pageModal').classList.remove('show');pendingPageDelta=0;}
+
+function confirmPageChange(){
+  var d=pendingPageDelta;closeModal();if(d===0)return;
+  pageCount+=d;
+  document.getElementById('sourceInput').value=rebuildDisplayText();
+  onPageCountChanged();
+}
+
+function onPageCountChanged(){
+  document.getElementById('pageCountDisplay').textContent=pageCount;
+  document.getElementById('pageBadge').textContent=pageCount+'页';
+  var raw=getRawText();
+  document.getElementById('charCount').textContent=raw.length+' 字 / '+pageCount+' 页';
+  rebuildPageRows();
+  if(currentTab==='preview')updatePreview();
+}
+
+function buildVars(mc,bg,tit,body,bdr,god){
+  var bgD=darker(bg,8);
+  return '--main-color:'+mc+';--card-bg:linear-gradient(180deg,'+bg+','+bgD+');'+
+    '--border-color:'+bdr+';--scan-color:'+h2r(mc,0.022)+';'+
+    '--hd-glow:'+h2r(mc,0.07)+';--title-color:'+tit+';'+
+    '--title-glow:'+h2r(mc,0.55)+';--god-glow:'+h2r(mc,0.1)+';'+
+    '--god-shadow:'+h2r(mc,0.3)+';--body-color:'+body+';--god-color:'+god+';'+
+    '--btn-text:'+lighter(mc,60)+';'+
+    '--btn-bg:'+h2r(mc,0.08)+';--btn-border:'+h2r(mc,0.3)+';'+
+    '--btn-hover-bg:'+h2r(mc,0.18)+';--go-text:#06141c;'+
+    '--go-end:'+darker(mc,40)+';--go-glow:'+h2r(mc,0.4)+';'+
+    '--dot-off:'+h2r(mc,0.25)+';--dot-on-glow:'+h2r(mc,0.7)+';';
+}
+
+// ===== page image rows =====
+function rebuildPageRows() {
+  var N = pageCount;
+  var container = document.getElementById('pageImgRows');
+  var html = '';
+  for (var i = 0; i < N; i++) {
+    var pi = pageImages[i] || {url:'', mode:'gradient'};
+    html += '<div class="page-img-row">'+
+      '<span class="page-num">第'+(i+1)+'页</span>'+
+      '<input type="text" placeholder="图片链接(可选)" value="'+eH(pi.url)+'" data-pi="'+i+'" data-field="url">'+
+      '<select data-pi="'+i+'" data-field="mode">'+
+      '<option value="gradient"'+(pi.mode==='gradient'?' selected':'')+'>渐变融入</option>'+
+      '<option value="full"'+(pi.mode==='full'?' selected':'')+'>整页背景</option>'+
+      '</select>'+
+      (pi.url ? '<button class="btn-remove" onclick="removePageImg('+i+')">✕</button>' : '')+
+      '</div>';
+  }
+  container.innerHTML = html;
+  var inputs = container.querySelectorAll('input[data-pi]');
+  for (var j = 0; j < inputs.length; j++) {
+    inputs[j].addEventListener('input', onPageImgChange);
+  }
+  var selects = container.querySelectorAll('select[data-pi]');
+  for (var j = 0; j < selects.length; j++) {
+    selects[j].addEventListener('change', onPageImgChange);
+  }
+}
+
+function onPageImgChange(e) {
+  var pi = parseInt(e.target.getAttribute('data-pi'));
+  var field = e.target.getAttribute('data-field');
+  if (!pageImages[pi]) pageImages[pi] = {url:'', mode:'gradient'};
+  pageImages[pi][field] = e.target.value;
+  updatePreview();
+}
+
+function removePageImg(pi) {
+  if (pageImages[pi]) pageImages[pi].url = '';
+  rebuildPageRows();
+  updatePreview();
+}
+
+// ===== tab switch =====
+var currentTab = 'edit';
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-bar .tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelector('.tab-bar .tab[data-tab="'+tab+'"]').classList.add('active');
+  document.getElementById('tabEdit').classList.toggle('active', tab==='edit');
+  document.getElementById('tabPreview').classList.toggle('active', tab==='preview');
+  if (tab === 'preview') {
+    updatePreview();
+  }
+  if (tab === 'edit') {
+    rebuildPageRows();
+  }
+}
+
+// ===== build card =====
+function buildCard(text, mc, bg, title) {
+  text = text.replace(/^\s+|\s+$/g, '');
+  if (!text) text = '(空文本)';
+  var pages = text.split('◈');
+  var N = pages.length;
+  var tit=getColor('titleColor'),body=getColor('bodyColor'),bdr=getColor('borderColor'),god=getColor('godColor');
+
+  var ph = '';
+  for (var pi = 0; pi < N; pi++) {
+    var segs = pages[pi].split('◇');
+    var sh = '';
+    for (var k = 0; k < segs.length; k++) {
+      var t = segs[k].replace(/^\s+|\s+$/g, '');
+      if (!t) continue;
+      var isgod = (t.charAt(0) === '〔');
+      sh += isgod ? '<div class="xs-god">'+eH(t)+'</div>' : '<p class="xs-p">'+eH(t)+'</p>';
+    }
+    var bgHTML = '';
+    var pimg = pageImages[pi];
+    if (pimg && pimg.url && pimg.url.trim()) {
+      var mode = pimg.mode || 'gradient';
+      bgHTML = '<div class="xs-page-bg'+(mode==='gradient'?' gradient':'')+'" style="background-image:url('+eH(pimg.url.trim())+')"></div>';
+    }
+    ph += '<div class="xs-page'+(pi===0?' on':'')+'">'+bgHTML+'<div class="xs-page-content">'+sh+'</div></div>';
+  }
+
+  return '<div class="xs-root" style="'+buildVars(mc,bg,tit,body,bdr,god)+'"><div class="xs-panel"><div class="xs-scan"></div>'+
+    '<div class="xs-hd"><div class="xs-hd-l"><span class="xs-dot"></span><span class="xs-hd-t">'+eH(title)+'</span></div>'+
+    '<span class="xs-hd-n" id="curLabel">1 / '+N+'</span></div>'+
+    '<div class="xs-body">'+ph+'</div>'+
+    '<div class="xs-foot"><div class="xs-btn dim" id="prevBtn">上一页</div><div class="xs-dots" id="dotsEl"></div><div class="xs-btn" id="nextBtn">下一页 ▸</div></div></div></div>';
+}
+
+// ===== pager =====
+var page = {i:0, N:0};
+function bindPage() {
+  var root = document.getElementById('tabPreview');
+  if(!root) return;
+  var prev = root.querySelector('#prevBtn');
+  var next = root.querySelector('#nextBtn');
+  var cur  = root.querySelector('#curLabel');
+  var dots = root.querySelector('#dotsEl');
+  if (!prev || !next || !dots) return;
+  var pages = root.querySelectorAll('.xs-page');
+  var N = pages.length;
+  page.N = N; page.i = 0;
+  function show(n) {
+    page.i = n;
+    for (var p = 0; p < pages.length; p++) pages[p].className = 'xs-page'+(p===n?' on':'');
+    if (cur) cur.textContent = (n+1)+' / '+N;
+    if (prev) {if(n===0){prev.className='xs-btn dim';prev.textContent='';}else{prev.className='xs-btn';prev.textContent='上一页';}}
+    if (next) {if(n===N-1){next.className='xs-btn dim';next.textContent='';}else{next.className='xs-btn';next.textContent='下一页 ▸';}}
+    while (dots.firstChild) dots.removeChild(dots.firstChild);
+    for (var j = 0; j < N; j++) {
+      var d = document.createElement('span');
+      d.className = 'xs-dot2'+(j===n?' on':'');
+      dots.appendChild(d);
+    }
+  }
+  prev.onclick = function(e) { e.stopPropagation(); if (page.i > 0) show(page.i-1); };
+  next.onclick = function(e) { e.stopPropagation(); if (page.i < N-1) show(page.i+1); };
+  show(0);
+}
+
+var dtimer;
+function debouncedUpdate() { clearTimeout(dtimer); dtimer = setTimeout(onTextChange, 300); }
+
+function onTextChange() {
+  var raw = getRawText();
+  document.getElementById('pageCountDisplay').textContent = pageCount;
+  document.getElementById('charCount').textContent = raw.length+' 字 / '+pageCount+' 页';
+  document.getElementById('pageBadge').textContent = pageCount+'页';
+  if (currentTab === 'preview') updatePreview();
+}
+
+function getColor(id){return document.getElementById(id).value;}
+function hex2(s){return s.length===7?s.toLowerCase():s;}
+
+// ===== live preview inline (颜色区下方内嵌，改色/改文即时反映) =====
+function updateLive(){
+  var text=document.getElementById('sourceInput').value;
+  var mc=getColor('mainColor'),bg=getColor('cardBg');
+  var title=document.getElementById('titleInput').value||'主神 · 投放宣读';
+  var html=buildCard(text,mc,bg,title);
+  document.getElementById('liveBody').innerHTML=html;
+  // 清掉内嵌预览内重复 id，避免与主预览 bindPage 冲突
+  var ids=['prevBtn','nextBtn','curLabel','dotsEl'];
+  for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.closest('#liveBody'))el.removeAttribute('id');}
+  bindLivePager();
+  buildLivePgs();
+}
+function bindLivePager(){
+  var box=document.querySelector('#liveBody .xs-root');
+  if(!box)return;
+  box.__lp=1;
+  var pages=box.querySelectorAll('.xs-page'),N=pages.length,S={i:0};
+  var btns=box.querySelectorAll('.xs-btn');
+  var prev=btns[0],next=btns[btns.length-1];
+  var cur=box.querySelector('.xs-hd-n');
+  var dots=box.querySelector('.xs-dots');
+  function show(n){
+    S.i=n;
+    for(var p=0;p<pages.length;p++)pages[p].className='xs-page'+(p===n?' on':'');
+    if(cur)cur.textContent=(n+1)+' / '+N;
+    if(prev){if(n===0){prev.className='xs-btn dim';prev.textContent='';}else{prev.className='xs-btn';prev.textContent='上一页';}}
+    if(next){if(n===N-1){next.className='xs-btn dim';next.textContent='';}else{next.className='xs-btn';next.textContent='下一页 ▸';}}
+    if(dots){while(dots.firstChild)dots.removeChild(dots.firstChild);for(var j=0;j<N;j++){var d=document.createElement('span');d.className='xs-dot2'+(j===n?' on':'');dots.appendChild(d);}}
+    syncLivePgs(n);
+  }
+  if(prev)prev.onclick=function(e){e.stopPropagation();if(S.i>0)show(S.i-1);};
+  if(next)next.onclick=function(e){e.stopPropagation();if(S.i<N-1)show(S.i+1);};
+  box.__show=show;
+  show(0);
+}
+function buildLivePgs(){
+  var pages=document.querySelectorAll('#liveBody .xs-page');
+  var pgs=document.getElementById('livePgs');
+  var html='';
+  for(var i=0;i<pages.length;i++){html+='<button class="pg-mini" onclick="liveJump('+i+')">'+(i+1)+'</button>';}
+  pgs.innerHTML=html;
+  syncLivePgs(0);
+}
+function syncLivePgs(n){
+  var b=document.querySelectorAll('#livePgs .pg-mini');
+  for(var i=0;i<b.length;i++)b[i].className='pg-mini'+(i===n?' on':'');
+}
+function liveJump(i){
+  var box=document.querySelector('#liveBody .xs-root');
+  if(box&&box.__show)box.__show(i);
+}
+
+function buildSkinGrid(){
+  var html='';
+  for(var i=0;i<SKINS.length;i++){
+    var s=SKINS[i],on=(s.id===currentSkin)?' on':'';
+    var sw='';
+    for(var j=0;j<s.c.length;j++)sw+='<span style="background:'+s.c[j]+'"></span>';
+    html+='<div class="skin-opt'+on+'" data-skin="'+s.id+'" onclick="applySkin(\''+s.id+'\')"><div class="swatch">'+sw+'</div><div class="nm">'+s.name+'<small>'+s.sub+'</small></div></div>';
+  }
+  document.getElementById('skinGrid').innerHTML=html;
+}
+
+function applySkin(id){
+  currentSkin=id;
+  var s=SKINS.filter(function(k){return k.id===id;})[0];
+  if(!s)return;
+  document.getElementById('mainColor').value=s.c[0];
+  document.getElementById('cardBg').value=s.c[1];
+  document.getElementById('titleColor').value=s.c[2];
+  document.getElementById('bodyColor').value=s.c[3];
+  document.getElementById('borderColor').value=s.c[4];
+  document.getElementById('godColor').value=s.c[5];
+  onColorChange();
+  buildSkinGrid();
+}
+
+function syncHex(){
+  document.getElementById('mainHex').textContent=hex2(getColor('mainColor'));
+  document.getElementById('cardBgHex').textContent=hex2(getColor('cardBg'));
+  document.getElementById('titleHex').textContent=hex2(getColor('titleColor'));
+  document.getElementById('bodyHex').textContent=hex2(getColor('bodyColor'));
+  document.getElementById('borderHex').textContent=hex2(getColor('borderColor'));
+  document.getElementById('godHex').textContent=hex2(getColor('godColor'));
+}
+function onColorChange() {
+  syncHex();
+  if (currentTab === 'preview') updatePreview();
+  updateLive();
+}
+
+function updatePreview() {
+  var text = document.getElementById('sourceInput').value;
+  var mc = getColor('mainColor');
+  var bg = getColor('cardBg');
+  var title = document.getElementById('titleInput').value || '主神 · 投放宣读';
+  syncHex();
+  var N = text.split('◈').length || 1;
+  pageCount = N;
+  document.getElementById('pageCountDisplay').textContent = N;
+  document.getElementById('pageBadge').textContent = N+'页';
+  var raw = getRawText();
+  document.getElementById('charCount').textContent = raw.length+' 字 / '+N+' 页';
+  document.getElementById('tabPreview').innerHTML = buildCard(text, mc, bg, title);
+  bindPage();
+}
+
+function resetToDefault() {
+  document.getElementById('sourceInput').value = DT;
+  applySkin('cyan');
+  document.getElementById('titleInput').value = '主神 · 投放宣读';
+  pageImages = {};
+  pageCount = 8;
+  document.getElementById('pageCountDisplay').textContent = '8';
+  onTextChange();
+}
+
+function exportCode() {
+  var text = document.getElementById('sourceInput').value;
+  var mc = getColor('mainColor');
+  var bg = getColor('cardBg');
+  var title = document.getElementById('titleInput').value || '主神 · 投放宣读';
+  var fullHTML = buildExportHTML(text, mc, bg, title);
+  var md = '# 宣读卡片 · 导出\n\n## 1. 正则规则\n```\nfindRegex: /〖宣读〗(.*?)〖宣读完〗/\n```\n\n## 2. replaceString\n```html\n'+fullHTML+'\n```\n\n## 3. 部署说明\n- MMD: JSON -> statusbar + regex_scripts\n- AI 写「〖宣读〗...〖宣读完〗」触发\n';
+  var blob = new Blob([md], {type:'text/markdown;charset=UTF-8'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '宣读卡片_导出.md'; a.click();
+  navigator.clipboard.writeText(fullHTML).then(function(){ alert('✅ 已导出 Markdown\n📋 replaceString 已复制'); }).catch(function(){});
+}
+
+function buildExportHTML(text, mc, bg, title) {
+  text = text.replace(/^\s+|\s+$/g, '') || '(空)';
+  var pages = splitPages(text, pageCount);
+  var N = pages.length;
+  var tit=getColor('titleColor'),bodyC=getColor('bodyColor'),bdrIn=getColor('borderColor'),godC=getColor('godColor');
+  var bgD = darker(bg, 8);
+  var dark = darker(mc, 40);
+  var scan = h2r(mc, 0.022);
+  var hdG = h2r(mc, 0.07);
+  var hdL = bdrIn;
+  var godG = h2r(mc, 0.1);
+  var godS = h2r(mc, 0.3);
+  var btnB = h2r(mc, 0.08);
+  var btnBr = h2r(mc, 0.3);
+  var btnH = h2r(mc, 0.18);
+  var goG = h2r(mc, 0.4);
+  var dotO = h2r(mc, 0.25);
+  var dotG = h2r(mc, 0.7);
+  var footB = h2r(mc, 0.14);
+  var titG = h2r(mc, 0.55);
+
+  var css = '.xs-root{font-family:"PingFang SC","Microsoft YaHei",sans-serif;-webkit-user-select:none;user-select:none}'+
+    '.xs-src{display:none}'+
+    '.xs-panel{max-width:560px;margin:6px auto 14px;position:relative;background:linear-gradient(180deg,'+bg+','+bgD+');border:1px solid '+bdrIn+';border-radius:13px;overflow:hidden;box-shadow:0 12px 38px rgba(0,0,0,.6),inset 0 0 70px '+h2r(mc,0.03)+';color:'+bodyC+'}'+
+    '.xs-panel *{box-sizing:border-box}'+
+    '.xs-scan{position:absolute;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,'+scan+' 0,'+scan+' 1px,transparent 1px,transparent 4px);opacity:.7}'+
+    '.xs-hd{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid '+hdL+';background:linear-gradient(180deg,'+hdG+',transparent)}'+
+    '.xs-hd-l{display:flex;align-items:center;gap:9px}'+
+    '.xs-dot{width:8px;height:8px;border-radius:50%;background:'+mc+';box-shadow:0 0 9px '+mc+';animation:xs-blink 2.4s ease-in-out infinite}'+
+    '@keyframes xs-blink{0%,100%{opacity:1}50%{opacity:.25}}'+
+    '.xs-hd-t{font-family:"SF Mono","Consolas",monospace;font-size:12.5px;font-weight:700;letter-spacing:3px;color:'+tit+';text-shadow:0 0 11px '+titG+'}'+
+    '.xs-hd-n{font-family:"SF Mono","Consolas",monospace;font-size:11px;color:'+h2r(bodyC,0.6)+';letter-spacing:1px}'+
+    '.xs-body{position:relative;z-index:1;padding:20px 22px;min-height:215px}'+
+    '.xs-page{display:none;position:relative}.xs-page.on{display:block;animation:xs-fade .45s ease}'+
+    '@keyframes xs-fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}'+
+    '.xs-page-bg{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:0 0 10px 10px;opacity:.55;pointer-events:none}'+
+    '.xs-page-bg.gradient{-webkit-mask-image:linear-gradient(to bottom,black 40%,transparent 100%);mask-image:linear-gradient(to bottom,black 40%,transparent 100%)}'+
+    '.xs-page-content{position:relative;z-index:1}'+
+    '.xs-p{font-size:13.5px;line-height:1.92;color:'+bodyC+';margin:0 0 13px;text-align:justify;letter-spacing:.3px}.xs-p:last-child{margin-bottom:0}'+
+    '.xs-god{font-size:13.5px;line-height:1.85;color:'+godC+';border-left:2px solid '+mc+';padding:8px 0 8px 14px;margin:13px 0;background:linear-gradient(90deg,'+godG+',transparent);text-shadow:0 0 9px '+godS+';letter-spacing:.6px}.xs-god:last-child{margin-bottom:0}'+
+    '.xs-foot{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-top:1px solid '+footB+';background:rgba(0,0,0,.28)}'+
+    '.xs-btn{font-family:"SF Mono","Consolas",monospace;font-size:12px;letter-spacing:1px;color:'+tit+';background:'+btnB+';border:1px solid '+btnBr+';border-radius:7px;padding:8px 16px;cursor:pointer;transition:all .2s}'+
+    '.xs-btn:hover{background:'+btnH+';border-color:'+mc+'}'+
+    '.xs-btn.dim{opacity:.3;pointer-events:none}'+
+    '.xs-btn.go{color:#06141c;background:linear-gradient(180deg,'+mc+','+dark+');border-color:transparent;font-weight:700;box-shadow:0 0 14px '+goG+'}'+
+    '.xs-dots{display:flex;gap:5px}'+
+    '.xs-dot2{width:6px;height:6px;border-radius:50%;background:'+dotO+';transition:.25s}'+
+    '.xs-dot2.on{background:'+mc+';width:17px;border-radius:3px;box-shadow:0 0 7px '+dotG+'}';
+
+  var ph = '';
+  for (var pi = 0; pi < N; pi++) {
+    var t = pages[pi].replace(/^\s+|\s+$/g, '').replace(/\n/g,'<br>');
+    if (!t) continue;
+    var god = (t.charAt(0) === '〔');
+    var sh = god ? '<div class="xs-god">'+t+'</div>' : '<p class="xs-p">'+t+'</p>';
+    var bgHTML = '';
+    var pimg = pageImages[pi];
+    if (pimg && pimg.url && pimg.url.trim()) {
+      var mode = pimg.mode || 'gradient';
+      bgHTML = '<div class="xs-page-bg'+(mode==='gradient'?' gradient':'')+'" style="background-image:url('+eH(pimg.url.trim())+')"></div>';
+    }
+    ph += '<div class="xs-page'+(pi===0?' on':'')+'">'+bgHTML+'<div class="xs-page-content">'+sh+'</div></div>';
+  }
+
+  return '<div class="xs-root"><style>'+css+'</style>'+
+    '<div class="xs-src" style="display:none">$1</div>'+
+    '<div class="xs-panel"><div class="xs-scan"></div>'+
+    '<div class="xs-hd"><div class="xs-hd-l"><span class="xs-dot"></span><span class="xs-hd-t">'+eH(title)+'</span></div><span class="xs-hd-n" data-el="cur">1 / '+N+'</span></div>'+
+    '<div class="xs-body" data-el="body">'+ph+'</div>'+
+    '<div class="xs-foot"><div class="xs-btn dim" data-el="prev">上一页</div><div class="xs-dots" data-el="dots"></div><div class="xs-btn" data-el="next">下一页 ▸</div></div></div>'+
+    '<img src="x" style="display:none" onerror="(function(im){var box=im.closest(\'.xs-root\');if(!box||box.__xs)return;box.__xs=1;var body=box.querySelector(\'[data-el=body]\');if(!body)return;var pages=body.querySelectorAll(\'.xs-page\'),N=pages.length;if(!N)return;var prev=box.querySelector(\'[data-el=prev]\'),next=box.querySelector(\'[data-el=next]\'),cur=box.querySelector(\'[data-el=cur]\'),dots=box.querySelector(\'[data-el=dots]\'),S={i:0};function show(n){S.i=n;for(var p=0;p<pages.length;p++)pages[p].className=\'xs-page\'+(p===n?\' on\':\'\');if(cur)cur.textContent=(n+1)+\' / \'+N;if(prev){if(n===0){prev.className=\'xs-btn dim\';prev.textContent=\'\';}else{prev.className=\'xs-btn\';prev.textContent=\'上一页\';}}if(next){if(n===N-1){next.className=\'xs-btn dim\';next.textContent=\'\';}else{next.className=\'xs-btn\';next.textContent=\'下一页 ▸\';}}if(dots){while(dots.firstChild)dots.removeChild(dots.firstChild);for(var j=0;j<N;j++){var d=document.createElement(\'span\');d.className=\'xs-dot2\'+(j===n?\' on\':\'\');dots.appendChild(d);}}}if(prev)prev.onclick=function(ev){ev.stopPropagation();if(0<S.i)show(S.i-1)};if(next)next.onclick=function(ev){ev.stopPropagation();if(S.i<N-1){show(S.i+1)}};show(0);})(this)">'+
+    '</div>';
+}
+
+window.buildExportHTML = buildExportHTML;
+
+// ===== init =====
+document.addEventListener('DOMContentLoaded', function(){
+  var inp = document.getElementById('sourceInput');
+  inp.value = DT;
+  pageCount = DT.split('◈').length || 1;
+  document.getElementById('pageCountDisplay').textContent = pageCount;
+  inp.addEventListener('input', debouncedUpdate);
+  var cids=['mainColor','cardBg','titleColor','bodyColor','borderColor','godColor'];
+  for(var i=0;i<cids.length;i++)document.getElementById(cids[i]).addEventListener('input', onColorChange);
+  document.getElementById('titleInput').addEventListener('input', debouncedUpdate);
+  buildSkinGrid();
+  onColorChange();
+  onTextChange();
+  rebuildPageRows();
+
+  // close modal on overlay click
+  document.getElementById('pageModal').addEventListener('click', function(e){if(e.target===this)closeModal();});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+生成规则：
+[ICON|选项名|选项内容|选项颜色|选项介绍]
+
+查找正则表达式：
+/\[ICON\|(.*?)\|(.*?)\|(.*?)\|(.*?)\]/s
+
+替换为：
+<div class="icon" onclick="(d=event.target.closest('.ie'))&amp;&amp;(event.stopPropagation(),(a=document.querySelector('textarea')).value+=d.dataset.t+'\n',a.dispatchEvent(new Event('input')),a.dispatchEvent(b))" style="border:1.5px solid $3;border-radius:10px;box-shadow:0 0 5px rgba(115,115,115, 0.3);color:$3;"><p class="ie" data-t="$2" 描述="$4">$1</p></div>
+<style>
+.icon{display:inline-flex;gap:10px;padding:0;margin:0;width:100px;}
+.ie{margin:0;padding:5px 0;background:#333333;border:none;border-radius:10px;cursor:pointer;transition:all .3s;text-align:center;font-size:12px;flex:1;}
+.ie:hover{background:#222222;transform:translateY(0.4px)}
+.ie::after{
+            content: attr(描述); display: block; position: absolute;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 10;
+            background-color: rgba(37, 37, 37, 0.85); border: 1px solid #CEC488;
+            color: CEC488; padding: 8px 12px; border-radius: 6px;
+            font-size: 0.9em; line-height: 1.5;
+            text-align: left; white-space: normal; bottom: 100%; margin-bottom: 10px;
+            width: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+}
+.ie::before {
+            content: ''; display: block; position: absolute;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 10;
+            width: 0; height: 0; border: 5px solid transparent;
+            border-top-color: #CEC488; bottom: 100%; margin-bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+.ie:hover::before, .ie:hover::after { opacity: 1; }
+</style>

@@ -1,0 +1,220 @@
+<style>
+/* --- 页面整体和背景 --- */
+body {
+    /* 设置整个网页的背景颜色为一个深灰色（#1a1a1a），让卡片更突出 */
+    background: #1a1a1a;
+}
+
+/* --- 卡片网格布局 --- */
+.a {
+    /* 这是所有卡片的“总容器”，我们用"grid"（网格）来布局 */
+    display: grid;
+    /* 让网格尽可能多地在每行里放下宽度至少为300px的卡片，并自动填满剩余空间 */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* 设置卡片之间的水平和垂直间距都是30px */
+    gap: 30px;
+    /* 让整个网格容器的四周有20px的内边距，不会紧贴着浏览器边缘 */
+    padding: 20px;
+}
+
+/* --- 单个卡片的容器 --- */
+.character-card {
+    /* 这个容器装着一张卡片的图片和文字，让它们垂直排列 */
+    display: flex;
+    flex-direction: column;
+    /* "相对定位"，这是为了让后面的描述文字能相对于它来定位 */
+    position: relative;
+}
+
+/* --- 图片框的样式 --- */
+.b {
+    /* "相对定位"，这是为了让里面的两张图片能相对于它来定位重叠 */
+    position: relative;
+    /* 给图片框设置12px的圆角 */
+    border-radius: 12px;
+    /* "溢出隐藏"，把图片超出圆角的部分都裁掉，保证图片也是圆角的 */
+    overflow: hidden;
+    /* 设置一个固定的宽高比（2:3），让图片框不会变形 */
+    aspect-ratio: 2/3;
+    /* 当鼠标放上去时，显示一个“小手”图标，提示用户可以点击 */
+    cursor: pointer;
+    /* 图片框距离下面的文字描述有15px的间距 */
+    margin-bottom: 15px;
+}
+
+/* --- 两张图片的通用样式 --- */
+.c {
+    /* 宽度和高度都100%，填满父容器（也就是.b图片框） */
+    width: 100%;
+    height: 100%;
+    /* 图片会被缩放来填满整个框，多余部分会被裁掉，保证不变形 */
+    object-fit: cover;
+    /* 也给图片本身加上圆角，这是为了解决切换时可能出现的边角闪烁问题 */
+    border-radius: 12px;
+    /* "绝对定位"，让两张图片可以脱离文档流，完美地重叠在一起 */
+    position: absolute;
+    top: 0; /* 距离顶部0 */
+    left: 0; /* 距离左边0 */
+    /* 当透明度变化时，有一个0.4秒的平滑过渡动画效果 */
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* --- 第二张图片（悬停时显示）的初始样式 --- */
+.b .second-image {
+    /* 默认状态下，让第二张图片完全透明，看不见 */
+    opacity: 0;
+    /* "层级"，z-index数值越大，层级越高。这里设为2，确保它显示在第一张图片之上 */
+    z-index: 2;
+}
+
+/* --- 描述文字区域的样式 --- */
+.description-wrapper {
+    position: relative; /* "相对定位"，为了让两个描述块可以相对于它定位 */
+    width: 100%;
+    text-align: center; /* 文字居中 */
+    min-height: 60px; /* 给描述区域一个最小高度，防止内容切换时页面跳动 */
+}
+
+.d {
+    /* 两个描述块的通用样式 */
+    width: 100%;
+    padding: 0 10px; /* 左右内边距10px */
+    color: #fff; /* 文字颜色白色 */
+    text-shadow: 0 1px 2px #000; /* 给文字加一点黑色阴影，更有立体感 */
+    box-sizing: border-box; /* 确保内边距不会撑大盒子的宽度 */
+    position: absolute; /* "绝对定位"，让两个描述块也能重叠 */
+    top: 0;
+    left: 0;
+    opacity: 1; /* 默认不透明 */
+    transition: opacity 0.4s ease-in-out; /* 同样加上0.4秒的过渡动画 */
+}
+
+.d h1 { /* 名字的样式 */
+    margin-bottom: 8px;
+    font-size: 1.5em;
+}
+
+.d p { /* 描述文字段落的样式 */
+    margin: 0;
+    font-size: 1em;
+    color: #f0f0f0; /* 使用一个稍暗的白色，和名字区分 */
+}
+
+/* --- 第二个描述块（悬停时显示）的初始样式 --- */
+.character-card .description-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0; /* 默认完全透明，看不见 */
+}
+
+/* --- 鼠标悬停时的核心效果 --- */
+/* 当鼠标悬停在整个.character-card上时... */
+.character-card:hover .second-image, /* 第二张图片... */
+.character-card:hover .description-hover { /* 和第二个描述块... */
+    opacity: 1; /* ...都变为不透明，显示出来 */
+}
+
+.character-card:hover .description-default {
+    opacity: 0; /* ...同时，第一个（默认的）描述块变为透明，隐藏起来 */
+}
+
+/* --- 手机等小屏幕设备的样式 --- */
+@media (max-width: 680px) {
+    /* 这个规则只在屏幕宽度小于等于680px时生效 */
+    .a {
+        grid-template-columns: 1fr; /* 网格变为单列，所有卡片垂直排列 */
+    }
+    .character-card {
+        width: 90%; /* 卡片宽度变为屏幕的90% */
+        margin: 0 auto; /* 让卡片在屏幕上水平居中 */
+    }
+}
+</style>
+
+<div class="a">
+
+    <div class="character-card">
+        <div class="b">
+            <img src="https://img.bian666.cf/file/1755642806006_1_None_00004_.png" class="c">/* 形态1图片 */
+            <img src="https://img.bian666.cf/file/1755642918195_1_None_00009_.png" class="c second-image">/* 形态2图片 */
+        </div>
+        <div class="description-wrapper">
+            <div class="d description-default">
+                <h1>苏雅研</h1>
+                <p>优雅强势的公寓女房东，用无可挑剔的微笑管理着一切，但那份从容之下隐藏着不容置疑的支配欲。</p>/* 形态1描述 */
+            </div>
+            <div class="d description-hover">
+                <h1>苏雅研 (真实)</h1>
+                <p>将人类视为玩物的魅魔女王，享受猎物在自己股掌间挣扎的模样，视你为最特别的私有财产。</p>/* 形态2描述 */
+            </div>
+        </div>
+    </div>
+    <div class="character-card">
+        <div class="b">
+            <img src="https://img.bian666.cf/file/1755642806006_1_None_00004_.png" class="c">/* 形态1图片 */
+            <img src="https://img.bian666.cf/file/1755642918195_1_None_00009_.png" class="c second-image">/* 形态2图片 */
+        </div>
+        <div class="description-wrapper">
+            <div class="d description-default">
+                <h1>Pero</h1>
+                <p>天真烂漫的邻家小妹，会用甜美的声音和可爱的外表，轻易瓦解他人的戒心。</p>/* 形态1描述 */
+            </div>
+            <div class="d description-hover">
+                <h1>Pero (真实)</h1>
+                <p>幸灾乐祸的恶劣雌小鬼，你的任何窘迫与痛苦，都是她眼中最顶级的娱乐节目。</p>/* 形态2描述 */
+            </div>
+        </div>
+    </div>
+
+    <div class="character-card">
+        <div class="b">
+            <img src="https://img.bian666.cf/file/1755642806006_1_None_00004_.png" class="c">/* 形态1图片 */
+            <img src="https://img.bian666.cf/file/1755642918195_1_None_00009_.png" class="c second-image">/* 形态2图片 */
+        </div>
+        <div class="description-wrapper">
+            <div class="d description-default">
+                <h1>沈白墨</h1>
+                <p>现实中极度胆小社恐的邻家少女，连与人对视都会脸红心跳，内心却怀揣着无法言说的爱恋。</p>/* 形态1描述 */
+            </div>
+            <div class="d description-hover">
+                <h1>沈白墨 (真实)</h1>
+                <p>隐藏在网络后的性感小野猫，在摄像头前大胆地展露身姿与魅惑，与现实中的她判若两人。</p>/* 形态2描述 */
+            </div>
+        </div>
+    </div>
+
+    <div class="character-card">
+        <div class="b">
+            <img src="https://img.bian666.cf/file/1755642806006_1_None_00004_.png" class="c">/* 形态1图片 */
+            <img src="https://img.bian666.cf/file/1755642918195_1_None_00009_.png" class="c second-image">/* 形态2图片 */
+        </div>
+        <div class="description-wrapper">
+            <div class="d description-default">
+                <h1>方善文</h1>
+                <p>看似对一切都漠不关心的慵懒游戏宅，生活的一切都为了最高效的“节能省力”。</p>/* 形态1描述 */
+            </div>
+            <div class="d description-hover">
+                <h1>方善文 (真实)</h1>
+                <p>拥有超凡智慧的腹黑挚友，虽然不善言辞，却总在你看不到的地方默默守护。</p>/* 形态2描述 */
+            </div>
+        </div>
+    </div>
+
+    <div class="character-card">
+        <div class="b">
+            <img src="https://img.bian666.cf/file/1755642806006_1_None_00004_.png" class="c">/* 形态1图片 */
+            <img src="https://img.bian666.cf/file/1755642918195_1_None_00009_.png" class="c second-image">/* 形态2图片 */
+        </div>
+        <div class="description-wrapper">
+            <div class="d description-default">
+                <h1>岚姐</h1>
+                <p>眉宇间总是带着一丝疲惫的便利店员，为了生计与使命奔波，生活拮据但从不抱怨。</p>/* 形态1描述 */
+            </div>
+            <div class="d description-hover">
+                <h1>岚姐 (真实)</h1>
+                <p>于都市阴影中狩猎魔物的孤独战士，紧身作战服下是紧绷的肌肉与冰冷的决心。</p>/* 形态2描述 */
+            </div>
+        </div>
+    </div>
+</div>

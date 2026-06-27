@@ -1,0 +1,49 @@
+<!-- ========== 姓名输入区 ========== -->
+<div class="xr-card"><div class="xr-card-title">/*【此处填入姓名区标题，如：📝 姓名】*/</div><div class="xr-row"><input class="xr-input" id="xr-name" placeholder="/*【此处填入输入提示文字】*/"><div class="xr-btn" onclick="event.stopPropagation();var v=document.getElementById('xr-name').value.trim();if(v){window.xrAppend('/*【此处填入追加的键名，如：姓名】*/',v)}">/*【此处填入确认按钮文字，如：确定】*/</div></div></div>
+
+<!-- ========== 性别选择区 ========== -->
+<div class="xr-card" id="xr-gender-card"><div class="xr-card-title">/*【此处填入性别区标题，如：⚤ 性别】*/</div><div class="xr-row">
+<span class="xr-tag xr-gender-tag" data-g="男" onclick="event.stopPropagation();window.xrSetGender('男',this)">/*【此处填入性别选项1，如：男】*/</span>
+<span class="xr-tag xr-gender-tag" data-g="女" onclick="event.stopPropagation();window.xrSetGender('女',this)">/*【此处填入性别选项2，如：女】*/</span>
+<span class="xr-tag xr-gender-tag" data-g="扶她" onclick="event.stopPropagation();window.xrSetGender('扶她',this)">/*【此处填入性别选项3，如：扶她】*/</span>
+<span class="xr-tag xr-gender-tag" data-g="伪娘" onclick="event.stopPropagation();window.xrSetGender('伪娘',this)">/*【此处填入性别选项4，如：伪娘】*/</span>
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('/*【此处填入自定义弹窗提示】*/:');if(v){window.xrAppend('/*【此处填入追加的键名】*/',v)}">+ /*【此处填入自定义按钮文字，如：自定义】*/</span>
+</div><div id="xr-gender-extra"></div></div>
+
+<!-- ========== 年龄输入区 ========== -->
+<div class="xr-card"><div class="xr-card-title">/*【此处填入年龄区标题，如：🎂 年龄】*/</div><div class="xr-row"><input class="xr-input" id="xr-age" placeholder="/*【此处填入输入提示文字】*/" style="max-width:120px"><div class="xr-btn" onclick="event.stopPropagation();var v=document.getElementById('xr-age').value.trim();if(v){window.xrAppend('/*【此处填入追加的键名】*/',v)}">/*【此处填入确认按钮文字】*/</div></div></div>
+
+<!-- ========== 身高体重输入区 ========== -->
+<div class="xr-card"><div class="xr-card-title">/*【此处填入身高体重区标题，如：📏 身高体重】*/</div><div class="xr-row"><input class="xr-input" id="xr-height" placeholder="/*【此处填入身高输入提示】*/" style="max-width:100px"><input class="xr-input" id="xr-weight" placeholder="/*【此处填入体重输入提示】*/" style="max-width:100px"><div class="xr-btn" onclick="event.stopPropagation();var h=document.getElementById('xr-height').value.trim();var w=document.getElementById('xr-weight').value.trim();if(h||w){window.xrAppend('/*【此处填入追加的键名】*/',(h||'--')+'cm / '+(w||'--')+'kg')}">/*【此处填入确认按钮文字】*/</div></div></div>
+
+<!-- ========== 分类标签选择区 ========== -->
+<div class="xr-card" id="xr-sect-card"><div class="xr-card-title">/*【此处填入分类区标题，如：🏯 宗门世家】*/</div><div class="xr-scroll" style="max-height:200px"><div class="xr-row" style="flex-wrap:wrap">
+<!-- 
+  以下为标签示例，按需要复制修改：
+  <span class="xr-tag xr-sect-tag" data-sect="【分类名】" data-type="【类型：宗门/世家/自定义】" onclick="event.stopPropagation();window.xrSetSect('【分类名】','【类型】',this)">【标签显示文字】</span>
+  
+  【此处复制以上标签模板，填入你自己的选项】
+  需要几个复制几个，把【】替换成你自己的内容
+-->
+</div></div><div id="xr-sect-identity" style="margin-top:8px"></div></div>
+
+<!-- ========== 折叠式分类选择区（如灵根） ========== -->
+<div class="xr-card"><div class="xr-card-title">/*【此处填入折叠选择区标题，如：🔮 灵根】*/</div><div class="xr-row">
+<!-- 
+  以下为折叠选择项示例，按需要复制修改：
+  <span class="xr-tag xr-linggen-tag" data-lg="【选项值】" onclick="event.stopPropagation();window.xrSetLinggen('【选项值】',this)">【选项显示文字】</span>
+  
+  【此处复制以上标签模板，填入你自己的折叠选项】
+-->
+</div><div id="xr-linggen-detail"></div></div>
+
+<!-- ========== 标签选择区（可复制多个） ========== -->
+<div class="xr-card"><div class="xr-card-title">/*【此处填入标签选择区标题，如：🏛️ 道体】*/</div><div class="xr-scroll" style="max-height:180px"><div class="xr-row" style="flex-wrap:wrap">
+<!-- 
+  以下为普通标签示例，按需要复制修改：
+  <span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('【追加的键名】','【追加的值】')">【标签显示文字】</span>
+  
+  【此处复制以上标签模板，填入你自己的选项】
+  需要几个复制几个，把【】替换成你自己的内容
+-->
+</div></div></div>

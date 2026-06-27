@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>仙姿谱 · 图鉴编辑器（增强版）</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0d0a06;
+            color: #e0d5c0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 16px;
+            background: #1a1410;
+            border-bottom: 1px solid #3a3020;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .topbar-left h1 {
+            font-family: 'Ma Shan Zheng', 'ZCOOL KuaiLe', cursive;
+            font-size: 20px;
+            background: linear-gradient(180deg, #f5d98e, #d4af37 50%, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+        }
+        .topbar-left .stats {
+            font-size: 11px;
+            color: #8b7355;
+        }
+        .topbar-right {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .topbar-right .btn {
+            padding: 4px 10px;
+            font-size: 11px;
+            background: #1e1a14;
+            border: 1px solid #2a2218;
+            color: #b4946a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: .15s;
+            white-space: nowrap;
+        }
+        .topbar-right .btn:hover {
+            border-color: #c9a24d;
+            color: #e6c468;
+            background: #2a2218;
+        }
+        .topbar-right .btn.primary {
+            background: linear-gradient(135deg, #c9a24d, #8b6914);
+            color: #1a120b;
+            border-color: #c9a24d;
+            font-weight: bold;
+        }
+        .topbar-right .btn.primary:hover {
+            background: linear-gradient(135deg, #d4af37, #9a7a1a);
+        }
+        .topbar-right .btn.danger {
+            color: #d4726a;
+        }
+        .topbar-right .btn.danger:hover {
+            border-color: #d4726a;
+            color: #ff8a80;
+            background: #301a1a;
+        }
+        .topbar-right .sep {
+            width: 1px;
+            height: 24px;
+            background: #3a3020;
+        }
+        #file-import {
+            display: none;
+        }
+
+        .main {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .page {
+            flex: 1;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        .page.active {
+            display: flex;
+        }
+
+        .editor-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .editor-page {
+            background: #12100c;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-width: 280px;
+        }
+        .editor-page .editor-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 12px 80px;
+        }
+
+        .resize-handle {
+            width: 6px;
+            background: #2a2218;
+            cursor: col-resize;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            transition: background .15s;
+            touch-action: none;
+        }
+        .resize-handle:hover,
+        .resize-handle.active {
+            background: #c9a24d;
+        }
+        .resize-handle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: 30px;
+            background: #4a3828;
+            border-radius: 2px;
+            opacity: 0.6;
+        }
+        .resize-handle:hover::after,
+        .resize-handle.active::after {
+            background: #e6c468;
+        }
+
+        .preview-page {
+            background: #0a0804;
+            flex: 1;
+            overflow: hidden;
+            min-width: 200px;
+        }
+        .preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #0a0804;
+        }
+
+        .tabbar {
+            display: flex;
+            border-top: 1px solid #3a3020;
+            background: #1a1410;
+            flex-shrink: 0;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            color: #6b5a3a;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: all .15s;
+            position: relative;
+        }
+        .tab-btn.active {
+            color: #e6c468;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: #c9a24d;
+            border-radius: 0 0 2px 2px;
+        }
+        .tab-btn .icon {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .section {
+            margin-bottom: 14px;
+            background: #1a1610;
+            border-radius: 12px;
+            border: 1px solid #2a2218;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 10px 14px;
+            background: #1e1a14;
+            border-bottom: 1px solid #2a2218;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-header h3 {
+            font-size: 14px;
+            color: #d4af37;
+            letter-spacing: 2px;
+        }
+        .section-body {
+            padding: 10px 14px;
+        }
+        .section-body label {
+            display: block;
+            font-size: 11px;
+            color: #8b7355;
+            margin-bottom: 3px;
+        }
+        .section-body input,
+        .section-body textarea,
+        .section-body select {
+            width: 100%;
+            padding: 8px 10px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 6px;
+            color: #e0d5c0;
+            font-size: 13px;
+            font-family: inherit;
+            margin-bottom: 8px;
+            resize: vertical;
+        }
+        .section-body input:focus,
+        .section-body textarea:focus,
+        .section-body select:focus {
+            outline: none;
+            border-color: #c9a24d;
+        }
+        .section-body select {
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .section-body input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #2a2218;
+            border-radius: 3px;
+            padding: 0;
+            margin: 6px 0 12px;
+            border: none;
+            cursor: pointer;
+        }
+        .section-body input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #c9a24d;
+            border-radius: 50%;
+            border: 2px solid #8b6914;
+            cursor: pointer;
+        }
+        .section-body .range-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-body .range-row input[type=range] {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .section-body .range-val {
+            font-size: 12px;
+            color: #e6c468;
+            min-width: 36px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .realm-item {
+            background: #0d0a06;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border: 1px solid #2a2218;
+            position: relative;
+        }
+        .realm-item.level-1 {
+            border-left-color: #c9a24d;
+            border-left-width: 3px;
+            margin-left: 16px;
+        }
+        .realm-item.level-2 {
+            border-left-color: #8b6914;
+            border-left-width: 3px;
+            margin-left: 32px;
+        }
+        .realm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .realm-name {
+            font-size: 14px;
+            color: #e6c468;
+            font-weight: bold;
+            letter-spacing: 1px;
+            flex: 1;
+            min-width: 60px;
+            background: transparent;
+            border: none;
+            color: #e6c468;
+            padding: 4px;
+        }
+        .realm-name:focus {
+            outline: none;
+            border-bottom: 1px solid #c9a24d;
+        }
+        .realm-actions {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #1e1a14;
+            border: 1px solid #2a2218;
+            color: #b4946a;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all .15s;
+            white-space: nowrap;
+        }
+        .btn:active {
+            border-color: #c9a24d;
+            color: #e6c468;
+            background: #2a2218;
+        }
+        .btn.danger {
+            color: #d4726a;
+        }
+        .btn.danger:active {
+            border-color: #d4726a;
+            color: #ff8a80;
+            background: #301a1a;
+        }
+        .btn.add {
+            background: linear-gradient(135deg, #302010, #201810);
+            border-color: #8b6914;
+            color: #e6c468;
+        }
+        .btn.add:active {
+            background: linear-gradient(135deg, #403020, #302010);
+        }
+        .btn.small {
+            padding: 3px 6px;
+            font-size: 10px;
+        }
+        .btn.primary {
+            background: linear-gradient(135deg, #c9a24d, #8b6914);
+            color: #1a120b;
+            border-color: #c9a24d;
+            font-weight: bold;
+        }
+        .btn.primary:active {
+            background: linear-gradient(135deg, #d4af37, #9a7a1a);
+        }
+
+        .cards-in-realm {
+            margin-top: 6px;
+        }
+        .card-item {
+            background: #131008;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #201a12;
+            display: flex;
+            gap: 6px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .card-item .thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .card-item .thumb.placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a3828;
+            font-size: 18px;
+        }
+        .card-fields {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 140px;
+        }
+        .card-fields input {
+            padding: 5px 6px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 11px;
+            width: 100%;
+        }
+        .card-fields input:focus {
+            outline: none;
+            border-color: #c9a24d;
+        }
+        .card-fields .row {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+        .card-fields .row input {
+            flex: 1;
+            min-width: 60px;
+        }
+        .card-fields .row .btn {
+            flex-shrink: 0;
+        }
+        .drag-handle {
+            color: #4a3828;
+            font-size: 12px;
+            padding: 2px;
+            user-select: none;
+            flex-shrink: 0;
+            touch-action: none;
+            cursor: grab;
+        }
+
+        .desc-list {
+            margin-top: 4px;
+            padding: 4px 0;
+            border-top: 1px dashed #2a2218;
+        }
+        .desc-item {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+            background: #0d0a06;
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid #1a1610;
+        }
+        .desc-item input[type="text"] {
+            flex: 2;
+            min-width: 70px;
+            padding: 3px 5px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 11px;
+        }
+        .desc-item input[type="text"]:focus {
+            outline: none;
+            border-color: #c9a24d;
+        }
+        .desc-item input[type="number"] {
+            width: 40px;
+            padding: 2px 3px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 10px;
+        }
+        .desc-item input[type="color"] {
+            width: 24px;
+            height: 20px;
+            padding: 0;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            background: none;
+            cursor: pointer;
+        }
+        .desc-item select {
+            padding: 2px 3px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 9px;
+            width: auto;
+            margin: 0;
+        }
+        .desc-item .btn {
+            padding: 2px 4px;
+            font-size: 9px;
+        }
+        .desc-item .gradient-controls {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .desc-item .gradient-controls label {
+            font-size: 8px;
+            color: #8b7355;
+            margin: 0;
+        }
+
+        .img-size-controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 4px;
+            padding: 4px 0;
+            border-top: 1px dashed #2a2218;
+        }
+        .img-size-controls label {
+            font-size: 10px;
+            color: #8b7355;
+            margin: 0;
+        }
+        .img-size-controls input[type=range] {
+            width: 60px;
+            height: 4px;
+            padding: 0;
+            margin: 0;
+        }
+        .img-size-controls input[type=number] {
+            width: 44px;
+            padding: 2px 4px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 10px;
+        }
+        .img-size-controls select {
+            width: auto;
+            padding: 2px 4px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 10px;
+            margin: 0;
+        }
+
+        .font-style-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 4px;
+            padding: 4px 0;
+            border-top: 1px dashed #2a2218;
+        }
+        .font-style-controls label {
+            font-size: 10px;
+            color: #8b7355;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .font-style-controls input[type=number] {
+            width: 48px;
+            padding: 2px 4px;
+            background: #0d0a06;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            color: #e0d5c0;
+            font-size: 10px;
+        }
+        .font-style-controls input[type=color] {
+            width: 30px;
+            height: 24px;
+            padding: 0;
+            border: 1px solid #2a2218;
+            border-radius: 4px;
+            background: none;
+            cursor: pointer;
+        }
+        .font-style-controls input[type=checkbox] {
+            width: 14px;
+            height: 14px;
+            accent-color: #c9a24d;
+        }
+
+        .card-scale-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed #2a2218;
+        }
+        .card-scale-control label {
+            font-size: 10px;
+            color: #8b7355;
+            margin: 0;
+        }
+        .card-scale-control input[type=range] {
+            flex: 1;
+            height: 4px;
+            padding: 0;
+            margin: 0;
+        }
+        .card-scale-control .range-val {
+            font-size: 10px;
+            color: #e6c468;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #c9a24d;
+            color: #1a120b;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .5);
+        }
+        .toast.show {
+            opacity: 1;
+        }
+
+        .dlg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dlg-box {
+            background: #1e1812;
+            border: 1px solid #c9a24d;
+            border-radius: 14px;
+            padding: 20px 24px;
+            min-width: 260px;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+        }
+        .dlg-box p {
+            color: #e0d5c0;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .dlg-box input,
+        .dlg-box select {
+            width: 100%;
+            padding: 8px 10px;
+            background: #0d0a06;
+            border: 1px solid #c9a24d;
+            border-radius: 6px;
+            color: #e0d5c0;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+        .dlg-box input:focus,
+        .dlg-box select:focus {
+            outline: none;
+            border-color: #e6c468;
+        }
+        .dlg-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .dlg-btns .btn {
+            padding: 8px 20px;
+            font-size: 13px;
+        }
+        .dlg-btns .btn.confirm {
+            background: linear-gradient(135deg, #c9a24d, #8b6914);
+            color: #1a120b;
+            border-color: #c9a24d;
+            font-weight: bold;
+        }
+
+        @media(max-width:767px) {
+            .main {
+                flex-direction: column;
+            }
+            .editor-wrapper {
+                flex-direction: column;
+            }
+            .resize-handle {
+                width: 100%;
+                height: 6px;
+                cursor: row-resize;
+            }
+            .resize-handle::after {
+                width: 30px;
+                height: 2px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .editor-page {
+                min-height: 200px;
+            }
+            .preview-page {
+                min-height: 200px;
+            }
+            .topbar {
+                padding: 6px 10px;
+            }
+            .topbar-left h1 {
+                font-size: 16px;
+            }
+            .topbar-left .stats {
+                font-size: 10px;
+            }
+            .topbar-right .btn {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+            .page {
+                display: none !important;
+            }
+            .page.active {
+                display: flex !important;
+            }
+            .tabbar {
+                display: flex;
+            }
+            .realm-item.level-1 {
+                margin-left: 8px;
+            }
+            .realm-item.level-2 {
+                margin-left: 16px;
+            }
+            .desc-item {
+                flex-wrap: wrap;
+            }
+            .desc-item input[type="text"] {
+                flex: 1 1 100%;
+            }
+        }
+        @media(min-width:768px) {
+            .topbar {
+                display: flex;
+            }
+            .tabbar {
+                display: none;
+            }
+            .page {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1>仙 姿 谱</h1>
+                <span class="stats" id="topStats"></span>
+            </div>
+            <div class="topbar-right">
+                <button class="btn" id="btn-export-proj" title="导出项目（.json）">📦 导出项目</button>
+                <button class="btn" id="btn-import-proj" title="导入项目（.json）">📂 导入项目</button>
+                <input type="file" id="file-import" accept=".json">
+                <span class="sep"></span>
+                <button class="btn" id="btn-copy-regex" title="复制正则JSON">📋 复制正则JSON</button>
+                <button class="btn" id="btn-dl-regex" title="下载正则JSON">💾 下载正则JSON</button>
+                <span class="sep"></span>
+                <button class="btn primary" id="btn-dl-html">⬇ 独立HTML</button>
+            </div>
+        </div>
+        <div class="main">
+            <div class="editor-wrapper" id="editorWrapper">
+                <div class="page editor-page active" id="editorPage">
+                    <div class="editor-body" id="editorBody"></div>
+                </div>
+                <div class="resize-handle" id="resizeHandle" title="拖动调整面板大小"></div>
+                <div class="page preview-page" id="previewPage">
+                    <iframe class="preview-frame" id="previewFrame"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="tabbar" id="tabbar">
+            <button class="tab-btn active" onclick="switchTab('editor')"><span class="icon">✏️</span>编辑</button>
+            <button class="tab-btn" onclick="switchTab('preview')"><span class="icon">👁️</span>预览</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // 数据模型
+        // ============================================================
+        var idCounter = 1000;
+
+        function genId() { return 'id' + (idCounter++); }
+
+        // 辅助：将旧版字符串描述转换为对象，并补全新字段
+        function normalizeDescriptions(descs) {
+            if (!descs) return [{ text: '暂无描述', fontSize: 16, color: '#ffffff', useCustom: false, fontFamily: '',
+                    gradient: null }];
+            if (Array.isArray(descs) && descs.length > 0 && typeof descs[0] === 'string') {
+                return descs.map(function(t) {
+                    return { text: t, fontSize: 16, color: '#ffffff', useCustom: false, fontFamily: '',
+                        gradient: null };
+                });
+            }
+            return descs.map(function(d) {
+                return {
+                    text: d.text || '描述',
+                    fontSize: d.fontSize || 16,
+                    color: d.color || '#ffffff',
+                    useCustom: d.useCustom || false,
+                    fontFamily: d.fontFamily || '',
+                    gradient: d.gradient || null
+                };
+            });
+        }
+
+        var DEFAULT_DATA = {
+            title: '仙姿谱',
+            realms: [{
+                id: genId(),
+                name: '人界',
+                parentId: null,
+                cards: [{
+                    id: genId(),
+                    prefix: '许家嫡女',
+                    name: '许星榆',
+                    img: 'https://meimoaiimg.com/user/101516/53bc5786-7895-432a-b5ce-c4327164f7d1.jpg',
+                    descriptions: normalizeDescriptions(['许家嫡女，天资聪颖', '身负血脉之谜']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }, {
+                    id: genId(),
+                    prefix: '大胤女帝',
+                    name: '萧凤仪',
+                    img: 'https://meimoaiimg.com/user/101516/53636459-da55-4a2e-81e7-317e76866c64.jpg',
+                    descriptions: normalizeDescriptions(['大胤王朝女帝', '运筹帷幄，气吞山河']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }, {
+                    id: genId(),
+                    prefix: '琼女掌门',
+                    name: '苏青樱',
+                    img: 'https://meimoaiimg.com/user/101516/e39dbf6a-2b47-40f4-ad1f-cafd95f5b0dc.jpg',
+                    descriptions: normalizeDescriptions(['琼女宫掌门', '冰心玉骨，剑法通神']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }]
+            }, {
+                id: genId(),
+                name: '灵界',
+                parentId: null,
+                cards: [{
+                    id: genId(),
+                    prefix: '万剑宗主',
+                    name: '苏剑心',
+                    img: 'https://meimoaiimg.com/user/101516/7c242fdf-93fb-4d56-90f9-a156d65dd3db.jpg',
+                    descriptions: normalizeDescriptions(['万剑宗宗主', '剑心通明，一剑破万法']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }, {
+                    id: genId(),
+                    prefix: '流韵宗主',
+                    name: '柳江谣',
+                    img: 'https://meimoaiimg.com/user/101516/a95e9f3b-f93a-4725-8f86-dd94874a2965.jpg',
+                    descriptions: normalizeDescriptions(['流韵宗宗主', '琴音惑世，曲动九天']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }]
+            }, {
+                id: genId(),
+                name: '仙界',
+                parentId: null,
+                cards: [{
+                    id: genId(),
+                    prefix: '时空道祖',
+                    name: '时绾',
+                    img: 'https://meimoaiimg.com/user/101516/1777990168107-processed(lightpdf.com).png',
+                    descriptions: normalizeDescriptions(['时空道祖', '执掌时空，逆转因果']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }, {
+                    id: genId(),
+                    prefix: '轮回道祖',
+                    name: '许晚晴',
+                    img: 'https://meimoaiimg.com/user/101516/8f634dfc-2017-430b-9ab2-3373c3631ae7.jpg',
+                    descriptions: normalizeDescriptions(['轮回道祖', '六道轮回，生死幻灭']),
+                    displayMode: 'image',
+                    imgWidth: 100,
+                    imgHeight: 100,
+                    imgFit: 'cover',
+                    fontSize: 16,
+                    useCustomColor: false,
+                    textColor: '#ffffff',
+                    cardScale: null,
+                    fontFamily: '',
+                    gradient: null
+                }]
+            }]
+        };
+
+        var data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        var currentTab = 'editor';
+
+        var appearance = {
+            btnTop: 16,
+            panelTop: 8,
+            panelWidth: 340,
+            panelMaxHeight: 86,
+            btnTextColor: '#e6c468',
+            btnBorderColor: '#c9a24d',
+            btnBgStart: '#302010',
+            btnBgEnd: '#1a1410',
+            btnPosition: 'right',
+            cardScale: 100,
+            cardsPerRow: 1,
+            cardGap: 8,
+            trigger: '<仙姿谱>' // 触发词，用于正则替换
+        };
+
+        // ============================================================
+        // 工具
+        // ============================================================
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(
+                />/g, '&gt;'); }
+
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(function() { t.classList.remove('show'); }, 1800);
+        }
+
+        function showDialog(html, onOk) {
+            var overlay = document.createElement('div');
+            overlay.className = 'dlg-overlay';
+            overlay.innerHTML = '<div class="dlg-box">' + html + '</div>';
+            overlay.onclick = function(e) { if (e.target === overlay) { overlay.remove(); } };
+            document.body.appendChild(overlay);
+            var box = overlay.querySelector('.dlg-box');
+            var okBtn = box.querySelector('.confirm');
+            var cancelBtn = box.querySelector('.cancel');
+            var input = box.querySelector('input');
+            var select = box.querySelector('select');
+            if (okBtn) okBtn.onclick = function() {
+                overlay.remove();
+                if (onOk) onOk(input ? input.value : (select ? select.value : true));
+            };
+            if (cancelBtn) cancelBtn.onclick = function() { overlay.remove(); };
+            if (input) {
+                input.focus();
+                input.onkeydown = function(e) { if (e.key === 'Enter') { overlay.remove();
+                        if (onOk) onOk(input.value); } };
+            }
+            if (select) {
+                select.focus();
+                select.onkeydown = function(e) { if (e.key === 'Enter') { overlay.remove();
+                        if (onOk) onOk(select.value); } };
+            }
+            overlay.onkeydown = function(e) { if (e.key === 'Escape') overlay.remove(); };
+        }
+
+        // ============================================================
+        // Tab 切换
+        // ============================================================
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('editorPage').classList.toggle('active', tab === 'editor');
+            document.getElementById('previewPage').classList.toggle('active', tab === 'preview');
+            var all = document.querySelectorAll('.tab-btn');
+            for (var i = 0; i < all.length; i++) {
+                all[i].classList.toggle('active', all[i].textContent.indexOf(tab === 'editor' ? '编辑' : '预览') >= 0);
+            }
+            if (tab === 'preview') updatePreview();
+        }
+
+        // ============================================================
+        // 数据操作
+        // ============================================================
+        function getRealm(id) {
+            for (var i = 0; i < data.realms.length; i++) {
+                if (data.realms[i].id === id) return data.realms[i];
+            }
+            return null;
+        }
+
+        function getRealmIndex(id) {
+            for (var i = 0; i < data.realms.length; i++) {
+                if (data.realms[i].id === id) return i;
+            }
+            return -1;
+        }
+
+        function getRootRealms() {
+            return data.realms.filter(function(r) { return r.parentId === null; });
+        }
+
+        function getChildRealms(parentId) {
+            return data.realms.filter(function(r) { return r.parentId === parentId; });
+        }
+
+        function getCard(realmId, cardId) {
+            var r = getRealm(realmId);
+            if (!r) return null;
+            for (var i = 0; i < r.cards.length; i++) {
+                if (r.cards[i].id === cardId) return r.cards[i];
+            }
+            return null;
+        }
+
+        function getCardIndex(realmId, cardId) {
+            var r = getRealm(realmId);
+            if (!r) return -1;
+            for (var i = 0; i < r.cards.length; i++) {
+                if (r.cards[i].id === cardId) return i;
+            }
+            return -1;
+        }
+
+        function updateTitle(v) { data.title = v.trim() || '仙姿谱';
+            updatePreview();
+            updateStats(); }
+
+        function addRealm(name, parentId) {
+            if (!name || !name.trim()) name = '新分栏';
+            var r = { id: genId(), name: name.trim(), parentId: parentId || null, cards: [] };
+            data.realms.push(r);
+            render();
+            return r;
+        }
+
+        function deleteRealm(id) {
+            var children = getChildRealms(id);
+            for (var i = 0; i < children.length; i++) {
+                deleteRealm(children[i].id);
+            }
+            var idx = getRealmIndex(id);
+            if (idx >= 0) data.realms.splice(idx, 1);
+            render();
+        }
+
+        function moveRealmUp(id) {
+            var idx = getRealmIndex(id);
+            if (idx <= 0) return;
+            var tmp = data.realms[idx];
+            data.realms[idx] = data.realms[idx - 1];
+            data.realms[idx - 1] = tmp;
+            render();
+        }
+
+        function moveRealmDown(id) {
+            var idx = getRealmIndex(id);
+            if (idx < 0 || idx >= data.realms.length - 1) return;
+            var tmp = data.realms[idx];
+            data.realms[idx] = data.realms[idx + 1];
+            data.realms[idx + 1] = tmp;
+            render();
+        }
+
+        function promoteRealm(id) {
+            var r = getRealm(id);
+            if (!r) return;
+            if (r.parentId === null) { showToast('已经是主板块'); return; }
+            r.parentId = null;
+            render();
+            showToast('✅ 已升为主板块');
+        }
+
+        function demoteRealm(id) {
+            var r = getRealm(id);
+            if (!r) return;
+            var targets = data.realms.filter(function(t) {
+                if (t.id === id) return false;
+                var children = getChildRealms(id);
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].id === t.id) return false;
+                }
+                return true;
+            });
+            if (targets.length === 0) { showToast('没有可用的父分栏'); return; }
+            var opts = targets.map(function(t) { return '<option value="' + t.id + '">' + esc(t.name) + '</option>'; })
+                .join('');
+            showDialog('<p>选择父分栏</p><select>' + opts + '</select><div class="dlg-btns"><button class="btn cancel">取消</button><button class="btn confirm">确定</button></div>',
+                function(val) {
+                    if (!val) return;
+                    r.parentId = val;
+                    render();
+                    showToast('✅ 已移动');
+                });
+        }
+
+        function moveToMainRealm(id) {
+            var r = getRealm(id);
+            if (!r) return;
+            var targets = getRootRealms().filter(function(t) { return t.id !== id; });
+            if (targets.length === 0) { showToast('没有其他主板块'); return; }
+            var opts = targets.map(function(t) { return '<option value="' + t.id + '">' + esc(t.name) + '</option>'; })
+                .join('');
+            showDialog('<p>选择目标主板块</p><select>' + opts + '</select><div class="dlg-btns"><button class="btn cancel">取消</button><button class="btn confirm">确定</button></div>',
+                function(val) {
+                    if (!val) return;
+                    r.parentId = val;
+                    render();
+                    showToast('✅ 已移动');
+                });
+        }
+
+        function addCard(realmId) {
+            var r = getRealm(realmId);
+            if (!r) return;
+            r.cards.push({
+                id: genId(),
+                prefix: '新称号',
+                name: '新角色',
+                img: '',
+                descriptions: [{ text: '新描述', fontSize: 16, color: '#ffffff', useCustom: false, fontFamily: '',
+                    gradient: null }],
+                displayMode: 'image',
+                imgWidth: 100,
+                imgHeight: 100,
+                imgFit: 'cover',
+                fontSize: 16,
+                useCustomColor: false,
+                textColor: '#ffffff',
+                cardScale: null,
+                fontFamily: '',
+                gradient: null
+            });
+            render();
+        }
+
+        function deleteCard(realmId, cardId) {
+            var r = getRealm(realmId);
+            if (!r) return;
+            var idx = getCardIndex(realmId, cardId);
+            if (idx >= 0) r.cards.splice(idx, 1);
+            render();
+        }
+
+        function moveCard(realmId, cardId, dir) {
+            var r = getRealm(realmId);
+            if (!r) return;
+            var idx = getCardIndex(realmId, cardId);
+            if (idx < 0) return;
+            var to = idx + dir;
+            if (to < 0 || to >= r.cards.length) return;
+            var tmp = r.cards[idx];
+            r.cards[idx] = r.cards[to];
+            r.cards[to] = tmp;
+            render();
+        }
+
+        function updateCardField(realmId, cardId, field, value) {
+            var r = getRealm(realmId);
+            if (!r) return;
+            var c = getCard(realmId, cardId);
+            if (!c) return;
+            c[field] = value;
+            updatePreview();
+            updateStats();
+        }
+
+        // 描述独立操作
+        function getDesc(realmId, cardId, idx) {
+            var c = getCard(realmId, cardId);
+            if (!c || !c.descriptions || !c.descriptions[idx]) return null;
+            return c.descriptions[idx];
+        }
+
+        function addDesc(realmId, cardId) {
+            var c = getCard(realmId, cardId);
+            if (!c) return;
+            if (!c.descriptions) c.descriptions = [];
+            c.descriptions.push({ text: '新描述', fontSize: 16, color: '#ffffff', useCustom: false, fontFamily: '',
+                gradient: null });
+            render();
+        }
+
+        function removeDesc(realmId, cardId, idx) {
+            var c = getCard(realmId, cardId);
+            if (!c || !c.descriptions) return;
+            c.descriptions.splice(idx, 1);
+            render();
+        }
+
+        function moveDesc(realmId, cardId, idx, dir) {
+            var c = getCard(realmId, cardId);
+            if (!c || !c.descriptions) return;
+            var to = idx + dir;
+            if (to < 0 || to >= c.descriptions.length) return;
+            var tmp = c.descriptions[idx];
+            c.descriptions[idx] = c.descriptions[to];
+            c.descriptions[to] = tmp;
+            render();
+        }
+
+        function duplicateDesc(realmId, cardId, idx) {
+            var c = getCard(realmId, cardId);
+            if (!c || !c.descriptions) return;
+            var d = c.descriptions[idx];
+            c.descriptions.splice(idx + 1, 0, {
+                text: d.text + '(复)',
+                fontSize: d.fontSize || 16,
+                color: d.color || '#ffffff',
+                useCustom: d.useCustom || false,
+                fontFamily: d.fontFamily || '',
+                gradient: d.gradient ? JSON.parse(JSON.stringify(d.gradient)) : null
+            });
+            render();
+        }
+
+        function updateDescText(realmId, cardId, idx, value) {
+            var d = getDesc(realmId, cardId, idx);
+            if (!d) return;
+            d.text = value;
+            updatePreview();
+        }
+
+        function updateDescFontSize(realmId, cardId, idx, value) {
+            var d = getDesc(realmId, cardId, idx);
+            if (!d) return;
+            d.fontSize = parseInt(value) || 16;
+            d.useCustom = true;
+            updatePreview();
+        }
+
+        function updateDescColor(realmId, cardId, idx, value) {
+            var d = getDesc(realmId, cardId, idx);
+            if (!d) return;
+            d.color = value;
+            d.useCustom = true;
+            updatePreview();
+        }
+
+        function updateDescFontFamily(realmId, cardId, idx, value) {
+            var d = getDesc(realmId, cardId, idx);
+            if (!d) return;
+            d.fontFamily = value;
+            updatePreview();
+        }
+
+        function updateDescGradient(realmId, cardId, idx, start, end, direction) {
+            var d = getDesc(realmId, cardId, idx);
+            if (!d) return;
+            if (start && end && direction) {
+                d.gradient = { start: start, end: end, direction: direction };
+            } else {
+                d.gradient = null;
+            }
+            updatePreview();
+        }
+
+        // ============================================================
+        // 统计
+        // ============================================================
+        function updateStats() {
+            var total = 0;
+            data.realms.forEach(function(r) { total += r.cards.length; });
+            var s = data.realms.length + '分栏 · ' + total + '角色';
+            var el = document.getElementById('topStats');
+            if (el) el.textContent = s;
+        }
+
+        // ============================================================
+        // 渲染编辑器
+        // ============================================================
+        function render() {
+            var body = document.getElementById('editorBody');
+            var h = '';
+
+            h += '<div class="section"><div class="section-header"><h3>📌 图鉴名称</h3></div>';
+            h += '<div class="section-body"><label>图鉴标题</label>';
+            h += '<input value="' + esc(data.title) + '" onchange="updateTitle(this.value)" placeholder="仙姿谱"></div></div>';
+
+            // ===== 外观设置 =====
+            h += '<div class="section"><div class="section-header"><h3>🎨 按钮 & 面板位置</h3></div><div class="section-body">';
+            h += '<label>按钮位置</label>';
+            h += '<select onchange="appearance.btnPosition=this.value;updatePreview();render();">';
+            h += '<option value="right"' + (appearance.btnPosition === 'right' ? ' selected' : '') + '>右侧</option>';
+            h += '<option value="left"' + (appearance.btnPosition === 'left' ? ' selected' : '') + '>左侧</option>';
+            h += '</select>';
+
+            h += '<label>按钮距顶部</label>';
+            h += '<div class="range-row"><input type="range" min="2" max="75" step="1" value="' + appearance.btnTop +
+                '" oninput="appearance.btnTop=parseInt(this.value);document.getElementById(\'apv_btnTop\').textContent=this.value+\'%\';updatePreview()"><span class="range-val" id="apv_btnTop">' +
+                appearance.btnTop + '%</span></div>';
+
+            h += '<label>面板距顶部</label>';
+            h += '<div class="range-row"><input type="range" min="1" max="50" step="1" value="' + appearance.panelTop +
+                '" oninput="appearance.panelTop=parseInt(this.value);document.getElementById(\'apv_panelTop\').textContent=this.value+\'%\';updatePreview()"><span class="range-val" id="apv_panelTop">' +
+                appearance.panelTop + '%</span></div>';
+
+            h += '<label>面板宽度 (px)</label>';
+            h += '<div class="range-row"><input type="range" min="200" max="560" step="10" value="' + appearance
+                .panelWidth +
+                '" oninput="appearance.panelWidth=parseInt(this.value);document.getElementById(\'apv_panelWidth\').textContent=this.value+\'px\';updatePreview()"><span class="range-val" id="apv_panelWidth">' +
+                appearance.panelWidth + 'px</span></div>';
+
+            h += '<label>面板最大高度 (vh)</label>';
+            h += '<div class="range-row"><input type="range" min="50" max="95" step="1" value="' + appearance
+                .panelMaxHeight +
+                '" oninput="appearance.panelMaxHeight=parseInt(this.value);document.getElementById(\'apv_panelMaxHeight\').textContent=this.value+\'vh\';updatePreview()"><span class="range-val" id="apv_panelMaxHeight">' +
+                appearance.panelMaxHeight + 'vh</span></div>';
+
+            h += '<label>按钮文字颜色</label>';
+            h += '<div class="range-row"><input type="color" value="' + appearance.btnTextColor +
+                '" oninput="appearance.btnTextColor=this.value;updatePreview()"><span class="range-val" style="font-family:monospace">' +
+                appearance.btnTextColor + '</span></div>';
+
+            h += '<label>按钮边框颜色</label>';
+            h += '<div class="range-row"><input type="color" value="' + appearance.btnBorderColor +
+                '" oninput="appearance.btnBorderColor=this.value;updatePreview()"><span class="range-val" style="font-family:monospace">' +
+                appearance.btnBorderColor + '</span></div>';
+
+            h += '<label>按钮背景渐变</label>';
+            h += '<div style="display:flex;gap:6px"><input type="color" value="' + appearance.btnBgStart +
+                '" oninput="appearance.btnBgStart=this.value;updatePreview()" style="flex:1"><input type="color" value="' +
+                appearance.btnBgEnd + '" oninput="appearance.btnBgEnd=this.value;updatePreview()" style="flex:1"></div>';
+            h +=
+                '<div style="font-size:10px;color:#6b5a3a;margin-bottom:8px;display:flex;gap:6px"><span style="flex:1">渐变起始</span><span style="flex:1;text-align:right">渐变结束</span></div>';
+
+            // ---- 触发词 ----
+            h += '<label>触发词（用于正则替换）</label>';
+            h += '<input type="text" value="' + esc(appearance.trigger) +
+                '" onchange="appearance.trigger=this.value.trim()||\'<仙姿谱>\';updatePreview()" placeholder="<仙姿谱>">';
+            h += '</div></div>';
+
+            // ===== 卡片布局设置 =====
+            h += '<div class="section"><div class="section-header"><h3>📐 卡片布局</h3></div><div class="section-body">';
+            h += '<label>全局卡片缩放 (%)</label>';
+            h += '<div class="range-row"><input type="range" min="50" max="150" step="2" value="' + appearance
+                .cardScale +
+                '" oninput="appearance.cardScale=parseInt(this.value);document.getElementById(\'apv_cardScale\').textContent=this.value+\'%\';updatePreview()"><span class="range-val" id="apv_cardScale">' +
+                appearance.cardScale + '%</span></div>';
+
+            h += '<label>每行卡片数 (1~4)</label>';
+            h += '<select onchange="appearance.cardsPerRow=parseInt(this.value);updatePreview();render();">';
+            for (var n = 1; n <= 4; n++) {
+                h += '<option value="' + n + '"' + (appearance.cardsPerRow === n ? ' selected' : '') + '>' + n +
+                '</option>';
+            }
+            h += '</select>';
+
+            h += '<label>卡片间距 (px)</label>';
+            h += '<div class="range-row"><input type="range" min="0" max="30" step="2" value="' + appearance.cardGap +
+                '" oninput="appearance.cardGap=parseInt(this.value);document.getElementById(\'apv_cardGap\').textContent=this.value+\'px\';updatePreview()"><span class="range-val" id="apv_cardGap">' +
+                appearance.cardGap + 'px</span></div>';
+            h += '</div></div>';
+
+            // ===== 分栏 =====
+            h += '<div class="section"><div class="section-header"><h3>🏷 分栏（境界）</h3><span style="font-size:11px;color:#8b7355">' +
+                data.realms.length + ' 个</span></div>';
+            h += '<div class="section-body" style="padding:8px 10px">';
+
+            var roots = getRootRealms();
+            for (var ri = 0; ri < roots.length; ri++) {
+                h += renderRealmTree(roots[ri], 0);
+            }
+
+            h += '</div></div>';
+
+            h += '<button class="btn add" style="width:100%;margin-bottom:10px" onclick="addRealmDialog()">+ 添加主分栏</button>';
+            h += '<div style="display:flex;gap:8px;margin-bottom:30px;flex-wrap:wrap">';
+            h += '<button class="btn add" style="flex:1;padding:12px" onclick="exportHTML()">📋 导出 HTML</button>';
+            h += '<button class="btn" style="flex:1;padding:12px" onclick="copyHTML()">📝 复制代码</button>';
+            h += '</div>';
+
+            body.innerHTML = h;
+            updatePreview();
+            updateStats();
+            initResize();
+        }
+
+        function renderRealmTree(realm, level) {
+            var h = '';
+            var ri = getRealmIndex(realm.id);
+            if (ri < 0) return h;
+
+            var cls = 'realm-item';
+            if (level === 1) cls += ' level-1';
+            else if (level === 2) cls += ' level-2';
+
+            h += '<div class="' + cls + '">';
+            h += '<div class="realm-header">';
+            h += '<span class="drag-handle">⠿</span>';
+            h += '<input class="realm-name" value="' + esc(realm.name) +
+                '" onchange="data.realms[' + ri +
+                '].name=this.value.trim()||\'未命名\';updatePreview();updateStats()" placeholder="分栏名">';
+            h += '<div class="realm-actions">';
+            h += '<button class="btn small" onclick="moveRealmUp(\'' + realm.id + '\')" title="上移">▲</button>';
+            h += '<button class="btn small" onclick="moveRealmDown(\'' + realm.id + '\')" title="下移">▼</button>';
+            if (realm.parentId !== null) {
+                h += '<button class="btn small primary" onclick="promoteRealm(\'' + realm.id +
+                    '\')" title="升为主板块">⬆主</button>';
+            } else {
+                h += '<button class="btn small" onclick="demoteRealm(\'' + realm.id +
+                    '\')" title="降为子版块">⬇子</button>';
+            }
+            h += '<button class="btn small" onclick="moveToMainRealm(\'' + realm.id +
+                '\')" title="移到其他主板块下">➜移</button>';
+            h += '<button class="btn small" onclick="addSubRealm(\'' + realm.id + '\')" title="添加子分栏">+子</button>';
+            h += '<button class="btn small danger" onclick="deleteRealm(\'' + realm.id + '\')">🗑</button>';
+            h += '</div></div>';
+
+            h += '<div class="cards-in-realm">';
+            for (var ci = 0; ci < realm.cards.length; ci++) {
+                var card = realm.cards[ci];
+                // 确保描述被规范化
+                if (card.descriptions && card.descriptions.length > 0 && typeof card.descriptions[0] === 'string') {
+                    card.descriptions = normalizeDescriptions(card.descriptions);
+                }
+                if (!card.descriptions) card.descriptions = [{ text: '暂无描述', fontSize: 16, color: '#ffffff',
+                    useCustom: false, fontFamily: '', gradient: null }];
+
+                var hasImg = card.img && card.img.trim();
+                h += '<div class="card-item">';
+                h += '<span class="drag-handle">⠿</span>';
+                if (hasImg) {
+                    h += '<img class="thumb" src="' + esc(card.img) +
+                        '" onerror="this.className=\'thumb placeholder\';this.innerHTML=\'🖼\'" onload="this.className=\'thumb\'">';
+                } else {
+                    h += '<div class="thumb placeholder">🖼</div>';
+                }
+                h += '<div class="card-fields">';
+                h += '<input value="' + esc(card.prefix) + '" placeholder="称号" onchange="updateCardField(\'' + realm.id +
+                    '\',\'' + card.id + '\',\'prefix\',this.value)">';
+                h += '<input value="' + esc(card.name) + '" placeholder="角色名" onchange="updateCardField(\'' + realm.id +
+                    '\',\'' + card.id + '\',\'name\',this.value)">';
+                h += '<div class="row">';
+                h += '<input value="' + esc(card.img || '') + '" placeholder="图片URL" onchange="updateCardField(\'' +
+                    realm.id + '\',\'' + card.id + '\',\'img\',this.value)">';
+                h += '<button class="btn small" onclick="moveCard(\'' + realm.id + '\',\'' + card.id +
+                    '\',-1)" title="上移">▲</button>';
+                h += '<button class="btn small" onclick="moveCard(\'' + realm.id + '\',\'' + card.id +
+                    '\',1)" title="下移">▼</button>';
+                h += '<button class="btn small danger" onclick="deleteCard(\'' + realm.id + '\',\'' + card.id +
+                    '\')">✕</button>';
+                h += '</div>';
+
+                // 显示模式
+                h += '<div class="row" style="margin-top:2px;gap:4px;align-items:center">';
+                h += '<label style="font-size:9px;color:#8b7355;margin:0">显示:</label>';
+                h += '<select onchange="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'displayMode\',this.value)" style="flex:1;padding:2px 4px;font-size:10px;background:#0d0a06;border:1px solid #2a2218;border-radius:4px;color:#e0d5c0">';
+                h += '<option value="image"' + (card.displayMode === 'image' ? ' selected' : '') + '>立绘</option>';
+                h += '<option value="text"' + (card.displayMode === 'text' ? ' selected' : '') + '>文字</option>';
+                h += '<option value="both"' + (card.displayMode === 'both' ? ' selected' : '') + '>立绘+文字</option>';
+                h += '</select>';
+                h += '</div>';
+
+                // 图片尺寸
+                h += '<div class="img-size-controls">';
+                h +=
+                    '<label>宽</label><input type="range" min="30" max="200" step="2" value="' + (card.imgWidth || 100) +
+                    '" oninput="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'imgWidth\',parseInt(this.value));document.getElementById(\'iw_' + card.id +
+                    '\').textContent=this.value+\'%\'">';
+                h += '<span class="range-val" id="iw_' + card.id + '" style="font-size:10px;min-width:30px">' + (card
+                    .imgWidth || 100) + '%</span>';
+                h +=
+                    '<label>高</label><input type="range" min="30" max="200" step="2" value="' + (card.imgHeight || 100) +
+                    '" oninput="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'imgHeight\',parseInt(this.value));document.getElementById(\'ih_' + card.id +
+                    '\').textContent=this.value+\'%\'">';
+                h += '<span class="range-val" id="ih_' + card.id + '" style="font-size:10px;min-width:30px">' + (card
+                    .imgHeight || 100) + '%</span>';
+                h += '<label>适配</label><select onchange="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'imgFit\',this.value)" style="width:auto;padding:1px 4px;font-size:9px;background:#0d0a06;border:1px solid #2a2218;border-radius:4px;color:#e0d5c0;margin:0">';
+                h += '<option value="cover"' + (card.imgFit === 'cover' ? ' selected' : '') + '>覆盖</option>';
+                h += '<option value="contain"' + (card.imgFit === 'contain' ? ' selected' : '') + '>包含</option>';
+                h += '<option value="fill"' + (card.imgFit === 'fill' ? ' selected' : '') + '>拉伸</option>';
+                h += '</select>';
+                h += '</div>';
+
+                // 卡片级字体样式
+                h += '<div class="font-style-controls">';
+                h += '<label>字号 <input type="number" min="10" max="40" value="' + (card.fontSize || 16) +
+                    '" onchange="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'fontSize\',parseInt(this.value)||16)" style="width:48px"></label>';
+                h += '<label><input type="checkbox" ' + (card.useCustomColor ? 'checked' : '') +
+                    ' onchange="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'useCustomColor\',this.checked);render()" style="width:14px"> 自定义颜色</label>';
+                h += '<label>颜色 <input type="color" value="' + (card.textColor || '#ffffff') +
+                    '" onchange="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'textColor\',this.value)" style="width:30px;height:24px;padding:0;border:1px solid #2a2218;border-radius:4px"></label>';
+                // 卡片级字体和渐变（全局默认）
+                h += '<label>字体 <select onchange="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'fontFamily\',this.value)" style="width:80px;padding:2px;font-size:9px;background:#0d0a06;border:1px solid #2a2218;border-radius:4px;color:#e0d5c0;margin:0">';
+                var fontOpts = ['', 'Ma Shan Zheng', 'ZCOOL KuaiLe', '华文行楷', 'KaiTi', 'Microsoft YaHei', 'serif',
+                    'sans-serif'
+                ];
+                for (var fi = 0; fi < fontOpts.length; fi++) {
+                    var fv = fontOpts[fi];
+                    h += '<option value="' + fv + '"' + (card.fontFamily === fv ? ' selected' : '') + '>' + (fv || '默认') +
+                        '</option>';
+                }
+                h += '</select></label>';
+                h += '<label>渐变 <input type="checkbox" ' + (card.gradient ? 'checked' : '') +
+                    ' onchange="if(this.checked){card.gradient={start:\'#ff6b9d\',end:\'#ffb347\',direction:\'to right\'};}else{card.gradient=null;};updateCardField(\'' +
+                    realm.id + '\',\'' + card.id + '\',\'gradient\',card.gradient);render()" style="width:14px"></label>';
+                if (card.gradient) {
+                    h +=
+                        '<span style="font-size:8px;color:#8b7355">起</span><input type="color" value="' + (card.gradient
+                            .start || '#ff6b9d') +
+                        '" onchange="card.gradient.start=this.value;updateCardField(\'' + realm.id + '\',\'' + card.id +
+                        '\',\'gradient\',card.gradient)" style="width:20px;height:16px;padding:0;border:1px solid #2a2218;border-radius:4px">';
+                    h +=
+                        '<span style="font-size:8px;color:#8b7355">止</span><input type="color" value="' + (card.gradient
+                            .end || '#ffb347') +
+                        '" onchange="card.gradient.end=this.value;updateCardField(\'' + realm.id + '\',\'' + card.id +
+                        '\',\'gradient\',card.gradient)" style="width:20px;height:16px;padding:0;border:1px solid #2a2218;border-radius:4px">';
+                    h +=
+                        '<select onchange="card.gradient.direction=this.value;updateCardField(\'' + realm.id + '\',\'' +
+                        card.id + '\',\'gradient\',card.gradient)" style="width:60px;padding:1px;font-size:8px;background:#0d0a06;border:1px solid #2a2218;border-radius:4px;color:#e0d5c0;margin:0">';
+                    var dirs = ['to right', 'to left', 'to bottom', 'to top', 'to bottom right', 'to bottom left',
+                        'to top right', 'to top left'
+                    ];
+                    for (var di = 0; di < dirs.length; di++) {
+                        var dv = dirs[di];
+                        h += '<option value="' + dv + '"' + (card.gradient.direction === dv ? ' selected' : '') + '>' +
+                            dv.replace('to ', '') + '</option>';
+                    }
+                    h += '</select>';
+                }
+                h += '</div>';
+
+                // 单卡缩放
+                var cardScaleVal = (card.cardScale !== null && card.cardScale !== undefined) ? card.cardScale : '';
+                h += '<div class="card-scale-control">';
+                h += '<label>卡片缩放</label>';
+                h += '<input type="range" min="50" max="150" step="2" value="' + (cardScaleVal || 100) +
+                    '" oninput="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'cardScale\',parseInt(this.value)||null);document.getElementById(\'cs_' + card.id +
+                    '\').textContent=this.value+\'%\'">';
+                h += '<span class="range-val" id="cs_' + card.id + '">' + (cardScaleVal ? cardScaleVal + '%' : '全局') +
+                    '</span>';
+                h +=
+                    '<button class="btn small" onclick="updateCardField(\'' + realm.id + '\',\'' + card.id +
+                    '\',\'cardScale\',null);render()" title="重置为全局">↺</button>';
+                h += '</div>';
+
+                // ---- 描述列表（独立自定义：字号、颜色、字体、渐变） ----
+                h += '<div class="desc-list">';
+                var descs = card.descriptions || [{ text: '暂无描述', fontSize: 16, color: '#ffffff', useCustom: false,
+                    fontFamily: '', gradient: null }];
+                for (var di = 0; di < descs.length; di++) {
+                    var d = descs[di];
+                    var fontSize = d.fontSize || card.fontSize || 16;
+                    var color = d.color || card.textColor || '#ffffff';
+                    var fontFamily = d.fontFamily || card.fontFamily || '';
+                    var grad = d.gradient || card.gradient || null;
+                    h += '<div class="desc-item">';
+                    h += '<input type="text" value="' + esc(d.text) + '" placeholder="描述" onchange="updateDescText(\'' +
+                        realm.id + '\',\'' + card.id + '\',' + di + ',this.value)" style="flex:2;min-width:60px">';
+                    h += '<input type="number" min="10" max="40" value="' + fontSize +
+                        '" onchange="updateDescFontSize(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                        ',parseInt(this.value)||16)" title="字号" style="width:38px">';
+                    h += '<input type="color" value="' + color + '" onchange="updateDescColor(\'' + realm.id + '\',\'' +
+                        card.id + '\',' + di + ',this.value)" title="颜色" style="width:22px;height:18px">';
+                    h += '<select onchange="updateDescFontFamily(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                        ',this.value)" title="字体" style="width:70px;padding:1px;font-size:8px;background:#0d0a06;border:1px solid #2a2218;border-radius:4px;color:#e0d5c0;margin:0">';
+                    var fontOpts2 = ['', 'Ma Shan Zheng', 'ZCOOL KuaiLe', '华文行楷', 'KaiTi', 'Microsoft YaHei', 'serif',
+                        'sans-serif'
+                    ];
+                    for (var fi2 = 0; fi2 < fontOpts2.length; fi2++) {
+                        var fv2 = fontOpts2[fi2];
+                        h += '<option value="' + fv2 + '"' + (fontFamily === fv2 ? ' selected' : '') + '>' + (fv2 ||
+                            '默认') + '</option>';
+                    }
+                    h += '</select>';
+                    // 渐变控件
+                    var hasGrad = grad && grad.start && grad.end && grad.direction;
+                    h += '<label style="font-size:8px;color:#8b7355;margin:0"><input type="checkbox" ' + (hasGrad ?
+                        'checked' : '') +
+                        ' onchange="if(this.checked){var g={start:\'#ff6b9d\',end:\'#ffb347\',direction:\'to right\'};updateDescGradient(\'' +
+                        realm.id + '\',\'' + card.id + '\',' + di +
+                        ',g.start,g.end,g.direction)}else{updateDescGradient(\'' + realm.id + '\',\'' + card.id + '\',' +
+                        di + ',null,null,null)}" style="width:12px;height:12px;accent-color:#c9a24d">渐变</label>';
+                    if (hasGrad) {
+                        h +=
+                            '<span style="font-size:7px;color:#8b7355">起</span><input type="color" value="' + grad.start +
+                            '" onchange="updateDescGradient(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                            ',this.value,grad.end,grad.direction)" style="width:18px;height:14px;padding:0;border:1px solid #2a2218;border-radius:4px">';
+                        h +=
+                            '<span style="font-size:7px;color:#8b7355">止</span><input type="color" value="' + grad.end +
+                            '" onchange="updateDescGradient(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                            ',grad.start,this.value,grad.direction)" style="width:18px;height:14px;padding:0;border:1px solid #2a2218;border-radius:4px">';
+                        h +=
+                            '<select onchange="updateDescGradient(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                            ',grad.start,grad.end,this.value)" style="width:50px;padding:0;font-size:7px;background:#0d0a06;border:1px solid #2a2218;border-radius:4px;color:#e0d5c0;margin:0">';
+                        var dirs2 = ['to right', 'to left', 'to bottom', 'to top', 'to bottom right',
+                            'to bottom left', 'to top right', 'to top left'
+                        ];
+                        for (var di2 = 0; di2 < dirs2.length; di2++) {
+                            var dv2 = dirs2[di2];
+                            h += '<option value="' + dv2 + '"' + (grad.direction === dv2 ? ' selected' : '') + '>' +
+                                dv2.replace('to ', '').substring(0, 2) + '</option>';
+                        }
+                        h += '</select>';
+                    }
+                    h += '<button class="btn small" onclick="moveDesc(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                        ',-1)" title="上移">▲</button>';
+                    h += '<button class="btn small" onclick="moveDesc(\'' + realm.id + '\',\'' + card.id + '\',' + di +
+                        ',1)" title="下移">▼</button>';
+                    h += '<button class="btn small" onclick="duplicateDesc(\'' + realm.id + '\',\'' + card.id + '\',' +
+                        di + ')" title="复制">📋</button>';
+                    h += '<button class="btn small danger" onclick="removeDesc(\'' + realm.id + '\',\'' + card.id +
+                        '\',' + di + ')">✕</button>';
+                    h += '</div>';
+                }
+                h += '<button class="btn small add" onclick="addDesc(\'' + realm.id + '\',\'' + card.id +
+                    '\')" style="margin-top:2px;padding:1px 6px;font-size:9px">+ 添加描述</button>';
+                h += '</div>';
+
+                h += '</div></div>';
+            }
+
+            h += '<button class="btn add" style="width:100%;margin-top:4px" onclick="addCard(\'' + realm.id +
+                '\')">+ 添加角色</button>';
+            h += '</div>';
+
+            var children = getChildRealms(realm.id);
+            for (var chi = 0; chi < children.length; chi++) {
+                h += renderRealmTree(children[chi], level + 1);
+            }
+
+            h += '</div>';
+            return h;
+        }
+
+        // ============================================================
+        // 对话框
+        // ============================================================
+        function addRealmDialog() {
+            showDialog('<p>输入新分栏名称</p><input value="新分栏"><div class="dlg-btns"><button class="btn cancel">取消</button><button class="btn confirm">确定</button></div>',
+                function(val) {
+                    if (val && val.trim()) addRealm(val.trim(), null);
+                });
+        }
+
+        function addSubRealm(parentId) {
+            var parent = getRealm(parentId);
+            if (!parent) return;
+            showDialog('<p>在「' + esc(parent.name) + '」下添加子分栏</p><input value="子分栏"><div class="dlg-btns"><button class="btn cancel">取消</button><button class="btn confirm">确定</button></div>',
+                function(val) {
+                    if (val && val.trim()) addRealm(val.trim(), parentId);
+                });
+        }
+
+        // ============================================================
+        // 预览生成（核心面板HTML）
+        // ============================================================
+        function genHTML() {
+            var id = 'xzp4';
+            var a = appearance;
+            var isLeft = a.btnPosition === 'left';
+
+            var perRow = a.cardsPerRow || 1;
+            var gap = a.cardGap || 8;
+            var globalScale = a.cardScale || 100;
+
+            var roots = getRootRealms();
+            var realmRadios = '',
+                realmTabs = '',
+                realmContents = '';
+
+            for (var ri = 0; ri < roots.length; ri++) {
+                var root = roots[ri];
+                var rid = id + '-r-' + ri;
+                var cid = id + '-c-' + ri;
+                var checked = ri === 0 ? ' checked' : '';
+                realmRadios += '<input type="radio" name="' + id + '-tab" id="' + rid + '"' + checked + '>';
+                realmTabs += '<label class="' + id + '-tab" for="' + rid + '">' + esc(root.name) + '</label>';
+
+                var cardsHTML = renderCardsForRealm(root, globalScale, perRow, gap);
+                var children = getChildRealms(root.id);
+                for (var ci = 0; ci < children.length; ci++) {
+                    cardsHTML += '<div class="' + id + '-sub-label">✦ ' + esc(children[ci].name) + '</div>';
+                    cardsHTML += renderCardsForRealm(children[ci], globalScale, perRow, gap);
+                }
+                realmContents += '<div class="' + id + '-realm" id="' + cid + '">' + cardsHTML + '</div>';
+            }
+
+            var radioRules = [],
+                checkedRules = [];
+            for (var i = 0; i < roots.length; i++) {
+                radioRules.push('#' + id + '-r-' + i);
+                checkedRules.push('#' + id + '-r-' + i + ':checked~.' + id + '-content #' + id + '-c-' + i);
+            }
+
+            var btnPosStyle = isLeft ?
+                'left:0;right:auto;border-radius:0 10px 10px 0;border-left:none;border-right:2px solid ' + a
+                .btnBorderColor + ';box-shadow:2px 0 8px ' + a.btnBorderColor + '44;' :
+                'right:0;left:auto;border-radius:10px 0 0 10px;border-right:none;border-left:2px solid ' + a
+                .btnBorderColor + ';box-shadow:-2px 0 8px ' + a.btnBorderColor + '44;';
+
+            var panelPosStyle = isLeft ?
+                'left:0;right:auto;border-radius:0 14px 14px 0;border-left:none;border-right:2px solid #c9a24d;' :
+                'right:0;left:auto;border-radius:14px 0 0 14px;border-right:none;border-left:2px solid #c9a24d;';
+
+            return '<style>\n' +
+                '@import url("https://fonts.loli.net/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap");\n' +
+                '*{box-sizing:border-box;margin:0;padding:0}\n' +
+                '.' + id + '-root *{box-sizing:border-box;margin:0;padding:0}\n' +
+                '#' + id + '-cb{display:none}\n' +
+                '#' + id + '-cb:checked~.' + id + '-mask{display:block}\n' +
+                '#' + id + '-cb:checked~.' + id + '-panel{display:flex}\n' +
+                '.' + id + '-btn{position:fixed;top:' + a.btnTop + '%;z-index:2147483640;writing-mode:vertical-rl;text-orientation:upright;background:linear-gradient(135deg,' +
+                a.btnBgStart + ',' + a.btnBgEnd + ');color:' + a.btnTextColor + ';border:2px solid ' + a.btnBorderColor +
+                ';' + btnPosStyle + 'padding:8px 4px;font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive;font-size:16px;letter-spacing:4px;cursor:pointer;display:inline-block;text-shadow:0 0 8px ' +
+                a.btnTextColor + '80}\n' +
+                '.' + id + '-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);z-index:2147483639}\n' +
+                '.' + id + '-panel{display:none;position:fixed;top:' + a.panelTop + '%;width:' + a.panelWidth +
+                'px;max-height:' + a.panelMaxHeight + 'vh;background:linear-gradient(160deg,#1e1810,#292015);border:2px solid #c9a24d;' +
+                panelPosStyle + 'box-shadow:-6px 4px 24px rgba(0,0,0,0.7);z-index:2147483640;flex-direction:column;overflow:hidden;font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive}\n' +
+                '.' + id + '-header{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:1px solid #c9a24d;flex-shrink:0;background:rgba(0,0,0,0.3)}\n' +
+                '.' + id + '-title{font-size:28px;font-weight:bold;font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive;background:linear-gradient(180deg,#f5d98e 0%,#d4af37 40%,#b8860b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 20px rgba(212,175,55,0.6),0 2px 4px rgba(0,0,0,0.8);letter-spacing:8px;filter:drop-shadow(0 0 8px #d4af37)}\n' +
+                '.' + id + '-close{width:22px;height:22px;border-radius:50%;border:1px solid #c9a24d;background:rgba(20,15,8,0.8);color:#d4af37;font-size:13px;line-height:20px;text-align:center;cursor:pointer;flex-shrink:0}\n' +
+                '.' + id + '-tabs{display:flex;padding:4px 6px;gap:4px;border-bottom:1px solid #c9a24d;flex-shrink:0;flex-wrap:wrap}\n' +
+                '.' + id + '-tab{flex:1;text-align:center;padding:5px 0;font-size:16px;font-weight:bold;font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive;color:#b4946a;border-radius:14px;border:1px solid transparent;cursor:pointer;letter-spacing:3px;text-shadow:0 0 6px rgba(180,148,106,0.4);min-width:40px}\n' +
+                '.' + id + '-tab:hover{border-color:#c9a24d;color:#e6c468}\n' +
+                radioRules.join(',') + '{display:none}\n' +
+                checkedRules.join(',') + '{display:flex}\n' +
+                radioRules.map(function(r) { return '#' + r + ':checked~.' + id + '-tabs label[for="' + r + '"]'; })
+                .join(',') +
+                '{background:linear-gradient(135deg,#c9a24d,#8b6914);color:#1a120b;border-color:#e6c468;box-shadow:0 0 12px #c9a24d;text-shadow:none}\n' +
+                '.' + id + '-content{flex:1;overflow-y:auto;padding:6px}\n' +
+                '.' + id + '-realm{display:none;flex-direction:column;gap:6px}\n' +
+                '.' + id + '-sub-label{font-size:13px;color:#b4946a;padding:4px 6px;border-left:2px solid #8b6914;margin:4px 0 2px;letter-spacing:2px;font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive}\n' +
+                '.' + id + '-cards{display:flex;flex-wrap:wrap;gap:' + gap + 'px;}\n' +
+                '.' + id + '-card{position:relative;border-radius:8px;overflow:hidden;border:1px solid #8b6f4c;background:#0d0a06;cursor:pointer;transition:all .2s;flex:0 0 calc((100% - ' +
+                (gap * (perRow - 1)) + 'px) / ' + perRow + ');}\n' +
+                '.' + id + '-card:hover{box-shadow:0 0 16px rgba(201,162,77,0.2)}\n' +
+                '.' + id + '-card .img-wrap{width:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0a0804}\n' +
+                '.' + id + '-card .img-wrap img{display:block;width:100%;height:auto;transition:all .3s}\n' +
+                '.' + id + '-card.text-mode .img-wrap{display:none}\n' +
+                '.' + id + '-card.text-mode .text-content{display:block}\n' +
+                '.' + id + '-card.text-mode .info-overlay{display:none}\n' +
+                '.' + id + '-card.both-mode .img-wrap{display:flex}\n' +
+                '.' + id + '-card.both-mode .text-content{display:block;position:relative;background:rgba(0,0,0,0.6);padding:8px 10px;border-top:1px solid #8b6f4c}\n' +
+                '.' + id + '-card.both-mode .info-overlay{display:none}\n' +
+                '.' + id + '-card .text-content{display:none;line-height:1.6;padding:8px 10px;font-family:sans-serif}\n' +
+                '.' + id + '-card .text-content .desc-item2{padding:2px 0;border-bottom:1px dashed #2a2218;display:inline-block;width:100%}\n' +
+                '.' + id + '-card .text-content .desc-item2:last-child{border-bottom:none}\n' +
+                '.' + id + '-card .info-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:18px 8px 6px;pointer-events:none}\n' +
+                '.' + id + '-card .click-hint{position:absolute;top:8px;right:8px;color:rgba(255,255,255,0.3);font-size:10px;background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:4px;pointer-events:none;z-index:2}\n' +
+                '.' + id + '-prefix{font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive;color:#ff6b9d;text-shadow:0 0 12px rgba(255,107,157,0.7),0 1px 3px rgba(0,0,0,0.8);letter-spacing:3px;display:block;line-height:1.4;filter:drop-shadow(0 0 4px #ff6b9d)}\n' +
+                '.' + id + '-name2{font-weight:bold;font-family:"Ma Shan Zheng","ZCOOL KuaiLe","华文行楷","KaiTi","Microsoft YaHei",cursive;background:linear-gradient(180deg,#e0f0ff 0%,#6bb5ff 50%,#2563eb 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 8px rgba(59,130,246,0.6),0 1px 2px rgba(0,0,0,0.7);letter-spacing:4px;display:block;line-height:1.3;filter:drop-shadow(0 0 8px #3b82f6)}\n' +
+                '</style>\n' +
+                '<script>\n' +
+                'if (typeof toggleCardMode !== "function") {\n' +
+                '    function toggleCardMode(el) {\n' +
+                '        var modes = ["image","text","both"];\n' +
+                '        var cur = el.dataset.mode || "image";\n' +
+                '        var idx = modes.indexOf(cur);\n' +
+                '        var next = modes[(idx + 1) % modes.length];\n' +
+                '        el.dataset.mode = next;\n' +
+                '        el.className = el.className.replace(/text-mode|both-mode/g, "");\n' +
+                '        if (next === "text") el.classList.add("text-mode");\n' +
+                '        else if (next === "both") el.classList.add("both-mode");\n' +
+                '    }\n' +
+                '}\n' +
+                '<\/script>\n' +
+                '\n' +
+                '<input type="checkbox" id="' + id + '-cb">\n' +
+                '<label for="' + id + '-cb" class="' + id + '-btn">' + esc(data.title) + '</label>\n' +
+                '<label for="' + id + '-cb" class="' + id + '-mask"></label>\n' +
+                '\n' +
+                '<div class="' + id + '-panel">\n' +
+                '  <div class="' + id + '-header">\n' +
+                '    <span class="' + id + '-title">' + esc(data.title) + '</span>\n' +
+                '    <label for="' + id + '-cb" class="' + id + '-close">✕</label>\n' +
+                '  </div>\n' +
+                '  ' + realmRadios + '\n' +
+                '  <div class="' + id + '-tabs">' + realmTabs + '</div>\n' +
+                '  <div class="' + id + '-content">' + realmContents + '</div>\n' +
+                '</div>';
+        }
+
+        function renderCardsForRealm(realm, globalScale, perRow, gap) {
+            var id = 'xzp4';
+            var h = '';
+            var cardsContainer = '<div class="' + id + '-cards">';
+            var cardsHtml = '';
+
+            for (var j = 0; j < realm.cards.length; j++) {
+                var card = realm.cards[j];
+                // 确保描述规范化
+                if (card.descriptions && card.descriptions.length > 0 && typeof card.descriptions[0] === 'string') {
+                    card.descriptions = normalizeDescriptions(card.descriptions);
+                }
+                if (!card.descriptions) card.descriptions = [{ text: '暂无描述', fontSize: 16, color: '#ffffff',
+                    useCustom: false, fontFamily: '', gradient: null }];
+
+                var imgSrc = (card.img && card.img.trim()) ? esc(card.img) : 'about:blank';
+                var mode = card.displayMode || 'image';
+                var modeCls = mode === 'text' ? 'text-mode' : (mode === 'both' ? 'both-mode' : '');
+                var w = card.imgWidth || 100;
+                var h2 = card.imgHeight || 100;
+                var fit = card.imgFit || 'cover';
+
+                var cardScale = (card.cardScale !== null && card.cardScale !== undefined) ? card.cardScale : globalScale;
+                var scaleFactor = cardScale / 100;
+
+                // 描述独立渲染（字号、颜色、字体、渐变）
+                var descs = card.descriptions;
+                var descHTML = descs.map(function(d) {
+                    var fontSize = d.fontSize || card.fontSize || 14;
+                    var color = d.color || card.textColor || '#ffffff';
+                    var fontFamily = d.fontFamily || card.fontFamily || '';
+                    var grad = d.gradient || card.gradient || null;
+                    var style = 'font-size:' + fontSize + 'px;';
+                    if (fontFamily) style += 'font-family:' + fontFamily + ',cursive;';
+                    if (grad && grad.start && grad.end && grad.direction) {
+                        // 渐变色文字
+                        style += 'background:linear-gradient(' + grad.direction + ',' + grad.start + ',' + grad
+                            .end + ');';
+                        style += '-webkit-background-clip:text;';
+                        style += '-webkit-text-fill-color:transparent;';
+                        style += 'background-clip:text;';
+                        style += 'display:inline-block;';
+                    } else {
+                        // 纯色
+                        style += 'color:' + color + ';';
+                        if (d.useCustom || card.useCustomColor) {
+                            style += 'text-shadow:0 0 6px ' + color + '80;';
+                        } else {
+                            style += 'text-shadow:0 0 4px rgba(255,255,255,0.2);';
+                        }
+                    }
+                    return '<div class="desc-item2" style="' + style + '">' + esc(d.text) + '</div>';
+                }).join('');
+
+                // 卡片级称号、名字
+                var baseFontSize = 14;
+                var fs = Math.round(baseFontSize * scaleFactor);
+                var nameFs = Math.round((baseFontSize + 4) * scaleFactor);
+                var useCustomColor = card.useCustomColor || false;
+                var textColor = card.textColor || '#ffffff';
+                var cardFontFamily = card.fontFamily || '';
+                var cardGrad = card.gradient || null;
+                var prefixStyle = 'font-size:' + fs + 'px;';
+                var nameStyle = 'font-size:' + nameFs + 'px;';
+                if (cardFontFamily) {
+                    prefixStyle += 'font-family:' + cardFontFamily + ',cursive;';
+                    nameStyle += 'font-family:' + cardFontFamily + ',cursive;';
+                }
+                if (cardGrad && cardGrad.start && cardGrad.end && cardGrad.direction) {
+                    prefixStyle += 'background:linear-gradient(' + cardGrad.direction + ',' + cardGrad.start + ',' +
+                        cardGrad.end + ');';
+                    prefixStyle += '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;';
+                    nameStyle += 'background:linear-gradient(' + cardGrad.direction + ',' + cardGrad.start + ',' +
+                        cardGrad.end + ');';
+                    nameStyle += '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;';
+                } else {
+                    if (useCustomColor) {
+                        prefixStyle += 'color:' + textColor +
+                            ';-webkit-text-fill-color:unset;background-clip:unset;text-shadow:none;filter:none;';
+                        nameStyle += 'color:' + textColor +
+                            ';-webkit-text-fill-color:unset;background-clip:unset;text-shadow:none;filter:none;';
+                    }
+                }
+
+                var pad = Math.round(8 * scaleFactor);
+                var cardStyle = 'padding:' + pad + 'px;';
+
+                cardsHtml += '<div class="' + id + '-card ' + modeCls + '" onclick="toggleCardMode(this)" data-mode="' +
+                    mode + '" style="' + cardStyle + '">';
+                cardsHtml += '<span class="click-hint">🖱️切换</span>';
+                cardsHtml += '<div class="img-wrap" style="padding:' + (100 - h2) / 2 + '% 0"><img src="' + imgSrc +
+                    '" style="width:' + w + '%;height:' + h2 + '%;object-fit:' + fit +
+                    '" onerror="this.src=\'about:blank\'"></div>';
+                cardsHtml += '<div class="info-overlay"><span class="' + id + '-prefix" style="' + prefixStyle + '">' +
+                    esc(card.prefix) + '</span><span class="' + id + '-name2" style="' + nameStyle + '">' + esc(card
+                    .name) + '</span></div>';
+                cardsHtml += '<div class="text-content">' + descHTML + '</div>';
+                cardsHtml += '</div>';
+            }
+
+            h += cardsContainer + cardsHtml + '</div>';
+            return h;
+        }
+
+        // ============================================================
+        // 预览更新
+        // ============================================================
+        function updatePreview() {
+            var html = genHTML();
+            var frame = document.getElementById('previewFrame');
+            var previewDoc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#1a1410;min-height:200vh;color:#ccc;font-family:sans-serif}.hint{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#8b7355;font-size:14px;z-index:1;pointer-events:none}.hint b{color:#d4af37}</style><script>' +
+                'function toggleCardMode(el){var modes=["image","text","both"];var cur=el.dataset.mode||"image";var idx=modes.indexOf(cur);var next=modes[(idx+1)%modes.length];el.dataset.mode=next;el.className=el.className.replace(/text-mode|both-mode/g,"");if(next==="text")el.classList.add("text-mode");else if(next==="both")el.classList.add("both-mode");}' +
+                '<\/script></head><body><div class="hint">👈 点击右侧<b>竖排按钮</b>打开图鉴 · 点击卡片切换显示模式</div>' +
+                html +
+                '<div style="height:100px"></div><script>document.getElementById("xzp4-cb").checked=true;<\/script></body></html>';
+            var blob = new Blob([previewDoc], { type: 'text/html' });
+            frame.src = URL.createObjectURL(blob);
+        }
+
+        // ============================================================
+        // 导出 & 复制（原有功能）
+        // ============================================================
+        function exportHTML() {
+            var html = genHTML();
+            var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = (data.title || '图鉴') + '.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('✅ 已下载独立HTML');
+        }
+
+        function copyHTML() {
+            var html = genHTML();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(html).then(function() { showToast('✅ 已复制HTML到剪贴板'); }).catch(fallbackCopy);
+            } else { fallbackCopy(); }
+
+            function fallbackCopy() {
+                var ta = document.createElement('textarea');
+                ta.value = html;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('✅ 已复制HTML到剪贴板');
+            }
+        }
+
+        // ============================================================
+        // 项目存档
+        // ============================================================
+        function exportProject() {
+            var payload = { data: data, appearance: appearance };
+            var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = '图鉴_project.json';
+            a.click();
+            URL.revokeObjectURL(blob);
+            showToast('✅ 项目已导出');
+        }
+
+        function importProject(file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var obj = JSON.parse(e.target.result);
+                    if (obj.data && obj.appearance) {
+                        data = obj.data;
+                        appearance = obj.appearance;
+                        // 确保所有旧数据描述被规范化
+                        data.realms.forEach(function(r) {
+                            r.cards.forEach(function(c) {
+                                if (c.descriptions && c.descriptions.length > 0 && typeof c
+                                    .descriptions[0] === 'string') {
+                                    c.descriptions = normalizeDescriptions(c.descriptions);
+                                }
+                            });
+                        });
+                        render();
+                        updatePreview();
+                        showToast('✅ 项目导入成功');
+                    } else {
+                        showToast('❌ 无效的项目文件');
+                    }
+                } catch (err) {
+                    showToast('❌ 导入失败：' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ============================================================
+        // 正则规则生成（含自动分段）
+        // ============================================================
+        var MAX_RAW = 17000;
+
+        function splitByRawLen(str, limit) {
+            var pieces = [],
+                i = 0,
+                n = str.length;
+            while (i < n) {
+                var end = Math.min(n, i + limit);
+                if (end < n) { var c = str.charCodeAt(end - 1); if (c >= 0xD800 && c <= 0xDBFF) end -= 1; }
+                pieces.push(str.slice(i, end));
+                i = end;
+            }
+            return pieces;
+        }
+
+        function buildRegexRules() {
+            var full = genHTML();
+            var trigger = appearance.trigger || '<仙姿谱>';
+            var rawLen = full.length;
+            var base = String(trigger).replace(/[<>]/g, '');
+            var rules = [];
+            if (rawLen <= MAX_RAW) {
+                rules.push({ id: -1, replaceString: full, scriptName: trigger, findRegex: trigger });
+            } else {
+                var reserve = base.length + 8;
+                var chunks = splitByRawLen(full, MAX_RAW - reserve);
+                for (var k = 0; k < chunks.length; k++) {
+                    var token = (k === 0) ? trigger : ('<' + base + '_p' + k + '>');
+                    var nextMarker = (k < chunks.length - 1) ? ('<' + base + '_p' + (k + 1) + '>') : '';
+                    var repl = chunks[k] + nextMarker;
+                    rules.push({ id: -1, replaceString: repl, scriptName: token, findRegex: token });
+                }
+            }
+            return { rules: rules, trigger: trigger, rawLen: rawLen, segments: rules.length };
+        }
+
+        function buildRegexJson() {
+            var r = buildRegexRules();
+            var bundle = {
+                pageDepth: 2,
+                statusbar: '',
+                beginning: r.trigger,
+                regex_scripts: r.rules
+            };
+            return JSON.stringify(bundle, null, 2);
+        }
+
+        function copyRegexJson() {
+            var json = buildRegexJson();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(json).then(function() { showToast('✅ 正则JSON已复制'); }).catch(function() {
+                    fallbackCopyRegex(json);
+                });
+            } else {
+                fallbackCopyRegex(json);
+            }
+        }
+
+        function fallbackCopyRegex(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('✅ 正则JSON已复制');
+        }
+
+        function downloadRegexJson() {
+            var json = buildRegexJson();
+            var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = '图鉴_regex.json';
+            a.click();
+            URL.revokeObjectURL(blob);
+            showToast('✅ 正则JSON已下载');
+        }
+
+        // ============================================================
+        // 拖拽调整大小
+        // ============================================================
+        var resizeActive = false;
+
+        function initResize() {
+            var handle = document.getElementById('resizeHandle');
+            if (!handle) return;
+            var wrapper = document.getElementById('editorWrapper');
+            if (!wrapper) return;
+            var editor = document.getElementById('editorPage');
+            var preview = document.getElementById('previewPage');
+            if (!editor || !preview) return;
+
+            var startX, startWidth, startHeight;
+            var isMobile = window.innerWidth < 768;
+
+            function onStart(e) {
+                e.preventDefault();
+                resizeActive = true;
+                handle.classList.add('active');
+                var touch = e.touches ? e.touches[0] : e;
+                if (isMobile) {
+                    startY = touch.clientY;
+                    startHeight = editor.offsetHeight;
+                } else {
+                    startX = touch.clientX;
+                    startWidth = editor.offsetWidth;
+                }
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchend', onEnd);
+            }
+
+            function onMove(e) {
+                if (!resizeActive) return;
+                e.preventDefault();
+                var touch = e.touches ? e.touches[0] : e;
+                if (isMobile) {
+                    var dy = touch.clientY - startY;
+                    var newH = Math.max(150, Math.min(window.innerHeight - 200, startHeight + dy));
+                    editor.style.height = newH + 'px';
+                    preview.style.height = (wrapper.offsetHeight - newH - handle.offsetHeight) + 'px';
+                } else {
+                    var dx = touch.clientX - startX;
+                    var total = wrapper.offsetWidth - handle.offsetWidth;
+                    var newW = Math.max(220, Math.min(total - 150, startWidth + dx));
+                    editor.style.flex = '0 0 ' + newW + 'px';
+                    preview.style.flex = '1';
+                }
+            }
+
+            function onEnd() {
+                resizeActive = false;
+                handle.classList.remove('active');
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchend', onEnd);
+                updatePreview();
+            }
+
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+        }
+
+        // ============================================================
+        // 绑定按钮事件
+        // ============================================================
+        document.getElementById('btn-export-proj').addEventListener('click', exportProject);
+        document.getElementById('btn-import-proj').addEventListener('click', function() {
+            document.getElementById('file-import').click();
+        });
+        document.getElementById('file-import').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                importProject(e.target.files[0]);
+                e.target.value = '';
+            }
+        });
+        document.getElementById('btn-copy-regex').addEventListener('click', copyRegexJson);
+        document.getElementById('btn-dl-regex').addEventListener('click', downloadRegexJson);
+        document.getElementById('btn-dl-html').addEventListener('click', exportHTML);
+
+        // ============================================================
+        // 初始化
+        // ============================================================
+        render();
+        initResize();
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault();
+                copyHTML(); }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'e') { e.preventDefault();
+                exportHTML(); }
+        });
+
+        var resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() { updatePreview(); }, 300);
+        });
+
+        console.log('✨ 仙姿谱编辑器增强版已加载（项目存档+正则JSON+自动分段）');
+    </script>
+</body>
+</html>

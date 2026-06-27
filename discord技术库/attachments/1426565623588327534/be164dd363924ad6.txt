@@ -1,0 +1,47 @@
+<style>
+@keyframes wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes colors{0%,100%{color:#fff}25%{color:#4169E1}50%{color:#00008B}75%{color:#0000CD}}
+@keyframes flash{0%,100%{box-shadow:0 0 20px 5px rgba(0,0,139,.6)}50%{box-shadow:0 0 20px 5px rgba(0,0,139,1)}}
+@keyframes flip360{0%{transform:scaleX(1);opacity:1}50%{transform:scaleX(-1);opacity:.5}100%{transform:scaleX(1);opacity:0}}
+@keyframes showWithFade{0%{transform:scaleX(-1);opacity:0}50%{transform:scaleX(1);opacity:.5}100%{transform:scaleX(1);opacity:1}}
+
+.wavy-char{display:inline-block;animation:wave 1.6s ease-in-out infinite,colors 4s linear infinite;font-weight:bold;font-size:2.4em;text-shadow:0 0 8px currentColor;margin:0 2px}
+.info-card{background:#1E1E1E;border:1px solid #00008B;border-radius:4px;padding:6px 10px;width:93%;box-shadow:0 0 20px 5px rgba(0,0,139,.8);font-size:14px;animation:flash 1.5s infinite;overflow:hidden}
+.logo-container{width:100%;height:auto}
+.logo-img{width:100%;height:auto;display:block;animation:0.8s ease forwards}
+.back-logo{display:none}
+</style>
+
+<p>
+  <span class="wavy-char" style="animation-delay:0s">T</span>
+  <span class="wavy-char" style="animation-delay:0.1s">y</span>
+  <span class="wavy-char" style="animation-delay:0.2s">p</span>
+  <span class="wavy-char" style="animation-delay:0.3s">e</span>
+  <span class="wavy-char" style="animation-delay:0.4s">m</span>
+  <span class="wavy-char" style="animation-delay:0.5s">o</span>
+  <span class="wavy-char" style="animation-delay:0.6s">o</span>
+  <span class="wavy-char" style="animation-delay:0.7s">n</span>
+</p>
+
+<div class="info-card" id="flipCard">
+  <div class="logo-container">
+    <img class="logo-img front-logo" src="https://i.postimg.cc/9fDTNpMf/Fate-Stay-Night-Logo.png" alt="">
+    <img class="logo-img back-logo" src="https://i.postimg.cc/HLp2DfX6/Fate-Zero-logo.png" alt="">
+  </div>
+</div>
+
+<script>
+let f=!1,a=document.querySelector('.front-logo'),b=document.querySelector('.back-logo');
+document.getElementById('flipCard').onclick=()=>{
+  f=!f;a.style.animation='';b.style.animation='';
+  if(f){
+    a.style.animation='flip360 0.8s forwards';
+    setTimeout(()=>{a.style.display='none';b.style.display='block';b.style.animation='showWithFade 0.8s forwards'},800)
+  }else{
+    b.style.animation='flip360 0.8s forwards';
+    setTimeout(()=>{b.style.display='none';a.style.display='block';a.style.animation='showWithFade 0.8s forwards'},800)
+  }
+};
+</script>
+
+

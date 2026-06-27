@@ -1,0 +1,179 @@
+<style>
+#a-p-c {margin:0;padding:0;display:block;line-height:0;}
+#a-p-c * {margin:0 !important;padding:0 !important;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+#a-p-c .p-t {position:fixed !important;right:0 !important;top:100px;z-index:9999 !important;margin:0 !important;border:none !important;width:auto;white-space:nowrap;padding:12px 15px !important;background:linear-gradient(135deg,#4a90e2,#3a7bc8);color:white !important;border-radius:6px 0 0 6px !important;cursor:pointer;font-size:14px;font-weight:500;box-shadow:0 2px 10px rgba(0,0,0,0.2);transition:transform 0.3s ease;}
+#a-p-c .p-t:hover {transform:translateX(-3px) !important;background:linear-gradient(135deg,#3a7bc8,#2d6cb9);}
+#a-p-c .p-m {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;justify-content:center;align-items:center;z-index:999999;backdrop-filter:blur(5px);}
+#a-p-c .m-c {background:#f8f9fa;border-radius:12px;padding:0 20px 25px !important;max-width:90%;width:550px;box-shadow:0 10px 30px rgba(0,0,0,0.3);line-height:normal;position:relative;z-index:1;}
+#a-p-c .m-c::before {content:'';position:absolute;top:0;left:0;width:100%;height:5px;background:linear-gradient(90deg,#4a90e2,#3a7bc8);border-top-left-radius:12px;border-top-right-radius:12px;}
+#a-p-c .h-c {display:flex;justify-content:space-between;align-items:center;padding:15px 0 12px !important;border-bottom:1px solid #e9ecef;width:100%;}
+#a-p-c .m-n {display:flex;gap:15px;flex-wrap:wrap;}
+#a-p-c .n-i {color:#495057;cursor:pointer;font-weight:500;transition:color 0.2s ease;padding:5px 0 !important;position:relative;font-size:1.05em;}
+#a-p-c .n-i:hover {color:#3498db;}
+#a-p-c .n-i.active {color:#3498db;font-weight:600;}
+#a-p-c .n-i.active::after {content:'';position:absolute;bottom:-13px;left:0;width:100%;height:3px;background-color:#3498db;border-radius:2px;}
+#a-p-c .p-c-c {background-color:#ffffff;border:1px solid #e9ecef;border-radius:8px;padding:20px !important;line-height:1.8;color:#333;font-size:1em;height:320px;overflow-y:auto;scrollbar-width:thin;box-shadow:inset 0 1px 3px rgba(0,0,0,0.05);margin-top:15px !important;}
+#a-p-c .c-b {background:none;border:none;color:#868e96;font-size:1.2em;cursor:pointer;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;}
+#a-p-c .c-b:hover {background-color:#f1f3f5;color:#343a40;}
+</style>
+
+<div id="a-p-c">
+<!-- 右侧固定悬浮按钮 -->
+<button class="p-t" style="top:60px" onclick="event.stopPropagation();
+var w=document.getElementById('a-p-c');
+if(w&&w.parentElement!==document.body)document.body.appendChild(w);
+var p=document.getElementById('a-p-c');
+if(p)p.style.display='flex';
+document.getElementById('pM').style.display='flex';
+document.querySelector('.n-i').click();">✨</button>
+
+<!-- 弹窗内容 -->
+<div id="pM" class="p-m" onclick="document.getElementById('pM').style.display='none';event.stopPropagation();">
+<div class="m-c" onclick="event.stopPropagation()">
+<div class="h-c">
+<div class="m-n">
+<div class="n-i" 
+data-content='<strong>更新(25.8.30)</strong><br>
+更新了正则，提高了性能<br>
+必须开新档<br>
+<strong>首发(25.8.22)</strong><br>
+<b>这是我呕心沥血的一个作品，纯粹是基于对蛊的热爱</b><br>
+前后大概写了一个月，本来已经打算发的了，但看到主站正则更新，连夜修改适配，所以才有了现在的三卷轴和角色生成器版本<br>
+深度还原了蛊界体验<br>
+在此感谢诸位仙友的支持和鼓励<br>
+毕竟这是基于我的理解还原的蛊界<br>
+有什么不足的欢迎提出来<br>
+<b>后续我会把这张卡的技术用到涩涩方面，敬请期待！</b><br>'
+onclick="
+document.querySelectorAll('.n-i').forEach(item => item.classList.remove('active'));
+this.classList.add('active');
+document.querySelector('.p-c-c').innerHTML = this.getAttribute('data-content');
+document.querySelector('.p-c-c').scrollTop = 0;
+">更新日志</div>
+
+<div class="n-i" 
+data-content='角色卡生成器专门为有强自定义需求的玩家准备的<br>
+对于没有强烈自定义倾向的玩家，不必严格按照格式填写，可以随意一点，或直接按照"游玩卷轴"的三走向方式开局<br>'
+onclick="
+document.querySelectorAll('.n-i').forEach(item => item.classList.remove('active'));
+this.classList.add('active');
+document.querySelector('.p-c-c').innerHTML = this.getAttribute('data-content');
+document.querySelector('.p-c-c').scrollTop = 0;
+">角色生成器</div>
+
+<div class="n-i" 
+data-content='<b>以下涉及的tokens计数受模型波动可能会有影响，仅作参考</b><br>
+<strong>模型首推：Gemini2.5Pro</strong><br>
+<b>【35⚡不推荐】</b><br>
+<b>- 极限·指令1(你输出的内容不能低于1500tokens)</b><br>
+<b>- 相对稳妥·指令2(你输出的内容不能低于1350tokens)</b><br>
+<b>- 指令1测试(10次对话平均占用tokens)</b><br>
+正文：3200~超限tokens<br>
+填表：1200~1500tokens<br>
+结论：不稳定,建议+10⚡或者使用指令2(体验一般)<br>
+<b>【45⚡推荐】</b><br>
+<b>- 偏少·指令(你输出的内容不能低于1500tokens)</b><br>
+<b>- 相对极限·指令(你输出的内容不能低于2000tokens)</b><br>
+<b>【55⚡首电推荐】</b><br>
+<b>- 指令(你输出的内容不能低于2000tokens)</b><br>
+<b>【65⚡推荐】</b><br>
+<b>- 指令(你输出的内容不能低于3000tokens)</b><br>
+<b>高电体现在正文的内容会多出许多，填表tokens几乎无变化</b><br>
+(填表内容就是状态栏和记忆栏)<br>
+↓<br>
+<strong>模型推荐：Gemini2.5Flash</strong><br>
+(令我意外的是Flash的性能并不比Pro差多少，主要是不稳定，预算不足建议用Pro开局，后续可以转Flash，所以这里给到推荐)<br>
+<b>【20⚡】</b><br>
+<b>- 超级极限·指令1(你输出的内容不能低于2000tokens)</b><br>
+<b>- 稳妥·指令2(你输出的内容不能低于1500tokens)</b><br>
+<b>【25⚡推荐】</b><br>
+<b>- 偏少·指令(你输出的内容不能低于2000tokens)</b><br>
+(Gemini的tokens输出不是很稳定，比如同样的回复内容和指令刚刚用的好好的，偶尔某次重置后的回复就莫名截断了)<br>
+↓<br>
+<strong>模型备用1：Grok-4</strong><br>
+<b>相比Gemini2.5Pro文风没差多少，但行文逻辑较怪，且不是很吃设定</b><br>
+↓<br>
+<strong>模型备用2：Claude4.0</strong><br>
+<b>无严格tokens限制需求</b><br>
+<b>很吃设定，但文风偏小白</b><br>'
+onclick="
+document.querySelectorAll('.n-i').forEach(item => item.classList.remove('active'));
+this.classList.add('active');
+document.querySelector('.p-c-c').innerHTML = this.getAttribute('data-content');
+document.querySelector('.p-c-c').scrollTop = 0;
+">模型</div>
+
+<div class="n-i" 
+data-content='<b>Gemini抽风兼容方案：</b><br>
+<b>只有Gemini会因为模型波动而出现的抽风·极小概率</b><br>
+<b>理论上任何正则卡使用Gemini都会有这种情况</b><br>
+-当遇到卷轴没有生成的时候十成是因为正则替换出现错别字或漏字-<br>
+↓<br>
+这种情况不用管，我做了兼容（兼容的方法已经在魅魔藏经阁里给出了-写卡作者）：<br>
+【角乱weqh码乱码色】<br>
+↓<br>
+针对的是这种情况，错别字或漏字<br>
+【角巴】【角】<br>
+↓<br>
+我已经在正则方面做了巨大兼容，但架不住Gemini抽风。<br>
+（我已经没招了，包括玩其他作者的卡偶尔也会遇到这种情况，此则无奈之举）<br>
+↓<br>
+为了保证全程的游玩体验，如果遇到上述情况请尝试以下方法：<br>
+<b>以下是正则模板，当遇到正则替换失败的时候可以主动修改</b><br>
+（这里为避免【】被正则检测到用{}替代，实际上还是【】）<br>
+{章节}<br>
+{场景}<br>
+{正文}<br>
+...<br>
+正文内容<br>
+...<br>
+{名字}<br>
+{称号}  <br>
+{年龄}<br>
+{修为} <br>
+{标签}<br>
+{宿命}  <br>
+{魂魄}  <br>
+{流派}<br>
+{外貌}  <br>
+{私处}<br>
+{丹田}  <br>
+{蛊虫}  <br>
+{杀招}<br>
+{时间}<br>
+{目标}<br>
+{情报}<br>
+{势力}<br>
+{关系}<br>
+{物品}<br>
+{简语1}<br>
+{详情1}<br>
+{简语2}<br>
+{详情2}<br>
+{简语3}<br>
+{详情3}<br>'
+onclick="
+document.querySelectorAll('.n-i').forEach(item => item.classList.remove('active'));
+this.classList.add('active');
+document.querySelector('.p-c-c').innerHTML = this.getAttribute('data-content');
+document.querySelector('.p-c-c').scrollTop = 0;
+">BUG</div>
+
+<div class="n-i" 
+data-content='<strong>联系渠道：</strong><br>
+Discord@方源(fangyuan_1128)<br>
+Telegram的Meimodu二群@方源<br>
+头像与魅魔主页一致<br>'
+onclick="
+document.querySelectorAll('.n-i').forEach(item => item.classList.remove('active'));
+this.classList.add('active');
+document.querySelector('.p-c-c').innerHTML = this.getAttribute('data-content');
+document.querySelector('.p-c-c').scrollTop = 0;
+">联系</div>
+</div>
+<button class="c-b" onclick="document.getElementById('pM').style.display='none'">×</button>
+</div>
+<div class="p-c-c"><b>点击上方导航查看内容</b></div>
+</div>
+</div>
+</div>

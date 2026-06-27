@@ -1,0 +1,46 @@
+      <div class="gg-memory-event" onclick="event.stopPropagation()">
+        <div class="gg-memory-event-head">
+          <button class="gg-memory-event-toggle" type="button" aria-expanded="false" onclick="event.stopPropagation();var box=this.closest('.gg-memory-event');if(box){if(box.classList.contains('is-open')){box.classList.remove('is-open');this.setAttribute('aria-expanded','false');}else{box.classList.add('is-open');this.setAttribute('aria-expanded','true');}}">
+            <span class="gg-memory-event-copy">
+              <span class="gg-memory-event-title">$1</span>
+              <span class="gg-memory-event-meta">状态：$2</span>
+              <span class="gg-memory-event-preview">点击右侧✦形按钮保存事件</span>
+            </span>
+            <span class="gg-memory-event-arrow">▼</span>
+          </button>
+
+          <button class="gg-memory-pin" type="button" data-action="save-memory-event" aria-label="保存此事件" title="保存此事件" onclick="event.stopPropagation();"><span class="gg-memory-pin-icon">✦</span></button>
+        </div>
+
+        <div class="gg-memory-event-body">
+          <div class="gg-memory-event-grid">
+            <div class="gg-memory-item">
+              <div class="gg-memory-label">事件状态</div>
+              <div class="gg-memory-value">$2</div>
+            </div>
+
+            <div class="gg-memory-item">
+              <div class="gg-memory-label">事件阶段</div>
+              <div class="gg-memory-value">$6</div>
+            </div>
+
+            <div class="gg-memory-item gg-memory-item-wide">
+              <div class="gg-memory-label">事件概述</div>
+              <div class="gg-memory-value">$3</div>
+            </div>
+
+            <div class="gg-memory-item gg-memory-item-wide">
+              <div class="gg-memory-label">参与角色</div>
+              <div class="gg-memory-value">$4</div>
+            </div>
+
+            <div class="gg-memory-item gg-memory-item-wide">
+              <div class="gg-memory-label">关键线索</div>
+              <div class="gg-memory-value">$5</div>
+            </div>
+
+
+          <div class="gg-memory-raw">【记忆事件|$1|$2|$3|$4|$5|$6】</div>
+        </div>
+      </div>
+   </div>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>角色档案侧边栏编辑器</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+/* Toolbar */
+.toolbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#16213e;border-bottom:1px solid #2a2a4a;flex-shrink:0;flex-wrap:wrap;}
+.toolbar h1{font-size:16px;color:#87CEEB;margin-right:auto;}
+.btn{padding:5px 12px;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;}
+.btn-blue{background:#4682B4;color:#fff;}.btn-blue:hover{background:#5a9ed4;}
+.btn-green{background:#2d6a4f;color:#fff;}.btn-green:hover{background:#40916c;}
+.btn-orange{background:#e76f51;color:#fff;}.btn-orange:hover{background:#f4845f;}
+.btn-gray{background:#3a3a5c;color:#aaa;}.btn-gray:hover{background:#4a4a6c;}
+.btn-danger{background:#c0392b;color:#fff;font-size:10px;padding:3px 10px;}.btn-danger:hover{background:#e74c3c;}
+.btn-small{padding:3px 8px;font-size:11px;}
+/* Tabs */
+.tabs{display:flex;gap:2px;flex-shrink:0;padding:0 12px;background:#16213e;}
+.tab-btn{padding:6px 16px;background:none;border:2px solid transparent;color:#aaa;cursor:pointer;font-size:13px;border-radius:4px 4px 0 0;}
+.tab-btn.active{color:#87CEEB;border-bottom-color:#4682B4;background:rgba(70,130,180,0.1);}
+/* Main */
+.main{display:flex;flex:1;overflow:hidden;}
+.editor-panel,.preview-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.preview-panel{display:none;background:#fff;}
+.preview-panel.active{display:flex;}
+.editor-panel.hidden{display:none;}
+/* Cards */
+.cards-list{flex:1;overflow-y:auto;padding:12px;}
+.card-editor{background:#16213e;border:1px solid #2a2a4a;border-radius:8px;margin-bottom:12px;overflow:hidden;}
+.card-header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#1a1a3e;border-bottom:1px solid #2a2a4a;cursor:pointer;}
+.card-header:hover{background:#1f1f45;}
+.card-index{font-size:11px;color:#87CEEB;min-width:20px;}
+.card-header input[type="text"]{flex:1;background:transparent;border:none;color:#e0e0e0;font-size:13px;font-weight:bold;outline:none;}
+.card-body{display:none;padding:10px 12px;}
+.card-body.open{display:block;}
+.add-card-wrap{text-align:center;padding:8px;}
+/* Tag section */
+.tag-section-editor{margin-bottom:10px;padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid #2a2a4a;}
+.ts-header{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.ts-header input[type="text"]{flex:1;background:#1a1a3e;border:1px solid #3a3a5c;color:#87CEEB;font-size:12px;padding:3px 6px;border-radius:3px;}
+.ts-target{font-size:10px;color:#666;background:#111;padding:2px 5px;border-radius:3px;flex-shrink:0;max-width:130px;overflow:hidden;text-overflow:ellipsis;}
+.tags-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
+.tag-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;background:#1a3a5c;border:1px solid #4682B4;border-radius:3px;font-size:11px;color:#87CEEB;}
+.tag-del{cursor:pointer;font-size:12px;color:#e76f51;margin-left:2px;}
+.tag-del:hover{color:#ff6b6b;}
+.add-tag-wrap{display:flex;gap:4px;}
+.add-tag-wrap input{flex:1;background:#1a1a3e;border:1px solid #2a2a4a;color:#aaa;font-size:11px;padding:3px 6px;border-radius:3px;}
+.add-tag-wrap input:focus{outline:none;border-color:#4682B4;}
+.add-ts-wrap{text-align:center;margin:4px 0;}
+/* Input editor */
+.input-editor{margin-bottom:6px;display:flex;align-items:center;gap:6px;padding:4px 8px;background:rgba(255,255,255,0.02);border-radius:4px;}
+.inp-label{font-size:11px;color:#4682B4;min-width:60px;flex-shrink:0;}
+.inp-id{font-size:10px;color:#555;flex-shrink:0;max-width:120px;overflow:hidden;text-overflow:ellipsis;}
+.inp-type{font-size:10px;background:#1a3a2a;color:#52b788;padding:1px 6px;border-radius:2px;flex-shrink:0;}
+.inp-placeholder{flex:1;font-size:10px;color:#666;}
+.sec-title{font-size:11px;color:#4682B4;margin:8px 0 4px;font-weight:bold;}
+/* Preview */
+.preview-iframe-wrap{flex:1;overflow:hidden;position:relative;background:#e8e8e8;}
+.preview-iframe-wrap iframe{width:100%;height:100%;border:none;}
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:#16213e;border:1px solid #2a2a4a;border-radius:12px;padding:20px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;}
+/* Confirm dialog */
+.confirm-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99999;align-items:center;justify-content:center;}
+.confirm-overlay.show{display:flex;}
+.confirm-box{background:#1a1a2e;border:1px solid #c0392b;border-radius:12px;padding:24px;max-width:360px;width:90%;text-align:center;}
+.confirm-box p{color:#e0e0e0;font-size:14px;margin-bottom:16px;line-height:1.5;}
+.confirm-box .btn-row{display:flex;gap:10px;justify-content:center;}
+.modal-box h3{color:#87CEEB;margin-bottom:12px;font-size:15px;}
+.modal-box textarea{width:100%;height:300px;background:#0d1117;color:#e0e0e0;border:1px solid #2a2a4a;border-radius:6px;padding:10px;font-family:monospace;font-size:11px;resize:vertical;}
+.modal-box .btn-row{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;}
+@media(max-width:768px){.main{flex-direction:column;}.editor-panel,.preview-panel{flex:1;min-height:0;}}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <h1>📋 角色档案侧边栏编辑器</h1>
+  <button class="btn btn-blue" onclick="addCard()">+ 添加分栏</button>
+  <button class="btn btn-green" onclick="doExport()">💾 导出HTML</button>
+  <button class="btn btn-gray" onclick="showCode()">📋 复制代码</button>
+  <span style="color:#87CEEB;font-size:11px;margin:0 4px;">|</span>
+  <span style="font-size:11px;color:#aaa;">按钮位置</span>
+  <input type="range" id="triggerTopSlider" min="5" max="90" value="50" oninput="updateTriggerPosition()" style="width:60px;accent-color:#4682B4;">
+  <span id="triggerTopVal" style="font-size:10px;color:#87CEEB;min-width:28px;">50%</span>
+  <span style="font-size:11px;color:#aaa;">面板位置</span>
+  <input type="range" id="panelTopSlider" min="0" max="50" value="0" oninput="updatePanelPosition()" style="width:60px;accent-color:#4682B4;">
+  <span id="panelTopVal" style="font-size:10px;color:#87CEEB;min-width:28px;">0</span>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" id="tabEdit" onclick="switchTab('edit')">✏️ 编辑</button>
+  <button class="tab-btn" id="tabPreview" onclick="switchTab('preview')">👁 预览</button>
+</div>
+<div class="main">
+  <div class="editor-panel" id="editorPanel">
+    <div class="cards-list" id="cardsList"></div>
+  </div>
+  <div class="preview-panel" id="previewPanel">
+    <div class="preview-iframe-wrap">
+      <iframe id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+    <div class="preview-output-box">
+      <textarea id="outputBox" placeholder="点击「生成档案」后，角色档案文本将显示在这里…" readonly></textarea>
+      <button onclick="copyOutput()">📋 复制</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="codeModal">
+  <div class="modal-box">
+    <h3>📋 导出代码</h3>
+    <textarea id="codeOutput" readonly></textarea>
+    <div class="btn-row">
+      <button class="btn btn-gray" onclick="closeModal()">关闭</button>
+      <button class="btn btn-green" onclick="copyCode()">复制代码</button>
+      <button class="btn btn-blue" onclick="downloadCode()">下载HTML</button>
+    </div>
+  </div>
+</div>
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <p id="confirmText">确定要删除吗？</p>
+    <div class="btn-row">
+      <button class="btn btn-gray" onclick="closeConfirm()">取消</button>
+      <button class="btn btn-danger" id="confirmOkBtn">确定删除</button>
+    </div>
+  </div>
+</div>
+<script>
+var cardsData = [{"id": "card_base", "title": "基础信息", "tagSections": [{"title": "身份(可多选)", "target": "teapot_identity", "tags": ["同班同学", "学生会长", "副会长", "图书委员", "校花", "体育委员", "社团部长", "校队队长", "班长", "风纪委员", "学姐", "学妹", "校园偶像", "教师", "校长"]}, {"title": "身高体型(可多选)", "target": "teapot_body", "tags": ["娇小", "普通", "高挑", "纤细", "丰腴"]}], "inputs": [{"label": "姓名", "id": "teapot_name", "type": "text", "placeholder": "输入姓名"}, {"label": "性别", "id": "teapot_gender", "type": "text", "placeholder": "男/女/其他"}, {"label": "年龄", "id": "teapot_age", "type": "slider", "min": 1, "max": 100, "value": 25, "suffix": "岁"}, {"label": "身高/体型", "id": "teapot_body", "type": "text", "placeholder": ""}, {"label": "核心身份", "id": "teapot_identity", "type": "text", "placeholder": ""}]}, {"id": "card_appearance", "title": "外貌描写", "tagSections": [{"title": "脸型五官(可多选)", "target": "teapot_face", "tags": ["清秀可人", "眉眼精致", "面容清冷", "娃娃脸", "棱角分明", "楚楚动人", "英气十足", "温婉柔和"]}, {"title": "穿着风格(可多选)", "target": "teapot_style", "tags": ["简约日常", "甜美可爱", "高冷干练", "校服正统", "休闲随性", "优雅轻奢", "运动活力"]}, {"title": "特征标记(可多选)", "target": "teapot_mark", "tags": ["佩戴眼镜", "长发披肩", "短发利落", "留有发梢卷", "脖颈饰品", "手部饰品", "眉眼带痣", "单侧耳钉"]}], "inputs": [{"label": "脸型/五官", "id": "teapot_face", "type": "text", "placeholder": ""}, {"label": "穿着风格", "id": "teapot_style", "type": "text", "placeholder": ""}, {"label": "特征标记", "id": "teapot_mark", "type": "text", "placeholder": ""}]}, {"id": "card_personality", "title": "性格与内在", "tagSections": [{"title": "性格关键词(可多选)", "target": "teapot_personality", "tags": ["高冷", "傲娇", "腹黑", "毒舌", "天然呆", "温柔", "软萌", "元气", "病娇", "淡漠", "雌小鬼", "御姐", "大小姐", "清冷", "假正经", "慵懒", "神秘", "理性", "完美主义", "占有欲强", "表面强硬内心脆弱", "刀子嘴豆腐心"]}], "inputs": [{"label": "性格关键词", "id": "teapot_personality", "type": "text", "placeholder": ""}, {"label": "说话风格", "id": "teapot_speech", "type": "text", "placeholder": "语气/谈吐"}, {"label": "口癖/口头禅", "id": "teapot_habit", "type": "text", "placeholder": "常用话术"}]}, {"id": "card_background", "title": "背景经历", "tagSections": [{"title": "家庭背景(可多选)", "target": "teapot_background", "tags": ["普通家庭", "家境优渥", "单亲成长", "寄宿生活", "邻里和睦", "独自居住"]}, {"title": "过往经历(可多选)", "target": "teapot_background", "tags": ["成绩优异", "不善交际", "人缘极佳", "热爱运动", "擅长文艺", "转学而来", "常年住校"]}], "inputs": [{"label": "生平履历", "id": "teapot_background", "type": "textarea", "placeholder": "人物履历、过往经历"}]}, {"id": "card_custom", "title": "自定义属性", "tagSections": [{"title": "额外属性标签(可多选)", "target": "teapot_custom", "tags": ["能力出众", "神秘身世", "体弱多病", "乐天派", "心思缜密", "孤僻寡言", "擅长厨艺", "精通乐器", "路痴", "怕生"]}], "inputs": [{"label": "自定义属性汇总", "id": "teapot_custom", "type": "text", "placeholder": "标签自动回填，也可手动补充"}, {"label": "补充描述", "id": "teapot_custom_desc", "type": "textarea", "placeholder": "填写额外设定、特殊能力、小怪癖等"}]}];
+var CSS_ORIGINAL = `<style>
+.teapot-sidebar-mask{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(135,206,235,0.3);z-index:999;}
+.teapot-sidebar-panel{position:fixed;right:-380px;top:0;width:360px;height:100%;background:rgba(135,206,235,0.92);box-shadow:-3px 0 15px rgba(0,0,0,0.15);transition:right 0.4s ease;z-index:1000;overflow-y:auto;padding:15px;box-sizing:border-box;}
+.teapot-sidebar-panel.active{right:0;}
+.teapot-card{background:#FFFAFA;border-radius:10px;padding:12px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.teapot-card-title{color:#4682B4;font-size:14px;font-weight:bold;margin-bottom:10px;border-bottom:1px solid rgba(135,206,235,0.5);padding-bottom:4px;}
+.teapot-input-group{margin-bottom:8px;}
+.teapot-label{display:block;color:#4682B4;font-size:12px;margin-bottom:3px;}
+.teapot-input{width:100%;padding:6px 8px;border:1px solid rgba(135,206,235,0.6);border-radius:5px;background:#FFFAFA;color:#4682B4;font-size:12px;box-sizing:border-box;}
+.teapot-input:focus{outline:none;border-color:#87CEEB;}
+.teapot-textarea{width:100%;min-height:60px;padding:6px 8px;border:1px solid rgba(135,206,235,0.6);border-radius:5px;background:#FFFAFA;color:#4682B4;font-size:12px;resize:vertical;box-sizing:border-box;}
+.teapot-textarea:focus{outline:none;border-color:#87CEEB;}
+.teapot-slider-container{display:flex;align-items:center;gap:6px;}
+.teapot-slider{flex:1;height:5px;border-radius:3px;background:rgba(135,206,235,0.4);outline:none;-webkit-appearance:none;}
+.teapot-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#4682B4;cursor:pointer;}
+.teapot-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#4682B4;cursor:pointer;border:none;}
+.teapot-slider-value{color:#4682B4;font-size:12px;min-width:35px;text-align:right;}
+.teapot-close-btn{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;background:#FFFAFA;color:#4682B4;border:1px solid rgba(135,206,235,0.6);cursor:pointer;font-size:14px;line-height:24px;text-align:center;font-weight:bold;}
+.teapot-sidebar-trigger{position:fixed;left:0;top:calc(50% - 1.7px);transform:translateY(calc(-50% - 0.3px));width:18px;padding:10px 2px;background:rgba(135,206,235,0.9);border:2px solid #FFFAFA;border-left:none;border-radius:0 8px 8px 0;color:#FFFAFA;cursor:pointer;writing-mode:vertical-rl;text-orientation:mixed;font-size:12px;letter-spacing:2px;text-align:center;font-weight:bold;z-index:998;box-shadow:2px 0 8px rgba(0,0,0,0.1);transition:all 0.3s;}
+.teapot-sidebar-trigger:hover{padding-right:6px;background:#4682B4;}
+.tag-section{margin-bottom:8px;}
+.tag-title{font-size:11px;color:#4682B4;margin-bottom:3px;}
+.tag-group{display:flex;flex-wrap:wrap;gap:4px;}
+.tag-item{padding:2px 6px;border:1px solid #87CEEB;border-radius:3px;background:#fff;color:#4682B4;font-size:11px;cursor:pointer;}
+.tag-item.active{background:#4682B4;color:#fff;border-color:#4682B4;}
+.bottom-random-btn{width:100%;padding:8px;background:#4682B4;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;margin-bottom:8px;}
+.teapot-submit-btn{width:100%;padding:9px;background:#4682B4;color:#FFFAFA;border:none;border-radius:6px;font-size:12px;font-weight:bold;cursor:pointer;}
+/* Preview output box */
+.preview-output-box{flex-shrink:0;background:#fff;border-top:2px solid #4682B4;padding:10px 12px;display:flex;gap:8px;align-items:flex-end;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
+.preview-output-box textarea{flex:1;min-height:80px;max-height:200px;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:12px;resize:vertical;font-family:inherit;color:#333;background:#fafafa;}
+.preview-output-box textarea:focus{outline:none;border-color:#4682B4;}
+.preview-output-box button{padding:8px 16px;background:#4682B4;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;white-space:nowrap;}
+.preview-output-box button:hover{background:#5a9ed4;}
+@media(max-width:768px){.preview-output-box{padding:8px 10px;}.preview-output-box textarea{min-height:60px;max-height:120px;}}
+</style>`;
+
+var cardsList = document.getElementById('cardsList');
+
+function renderAll() {
+  cardsList.innerHTML = '';
+  cardsData.forEach(function(card, ci) { cardsList.appendChild(renderCard(card, ci)); });
+  var aw = document.createElement('div');
+  aw.className = 'add-card-wrap';
+  var ab = document.createElement('button');
+  ab.className = 'btn btn-blue btn-small';
+  ab.textContent = '+ 添加分栏';
+  ab.onclick = addCard;
+  aw.appendChild(ab);
+  cardsList.appendChild(aw);
+}
+
+function renderCard(card, ci) {
+  var d = document.createElement('div');
+  d.className = 'card-editor';
+  var h = document.createElement('div');
+  h.className = 'card-header';
+  h.innerHTML = '<span class="card-index">#'+(ci+1)+'</span>';
+  var ti = document.createElement('input');
+  ti.type = 'text'; ti.value = card.title;
+  ti.oninput = function(){ card.title = this.value; updatePreview(); };
+  h.appendChild(ti);
+  var del = document.createElement('button');
+  del.className = 'btn btn-danger'; del.textContent = '删除分栏';
+  del.onclick = function(e){ e.stopPropagation(); showConfirm('确定删除分栏「'+card.title+'」？', function(){ cardsData.splice(ci,1); renderAll(); updatePreview(); }); };
+  h.appendChild(del);
+  h.onclick = function(e){ if(e.target.tagName!=='BUTTON'&&e.target.tagName!=='INPUT'){ d.querySelector('.card-body').classList.toggle('open'); } };
+  d.appendChild(h);
+  var b = document.createElement('div');
+  b.className = 'card-body';
+  card.tagSections.forEach(function(ts, tsi) { b.appendChild(renderTagSection(ts, ci, tsi)); });
+  var atw = document.createElement('div');
+  atw.className = 'add-ts-wrap';
+  var atb = document.createElement('button');
+  atb.className = 'btn btn-blue btn-small'; atb.textContent = '+ 添加标签组';
+  atb.onclick = function(){ addTagSection(ci); };
+  atw.appendChild(atb);
+  b.appendChild(atw);
+  var st = document.createElement('div');
+  st.className = 'sec-title'; st.textContent = '输入项';
+  b.appendChild(st);
+  card.inputs.forEach(function(inp, ini) {
+    var ie = document.createElement('div');
+    ie.className = 'input-editor';
+    ie.innerHTML = '<span class="inp-label">'+inp.label+'</span><span class="inp-id">'+inp.id+'</span><span class="inp-type">'+inp.type+'</span><span class="inp-placeholder">'+(inp.placeholder||'(无)')+'</span>';
+    var xb = document.createElement('button');
+    xb.className = 'btn btn-danger btn-small';
+    xb.textContent = String.fromCharCode(215); xb.style.marginLeft = 'auto';
+    xb.onclick = function(){ card.inputs.splice(ini,1); renderAll(); updatePreview(); };
+    ie.appendChild(xb);
+    b.appendChild(ie);
+  });
+  var aiw = document.createElement('div');
+  aiw.style.marginTop = '4px';
+  var aib = document.createElement('button');
+  aib.className = 'btn btn-gray btn-small'; aib.textContent = '+ 添加输入项';
+  aib.onclick = function(){ addInput(ci); };
+  aiw.appendChild(aib);
+  b.appendChild(aiw);
+  d.appendChild(b);
+  return d;
+}
+
+function renderTagSection(ts, ci, tsi) {
+  var d = document.createElement('div');
+  d.className = 'tag-section-editor';
+  var h = document.createElement('div');
+  h.className = 'ts-header';
+  var ti = document.createElement('input');
+  ti.type = 'text'; ti.value = ts.title;
+  ti.oninput = function(){ ts.title = this.value; updatePreview(); };
+  h.appendChild(ti);
+  var sp = document.createElement('span');
+  sp.className = 'ts-target'; sp.textContent = ts.target; sp.title = ts.target;
+  h.appendChild(sp);
+  var xb = document.createElement('button');
+  xb.className = 'btn btn-danger btn-small'; xb.textContent = String.fromCharCode(215);
+  xb.onclick = function(){ cardsData[ci].tagSections.splice(tsi,1); renderAll(); updatePreview(); };
+  h.appendChild(xb);
+  d.appendChild(h);
+  var tr = document.createElement('div');
+  tr.className = 'tags-row';
+  ts.tags.forEach(function(tag, ti) {
+    var chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.innerHTML = tag+'<span class="tag-del">'+String.fromCharCode(215)+'</span>';
+    chip.querySelector('.tag-del').onclick = function(){ ts.tags.splice(ti,1); renderAll(); updatePreview(); };
+    tr.appendChild(chip);
+  });
+  d.appendChild(tr);
+  var aw = document.createElement('div');
+  aw.className = 'add-tag-wrap';
+  var ai = document.createElement('input');
+  ai.type = 'text'; ai.placeholder = '新标签名...';
+  var ab = document.createElement('button');
+  ab.className = 'btn btn-blue btn-small'; ab.textContent = '添加';
+  ab.onclick = function(){ var v = ai.value.trim(); if(v){ ts.tags.push(v); renderAll(); updatePreview(); } };
+  aw.appendChild(ai); aw.appendChild(ab);
+  d.appendChild(aw);
+  return d;
+}
+
+function addCard() {
+  var n = cardsData.length + 1;
+  var tsId = 'teapot_new_' + Date.now();
+  cardsData.push({ id: 'card_new_'+Date.now(), title: '新分栏 '+n,
+    tagSections: [{ title: '新标签组 1', target: tsId, tags: ['示例标签'] }],
+    inputs: [{ label: '新字段', id: tsId, type: 'text', placeholder: '' }] });
+  renderAll(); updatePreview();
+}
+
+function addTagSection(ci) {
+  var n = cardsData[ci].tagSections.length + 1;
+  cardsData[ci].tagSections.push({ title: '新标签组 '+n, target: 'teapot_new_'+Date.now(), tags: ['示例标签'] });
+  renderAll(); updatePreview();
+}
+
+function addInput(ci) {
+  showInputPrompt('输入项标签（显示名称）：', '新字段', function(label) {
+    if(!label) return;
+    showInputPrompt('输入项ID（例如 teapot_xxx）：', 'teapot_new_'+Date.now(), function(id) {
+      if(!id) return;
+      showInputPrompt('类型（text / textarea / slider）：', 'text', function(t) {
+        cardsData[ci].inputs.push({ label: label, id: id, type: t||'text', placeholder: '' });
+        renderAll(); updatePreview();
+      });
+    });
+  });
+}
+
+function switchTab(tab) {
+  document.getElementById('tabEdit').classList.toggle('active', tab==='edit');
+  document.getElementById('tabPreview').classList.toggle('active', tab==='preview');
+  if(tab==='preview') {
+    document.getElementById('editorPanel').classList.add('hidden');
+    document.getElementById('previewPanel').classList.add('active');
+    updatePreview();
+  } else {
+    document.getElementById('editorPanel').classList.remove('hidden');
+    document.getElementById('previewPanel').classList.remove('active');
+  }
+}
+
+function genCardHTML(card) {
+  var h = '    <div class="teapot-card">\n';
+  h += '        <div class="teapot-card-title">'+card.title+'</div>\n';
+  card.tagSections.forEach(function(ts) {
+    h += '        <div class="tag-section">\n';
+    h += '            <div class="tag-title">'+ts.title+'</div>\n';
+    h += '            <div class="tag-group" data-target="'+ts.target+'">\n';
+    ts.tags.forEach(function(tag) {
+      h += '                <span class="tag-item" onclick="event.stopPropagation();let g=this.parentElement,t=g.dataset.target;let arr=[];this.classList.toggle(\'active\');g.querySelectorAll(\'.tag-item.active\').forEach(s=>arr.push(s.innerText));document.getElementById(t).value=arr.join(\'、\');">'+tag+'</span>\n';
+    });
+    h += '            </div>\n        </div>\n';
+  });
+  card.inputs.forEach(function(inp) {
+    if(inp.type==='slider') {
+      h += '        <div class="teapot-input-group">\n            <label class="teapot-label">'+inp.label+'</label>\n            <div class="teapot-slider-container">\n';
+      h += '                <input type="range" class="teapot-slider" id="'+inp.id+'" min="'+(inp.min||1)+'" max="'+(inp.max||100)+'" value="'+(inp.value||25)+'" oninput="document.getElementById(\''+inp.id+'_display\').textContent=this.value+\''+(inp.suffix||'岁')+'\';">\n';
+      h += '                <span class="teapot-slider-value" id="'+inp.id+'_display">'+(inp.value||25)+(inp.suffix||'岁')+'</span>\n            </div>\n        </div>\n';
+    } else if(inp.type==='textarea') {
+      h += '        <div class="teapot-input-group">\n            <label class="teapot-label">'+inp.label+'</label>\n            <textarea class="teapot-textarea" id="'+inp.id+'" placeholder="'+(inp.placeholder||'')+'"></textarea>\n        </div>\n';
+    } else {
+      h += '        <div class="teapot-input-group"><label class="teapot-label">'+inp.label+'</label><input type="text" class="teapot-input" id="'+inp.id+'" placeholder="'+(inp.placeholder||'')+'"></div>\n';
+    }
+  });
+  h += '    </div>\n';
+  return h;
+}
+
+function generateHTML() {
+  var panel = '';
+  cardsData.forEach(function(c) { panel += genCardHTML(c); });
+  var randJS = "document.querySelectorAll('.tag-item').forEach(x=>x.classList.remove('active'));";
+  // Build randomized selections following original logic by target
+  var targets = {};
+  cardsData.forEach(function(c) {
+    c.tagSections.forEach(function(ts) {
+      if (!targets[ts.target]) targets[ts.target] = [];
+      targets[ts.target].push(ts);
+    });
+  });
+  // Check which targets need 2 picks (personality, background) vs 1 pick
+  Object.keys(targets).forEach(function(t) {
+    var pickCount = (t === 'teapot_personality' || t === 'teapot_background') ? 2 : 1;
+    // For multi-pick targets, use shuffle to avoid same element
+    if (pickCount === 2 && t !== 'teapot_personality' && t !== 'teapot_background') { pickCount = 1; }
+    if (pickCount === 2) {
+      randJS += "let arr_"+t+"=Array.from(document.querySelectorAll('[data-target="+t+"] .tag-item'));arr_"+t+".sort(()=>0.5-Math.random());arr_"+t+"[0]&&arr_"+t+"[0].click();arr_"+t+"[1]&&arr_"+t+"[1].click();";
+    } else {
+      randJS += "let a_"+t+"=Array.from(document.querySelectorAll('[data-target="+t+"] .tag-item'));a_"+t+"[Math.floor(Math.random()*a_"+t+".length)]&&a_"+t+"[Math.floor(Math.random()*a_"+t+".length)].click();";
+    }
+  });
+  var subJS = "var result='{character}\\n【角色档案】\\n\\n";
+  var nums = ['一','二','三','四','五','六','七','八','九','十'];
+  cardsData.forEach(function(c, ci) {
+    subJS += nums[ci%10]+'、'+c.title+'\\n';
+    c.inputs.forEach(function(inp) {
+      if(inp.type==='slider') {
+        subJS += "';var v_"+inp.id+"=document.getElementById('"+inp.id+"').value;if(v_"+inp.id+")result+='"+inp.label+"：'+v_"+inp.id+"+'"+(inp.suffix||'岁')+"\\n";
+      } else {
+        subJS += "';var v_"+inp.id+"=document.getElementById('"+inp.id+"').value.trim();if(v_"+inp.id+")result+='"+inp.label+"：'+v_"+inp.id+"+'\\n";
+      }
+    });
+    subJS += "';result+='\\n";
+  });
+  subJS += "';result+='{/character}';var textarea=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(textarea){textarea.value=result;textarea.dispatchEvent(new Event('input'));var m=document.querySelector('.teapot-sidebar-mask'),p=document.querySelector('.teapot-sidebar-panel');if(p)p.classList.remove('active');setTimeout(function(){if(m)m.style.display='none';},400);}else{var ob=window.parent.document.getElementById('outputBox');if(ob){ob.value=result;}else{alert('未找到输入框，请确认页面结构');}}";
+  // Apply position overrides to CSS
+  var css = CSS_ORIGINAL;
+  if (triggerTopPercent !== 50) {
+    css = css.replace(/top:calc\(50% - 1.7px\)/g, 'top:' + triggerTopPercent + '%');
+    css = css.replace(/translateY\(calc\(-50% - 0.3px\)\)/g, 'translateY(-50%)');
+  }
+  if (panelTopPx > 0) {
+    css = css.replace(/\.teapot-sidebar-panel\{/g, '.teapot-sidebar-panel{top:' + panelTopPx + 'px;height:calc(100% - ' + panelTopPx + 'px);');
+  }
+  
+  return css + '\n\n' +
+    '<div class="teapot-sidebar-trigger" onclick="var m=document.querySelector(\'.teapot-sidebar-mask\'),p=document.querySelector(\'.teapot-sidebar-panel\');if(m&&p){m.style.display=\'block\';p.classList.add(\'active\');}">角色档</div>\n' +
+    '<div class="teapot-sidebar-mask" onclick="var m=this,p=document.querySelector(\'.teapot-sidebar-panel\');if(p){p.classList.remove(\'active\');}setTimeout(function(){m.style.display=\'none\';},400);"></div>\n\n' +
+    '<div class="teapot-sidebar-panel" onclick="event.stopPropagation();">\n' +
+    '    <div class="teapot-close-btn" onclick="event.stopPropagation();var m=document.querySelector(\'.teapot-sidebar-mask\'),p=this.parentElement;p.classList.remove(\'active\');setTimeout(function(){if(m)m.style.display=\'none\';},400);">×</div>\n\n' +
+    panel +
+    '    <button class="bottom-random-btn" onclick="event.stopPropagation();'+randJS+'">随机生成标签</button>\n\n' +
+    '    <button class="teapot-submit-btn" onclick="event.stopPropagation();'+subJS+'">生成档案</button>\n' +
+    '</div>';
+}
+
+function updatePreview() {
+  try {
+    var html = generateHTML();
+    var blob = new Blob(['<!DOCTYPE html>\n<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f5f5f5;min-height:100vh;">'+html+'</body></html>'], {type:'text/html'});
+    document.getElementById('previewFrame').src = URL.createObjectURL(blob);
+  } catch(e) { console.error(e); }
+}
+
+function doExport() {
+  var html = generateHTML();
+  var full = '<!DOCTYPE html>\n<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f5f5f5;min-height:100vh;">\n'+html+'\n</body></html>';
+  var blob = new Blob([full], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '角色档案侧边栏.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function showCode() {
+  document.getElementById('codeOutput').value = '<!DOCTYPE html>\n<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f5f5f5;min-height:100vh;">\n'+generateHTML()+'\n</body></html>';
+  document.getElementById('codeModal').classList.add('show');
+}
+
+function closeModal() { document.getElementById('codeModal').classList.remove('show'); }
+
+function copyCode() {
+  var ta = document.getElementById('codeOutput');
+  ta.select(); ta.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(ta.value).then(function(){ alert('代码已复制到剪贴板！'); }).catch(function(){ alert('复制失败，请手动选择复制'); });
+}
+
+function downloadCode() {
+  var blob = new Blob([document.getElementById('codeOutput').value], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '角色档案侧边栏.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// Custom confirm dialog
+var confirmCb = null;
+function showConfirm(text, cb) {
+  confirmCb = cb;
+  document.getElementById('confirmText').textContent = text;
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+function closeConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('show');
+  confirmCb = null;
+}
+document.getElementById('confirmOkBtn').onclick = function() {
+  document.getElementById('confirmOverlay').classList.remove('show');
+  if (confirmCb) { confirmCb(); confirmCb = null; }
+};
+
+// Custom input prompt
+var promptCb = null;
+function showInputPrompt(label, defVal, cb) {
+  promptCb = cb;
+  var v = prompt(label, defVal);
+  if (promptCb) { promptCb(v); promptCb = null; }
+}
+
+// Sidebar trigger position
+var triggerTopPercent = 50;
+var panelTopPx = 0;
+function updateTriggerPosition() {
+  triggerTopPercent = parseInt(document.getElementById('triggerTopSlider').value);
+  document.getElementById('triggerTopVal').textContent = triggerTopPercent + '%';
+  updatePreview();
+}
+function updatePanelPosition() {
+  panelTopPx = parseInt(document.getElementById('panelTopSlider').value);
+  document.getElementById('panelTopVal').textContent = panelTopPx + 'px';
+  updatePreview();
+}
+document.getElementById('triggerTopSlider').oninput = updateTriggerPosition;
+document.getElementById('panelTopSlider').oninput = updatePanelPosition;
+
+function copyOutput() {
+  var ta = document.getElementById('outputBox');
+  if (!ta.value.trim()) { alert('输出框暂无内容，请先生成档案'); return; }
+  navigator.clipboard.writeText(ta.value).then(function(){ alert('档案文本已复制到剪贴板！'); }).catch(function(){ alert('复制失败，请手动选择复制'); });
+}
+
+renderAll();
+updatePreview();
+</script>
+</body>
+</html>
