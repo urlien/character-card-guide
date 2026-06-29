@@ -159,3 +159,76 @@
   - `POST /api/role/query` — 成功获取卡片详情
   - `POST /api/role/lorebooks/fetch` — 成功获取世界书元数据（但条目内容未返回）
 - 世界书条目内容需要网页端登录后查看，API 只返回元数据
+
+---
+
+## 2026-06-30：写作工具链更新
+
+### 新增 Skills
+
+已安装 7 个写作相关 Skills，组成完整的角色卡开场白创作工具链：
+
+1. **writing-style-skill v2.0**（核心框架）
+   - 位置：`~/.openclaw/skills/writing-style-skill/`
+   - 功能：融合 jiangnan.skill + qu-ai-wei + humanizer 的统一写作框架
+   - 包含：DNA 规则、5 个必用句式、信物系统、不完整闭合、去 AI 味规则、自动学习
+   - 已定制：填入了 6 张已有卡的文风特征
+
+2. **jiangnan.skill v2.0**（叙事技法引擎）
+   - 位置：`~/.openclaw/skills/jiangnan-skill/`
+   - 功能：江南写作技法（反差构图、缺失驱动、信物系统、通感激活、长短句交错）
+   - 来源：github.com/dmlin7777777/jiangnan.skill
+
+3. **qu-ai-wei**（去 AI 味）
+   - 位置：`~/.openclaw/skills/qu-ai-wei/`
+   - 功能：51 条 AI 腔模式识别 + 6 条打磨规则
+   - 来源：github.com/LifelongLazyLearner/qu-ai-wei
+
+4. **writer-dna**（风格蒸馏）
+   - 位置：`~/.openclaw/skills/writer-dna/`
+   - 功能：从素材中蒸馏个人写作风格，生成结构化知识库
+   - 来源：github.com/liangjfblue/writer-dna
+
+5. **novel-writer**（长篇小说工作流）
+   - 位置：`~/.openclaw/skills/novel-writer/`
+   - 功能：从创意到发布的小说创作工作流
+   - 来源：github.com/alever520/openclaw-novel-writer-skill
+
+6. **humanizer**（自然化）
+   - 位置：`~/.openclaw/skills/humanizer/`
+   - 功能：基于 Wikipedia "Signs of AI writing" 检测并修复 AI 痕迹
+
+7. **polish**（最终质量检查）
+   - 位置：`~/.openclaw/skills/polish/`
+   - 功能：格式、一致性、细节的最终检查
+
+### 使用流程
+
+```
+写初稿（writing-style-skill v2.0 框架约束）
+    ↓
+去 AI 味（qu-ai-wei 51 条规则）
+    ↓
+自然化（humanizer 最终检查）
+    ↓
+用户修改
+    ↓
+自动学习（observe.py + improve.py 提取规则）
+    ↓
+规则更新 SKILL.md → 下次更准
+```
+
+### 关键技术要点
+
+**江南技法 DNA 规则（已融入 writing-style-skill）：**
+- DNA-1 缺失驱动：情感引擎 = 失去/即将失去
+- DNA-4 反差构图：宏大 × 微小（每 500-800 字至少一次）
+- DNA-5 蓄力-释放节奏：平静 → 蓄力 → 释放/留白
+- DNA-6 通感激活：每段至少一个感官细节
+
+**5 个必用句式：**
+- ★1 反转对比："{宏大}又怎样？{渺小}才是{真相}"
+- ★2 预设怀念："那时候{她}还不知道，{遗憾}"
+- ★3 软转折："{硬话}{柔转折词}{柔话}"
+- 4 物哀升华："就像{寻常物事}，{不寻常的含义}"
+- 5 时空折叠："仿佛{过去}重叠在了{当下}"
