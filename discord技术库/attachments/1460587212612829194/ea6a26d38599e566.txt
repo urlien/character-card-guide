@@ -1,0 +1,233 @@
+<div class="zq-card" onclick="event.stopPropagation()" data-route="$6">
+  <div class="zq-paper"></div>
+  <div class="zq-header">
+    <div class="zq-header-left">
+      <h1 class="zq-title">朱墙 · 惊梦</h1>
+      <div class="zq-divider"></div>
+      <div class="zq-time-wrap">
+        <p class="zq-en">Vanish in Crimson Walls</p>
+        <p class="zq-time">$1</p>
+      </div>
+    </div>
+    <div class="zq-loc">$2</div>
+  </div>
+  <div class="zq-body">
+    <div class="zq-left">
+      <div class="zq-portrait">
+        <div class="zq-corner tl"></div>
+        <div class="zq-corner br"></div>
+        <img src="https://youke3.picui.cn/s1/2026/01/09/6960d7d4d27ef.png" class="zq-img">
+        <div class="zq-name">$3</div>
+      </div>
+      <div class="zq-mental">
+        <div class="zq-bg-heart">❤</div>
+        <p class="zq-ml">性欲强度</p>
+        <p class="zq-mv">$12<span>%</span></p>
+      </div>
+    </div>
+    <div class="zq-right">
+      <div class="zq-bars">
+        <div class="zq-bar-item">
+          <div class="zq-bar-top">
+            <span class="zq-bar-label">身体依恋</span>
+            <span class="zq-bar-val red">$4%</span>
+          </div>
+          <div class="zq-bar-track">
+            <div class="zq-bar-fill body-bar" style="--w:$4%">
+              <div class="bar-shine"></div>
+            </div>
+          </div>
+        </div>
+        <div class="zq-bar-item">
+          <div class="zq-bar-top">
+            <span class="zq-bar-label">精神依赖</span>
+            <span class="zq-bar-val pink">$5%</span>
+          </div>
+          <div class="zq-bar-track">
+            <div class="zq-bar-fill spirit-bar" style="--w:$5%">
+              <div class="bar-heart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="zq-route">
+        <div class="zq-route-head">
+          <span>命途演变</span>
+          <span class="zq-route-en">FATE</span>
+        </div>
+        <div class="zq-route-nodes">
+          <div class="zq-node" data-r="欲念初萌">
+            <div class="zq-nc">1</div>
+            <p>欲念初萌</p>
+          </div>
+          <div class="zq-node" data-r="身堕心守">
+            <div class="zq-nc">2</div>
+            <p>身堕心守</p>
+          </div>
+          <div class="zq-node" data-r="心驰身守">
+            <div class="zq-nc">3</div>
+            <p>心驰身守</p>
+          </div>
+          <div class="zq-node" data-r="身心俱堕">
+            <div class="zq-nc">4</div>
+            <p>身心俱堕</p>
+          </div>
+        </div>
+      </div>
+      <div class="zq-intimacy">
+        <span class="zq-int-label">禁忌刻度：</span>
+        <span class="zq-int-val">已逾 $13 刻</span>
+      </div>
+      <div class="zq-detail">
+        <div class="zq-det-row">
+          <span class="zq-det-l">当前心绪</span>
+          <span class="zq-det-v">$10</span>
+        </div>
+        <div class="zq-det-row">
+          <span class="zq-det-l">娇躯状态</span>
+          <span class="zq-det-v">$11</span>
+        </div>
+        <div class="zq-det-row">
+          <span class="zq-det-l">云裳羽衣</span>
+          <span class="zq-det-v">$14</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="zq-monitor">
+    <div class="zq-mon-head">
+      <h3 class="zq-mon-title">庭院深处：老爷的视线</h3>
+    </div>
+    <div class="zq-mon-body">
+      <div class="zq-mon-left">
+        <p class="zq-mon-label">家主态度</p>
+        <div class="zq-mon-box">$7</div>
+      </div>
+      <div class="zq-mon-right">
+        <div class="zq-sus-head">
+          <span>疑心侵蚀</span>
+        </div>
+        <div class="zq-sus-track">
+          <div class="zq-sus-fill sus-bar" style="--w:$9%">
+            <div class="sus-scan"></div>
+          </div>
+          <div class="zq-sus-num">$9%</div>
+        </div>
+      </div>
+    </div>
+    <div class="zq-action">
+      <div class="zq-act-head">
+        <div class="zq-act-dot"></div>老爷行动 / ACTION
+      </div>
+      <div class="zq-act-body">$8</div>
+    </div>
+  </div>
+  <div class="zq-thought">
+    <span class="zq-quote">"</span>
+    <p class="zq-thought-text">$15</p>
+  </div>
+  <div class="zq-risk">
+    <span class="zq-risk-icon">!</span>
+    <b>风险：</b>$16
+  </div>
+  <div class="zq-opts">
+    <div class="zq-btn" data-opt="$17" onclick="event.preventDefault();event.stopPropagation();var t=this.dataset.opt;var i=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(i){i.value=t;i.dispatchEvent(new Event('input',{bubbles:true}));i.focus();}">1. $17</div>
+    <div class="zq-btn" data-opt="$18" onclick="event.preventDefault();event.stopPropagation();var t=this.dataset.opt;var i=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(i){i.value=t;i.dispatchEvent(new Event('input',{bubbles:true}));i.focus();}">2. $18</div>
+    <div class="zq-btn" data-opt="$19" onclick="event.preventDefault();event.stopPropagation();var t=this.dataset.opt;var i=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(i){i.value=t;i.dispatchEvent(new Event('input',{bubbles:true}));i.focus();}">3. $19</div>
+    <div class="zq-btn" data-opt="$20" onclick="event.preventDefault();event.stopPropagation();var t=this.dataset.opt;var i=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(i){i.value=t;i.dispatchEvent(new Event('input',{bubbles:true}));i.focus();}">4. $20</div>
+  </div>
+  <div class="zq-footer">情深不寿 · 慧极必伤</div>
+  <img src="x" style="display:none" onerror="(function(img){var c=img.closest('.zq-card');if(!c)return;var r=c.dataset.route;if(r){var ns=c.querySelectorAll('.zq-node');for(var j=0;j<ns.length;j++){if(ns[j].dataset.r==r){ns[j].classList.add('active');}}}img.remove();})(this)">
+</div>
+
+<style>
+@keyframes zqFillHorizontal{from{width:0}to{width:var(--w)}}
+@keyframes shineFlow{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes barPulse{0%,100%{filter:drop-shadow(0 0 2px rgba(225,29,72,.4));transform:scaleY(1)}50%{filter:drop-shadow(0 0 8px rgba(225,29,72,.8));transform:scaleY(1.05)}}
+@keyframes heartFloat{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}
+@keyframes susFill{from{width:0}to{width:var(--w)}}
+@keyframes textPulse{0%,100%{opacity:.8}50%{opacity:1;text-shadow:0 0 8px #ff0000}}
+@keyframes susScan{0%{left:-30%}100%{left:100%}}
+@keyframes nodeGlow{0%,100%{box-shadow:0 0 5px #d4af37}50%{box-shadow:0 0 15px #d4af37,0 0 25px #fbbf24}}
+@keyframes lustBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes bgPulse{0%,100%{opacity:.1}50%{opacity:.2}}
+@keyframes actFlash{0%,100%{border-left-color:#7f1d1d}50%{border-left-color:#ef4444}}
+.zq-bar-track{height:22px;background:rgba(0,0,0,.08);border-radius:12px;padding:2px;border:1px solid rgba(0,0,0,.1);box-shadow:inset 0 2px 4px rgba(0,0,0,.1);overflow:hidden;position:relative;margin-top:5px}
+.zq-bar-fill{height:100%;border-radius:10px;animation:zqFillHorizontal 1.5s cubic-bezier(.2,.8,.2,1) forwards;position:relative;background-size:200% 100%}
+.body-bar{background-image:linear-gradient(90deg,#6b0000,#e11d48,#ff4d4d,#6b0000);border-bottom:2px solid #450a0a;box-shadow:0 0 10px rgba(225,29,72,.4);animation:zqFillHorizontal 1.5s cubic-bezier(.2,.8,.2,1) forwards,shineFlow 3s linear infinite}
+.spirit-bar{background-image:linear-gradient(90deg,#4c0519,#ec4899,#fbcfe8,#4c0519);border-bottom:2px solid #4a044e;box-shadow:0 0 10px rgba(236,72,153,.4);animation:zqFillHorizontal 1.8s cubic-bezier(.2,.8,.2,1) forwards,shineFlow 4s linear infinite}
+.bar-shine{position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:shineFlow 2s linear infinite}
+.bar-heart{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:8px;height:8px;background:#fff;border-radius:50%;animation:heartFloat 1.5s ease-in-out infinite}
+.sus-bar{background:linear-gradient(90deg,#450a0a,#ef4444);animation:susFill 1.5s forwards}
+.sus-scan{position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:susScan 2s linear infinite;mix-blend-mode:overlay}
+.zq-bar-top{display:flex;justify-content:space-between;align-items:flex-end;padding:0 5px}
+.zq-bar-label{font-size:14px;font-weight:bold;color:#7c1c1c;letter-spacing:1px}
+.zq-bar-val{font-size:16px;font-weight:900;font-style:italic}
+.zq-bar-val.red{color:#e11d48;text-shadow:0 0 5px rgba(225,29,72,.2)}
+.zq-bar-val.pink{color:#ec4899;text-shadow:0 0 5px rgba(236,72,153,.2)}
+.zq-card{position:relative;max-width:800px;width:100%;background:#fcfaf2;border-radius:4px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6);font-family:'Kaiti',serif;border-top:12px solid #7c1c1c;margin:10px auto;color:#44403c}
+.zq-paper{position:absolute;inset:0;opacity:.3;background-image:url('https://www.transparenttextures.com/patterns/handmade-paper.png');pointer-events:none;z-index:0}
+.zq-header{position:relative;min-height:80px;background:#7c1c1c;display:flex;align-items:center;padding:12px 20px;border-bottom:4px solid #b45309;justify-content:space-between;flex-wrap:wrap;gap:8px;z-index:1}
+.zq-header-left{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.zq-title{font-size:26px;color:#d4af37;letter-spacing:.2em;margin:0}
+.zq-divider{height:25px;width:1px;background:rgba(212,175,55,.4)}
+.zq-en{font-size:8px;color:rgba(255,255,255,.5);letter-spacing:.2em;text-transform:uppercase;font-style:italic;margin:0}
+.zq-time{font-size:13px;color:rgba(212,175,55,.8);margin:3px 0 0}
+.zq-loc{background:#5c1a1a;border:1px solid rgba(212,175,55,.3);padding:6px 14px;color:#d4af37;font-size:12px;border-radius:2px}
+.zq-body{position:relative;display:flex;padding:20px;gap:20px;z-index:1}
+.zq-left{width:160px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.zq-portrait{position:relative;border:5px solid #7c1c1c;padding:3px;background:#fff}
+.zq-corner{position:absolute;width:15px;height:15px;border-color:#d4af37;z-index:1}
+.zq-corner.tl{top:0;left:0;border-top:2px solid;border-left:2px solid}
+.zq-corner.br{bottom:0;right:0;border-bottom:2px solid;border-right:2px solid}
+.zq-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.zq-name{background:#7c1c1c;color:#fcfaf2;padding:8px;text-align:center;letter-spacing:.3em;font-size:14px;border-top:2px solid #b45309}
+.zq-mental{background:linear-gradient(135deg,#fff1f2 0%,#ffe4e6 100%);border:2px solid #fecdd3;border-radius:8px;padding:12px;text-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;box-shadow:0 4px 15px rgba(244,63,94,.15)}
+.zq-bg-heart{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;color:#be123c;opacity:.08;pointer-events:none;animation:bgPulse 2s ease-in-out infinite}
+.zq-ml{font-size:12px;color:#be123c;letter-spacing:.2em;margin:0 0 5px;font-weight:bold;z-index:1}
+.zq-mv{font-size:36px;font-weight:900;margin:0;z-index:1;display:inline-block;background:linear-gradient(to bottom,#be185d,#be123c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:lustBeat 1.2s ease-in-out infinite}
+.zq-mv span{font-size:16px;-webkit-text-fill-color:#be123c;font-weight:bold}
+.zq-right{flex:1;display:flex;flex-direction:column;gap:15px;min-width:0}
+.zq-bars{display:flex;flex-direction:column;gap:18px}
+.zq-route{background:#f9f7f0;border:1px solid rgba(212,175,55,.2);padding:12px}
+.zq-route-head{display:flex;justify-content:space-between;border-bottom:1px solid rgba(212,175,55,.1);padding-bottom:6px;margin-bottom:10px;font-size:12px;color:#7c1c1c}
+.zq-route-en{font-size:8px;color:#a8a29e}
+.zq-route-nodes{display:flex;justify-content:space-between;padding:8px 0}
+.zq-node{display:flex;flex-direction:column;align-items:center}
+.zq-nc{width:28px;height:28px;border-radius:50%;border:2px solid #e5e5e5;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;color:#a8a29e;transition:all .3s}
+.zq-node.active .zq-nc{background:#7c1c1c;border-color:#d4af37;color:#d4af37;animation:nodeGlow 2s ease-in-out infinite}
+.zq-node p{margin:6px 0 0;font-size:9px;color:#78716c;transition:all .3s}
+.zq-node.active p{color:#7c1c1c;font-weight:bold;font-size:10px}
+.zq-intimacy{display:flex;align-items:center;gap:6px;border-bottom:2px solid rgba(212,175,55,.3);padding-bottom:10px}
+.zq-int-label{font-size:14px;color:#7c1c1c}
+.zq-int-val{font-size:18px;color:#b45309;font-style:italic;font-weight:bold}
+.zq-detail{background:#fdfcf8;border-right:3px solid #7c1c1c;padding:14px}
+.zq-det-row{display:flex;padding:5px 0;border-bottom:1px solid rgba(212,175,55,.1)}
+.zq-det-l{font-size:12px;color:#b45309;width:75px;flex-shrink:0;margin-right:10px}
+.zq-det-v{font-size:12px;color:#44403c;flex:1}
+.zq-monitor{background:#0c0a09;margin:15px;border-radius:4px;border:2px solid #2d1212;padding:20px;position:relative;overflow:hidden}
+.zq-mon-head{display:flex;justify-content:space-between;border-bottom:1px solid #3d1a1a;padding-bottom:10px;margin-bottom:15px}
+.zq-mon-title{font-size:16px;color:#d4af37;margin:0}
+.zq-mon-body{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.zq-mon-label{font-size:10px;color:#78716c;border-left:2px solid #7f1d1d;padding-left:8px;margin-bottom:6px}
+.zq-mon-box{background:rgba(26,20,18,.8);padding:12px;border:1px solid #2d1212;color:#a8a29e;font-size:12px}
+.zq-sus-head{display:flex;justify-content:space-between;margin-bottom:8px}
+.zq-sus-head span:first-child{font-size:10px;color:#78716c;border-left:2px solid #7f1d1d;padding-left:8px}
+.zq-sus-track{height:22px;background:#0c0a09;border-radius:2px;padding:2px;border:1px solid #3d1a1a;overflow:hidden;position:relative}
+.zq-sus-fill{height:100%}
+.zq-sus-num{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;color:#fff;text-shadow:0 1px 2px #000,0 0 5px #000;z-index:2;letter-spacing:1px;font-family:monospace;animation:textPulse 2s ease-in-out infinite}
+.zq-action{margin-top:20px;border-top:1px dashed #3d1a1a;padding-top:12px}
+.zq-act-head{font-size:11px;color:#ef4444;letter-spacing:.1em;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.zq-act-dot{width:6px;height:6px;background:#ef4444;border-radius:50%;box-shadow:0 0 5px #ef4444;animation:textPulse 1s infinite}
+.zq-act-body{background:rgba(69,10,10,.4);border-left:3px solid #7f1d1d;padding:8px 12px;color:#d4af37;font-size:13px;line-height:1.4;font-style:italic;animation:actFlash 3s infinite}
+.zq-thought{padding:25px;text-align:center;position:relative}
+.zq-quote{font-size:45px;color:#e5e5e5;position:absolute;top:5px;left:50%;transform:translateX(-50%)}
+.zq-thought-text{color:#57534e;font-style:italic;font-size:14px;line-height:1.6;max-width:550px;margin:0 auto}
+.zq-risk{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#450a0a;border-left:3px solid #dc2626;margin:0 15px 15px;font-size:11px;color:#fecaca}
+.zq-risk-icon{font-size:14px;color:#ef4444;font-weight:bold}
+.zq-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 20px}
+.zq-btn{background:#fff;border:2px solid #e5e5e5;padding:12px 14px;text-align:center;cursor:pointer;font-size:13px;color:#44403c}
+.zq-btn:hover{border-color:#7c1c1c;color:#7c1c1c;background:#fdf2f2}
+.zq-footer{text-align:center;padding:12px;font-size:10px;color:#bbb;border-top:1px solid #eee;letter-spacing:5px}
+@media(max-width:600px){.zq-body{flex-direction:column}.zq-left{width:100%;flex-direction:row;gap:12px}.zq-portrait{width:110px;flex-shrink:0}.zq-mental{flex:1}.zq-opts{grid-template-columns:1fr}.zq-header{flex-direction:column;align-items:flex-start}.zq-title{font-size:20px}.zq-divider{display:none}.zq-mon-body{grid-template-columns:1fr}}
+</style>

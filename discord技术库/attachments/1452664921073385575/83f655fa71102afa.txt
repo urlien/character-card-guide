@@ -1,0 +1,290 @@
+<div class="ntl-status-panel" style="font-family:'Segoe UI','Microsoft YaHei',sans-serif;width:100%;max-width:620px;margin:20px auto;border-radius:16px;overflow:hidden;position:relative;">
+<style>
+/* 基础样式与盒模型控制 */
+.ntl-status-panel *{box-sizing:border-box}
+.ntl-status-panel{border:2px solid rgba(210,180,140,0.4);box-shadow:0 12px 40px rgba(180,140,100,0.15),0 4px 12px rgba(0,0,0,0.08);transition:all 0.5s ease}
+
+/* 主体内容包裹层与日间模式背景 */
+.ntl-status-panel .ui-wrap{background:linear-gradient(180deg,#fdf6e9 0%,#fef3e2 50%,#fdf8f0 100%);color:#6b5b4f;transition:all 0.5s ease;border-radius:14px;overflow:hidden}
+
+/* 夜间模式全局样式定义 */
+.ntl-status-panel .ui-wrap.dark-mode{background:linear-gradient(145deg,#0d0d0f 0%,#1a1a1f 50%,#0f0f12 100%);color:#c8c8c8}
+.ntl-status-panel .ui-wrap.dark-mode ~ .ntl-status-panel,.ntl-status-panel:has(.ui-wrap.dark-mode){border:2px solid #2a2a30;box-shadow:0 0 40px rgba(0,0,0,0.8),inset 0 0 80px rgba(0,0,0,0.3)}
+
+/* 轮数计数器 */
+.ntl-status-panel .round-counter{padding:4px 15px;font-size:10px;color:rgba(107,91,79,0.5);text-align:center;border-bottom:1px dashed rgba(200,180,160,0.15)}
+.ntl-status-panel .ui-wrap.dark-mode .round-counter{color:rgba(200,200,200,0.4);border-bottom:1px dashed rgba(80,80,80,0.3)}
+
+/* 主题切换栏样式 */
+.ntl-status-panel .theme-bar{padding:8px 15px;display:flex;justify-content:center;align-items:center;gap:10px;border-bottom:1px solid rgba(200,180,160,0.2);background:rgba(255,255,255,0.5);transition:all 0.5s ease}
+.ntl-status-panel .ui-wrap.dark-mode .theme-bar{background:linear-gradient(90deg,#0a0a0c 0%,#151518 50%,#0a0a0c 100%);border-bottom:1px solid #252528}
+.ntl-status-panel .theme-label{font-size:11px;transition:all 0.3s}
+.ntl-status-panel .lbl-light{color:#b8860b}
+.ntl-status-panel .lbl-dark{color:#888}
+.ntl-status-panel .ui-wrap.dark-mode .lbl-light{color:#555}
+.ntl-status-panel .ui-wrap.dark-mode .lbl-dark{color:#ff0055}
+
+/* 切换按钮（开关管） */
+.ntl-status-panel .switch-btn{width:50px;height:24px;background:linear-gradient(90deg,#ffe4b5,#ffd39b);border-radius:12px;cursor:pointer;position:relative;transition:all 0.4s ease;box-shadow:inset 0 2px 4px rgba(0,0,0,0.1);border:none}
+.ntl-status-panel .ui-wrap.dark-mode .switch-btn{background:linear-gradient(90deg,#1a1a2e,#16213e)}
+.ntl-status-panel .switch-btn::after{content:"☀";position:absolute;left:3px;top:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.4s ease;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
+.ntl-status-panel .ui-wrap.dark-mode .switch-btn::after{content:"☾";left:27px;background:#2a2a35;color:#ff0055}
+
+/* 系统信息栏（地点时间） */
+.ntl-status-panel .sys-bar{padding:10px 15px;display:flex;justify-content:space-between;align-items:center;font-size:11px;border-bottom:1px dashed rgba(200,180,160,0.2);background:rgba(255,255,255,0.4);transition:all 0.5s ease}
+.ntl-status-panel .ui-wrap.dark-mode .sys-bar{background:rgba(0,0,0,0.3);border-bottom:1px solid #252528}
+.ntl-status-panel .loc-tag{padding:3px 8px;border-radius:10px;font-size:10px;background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);color:#8b6914;transition:all 0.5s ease}
+.ntl-status-panel .ui-wrap.dark-mode .loc-tag{background:transparent;border:1px solid #ff0055;color:#ff0055}
+.ntl-status-panel .time-tag{color:#a08070;transition:all 0.5s ease}
+.ntl-status-panel .ui-wrap.dark-mode .time-tag{color:#00ff88;font-family:monospace}
+
+/* 核心人物（Queen）区域 */
+.ntl-status-panel .queen-box{padding:12px 15px 8px 15px;text-align:center}
+.ntl-status-panel .queen-btn{display:block;width:100%;padding:10px 0;border-radius:25px;font-size:12px;cursor:pointer;transition:all 0.3s ease;background:linear-gradient(135deg,#ffeef8 0%,#fff5f8 100%);border:1px solid rgba(201,101,122,0.3);color:#c9657a;letter-spacing:0.5px}
+.ntl-status-panel .queen-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(201,101,122,0.2)}
+.ntl-status-panel .ui-wrap.dark-mode .queen-btn{background:transparent;border:1px solid rgba(255,0,85,0.4);color:#ff0055;border-radius:0;letter-spacing:2px}
+.ntl-status-panel .ui-wrap.dark-mode .queen-btn:hover{box-shadow:0 0 20px rgba(255,0,85,0.3);border-color:#ff0055}
+.ntl-status-panel .queen-btn.active{background:linear-gradient(135deg,#f8bbd9 0%,#f48fb1 100%);color:#fff}
+.ntl-status-panel .ui-wrap.dark-mode .queen-btn.active{background:linear-gradient(180deg,rgba(255,0,85,0.2) 0%,rgba(255,0,85,0.05) 100%);border-color:#ff0055;box-shadow:0 0 30px rgba(255,0,85,0.4)}
+
+/* 角色导航栏 */
+.ntl-status-panel .char-nav{display:flex;justify-content:center;gap:6px;padding:8px 15px 12px 15px}
+.ntl-status-panel .nav-btn{flex:1;max-width:110px;padding:7px 0;text-align:center;font-size:11px;border-radius:15px;cursor:pointer;transition:all 0.3s ease;background:rgba(255,255,255,0.6);border:1px solid rgba(200,180,160,0.25);color:#a09080}
+.ntl-status-panel .ui-wrap.dark-mode .nav-btn{background:#0d0d0f;border:none;border-bottom:2px solid transparent;border-radius:0;color:#555}
+.ntl-status-panel .nav-btn:hover{background:rgba(255,255,255,0.9)}
+.ntl-status-panel .ui-wrap.dark-mode .nav-btn:hover{background:#151518;color:#888}
+
+/* 各角色激活状态配色 */
+.ntl-status-panel .nav-btn.active[data-char="xia"]{background:linear-gradient(135deg,#fff9e6 0%,#ffe082 100%);color:#b8860b;border-color:#ffe082}
+.ntl-status-panel .nav-btn.active[data-char="tang"]{background:linear-gradient(135deg,#e3f2fd 0%,#90caf9 100%);color:#1565c0;border-color:#90caf9}
+.ntl-status-panel .nav-btn.active[data-char="lin"]{background:linear-gradient(135deg,#fff3e0 0%,#ffab91 100%);color:#d84315;border-color:#ffab91}
+.ntl-status-panel .nav-btn.active[data-char="chen"]{background:linear-gradient(135deg,#f3e5f5 0%,#ce93d8 100%);color:#7b1fa2;border-color:#ce93d8}
+.ntl-status-panel .ui-wrap.dark-mode .nav-btn.active[data-char="xia"]{border-bottom-color:#ffd700;color:#ffd700;background:linear-gradient(180deg,rgba(255,215,0,0.1) 0%,transparent 100%)}
+.ntl-status-panel .ui-wrap.dark-mode .nav-btn.active[data-char="tang"]{border-bottom-color:#00bfff;color:#00bfff;background:linear-gradient(180deg,rgba(0,191,255,0.1) 0%,transparent 100%)}
+.ntl-status-panel .ui-wrap.dark-mode .nav-btn.active[data-char="lin"]{border-bottom-color:#ff6347;color:#ff6347;background:linear-gradient(180deg,rgba(255,99,71,0.1) 0%,transparent 100%)}
+.ntl-status-panel .ui-wrap.dark-mode .nav-btn.active[data-char="chen"]{border-bottom-color:#da70d6;color:#da70d6;background:linear-gradient(180deg,rgba(218,112,214,0.1) 0%,transparent 100%)}
+
+/* 面板切换与动画 */
+.ntl-status-panel .panel{display:none;padding:0 15px 15px 15px;animation:ntlFadeIn 0.4s ease}
+.ntl-status-panel .panel.active{display:block}
+@keyframes ntlFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* 属性卡片基础样式 */
+.ntl-status-panel .info-card{border-radius:12px;padding:12px;margin-bottom:10px;transition:all 0.5s ease;background:linear-gradient(180deg,rgba(255,255,255,0.95) 0%,rgba(255,252,248,0.9) 100%);border:1px solid rgba(220,200,180,0.25)}
+.ntl-status-panel .ui-wrap.dark-mode .info-card{background:linear-gradient(135deg,rgba(20,20,25,0.9) 0%,rgba(15,15,18,0.95) 100%);border:1px solid #2a2a30;border-radius:8px}
+.ntl-status-panel .card-row{display:flex;padding:6px 0;border-bottom:1px dashed rgba(200,180,160,0.2);font-size:12px;align-items:flex-start;gap:10px}
+.ntl-status-panel .ui-wrap.dark-mode .card-row{border-color:#252528}
+.ntl-status-panel .card-row:last-of-type{border:none}
+.ntl-status-panel .row-lbl{color:#a09080;font-size:10px;text-transform:uppercase;width:50px;flex-shrink:0;padding-top:1px}
+.ntl-status-panel .ui-wrap.dark-mode .row-lbl{color:#444}
+.ntl-status-panel .row-val{color:#5d5048;flex:1;text-align:left;word-break:break-all;line-height:1.4}
+.ntl-status-panel .ui-wrap.dark-mode .row-val{color:#aaa}
+
+/* 进度条样式 */
+.ntl-status-panel .bar-row{display:flex;align-items:center;margin-top:8px;font-size:10px}
+.ntl-status-panel .bar-lbl{width:55px;color:#a09080}
+.ntl-status-panel .ui-wrap.dark-mode .bar-lbl{color:#666}
+.ntl-status-panel .bar-track{flex:1;height:6px;border-radius:6px;margin:0 8px;overflow:hidden;background:rgba(0,0,0,0.05);transition:all 0.5s}
+.ntl-status-panel .ui-wrap.dark-mode .bar-track{background:#1a1a1f;border-radius:3px}
+.ntl-status-panel .bar-fill{height:100%;border-radius:6px;transition:all 0.5s;position:relative}
+.ntl-status-panel .ui-wrap.dark-mode .bar-fill{border-radius:3px}
+.ntl-status-panel .bar-fill::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);animation:ntlShimmer 2s infinite}
+@keyframes ntlShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.ntl-status-panel .bar-num{width:35px;text-align:right;font-weight:600}
+
+/* 心理活动/想法样式 */
+.ntl-status-panel .thought{padding:10px 12px;margin-bottom:10px;font-size:11px;font-style:italic;border-radius:10px;position:relative;transition:all 0.5s;background:linear-gradient(135deg,rgba(255,250,245,0.9) 0%,rgba(255,248,240,0.8) 100%);border-left:3px solid #ddd;color:#7a6a5a}
+.ntl-status-panel .ui-wrap.dark-mode .thought{background:rgba(0,0,0,0.3);border-left:2px solid #333;border-radius:6px;color:#777}
+.ntl-status-panel .thought::before{content:"💭";position:absolute;top:-6px;left:8px;font-size:12px}
+.ntl-status-panel .ui-wrap.dark-mode .thought::before{content:"◉";font-size:8px;top:-5px;color:#444}
+
+/* 私密状态折叠框 */
+.ntl-status-panel .secret-box{border-radius:10px;overflow:hidden;transition:all 0.5s;border:1px solid rgba(200,180,160,0.2);background:rgba(255,255,255,0.5)}
+.ntl-status-panel .ui-wrap.dark-mode .secret-box{border:1px solid #252528;border-radius:6px;background:transparent}
+.ntl-status-panel .secret-box summary{padding:8px 12px;font-size:10px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;transition:0.2s;user-select:none;color:#a09080}
+.ntl-status-panel .ui-wrap.dark-mode .secret-box summary{color:#555;text-transform:uppercase;letter-spacing:1px;background:rgba(0,0,0,0.2)}
+.ntl-status-panel .secret-box summary::-webkit-details-marker{display:none}
+.ntl-status-panel .secret-box summary::before{content:"🔒";font-size:10px}
+.ntl-status-panel .secret-box summary::after{content:"▸";margin-left:auto;transition:transform 0.2s;font-size:10px}
+.ntl-status-panel .secret-box[open] summary::after{transform:rotate(90deg)}
+.ntl-status-panel .secret-box[open] summary{background:rgba(255,220,220,0.3);color:#c9657a}
+.ntl-status-panel .secret-box[open] summary::before{content:"🔓"}
+.ntl-status-panel .ui-wrap.dark-mode .secret-box[open] summary{background:rgba(255,0,85,0.1);color:#ff0055}
+.ntl-status-panel .ui-wrap.dark-mode .secret-box summary::before{content:"▶";font-size:8px}
+
+/* 折叠内容区域样式 */
+.ntl-status-panel .secret-content{padding:10px 12px;font-size:11px;line-height:1.7;transition:all 0.5s;background:linear-gradient(180deg,rgba(255,245,248,0.8) 0%,rgba(255,250,252,0.6) 100%);border-top:1px dashed rgba(200,150,150,0.2);color:#6a5a50}
+.ntl-status-panel .ui-wrap.dark-mode .secret-content{background:rgba(255,0,85,0.02);border-top:1px solid #252528;color:#888}
+.ntl-status-panel .secret-item{margin-bottom:5px}
+.ntl-status-panel .secret-item:last-child{margin:0}
+.ntl-status-panel .secret-item b{color:#c9657a}
+.ntl-status-panel .ui-wrap.dark-mode .secret-item b{color:#ff0055}
+
+/* 角色属性配色细分 (Su, Xia, Tang, Lin, Chen) */
+.ntl-status-panel .t-su .bar-fill{background:linear-gradient(90deg,#f48fb1,#f8bbd9)}
+.ntl-status-panel .t-su .thought{border-color:#f48fb1}
+.ntl-status-panel .ui-wrap.dark-mode .t-su .bar-fill{background:linear-gradient(90deg,#ff0055,#ff3377)}
+.ntl-status-panel .ui-wrap.dark-mode .t-su .thought{border-color:#ff0055}
+.ntl-status-panel .ui-wrap.dark-mode .t-su .bar-num{color:#ff0055}
+.ntl-status-panel .t-xia .bar-fill{background:linear-gradient(90deg,#ffc107,#ffe082)}
+.ntl-status-panel .t-xia .thought{border-color:#ffc107}
+.ntl-status-panel .ui-wrap.dark-mode .t-xia .bar-fill{background:linear-gradient(90deg,#ffd700,#ffec8b)}
+.ntl-status-panel .ui-wrap.dark-mode .t-xia .thought{border-color:#ffd700}
+.ntl-status-panel .ui-wrap.dark-mode .t-xia .bar-num{color:#ffd700}
+.ntl-status-panel .t-tang .bar-fill{background:linear-gradient(90deg,#42a5f5,#90caf9)}
+.ntl-status-panel .t-tang .thought{border-color:#42a5f5}
+.ntl-status-panel .ui-wrap.dark-mode .t-tang .bar-fill{background:linear-gradient(90deg,#00bfff,#87ceeb)}
+.ntl-status-panel .ui-wrap.dark-mode .t-tang .thought{border-color:#00bfff}
+.ntl-status-panel .ui-wrap.dark-mode .t-tang .bar-num{color:#00bfff}
+.ntl-status-panel .t-lin .bar-fill{background:linear-gradient(90deg,#ff7043,#ffab91)}
+.ntl-status-panel .t-lin .thought{border-color:#ff7043}
+.ntl-status-panel .ui-wrap.dark-mode .t-lin .bar-fill{background:linear-gradient(90deg,#ff6347,#ffa07a)}
+.ntl-status-panel .ui-wrap.dark-mode .t-lin .thought{border-color:#ff6347}
+.ntl-status-panel .ui-wrap.dark-mode .t-lin .bar-num{color:#ff6347}
+.ntl-status-panel .t-chen .bar-fill{background:linear-gradient(90deg,#ab47bc,#ce93d8)}
+.ntl-status-panel .t-chen .thought{border-color:#ab47bc}
+.ntl-status-panel .ui-wrap.dark-mode .t-chen .bar-fill{background:linear-gradient(90deg,#da70d6,#dda0dd)}
+.ntl-status-panel .ui-wrap.dark-mode .t-chen .thought{border-color:#da70d6}
+.ntl-status-panel .ui-wrap.dark-mode .t-chen .bar-num{color:#da70d6}
+
+/* 底部选项按钮区域 */
+.ntl-status-panel .options-section{padding-top:10px;border-top:2px solid rgba(141,110,99,0.3);transition:all 0.5s ease}
+.ntl-status-panel .ui-wrap.dark-mode .options-section{border-top:2px solid #2a2a30}
+.ntl-status-panel .option-item{display:block;text-align:left;background:linear-gradient(135deg,#efebe9 0%,#f5f1ee 100%);border:1px solid rgba(141,110,99,0.4);color:#3e2723;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:12px;box-shadow:0 2px 4px rgba(0,0,0,0.1);user-select:none;margin-bottom:8px;overflow-wrap:break-word;transition:all 0.3s ease}
+.ntl-status-panel .option-item:hover{background:linear-gradient(135deg,#e8e4e1 0%,#ede9e6 100%);transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,0.15)}
+.ntl-status-panel .option-item:last-child{margin-bottom:0}
+.ntl-status-panel .ui-wrap.dark-mode .option-item{background:linear-gradient(135deg,rgba(30,30,35,0.8) 0%,rgba(25,25,30,0.9) 100%);border:1px solid #444;color:#ccc;box-shadow:0 2px 4px rgba(0,0,0,0.3)}
+.ntl-status-panel .ui-wrap.dark-mode .option-item:hover{background:linear-gradient(135deg,rgba(40,40,45,0.9) 0%,rgba(35,35,40,0.95) 100%);border-color:#555;box-shadow:0 4px 8px rgba(0,0,0,0.4)}
+</style>
+
+<div class="ui-wrap" id="ui-wrap-unique">
+    <div class="round-counter">对话轮数:占位符</div>
+    <div class="theme-bar">
+        <span class="theme-label lbl-light">☀ 日间</span>
+        <button class="switch-btn" onclick="event.stopPropagation();(function(btn){var wrap=btn.closest('.ui-wrap');var panel=btn.closest('.ntl-status-panel');wrap.classList.toggle('dark-mode');var isDark=wrap.classList.contains('dark-mode');localStorage.setItem('ntl-theme',isDark?'dark':'light');if(isDark){panel.style.border='2px solid #2a2a30';panel.style.boxShadow='0 0 40px rgba(0,0,0,0.8), inset 0 0 80px rgba(0,0,0,0.3)'}else{panel.style.border='2px solid rgba(210,180,140,0.4)';panel.style.boxShadow='0 12px 40px rgba(180,140,100,0.15), 0 4px 12px rgba(0,0,0,0.08)'}})(this)"></button>
+        <span class="theme-label lbl-dark">☾ 夜间</span>
+    </div>
+    <div class="sys-bar">
+        <span class="loc-tag">📍 占位符</span>
+        <span class="time-tag">🕐 占位符</span>
+    </div>
+
+    <div class="queen-box">
+        <button class="queen-btn active" data-char="su" onclick="event.stopPropagation();(function(btn){var wrap=btn.closest('.ui-wrap');wrap.querySelectorAll('.nav-btn,.queen-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');wrap.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});wrap.querySelector('.panel[data-panel=su]').classList.add('active')})(this)">♛ 角色1 · Student Council</button>
+    </div>
+
+    <div class="char-nav">
+        <button class="nav-btn" data-char="xia" onclick="event.stopPropagation();(function(btn){var wrap=btn.closest('.ui-wrap');wrap.querySelectorAll('.nav-btn,.queen-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');wrap.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});wrap.querySelector('.panel[data-panel=xia]').classList.add('active')})(this)">角色2</button>
+        <button class="nav-btn" data-char="tang" onclick="event.stopPropagation();(function(btn){var wrap=btn.closest('.ui-wrap');wrap.querySelectorAll('.nav-btn,.queen-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');wrap.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});wrap.querySelector('.panel[data-panel=tang]').classList.add('active')})(this)">角色3</button>
+        <button class="nav-btn" data-char="lin" onclick="event.stopPropagation();(function(btn){var wrap=btn.closest('.ui-wrap');wrap.querySelectorAll('.nav-btn,.queen-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');wrap.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});wrap.querySelector('.panel[data-panel=lin]').classList.add('active')})(this)">角色4</button>
+        <button class="nav-btn" data-char="chen" onclick="event.stopPropagation();(function(btn){var wrap=btn.closest('.ui-wrap');wrap.querySelectorAll('.nav-btn,.queen-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');wrap.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});wrap.querySelector('.panel[data-panel=chen]').classList.add('active')})(this)">角色5</button>
+    </div>
+
+    <div class="view-zone">
+        <div class="panel t-su active" data-panel="su">
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">地点</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">外貌</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">姿态</span><span class="row-val">占位符</span></div>
+                <div class="bar-row">
+                    <span class="bar-lbl">好感度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div>
+                    <span class="bar-num">占位符</span>
+                </div>
+            </div>
+            <div class="thought">占位符</div>
+            <details class="secret-box" onclick="event.stopPropagation()">
+                <summary onclick="event.stopPropagation()">私密状态</summary>
+                <div class="secret-content">
+                    <div class="secret-item"><b>[胸部]</b> 占位符</div>
+                    <div class="secret-item"><b>[小穴]</b> 占位符</div>
+                </div>
+            </details>
+        </div>
+
+        <div class="panel t-xia" data-panel="xia">
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">地点</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">外貌</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">姿态</span><span class="row-val">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">好感度</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">变心值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">调教值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+            </div>
+            <div class="thought">占位符</div>
+            <details class="secret-box" onclick="event.stopPropagation()">
+                <summary onclick="event.stopPropagation()">私密状态</summary>
+                <div class="secret-content">
+                    <div class="secret-item"><b>[胸部]</b> 占位符</div>
+                    <div class="secret-item"><b>[小穴]</b> 占位符</div>
+                </div>
+            </details>
+        </div>
+
+        <div class="panel t-tang" data-panel="tang">
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">地点</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">外貌</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">姿态</span><span class="row-val">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">好感度</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">变心值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">调教值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+            </div>
+            <div class="thought">占位符</div>
+            <details class="secret-box" onclick="event.stopPropagation()">
+                <summary onclick="event.stopPropagation()">私密状态</summary>
+                <div class="secret-content">
+                    <div class="secret-item"><b>[胸部]</b> 占位符</div>
+                    <div class="secret-item"><b>[小穴]</b> 占位符</div>
+                </div>
+            </details>
+        </div>
+
+        <div class="panel t-lin" data-panel="lin">
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">地点</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">外貌</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">姿态</span><span class="row-val">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">好感度</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">变心值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">调教值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+            </div>
+            <div class="thought">占位符</div>
+            <details class="secret-box" onclick="event.stopPropagation()">
+                <summary onclick="event.stopPropagation()">私密状态</summary>
+                <div class="secret-content">
+                    <div class="secret-item"><b>[胸部]</b> 占位符</div>
+                    <div class="secret-item"><b>[小穴]</b> 占位符</div>
+                </div>
+            </details>
+        </div>
+
+        <div class="panel t-chen" data-panel="chen">
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">地点</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">外貌</span><span class="row-val">占位符</span></div>
+                <div class="card-row"><span class="row-lbl">姿态</span><span class="row-val">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">好感度</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">变心值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+                <div class="bar-row"><span class="bar-lbl">调教值</span><div class="bar-track"><div class="bar-fill" style="width:占位符%"></div></div><span class="bar-num">占位符</span></div>
+            </div>
+            <div class="thought">占位符</div>
+            <details class="secret-box" onclick="event.stopPropagation()">
+                <summary onclick="event.stopPropagation()">私密状态</summary>
+                <div class="secret-content">
+                    <div class="secret-item"><b>[胸部]</b> 占位符</div>
+                    <div class="secret-item"><b>[小穴]</b> 占位符</div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div onclick="event.stopPropagation(); let t=event.target.closest('[data-copy]'); if(t){ (a=document.querySelector('textarea')).value=t.dataset.copy; a.dispatchEvent(new Event('input')) }" class="options-section">
+        <div data-copy='占位符' class="option-item">占位符</div>
+        <div data-copy='占位符' class="option-item">占位符</div>
+        <div data-copy='占位符' class="option-item">占位符</div>
+    </div>
+</div>
+
+<img src="x" onerror="(function(el){var wrap=el.closest('.ntl-status-panel').querySelector('.ui-wrap');var panel=el.closest('.ntl-status-panel');if(localStorage.getItem('ntl-theme')==='dark'){wrap.classList.add('dark-mode');panel.style.border='2px solid #2a2a30';panel.style.boxShadow='0 0 40px rgba(0,0,0,0.8), inset 0 0 80px rgba(0,0,0,0.3)'}el.remove()})(this)" style="display:none">
+</div>

@@ -1,0 +1,396 @@
+# ai涩图喵——赛博青楼
+创建: 2026-04-28T08:52:15.651000+00:00
+消息: 115条
+标签ID: 1431703972099391529
+---
+
+**绚音音**: 早期的一些图喵
+📎 [3f39a2d76118419b.pdf](https://cdn.discordapp.com/attachments/1498607772084998174/1498608001337000057/3f39a2d76118419b.pdf?ex=6a3cec76&is=6a3b9af6&hm=dd498b9f0679b972bf6532db2260699e0a85083db79fb95af565db2ab6e239f0&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_245:1425490499795423332>
+
+**绚音音**: 
+📎 [e895e70d-34c1-4444-b3cb-dc79d59508aa.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498609948031189002/e895e70d-34c1-4444-b3cb-dc79d59508aa.png.jpg?ex=6a3cee46&is=6a3b9cc6&hm=48ba42b093ec07c84a6395720299338bb5f54d3761d6ea75154477f05942bbbf&)
+📎 [AI_image_1777366806873.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498609948563603577/AI_image_1777366806873.png.jpg?ex=6a3cee46&is=6a3b9cc6&hm=87198ff06738a5c175648145ba0d25696c43f996286005504acc1e230c4747c8&)
+📎 [AI_image_1777366810541.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498609948937158756/AI_image_1777366810541.png.jpg?ex=6a3cee46&is=6a3b9cc6&hm=b20759b8555557b2e18599a0a72f89c7f689798d878c07802f14684de9630e2a&)
+📎 [AI_image_1777366817339.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498609949490548767/AI_image_1777366817339.png.jpg?ex=6a3cee46&is=6a3b9cc6&hm=ab134a77d2194c9a9343203d57cfdfe9ce3d544a5d653e13d625234927491112&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: https://tenor.com/view/keep-talking-gif-7537781
+
+**超然小水母（水母宗主。大周荣誉国祖)**: 喵？喵♡～
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 
+📎 [Image_1775480975098_192-1-1-1-1.gif](https://cdn.discordapp.com/attachments/1498607772084998174/1498613073873731685/Image_1775480975098_192-1-1-1-1.gif?ex=6a3cf12f&is=6a3b9faf&hm=64d50bc2649b0d1e71f39947d4ed7b1c271c99ebd39bf007b228434a24ccc178&)
+
+**绚音音**: 
+📎 [20ad4802-4343-44aa-a9be-d30a5f6f4868.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630404305981553/20ad4802-4343-44aa-a9be-d30a5f6f4868.jpg?ex=6a3c5893&is=6a3b0713&hm=218df9e40960a70185ea3e3a295ab025b1661e69ad9661a4157f0fbee888fcee&)
+📎 [9209c27e-7dbc-47e5-8ba0-0ec2f772734e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630404801040505/9209c27e-7dbc-47e5-8ba0-0ec2f772734e.png.jpg?ex=6a3c5893&is=6a3b0713&hm=a028b6d5a006fe7c5adab5cd3920af958a67c3d0964ae8c67e79865bc12d0872&)
+📎 [2d261a56-bf46-4894-bf7e-b6a348e76b4e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630405803348088/2d261a56-bf46-4894-bf7e-b6a348e76b4e.png.jpg?ex=6a3c5893&is=6a3b0713&hm=37fed32a4c952ddfc41b57cf6acfe9ed4cdce2610619e72502bec111a29ac845&)
+📎 [28971694-79d5-46ac-af88-b796a610cd78.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630406868697128/28971694-79d5-46ac-af88-b796a610cd78.png.jpg?ex=6a3c5894&is=6a3b0714&hm=e9b04ae13cb268de1d9ccec4292acf8b504a0c3f50e03250749c83e4a072fca2&)
+📎 [4923d87c-e492-4279-867d-3d813703030e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630407619608587/4923d87c-e492-4279-867d-3d813703030e.png.jpg?ex=6a3c5894&is=6a3b0714&hm=acd7f75e8af11118fb5cc89a2adfc7b4ed1ecf0b1df8bdea6fa39d0331f4587f&)
+📎 [1e09b434-a2a0-4364-b915-d578b54081a5.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630408395423774/1e09b434-a2a0-4364-b915-d578b54081a5.jpg?ex=6a3c5894&is=6a3b0714&hm=4f67f83988377b8b96c867ef242b6398dcbd20acceee4c8d794f186626576ce1&)
+📎 [bc55ef78-68d9-4061-a7dc-5f86a87f6c0d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630408940687391/bc55ef78-68d9-4061-a7dc-5f86a87f6c0d.png.jpg?ex=6a3c5894&is=6a3b0714&hm=ec6cda552932a38cf06c8da42dbd134fd21611bdc364ede67ac13117d96e1e65&)
+📎 [5e029f77-213b-4dc8-89a4-ce00c171d4bc.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630409758441563/5e029f77-213b-4dc8-89a4-ce00c171d4bc.png.jpg?ex=6a3c5894&is=6a3b0714&hm=febf31af03b70c3f46363ca320200d476d87dbb3bdfef07683271fc80d7734be&)
+📎 [541dce1a-f3ab-423c-aa2c-f8f80f3fe18f.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630410542907485/541dce1a-f3ab-423c-aa2c-f8f80f3fe18f.png.jpg?ex=6a3c5895&is=6a3b0715&hm=b5039d4f7cffb9803a0a4f80d919915e9c8da3f5b5b59a4fbf561715db31bad3&)
+
+**绚音音**: 
+📎 [cc7ea017-fbf1-4a12-bf80-c64396b9a910.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630447943651338/cc7ea017-fbf1-4a12-bf80-c64396b9a910.png.jpg?ex=6a3c589d&is=6a3b071d&hm=59e65573c4a777a8b16d03e1c11408ee0fe3c8a791ba8053da058663bcede222&)
+📎 [89801734-9361-4e6f-8dfc-19b8c3bd0f86.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630448392175737/89801734-9361-4e6f-8dfc-19b8c3bd0f86.png.jpg?ex=6a3c589e&is=6a3b071e&hm=2a94ef514a90e917dab19943c070a53594c15a1718d8b16ca9eb6e8261029b24&)
+📎 [a46ee867-c505-4f64-ae7d-a18efa038080.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630448983838741/a46ee867-c505-4f64-ae7d-a18efa038080.png.jpg?ex=6a3c589e&is=6a3b071e&hm=05c461bbbd6fa8b0f1736dda303491fc8a9fc2104445fea98b6648b477f14052&)
+📎 [e45cfafa-fdfe-4bfb-b7aa-ce2f273a279d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630449629630495/e45cfafa-fdfe-4bfb-b7aa-ce2f273a279d.png.jpg?ex=6a3c589e&is=6a3b071e&hm=655526578b7d4f1f61b1d5df1fa97d68dc58d193f7c02578a3383c60a96615a2&)
+📎 [dc79c728-22c5-48b5-8992-2d16a802beff.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630450212769843/dc79c728-22c5-48b5-8992-2d16a802beff.png.jpg?ex=6a3c589e&is=6a3b071e&hm=e0c7486f845771ce1e9492df6178afbbcf057a80f68896e09bcae3ecac95a17e&)
+📎 [1fcb7bca-3e04-4350-92d6-f10e2ce2158d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498630450682396763/1fcb7bca-3e04-4350-92d6-f10e2ce2158d.png.jpg?ex=6a3c589e&is=6a3b071e&hm=2eff8dea9a8a0c237de26e5c9348ef0766a43da7363fcb019b02f55bbec4ab39&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 第四张和第八张很棒<:emoji_245:1425490499795423332>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 第一张好好
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_247:1488101228389994526>
+
+**绚音音**: <:emoji_140:1379454014852436038>
+
+**AdominHK**: <:1000168531:1298906724979310634>
+
+**ehst**: <:emoji_251:1490018372723675297>
+
+**小毅（沉淀中）**: <:emoji_249:1416980114511761448>
+
+**绚音音**: 
+📎 [AI_image_1777373099844.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498636779249471498/AI_image_1777373099844.png.jpg?ex=6a3c5e83&is=6a3b0d03&hm=7fb5d9475b1cfe189fcc07262315cb6f78c6781908d32059b78cb4da0d484d47&)
+📎 [AI_image_1777373107905.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498636779669028984/AI_image_1777373107905.png.jpg?ex=6a3c5e83&is=6a3b0d03&hm=19a69aea17b804e839e81818caf7e9b470c01508a306ef07509cd97295b2f844&)
+📎 [AI_image_1777373109627.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498636780071813281/AI_image_1777373109627.png.jpg?ex=6a3c5e83&is=6a3b0d03&hm=8fab3b6120a4a581d9bf6778bae24abbab635c1e3b0c3f8757089b842b2ddb89&)
+📎 [AI_image_1777373116486.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498636780474335232/AI_image_1777373116486.png.jpg?ex=6a3c5e83&is=6a3b0d03&hm=557a64945415a2368dedfc975c886bacaf662040857be374cf035fb1b102d17f&)
+📎 [AI_image_1777373118842.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498636780927455303/AI_image_1777373118842.png.jpg?ex=6a3c5e83&is=6a3b0d03&hm=89fcd641cc92ce3770e7b596c1b2c21ba3738bfea30eefdd79a53c4703d0bb08&)
+📎 [AI_image_1777373120420.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498636781715980422/AI_image_1777373120420.png.jpg?ex=6a3c5e84&is=6a3b0d04&hm=084c587e7f6d3d3f39a79b2b2678e8ffb222a2e73c95d8f5754e6f1a65b7ef2a&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_247:1488101228389994526>
+
+**蜂蜜炒蛋**: <:emoji_250:1450114800481865830>
+
+**超然小水母（水母宗主。大周荣誉国祖)**: 好多張腿喵
+這是性癖展露帖喵
+
+**超然小水母（水母宗主。大周荣誉国祖)**: <:emoji_275:1498632780291117127>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_276:1498632895512707093>
+
+**绚音音**: 
+📎 [799b6c92-1231-4eef-8abe-1149d5803e00.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704808146632784/799b6c92-1231-4eef-8abe-1149d5803e00.png.jpg?ex=6a3c9dde&is=6a3b4c5e&hm=4670b8bfade2329b2a24a7c1f19789b1767d8b2183b851148c8f3d4d538f9fb5&)
+📎 [ee373423-f502-4323-bd22-eabb4b19b64a.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704809983873177/ee373423-f502-4323-bd22-eabb4b19b64a.png.jpg?ex=6a3c9ddf&is=6a3b4c5f&hm=35ac7a8b2cc8b12e79552ae9a8711bdc2dbdb21ef13d6d0d4a3c9757893cf3b4&)
+📎 [3215fb79-28ae-4bef-b64c-f06cdea95148.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704810428338297/3215fb79-28ae-4bef-b64c-f06cdea95148.png.jpg?ex=6a3c9ddf&is=6a3b4c5f&hm=d81430cab9b36b07bd7aa40b17fda3e5654142e8688d3b2d37a38d0df43866f9&)
+📎 [ef089ab6-65e6-4667-9f7c-1a865f06a8cc.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704810747101395/ef089ab6-65e6-4667-9f7c-1a865f06a8cc.png.jpg?ex=6a3c9ddf&is=6a3b4c5f&hm=ccf70a870764583fdf4379e4c8e6c1ab020052108afab5015641f9cc78eb8c8c&)
+📎 [0c8d3da5-09a0-43f8-a24c-0bd86d159d91.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704811078582424/0c8d3da5-09a0-43f8-a24c-0bd86d159d91.png.jpg?ex=6a3c9ddf&is=6a3b4c5f&hm=a2307ebf85c9057980397f9bfac9a0d371dc9d3953bb9129a28f2d01bfa856af&)
+📎 [b0504f18-a988-47a4-bcfa-dedd9e812e91.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704811472982086/b0504f18-a988-47a4-bcfa-dedd9e812e91.png.jpg?ex=6a3c9ddf&is=6a3b4c5f&hm=c2f8427f1bc76d74272dabf8bd1ca3b357eb75270541f08267bd6fb8ac6198cd&)
+📎 [bd91a720-1d6d-4283-8fdf-6e14c7dacb87.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704811929899058/bd91a720-1d6d-4283-8fdf-6e14c7dacb87.png.jpg?ex=6a3c9ddf&is=6a3b4c5f&hm=cb21d3e460c13db846a73c4912f805b76818aa0d0bd15aeafec527558611c03a&)
+📎 [d5f4e7bd-9f05-491f-adb2-50b4c328a356.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704819521716394/d5f4e7bd-9f05-491f-adb2-50b4c328a356.png.jpg?ex=6a3c9de1&is=6a3b4c61&hm=a9efe70e7571a99633c996d56bca4788b09695c3200f11f6f8f455016e9ced2a&)
+📎 [6a0d1e5e-948c-4230-9f1d-64800e092f84.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498704819987419207/6a0d1e5e-948c-4230-9f1d-64800e092f84.png.jpg?ex=6a3c9de1&is=6a3b4c61&hm=e8ec1e3c72cdb587ed9c525cd278e39c6ada4add2de1c30d679df5d7755f56aa&)
+
+**绚音音**: 油腻木珠喵
+
+**绚音音**: <:emoji_142:1379854822315921438>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_247:1488101228389994526>
+
+**金**: 魅魔新出的这个绘画功能，能不能自己编辑图片呀，还是说只能生成图片
+
+**星烨**: 能帮我跑一张吗？跪谢！
+
+**(主体与动作)**：
+结城明日奈（刀剑神域亚丝娜），仰躺在凌乱的床铺上，处于激烈的性交刚刚结束、肉棒刚刚拔出后的极度虚脱状态。她那标志性的栗色长发被汗水和体液浸透，凌乱地黏在脸颊和脖颈上。她双腿无力地向两侧大张，膝盖弯曲，呈现出完全暴露私处的屈辱M字开腿姿势，白皙的肉体还在因为高潮的余韵而无意识地微微抽搐。
+
+**(脸部表情特写)**：
+彻底沉沦的失神表情（阿黑颜）。双眼上翻，瞳孔涣散失去焦距，眼白泛起红血丝，眼角残留着痛苦与快感交织的生理性泪水。脸颊浮现着高烧般浓重的红晕。红肿的嘴唇无力地微张，粉嫩的小舌头吐出嘴角，浓稠的唾液顺着下巴拉出长长的透明银丝，滴落在锁骨上。
+
+**(身材与乳房细节)**：
+原本圣洁的血盟骑士团红白制服被彻底撕碎、剥离，仅剩几根布条挂在肩膀上，上半身完全裸露。饱满浑圆的双乳因为呼吸而剧烈起伏，乳房皮肤上布满暴力的青紫色指印、红色的咬痕与亮晶晶的口水反光。原本粉嫩的乳头因被长时间粗暴吸吮而处于极度肿胀、坚挺的勃起状态，乳晕呈现充血的深红色。
+
+**(私密处与精液描写)**：
+毫无遮掩的下体特写。大阴唇被粗暴的撞击揉捏至红肿外翻，脆弱的深粉色小阴唇完全暴露在外。原本紧致的阴道口因为刚刚承受过巨大肉棒的长时间狂暴抽插，此刻处于彻底松弛的破损状态，被撑成一个无法闭合的鲜红色“O”型。海量浓稠、温热的乳白色精液正从通红的淫穴深处汩汩涌出，夹杂着透明的淫水，在穴口形成粘稠的白浊泡沫，随后顺着股沟和白皙的大腿内侧蜿蜒流淌。她的小腹、大腿根部、饱满的胸部沟壑以及失神的脸颊上，全部呈喷射状溅满了大片白浊的精液斑块。
+
+**(环境与背景)**：
+SAO第22层森林木屋的主卧。身下一张宽大但凌乱不堪的欧式大床，洁白的床单被肉体蹂躏得皱巴巴的，并且大面积浸透了汗水、淫水和精液的混合物，在她的臀部下方形成了一大片深色、泥泞的湿润水渍。
+
+**绚音音**: ai涩图喵
+
+**绚音音**: 做不了那么细喵
+📎 [8c781343-a27d-4d29-99e4-e6a55c304a7c.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498899850366947388/8c781343-a27d-4d29-99e4-e6a55c304a7c.jpg?ex=6a3caac4&is=6a3b5944&hm=6042763efbd384e25340276b423f1545b7f0f174cda968441d2c88acc94acd9b&)
+📎 [c7a5f374-17e6-4594-a649-e5d558cc38ef.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498899850681385020/c7a5f374-17e6-4594-a649-e5d558cc38ef.png.jpg?ex=6a3caac4&is=6a3b5944&hm=5553f5d1f489e2a8e389b9c59a9d005e33d7e00b86a8723edd8dcca4c7d50ccc&)
+
+**绚音音**: 
+📎 [33a6b41a-21ae-47d9-8219-d36b5fff2e2c.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900160187727972/33a6b41a-21ae-47d9-8219-d36b5fff2e2c.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=247dc0f4f4cb2eac5f6ede9eec93f884ade3f81f76e95f77620e3a901d398db9&)
+📎 [7f768b4b-7bf0-4c9d-bce6-976b006eff84.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900160623804537/7f768b4b-7bf0-4c9d-bce6-976b006eff84.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=47706474fa327591ba711c8a5f43a491ea782ebbf6345d7eff0fc12ed3760531&)
+📎 [38ad4f40-681d-4f1a-a503-ace54ae0420c.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900160972066956/38ad4f40-681d-4f1a-a503-ace54ae0420c.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=bd80026e9cd159cc821969780ce32291c644ea171f29297f61f1c25222ab5567&)
+📎 [11ac9255-f662-425f-b581-64ba9cd7b57a.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900161282179152/11ac9255-f662-425f-b581-64ba9cd7b57a.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=94906579e8ae51698e23465a84a2994297aa3b5b1a52ae3e2734d0fa181b3561&)
+📎 [296c8fc4-9e26-4563-9554-c584ee366390.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900161550749726/296c8fc4-9e26-4563-9554-c584ee366390.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=beb7f9713b3615fb4d95580d957d1a9921123884f7a145ae5e23971606c3e881&)
+📎 [cabc789e-6b1c-4013-914e-6bc1fb188f96.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900161869647882/cabc789e-6b1c-4013-914e-6bc1fb188f96.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=907790826e851821083d946ebc32f0218d6276a6d1d86b698288ebbdd1ef895f&)
+📎 [6823d618-57c9-4cda-b127-299e31d78548.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900162146205696/6823d618-57c9-4cda-b127-299e31d78548.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=b9df52b9ba1c5e4e0c4a1dbf7575e1e0c2835e7daa0b7d484737446f85ac5e5b&)
+📎 [def5ff65-6e35-43f2-9de1-4992ac20fa0c.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900162439942165/def5ff65-6e35-43f2-9de1-4992ac20fa0c.png.jpg?ex=6a3cab0e&is=6a3b598e&hm=39d723a6289be1f0fe4e4d15e9f705c42c8a8e9c59ed395fbdfdb206d8d9b5af&)
+📎 [5af2e2b6-3757-43b4-b0b9-f62a447213b4.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900162746257448/5af2e2b6-3757-43b4-b0b9-f62a447213b4.png.jpg?ex=6a3cab0f&is=6a3b598f&hm=7c3f25dbb79d4571e55bdad2f616bd4be4474dde4f38e8211f69517cbdb1e5ff&)
+📎 [88acdeb6-5477-4a79-b675-e72d0a6040de.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900163077341244/88acdeb6-5477-4a79-b675-e72d0a6040de.png.jpg?ex=6a3cab0f&is=6a3b598f&hm=c0535b0e04afc94cd25e2afe67860458fc3060a720d5f4f07ab63b13ac3458b4&)
+
+**绚音音**: 
+📎 [a3b3ddda-31f4-46db-b926-a1dea9337cec.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900266173337741/a3b3ddda-31f4-46db-b926-a1dea9337cec.png.jpg?ex=6a3cab27&is=6a3b59a7&hm=4c2cc4b9c674ae15ecd183b73b5da6a0ce7c0b4daab150aa6311927cf24dd5ea&)
+📎 [90a1ba6f-19fb-47d9-9078-2cb07d8dd45c.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900266529849464/90a1ba6f-19fb-47d9-9078-2cb07d8dd45c.png.jpg?ex=6a3cab27&is=6a3b59a7&hm=6191a2d63538da4e98e421d023a55fcd43b28115a16a3fde9b6221b76bf66e8a&)
+📎 [365b4008-859f-4d77-b1c1-4ab9a38c50ce.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900266886631635/365b4008-859f-4d77-b1c1-4ab9a38c50ce.png.jpg?ex=6a3cab27&is=6a3b59a7&hm=166df1298b02582c40ca573571e8a63596ecf616411cd223376a84bd5f804dff&)
+📎 [e3044749-316a-462e-b1e6-e75c96a63d25.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900267452858459/e3044749-316a-462e-b1e6-e75c96a63d25.png.jpg?ex=6a3cab27&is=6a3b59a7&hm=015574b316cf55dcb84565ad2a5de1637aa0fa8a3fc0b01ff546db53b5ea4cd4&)
+📎 [1d43bfbe-8c21-4ae6-b2f7-ae039fd3067a.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900267884613754/1d43bfbe-8c21-4ae6-b2f7-ae039fd3067a.png.jpg?ex=6a3cab28&is=6a3b59a8&hm=6a7933d6f2557052714a7d9f5daa0474aec1d1adf521790e7ef3f7be142c66f0&)
+📎 [a951b316-2d15-4a5c-be17-f8b6f169861e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498900268350177360/a951b316-2d15-4a5c-be17-f8b6f169861e.png.jpg?ex=6a3cab28&is=6a3b59a8&hm=49bc0299de7e2cb27fb48dff272574237a974dc65318fd2923275ccc137b95c3&)
+
+**星烨**: 嘿嘿，图我就先收着啦，虽然已经选好了新卡的背景图！还是很感谢🙏🏻🙏🏻🙏🏻
+
+**绚音音**: 
+📎 [59deafac-7ca5-4321-b2ae-0d4071b813cd.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498970835610898482/59deafac-7ca5-4321-b2ae-0d4071b813cd.png.jpg?ex=6a3cece0&is=6a3b9b60&hm=1726fcea18be972dfe6797934303f9604ba0dc3df81ec10196dc40c681d5916d&)
+📎 [AI_image_1777452152995.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498970835963088956/AI_image_1777452152995.png.jpg?ex=6a3cece0&is=6a3b9b60&hm=6eb01f3c63ea320724a6343b434dcca778770a97a5749232cd7af32b87123b19&)
+📎 [AI_image_1777452232538.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498970836290371584/AI_image_1777452232538.png.jpg?ex=6a3cece0&is=6a3b9b60&hm=5e4e44fcf8fda3e648902b5055bbf9a759558fc420d62574e446a8d1b95d8804&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_247:1488101228389994526>
+
+**楓葉**: https://e-hentai.org/?f_search=Yuuki+Asuna+%22ahegao%22&next=3821873
+📎 [137402869_p9_Asuna_Kirito.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985028716068864/137402869_p9_Asuna_Kirito.png?ex=6a3c5158&is=6a3affd8&hm=fe606e0c0643624a4e8903bc400d67d25b34bf4c10215b9219c512a54588fa67&)
+📎 [139684346_p195.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985029177446410/139684346_p195.png?ex=6a3c5158&is=6a3affd8&hm=fde4bb216e792c8255e169b86ff3fbdc1f2da14924c2578e995d653e8a22ed68&)
+📎 [123r.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985029622038569/123r.png?ex=6a3c5158&is=6a3affd8&hm=881a1ae491e8cf2178fdd1dd8bae854eb6336205bc41cd619b26c038f69a4e03&)
+📎 [asuna3_8.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985030066769920/asuna3_8.png?ex=6a3c5158&is=6a3affd8&hm=8903ff52921475b87b6d1a7e5fdcee485f0c1e9e0fc10ab34ac70729ba41d455&)
+📎 [image_2026_01_02T141611.911.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985030469554197/image_2026_01_02T141611.911.png?ex=6a3c5159&is=6a3affd9&hm=0d7dde1345187781420aa849de9c363784240d5e4460facc478ea504de9c8778&)
+📎 [Asuna_Maid_Cat_eared_Maid_24.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985030897106944/Asuna_Maid_Cat_eared_Maid_24.png?ex=6a3c5159&is=6a3affd9&hm=046a72c3c1195e848b7571b8ce44850d9e27bf8904b890e677fde185abf11a2b&)
+📎 [asuna_138.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985031278923857/asuna_138.png?ex=6a3c5159&is=6a3affd9&hm=ef7fe212fce8a18290b463247e00c4d0a44c0ef1c8afe011642c554f6aca34d3&)
+📎 [1.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985031681708082/1.png?ex=6a3c5159&is=6a3affd9&hm=75394f9f97d208df2395883c81001da0ae569c3bf2df7cdddd644a24f2cd0f42&)
+📎 [80.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985032029569257/80.png?ex=6a3c5159&is=6a3affd9&hm=7fe19d684153c06716853c542007ec5cefc1df7a4af18530defed2642bb136e1&)
+📎 [4.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498985032487010344/4.png?ex=6a3c5159&is=6a3affd9&hm=dcc2eca44c0fb105640bcc8d427b1a49a8bbde64b108c9692a0a0461d9824e76&)
+
+**楓葉**: 亞絲娜色圖可太多了
+
+**AdominHK**: 確實，太熱門了
+
+**绚音音**: 
+📎 [9d71e8e1-d441-4a20-9e6b-e6a20ee0dc9c.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498987698617323540/9d71e8e1-d441-4a20-9e6b-e6a20ee0dc9c.jpg?ex=6a3c53d5&is=6a3b0255&hm=91cab3fc9feefc1fd418fabe8c1382856ae8c0d9531ac914b0695d6ec256b6b8&)
+📎 [45347497-f3b4-444a-8a65-75db3f95d2cd.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498987698965184563/45347497-f3b4-444a-8a65-75db3f95d2cd.jpg?ex=6a3c53d5&is=6a3b0255&hm=7d9ebb8d7d8e8397916601084952e15f235cd56135727eaa4dc44ed307e16962&)
+📎 [c413b3b3-8d37-4eb9-b62b-e00398236b2e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498987699258790068/c413b3b3-8d37-4eb9-b62b-e00398236b2e.png.jpg?ex=6a3c53d5&is=6a3b0255&hm=4738120884d6090569d424484bd30da361af869e921d7c693bac61f4bf8f568d&)
+📎 [21ba356d-c515-4ee4-980c-0d805a075a72.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498987699535876277/21ba356d-c515-4ee4-980c-0d805a075a72.jpg?ex=6a3c53d5&is=6a3b0255&hm=927c26853abd829a800eaf0352038099eb2166f107cc0da005e253d1165a8e9c&)
+📎 [AI_image_1777456096204.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498987699825279066/AI_image_1777456096204.png.jpg?ex=6a3c53d5&is=6a3b0255&hm=7c62f1274fe962086f74642a79456eaf858003cf13fa7214e6051023c6540d0f&)
+📎 [AI_image_1777456099437.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1498987700542246942/AI_image_1777456099437.png.jpg?ex=6a3c53d5&is=6a3b0255&hm=291660a65dcf0167e7ec652177bf561284f2d1c4c004c6dcba4e4be9eccdff87&)
+
+**楓葉**: 
+📎 [Asuna_Yuuki_243.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498988349459791912/Asuna_Yuuki_243.png?ex=6a3c5470&is=6a3b02f0&hm=89d4c08038857ac4f6449e2151103ab6a427e649cc5715e37a786cb7e052bd9b&)
+📎 [70.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498988349883551754/70.png?ex=6a3c5470&is=6a3b02f0&hm=5853809774d696f3edf3c5e8093a4dbdbdfee6b838c0cea8d7f4b22bed8071f0&)
+📎 [184.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498988350575607858/184.png?ex=6a3c5470&is=6a3b02f0&hm=4cc5bcad2adc32de227f9f43f1ec9f3c9d47151bb4a1b2cad09693c1edd550d0&)
+📎 [143.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498988351104221215/143.png?ex=6a3c5470&is=6a3b02f0&hm=d32fffdc2aa6f8ac24bfb761273664ac3c5057aa1c01e723406dfd8ebb50f283&)
+📎 [00127_910669070.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498988351741497446/00127_910669070.png?ex=6a3c5470&is=6a3b02f0&hm=b7422cffe27878230e323e756ddb5acb3438d26f7377c08f7c6cfa1ae49d4846&)
+📎 [264_result_result.png](https://cdn.discordapp.com/attachments/1498607772084998174/1498988352282693682/264_result_result.png?ex=6a3c5471&is=6a3b02f1&hm=cf6703a667e1ac5487a8bf1dc63d9db3e1065ced53f28fef9c91256cfa6657ef&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_148:1379454224353591457>
+
+**6knz**: 这个感觉像rat的画风
+
+**绚音音**: 就是74的喵
+
+**绚音音**: 
+📎 [e52e4e9e-1dab-4079-89fc-75c55e41376b.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007868752625755/e52e4e9e-1dab-4079-89fc-75c55e41376b.png.jpg?ex=6a3c669e&is=6a3b151e&hm=6c98ea903f7a8834d4d1b964f6e8ef2fc775855371f0173a80651f78739a29a2&)
+📎 [6311a38b-40b9-4c2e-b06b-680523ee8aac.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007869025259673/6311a38b-40b9-4c2e-b06b-680523ee8aac.png.jpg?ex=6a3c669e&is=6a3b151e&hm=471c6d3d3a09f0d6632d9764d8c48caf6d25442ecb317f5399d6a498be46fb33&)
+📎 [d1335a59-209e-41ca-9b30-6616eabfc4ff.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007869444685937/d1335a59-209e-41ca-9b30-6616eabfc4ff.png.jpg?ex=6a3c669e&is=6a3b151e&hm=e93626a107b72ec670aaacb6c3fe2a830eec2d31ab8d90174e8a0471021a18e0&)
+📎 [dcf2da19-1c19-4fea-b7bb-662c96af9c56.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007870279094412/dcf2da19-1c19-4fea-b7bb-662c96af9c56.png.jpg?ex=6a3c669e&is=6a3b151e&hm=96c9da2010040b8b587959cc5fac2a98e282db6ce49eb37f0c66a81c8ecad7e8&)
+📎 [3b55391a-7ab6-47c9-8c9f-cbb4d6b67d8d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007870757241023/3b55391a-7ab6-47c9-8c9f-cbb4d6b67d8d.png.jpg?ex=6a3c669e&is=6a3b151e&hm=a891934075e94367ad46fa567d97422ba3e4f1025fd076ce755accdcdad0be59&)
+📎 [e441bfa8-33de-43a2-b4c8-fc133650c723.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007871055040512/e441bfa8-33de-43a2-b4c8-fc133650c723.png.jpg?ex=6a3c669e&is=6a3b151e&hm=8700d0941f811e66ee26d61c49dbcf575921f91a310276c516fc2f279f0c5e13&)
+📎 [c3db297b-6f6d-4db9-9eb1-5a486daa97b2.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007871424135248/c3db297b-6f6d-4db9-9eb1-5a486daa97b2.png.jpg?ex=6a3c669e&is=6a3b151e&hm=18c5404b2503ede629edd00cb8b3bc29c00cc31e1b1e64f6b0ca2c43bb2e5bd2&)
+📎 [bed32669-24cd-46b1-8a06-f0894ce696a8.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007871843696680/bed32669-24cd-46b1-8a06-f0894ce696a8.png.jpg?ex=6a3c669e&is=6a3b151e&hm=b7b0927a1dcb804c06f317366931c31213b7a63587cd45098f31d00f4804ebfb&)
+📎 [a24bcd0c-b480-49e6-845f-a2de8ce9b75d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007872154079362/a24bcd0c-b480-49e6-845f-a2de8ce9b75d.png.jpg?ex=6a3c669e&is=6a3b151e&hm=38a57223a70e44b25bc8d7d36c356f6a7bc4b18b6116c02433134344e43bbd9b&)
+📎 [eefbc603-0404-4a60-91cc-ece834a711a4.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007878705446912/eefbc603-0404-4a60-91cc-ece834a711a4.png.jpg?ex=6a3c66a0&is=6a3b1520&hm=f50ebcb4cbf90377063a178415f84a2d6f4ed197013323325b9f9d329946ddd8&)
+
+**绚音音**: 
+📎 [0bbca440-e2f2-4e3b-a9b0-29b678e49a4d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007885537972294/0bbca440-e2f2-4e3b-a9b0-29b678e49a4d.png.jpg?ex=6a3c66a2&is=6a3b1522&hm=6aa46cbdf95cac7f5f5b58d19d7159d0eb6ca160f2397bd84ed9a044c7e7ab25&)
+📎 [930d4ffb-89ec-4b85-a53d-8ea5f10ece9a.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007886356119614/930d4ffb-89ec-4b85-a53d-8ea5f10ece9a.png.jpg?ex=6a3c66a2&is=6a3b1522&hm=b8d8d356c185ad9ccc427006412455cfb0dc69a4980bdde01b0ff3d814c6e3d3&)
+📎 [ee1c0ae4-b48e-4115-bb08-7e3097a0aafe.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007887228403825/ee1c0ae4-b48e-4115-bb08-7e3097a0aafe.png.jpg?ex=6a3c66a2&is=6a3b1522&hm=020aaaa0c1a4b94f8cf8cc118bf26d9445dd1762ac678ed8b46fd9dd92678dda&)
+📎 [9a39ffe9-c1f8-4192-97c2-88cdff53adcd.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499007888281305139/9a39ffe9-c1f8-4192-97c2-88cdff53adcd.png.jpg?ex=6a3c66a2&is=6a3b1522&hm=1aa217e5a3c36637d8579c540870ac9272552fe5bdee7a6915fcc755df1c53b5&)
+
+**6knz**: 好看多来
+
+**6knz**: <:07:1298281204260278383>
+
+**绚音音**: 
+📎 [690fc2a3-b467-4049-8df2-fe0e6a01c661.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199733065973840/690fc2a3-b467-4049-8df2-fe0e6a01c661.png.jpg?ex=6a3c708e&is=6a3b1f0e&hm=5e423c4e33f34347dc8a8070bf33decc23692fcec68d91d3b253ea9428f1e89e&)
+📎 [d3485966-a2ca-4603-ad19-5c046188d047.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199733720416449/d3485966-a2ca-4603-ad19-5c046188d047.png.jpg?ex=6a3c708e&is=6a3b1f0e&hm=d67369be10e9ae9c334f66508378e09f5efe9d37e9766937b4f9a787e98553dc&)
+📎 [634f6a5f-a626-441c-aee4-38a7ba41a2e2.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199734320070767/634f6a5f-a626-441c-aee4-38a7ba41a2e2.png.jpg?ex=6a3c708e&is=6a3b1f0e&hm=51bdaa63bcb94817d839046e650acaa8635a59d14deb9912c8e37af78461bdc5&)
+📎 [6af8045e-50ce-4e62-a933-cb293c510c6b.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199735226040320/6af8045e-50ce-4e62-a933-cb293c510c6b.png.jpg?ex=6a3c708e&is=6a3b1f0e&hm=b6e0a58fe96ec5a53452ef0e9a09e4b3f80bdea7442aa181c81003bbce81ad84&)
+📎 [386d4fcb-92cb-4f58-b271-4d264bc75a33.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199735754395709/386d4fcb-92cb-4f58-b271-4d264bc75a33.png.jpg?ex=6a3c708e&is=6a3b1f0e&hm=ffa0dda26fc11082764a94102de8916806ea64d4809a85846feb0a0bac667db4&)
+📎 [73d2205e-7f30-4dc9-87ab-9c3afb03b01f.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199736161370295/73d2205e-7f30-4dc9-87ab-9c3afb03b01f.png.jpg?ex=6a3c708e&is=6a3b1f0e&hm=0799681319483a34c626f9e1f3b8a12fdb8a18ba6d5638397d4d6d5d6eb007b7&)
+📎 [0de58c94-e6c6-4c25-9276-f46d2748796a.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199736706502788/0de58c94-e6c6-4c25-9276-f46d2748796a.png.jpg?ex=6a3c708f&is=6a3b1f0f&hm=2a6fa7963e190c92659227b19af7e422649cc6751819ed5af8686700d51bcc90&)
+📎 [3a60f520-e389-4971-b1b5-9e2d15d9b326.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199737071538356/3a60f520-e389-4971-b1b5-9e2d15d9b326.png.jpg?ex=6a3c708f&is=6a3b1f0f&hm=c7e3c0588efc3f3eea7afd1ae2b681d9e44d12196871309345b8ebf495d5e90e&)
+📎 [e85368b6-d7ab-46ae-bcaa-a946fa20505d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199737465929868/e85368b6-d7ab-46ae-bcaa-a946fa20505d.png.jpg?ex=6a3c708f&is=6a3b1f0f&hm=0e7982747774ad89ca578a6580465ed60af022c72986db2d58d90b8d8d638ad1&)
+📎 [298d5ed4-0b01-4064-9b1c-6c81410a6547.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199737952342208/298d5ed4-0b01-4064-9b1c-6c81410a6547.png.jpg?ex=6a3c708f&is=6a3b1f0f&hm=1e9d7c9280b6aad076d016df87347e1b5404a783bde06f9dbac7cd6088be9841&)
+
+**绚音音**: 
+📎 [dcdf859f-a0b5-4072-8e33-ef567d86bbab.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199743996330115/dcdf859f-a0b5-4072-8e33-ef567d86bbab.png.jpg?ex=6a3c7090&is=6a3b1f10&hm=a7f686109f5659abc0d635e24747ef0bd4b52bdb99e061740f65a74168beec78&)
+📎 [059ab12a-ecf4-4f6e-aab9-be8760aa9a45.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199744311033986/059ab12a-ecf4-4f6e-aab9-be8760aa9a45.png.jpg?ex=6a3c7090&is=6a3b1f10&hm=ee8c39665d3e7f0449b5cffd956e0c1640c9573ffda5b079ab3a4c0c04ea2a84&)
+📎 [b280f9be-61e4-4b26-ae76-3400bd138209.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199744659030136/b280f9be-61e4-4b26-ae76-3400bd138209.png.jpg?ex=6a3c7090&is=6a3b1f10&hm=6e360f141e0df9ed6d190a291b2afaf4055f5c2d8992d257d23ee1969996327c&)
+📎 [79822611-d23d-4d19-b425-23134e6e93ab.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499199744998899822/79822611-d23d-4d19-b425-23134e6e93ab.png.jpg?ex=6a3c7090&is=6a3b1f10&hm=f22f4eba319b6bf15d8f254f7b619e3797e7c83f3cc9a21f2e25f2abf7d1daac&)
+
+**绚音音**: 
+📎 [92e7a770-bcfc-4c69-a146-0e70f7e68b0e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214022988398662/92e7a770-bcfc-4c69-a146-0e70f7e68b0e.png.jpg?ex=6a3c7ddd&is=6a3b2c5d&hm=544dab73141f8e909352d9a873b519619dbf738c1ab5d9f3ff3a87e7e7a8f728&)
+📎 [38b06b2e-f0db-46cb-b13c-8f2e7f92d4a9.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214023520944248/38b06b2e-f0db-46cb-b13c-8f2e7f92d4a9.png.jpg?ex=6a3c7ddd&is=6a3b2c5d&hm=a9b8dd0e7d81a710da7d927d569a9cd51fe2ea072c5ad3e83dae54677d9a7197&)
+📎 [3c2d4626-f3cf-4361-8e35-a132dc084dfe.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214023952961545/3c2d4626-f3cf-4361-8e35-a132dc084dfe.png.jpg?ex=6a3c7ddd&is=6a3b2c5d&hm=fe5e42dfe5d8ce72717d620173de16d59048e21d63b05a541ed87f4287cb7abd&)
+📎 [23348f21-1f15-4be6-85f0-2495d12178cd.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214024246693888/23348f21-1f15-4be6-85f0-2495d12178cd.png.jpg?ex=6a3c7ddd&is=6a3b2c5d&hm=3182a2a3afd05c512dc32438b9146bfa665e182fd538f98c25b15e6dd43eda3c&)
+
+**绚音音**: 
+📎 [4c72e3e8-697c-4c07-9b52-03754ff0f0cc.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214100243288114/4c72e3e8-697c-4c07-9b52-03754ff0f0cc.png.jpg?ex=6a3c7def&is=6a3b2c6f&hm=ee4776b9f36687eeebcbd081a3efceb421b338a4607fdcbdb7b8f774304430a9&)
+📎 [9b81f83c-de04-458a-9342-2fd1c203219d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214100540952736/9b81f83c-de04-458a-9342-2fd1c203219d.png.jpg?ex=6a3c7def&is=6a3b2c6f&hm=9c627cc31c80c0420f8597d92333b1a675dd777d1a037f7fc87a5856539b9aa3&)
+📎 [99d9a631-3e7f-4135-a9e2-7bc0bf7a588a.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214100822102108/99d9a631-3e7f-4135-a9e2-7bc0bf7a588a.png.jpg?ex=6a3c7def&is=6a3b2c6f&hm=845b702bb7df5923ad6ca82b390691482eb56d011d0ea8a57695493bc435a05b&)
+📎 [c7efb047-4bb6-4594-88f8-a6ddfda608e2.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214101199454299/c7efb047-4bb6-4594-88f8-a6ddfda608e2.png.jpg?ex=6a3c7def&is=6a3b2c6f&hm=49bea19ce6a440d61549b0577fc14536f31d382a3182447e2d9699598c301f46&)
+📎 [510c433d-f140-4b27-af0a-07c166ac45fa.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214101497511956/510c433d-f140-4b27-af0a-07c166ac45fa.png.jpg?ex=6a3c7def&is=6a3b2c6f&hm=00bfb1d27be8422c01755555810934101ee41b4ab83697382957c3e4b325b140&)
+📎 [fc3a6bee-c9cf-43d4-89e7-a897cd0877a1.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214101979861002/fc3a6bee-c9cf-43d4-89e7-a897cd0877a1.png.jpg?ex=6a3c7def&is=6a3b2c6f&hm=9be69223530e377005a9f03c77872c7ffff06f688b6ec54546a33a1653c384fc&)
+📎 [c65c714e-78ee-44b4-b731-9061d8a3abf4.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214102348693535/c65c714e-78ee-44b4-b731-9061d8a3abf4.png.jpg?ex=6a3c7df0&is=6a3b2c70&hm=a92532630cdd15686cb6c878d2fccea56e103262b3a5c04ed9cd255a834a22ba&)
+📎 [18533122-cbb1-431f-b02e-f3e45f3bdc34.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214102680305765/18533122-cbb1-431f-b02e-f3e45f3bdc34.png.jpg?ex=6a3c7df0&is=6a3b2c70&hm=bd32987bf1e68eabb7c0c8a970b18e441d3e4f3b9879c21d5f6cddd7dd003c64&)
+📎 [182cb153-c4bf-4dd8-ac12-521275b70c55.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214102998945812/182cb153-c4bf-4dd8-ac12-521275b70c55.png.jpg?ex=6a3c7df0&is=6a3b2c70&hm=9b0e8cd9fe45ac8ee520a749e66e9bf91af6a9dc13847d886f37ae81455679ae&)
+📎 [0e63ddd9-912c-4f33-81a8-b12a8f44903d.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214103401726083/0e63ddd9-912c-4f33-81a8-b12a8f44903d.png.jpg?ex=6a3c7df0&is=6a3b2c70&hm=f197ea07508bcc6f345cb9bd6c987bc8cb534c11e7a6900132b31158ec6bf520&)
+
+**绚音音**: 
+📎 [4f6c3bae-29f6-4fe7-9384-2f30a29daef4.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214139204046928/4f6c3bae-29f6-4fe7-9384-2f30a29daef4.png.jpg?ex=6a3c7df8&is=6a3b2c78&hm=f7e2be686f28cf5e9e52220d4cfc0f22c2ca2a6f1b02b3a280479b996eda5f08&)
+📎 [32b58372-0f41-41c8-ab44-6077337590e6.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214139606831155/32b58372-0f41-41c8-ab44-6077337590e6.png.jpg?ex=6a3c7df8&is=6a3b2c78&hm=4d3d9ff4044a204f1809ce82ffc84be15bd84e38a8b987edb41ded7c760059ba&)
+📎 [9fc113ef-11d2-4d5d-8790-e746c0d4f3ed.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214140105818162/9fc113ef-11d2-4d5d-8790-e746c0d4f3ed.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=264bbdd95ee5304ce1148a793e0d22c947b4d18ffe06706489885f6babbee83e&)
+📎 [349cd344-772b-4866-8a30-4c9393b78a6e.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214140722647090/349cd344-772b-4866-8a30-4c9393b78a6e.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=88edb0d8d43580822b11685cb4016ec6235970f31ecc23c78d0994cc17e4dd00&)
+📎 [32920d10-43b7-477a-94ff-4c5b1377d64f.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214141448257536/32920d10-43b7-477a-94ff-4c5b1377d64f.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=7526895263cd5961b4a598633224624ab7b0b3e0ce50b8e20936fe72fd9fefd5&)
+📎 [1eb51eca-0050-4647-86b1-4524f187bd12.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214142240985088/1eb51eca-0050-4647-86b1-4524f187bd12.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=a02340ab7d7008066fad8dc1cdbcc8580cdd42ffe8f4b19ae8dd20c854685f19&)
+📎 [2ede7980-b485-444b-b70f-73da64fca098.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214142660411504/2ede7980-b485-444b-b70f-73da64fca098.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=5a998cdac011c9fa7701f2d51048ea5b8c534b607e2660add467b319e49a0602&)
+📎 [c7bd1347-5e1f-4bda-bdf3-67fec2e53732.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214143268458506/c7bd1347-5e1f-4bda-bdf3-67fec2e53732.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=9064d517fe81a8adc0cbe35928d01281d13152867b0b3ee69302e451843c8d1d&)
+📎 [2d231a4f-7a71-4376-9029-20a5eaf212c7.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499214143759319080/2d231a4f-7a71-4376-9029-20a5eaf212c7.png.jpg?ex=6a3c7df9&is=6a3b2c79&hm=6bf22c35c95188cc85b5ddf46a9c2ae51e99a92976f6a8cbbe9542677aa23ae3&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 最后两张很好看<:emoji_245:1425490499795423332>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 第三张已严肃保存<:emoji_81:1378945805263831070>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 无声铃鹿很涩，船船涩不起来<:1000168531:1298906724979310634>
+
+**6knz**: <:emoji_140:1379454014852436038>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 倒数第二张明明穿的最多，我却反而更喜欢这个呢
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 宝强早上好呀<:heart:1438351332531765289>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 居然在逛窑子的时候遇见，好巧
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_245:1425490499795423332>
+
+**6knz**: 早上好
+
+**6knz**: 你甚至打错我的名字了
+
+**6knz**: <:emoji_246:1425754703223980032>
+
+**ehst**: 抱歉早上好
+
+**ehst**: <:emoji_242:1459832161719943198>
+
+**6knz**: <:emoji_142:1379854822315921438>
+
+**6knz**: 臭落落
+
+**6knz**: 草饲你
+
+**ehst**: 老啊早上好
+
+**ehst**: <:emoji_242:1459832161719943198>
+
+**ehst**: <:daroubangqingnichi:1411320597241139260>
+
+**6knz**: <:daroubangqingnichi:1411320597241139260> <:daroubangqingnichi:1411320597241139260> <:daroubangqingnichi:1411320597241139260>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_244:1456228348606025888>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 六点多才睡，刚刚是被附近学校的早操音乐吵醒的，脑子还有点混乱
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_144:1379454084750245939>
+
+**绚音音**: 怎么咱这成窑子了喵<:emoji_142:1379854822315921438>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 这是夸奖啦
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_252:1486325346256027708>
+
+**绚音音**: 窑子挺好的喵
+
+**绚音音**: <:emoji_246:1488100783848161372>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_247:1488101228389994526>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: https://tenor.com/view/lmtqy-%E8%A6%AA%E8%A6%AA-gif-25444656
+
+**绚音音**: ai涩图喵——赛博青楼
+
+**绚音音**: <:emoji_168:1409564639255068755>
+
+**绚音音**: 以后就在这里发发好了喵
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_83:1378946142330683422>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 音帝大人万岁≧▽≦
+
+**绚音音**: <:emoji_142:1379854822315921438>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_252:1486379020487626943>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_140:1379454014852436038>
+
+**绚音音**: 咱到处找画师串来跑喵
+
+**绚音音**: 也不怪别人不喜欢看，咱自己看着都没啥感觉喵<:emoji_246:1488100783848161372>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 别灰心啦，10张里面还是能出一两张精品的
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_168:1409564639255068755>
+
+**绚音音**: 没事不跑了喵，一天跑个一两张好了喵<:emoji_246:1488100783848161372>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 那我命令你，跑出来的一两张要是像今天那样，10张里面最好看的一两张<:emoji_252:1486325346256027708>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 不然就摸你的屁屁
+
+**绚音音**: 提示词都是一样的，全靠AI自己发挥了喵
+
+**绚音音**: <:emoji_149:1382626041352159263>
+
+**绚音音**: 咱想跑一跑贝利亚喵
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 可以的哦，不用在意别人的耳光，自己的兴趣和喜好才是最重要的<:emoji_242:1435092848029728878>
+
+**绚音音**: <:emoji_149:1400299483212021833>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_174:1409564796625485884>
+
+**绚音音**: 
+📎 [IMG_20260430_203547.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499389510356566137/IMG_20260430_203547.jpg?ex=6a3c788c&is=6a3b270c&hm=50e9eaef068cca2b088a6f853fbfc8fb18b0c10aa2b8df09b36ca0ccbc88c5e0&)
+📎 [IMG_20260430_203559.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499389510738382889/IMG_20260430_203559.jpg?ex=6a3c788c&is=6a3b270c&hm=f6e7c2729edd2dee24c0e09b9bf805911bf27874c1fed176fb50da5a709ee6f8&)
+📎 [IMG_20260430_203611.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1499389511287705630/IMG_20260430_203611.jpg?ex=6a3c788c&is=6a3b270c&hm=d99fb8cee1b5e8905c4fbdfa7d4a59952fa1197ad9f83f269475ba50dbd86951&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_83:1378946142330683422>
+
+**绚音音**: 
+📎 [IMG_20260503_025801.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212244678578267/IMG_20260503_025801.jpg?ex=6a3cd3c7&is=6a3b8247&hm=768b82ec250bda0425368efc3d78dba093a8762c30be795f2b4db2a2dacd11dc&)
+📎 [c92a04f6-8fc1-4038-833a-9364b45e4549.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212245043613877/c92a04f6-8fc1-4038-833a-9364b45e4549.png.jpg?ex=6a3cd3c7&is=6a3b8247&hm=e1cbd7bcb210d7a77acb1edb6fbc27e8659915265d2e60d1c91969dbd314bea8&)
+📎 [IMG_20260503_030027.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212245441810543/IMG_20260503_030027.jpg?ex=6a3cd3c7&is=6a3b8247&hm=c0864c9128e7a5740ba6f238f7b5d32f1c83a555a5a36192ff778de8454cbb36&)
+📎 [d1d0515d-4b44-487e-aed1-442ceb73a140.png_1.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212245806846142/d1d0515d-4b44-487e-aed1-442ceb73a140.png_1.jpg?ex=6a3cd3c7&is=6a3b8247&hm=0aeba17da0b46cd8024d5caf376b1e1e254f1e3723594a23f276162a3d0dac14&)
+📎 [53411ce2-f52d-43e7-9251-0424e0a68969.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212246805086280/53411ce2-f52d-43e7-9251-0424e0a68969.png.jpg?ex=6a3cd3c8&is=6a3b8248&hm=fa57f2c72a9d4ceee654ab97b5cd3c0fcf06e3432fe039203fd46c9b3077fbde&)
+📎 [0eb4da7c-7288-4de3-99fb-689e0fe687b4.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212247245357207/0eb4da7c-7288-4de3-99fb-689e0fe687b4.png.jpg?ex=6a3cd3c8&is=6a3b8248&hm=db70aa91a7d0de4bf9ef7428712a2a12497f17a11de6f5536aba030858bd6e19&)
+📎 [10d64eb4-331e-4785-af73-c26f507550ff.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212247526510682/10d64eb4-331e-4785-af73-c26f507550ff.png.jpg?ex=6a3cd3c8&is=6a3b8248&hm=78c99ae1ed2f39a0facd768a28e155599099bc21749a2dd162672a1cc4ba15ec&)
+📎 [869c6800-9372-4b5b-b95f-adceee45b218.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212247941611787/869c6800-9372-4b5b-b95f-adceee45b218.png.jpg?ex=6a3cd3c8&is=6a3b8248&hm=3ece4232cf7409561279682a908de55281829f24b4036e084c8c508ad438b9fe&)
+📎 [7326db65-8e1f-4911-8075-ce7caed3f9fd.png.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212248302456992/7326db65-8e1f-4911-8075-ce7caed3f9fd.png.jpg?ex=6a3cd3c8&is=6a3b8248&hm=2b2ec36a1629170fb0498b2c26c23bccdbd8b5cd3c008bd2306bee64334ff070&)
+📎 [IMG_20260503_030431.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212248671686827/IMG_20260503_030431.jpg?ex=6a3cd3c8&is=6a3b8248&hm=516faee4ac1b90d2ff21fc17f937b112fbc1cf04db17095830351358efa51787&)
+
+**绚音音**: 
+📎 [IMG_20260503_030453.jpg](https://cdn.discordapp.com/attachments/1498607772084998174/1500212252756938813/IMG_20260503_030453.jpg?ex=6a3cd3c9&is=6a3b8249&hm=74b000d64f536204fc081810770f1adf43299f1a952e6ac24e6222e27e09b5bd&)
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:emoji_247:1488101228389994526>
+
+**千痕**: <:emoji_139:1379455053080825866>
+
+**怀炎（模拟器进度99%）**: 还有没有色图了
+
+**怀炎（模拟器进度99%）**: <:emoji_249:1416980114511761448>
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: 这里也已经倒闭了
+
+**小啊大人真聪明⌯ᵔᗜᵔ⌯ಣ**: <:image:1496914410747199608>
+
+**怀炎（模拟器进度99%）**: no~~~~~~
+
+**抱玖酒**: 还有大佬在吗？这里，想求助大佬跑色图
+
+**抱玖酒**: <:emoji_249:1416980114511761448>
+

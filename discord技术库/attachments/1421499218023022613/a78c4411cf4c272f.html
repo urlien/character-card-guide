@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标题-内容按钮生成器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .control-panel {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        button {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: #5b4bd4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 92, 231, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+        }
+        
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        
+        .regex-btn {
+            background: #3498db;
+        }
+        
+        .regex-btn:hover {
+            background: #2980b9;
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            background: #EDF;
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: #234;
+            cursor: pointer;
+            transition: .2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 34, 0.1);
+            min-width: 120px;
+            position: relative;
+            text-align: center;
+            flex: 1 0 calc(25% - 12px);
+            max-width: calc(25% - 12px);
+            border: none;
+            font-size: 15px;
+        }
+        
+        .btn:hover {
+            background: #DDF;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 68, 0.15);
+            z-index: 2;
+        }
+        
+        .btn:active {
+            transform: none;
+        }
+        
+        @media (max-width: 768px) {
+            .btn {
+                flex: 1 0 calc(50% - 12px);
+                max-width: calc(50% - 12px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .btn {
+                flex: 1 0 100%;
+                max-width: 100%;
+            }
+            
+            .control-panel {
+                flex-direction: column;
+            }
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #6c5ce7;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .regex-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .regex-section h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .regex-code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+            overflow-x: auto;
+        }
+        
+        .button-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .button-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>标题-内容按钮生成器</h1>
+    <p class="subtitle">每行最多显示四个按钮，点击标题将隐藏内容添加到文本框</p>
+    
+    <div class="container">
+        <div class="control-panel">
+            <div class="input-group">
+                <label for="button-title">按钮标题:</label>
+                <input type="text" id="button-title" placeholder="输入按钮显示的标题">
+            </div>
+            <div class="input-group">
+                <label for="button-content">按钮内容:</label>
+                <input type="text" id="button-content" placeholder="输入点击后添加的内容">
+            </div>
+            <button id="add-button">添加按钮</button>
+            <button id="delete-button" class="delete-btn">删除最后一个</button>
+            <button id="copy-regex" class="regex-btn">复制正则表达式</button>
+        </div>
+        
+        <label for="output">文本框内容:</label>
+        <textarea id="output" placeholder="点击按钮标题将隐藏内容添加到这里"></textarea>
+        
+        <div class="buttons-container" id="buttons-container">
+            <!-- 按钮将在这里动态生成 -->
+        </div>
+        
+        <div class="regex-section">
+            <h3>正则表达式</h3>
+            <div class="regex-code" id="regex-pattern">
+                <!-- 正则表达式预览将在这里显示 -->
+            </div>
+            <div class="regex-code" id="regex-replacement">
+                <!-- 替换代码预览将在这里显示 -->
+            </div>
+            <div class="regex-code" id="regex-example">
+                <!-- 被替换式示例预览将在这里显示 -->
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>使用说明:</h3>
+            <ul>
+                <li>在输入框中输入按钮标题和隐藏内容，然后点击"添加按钮"创建新按钮</li>
+                <li>按钮显示的是标题，点击后会将隐藏内容添加到文本框</li>
+                <li>点击"删除最后一个"按钮可以删除最近添加的按钮</li>
+                <li>点击"复制正则表达式"可以复制正则表达式、替换代码和被替换式示例</li>
+                <li>按钮会自动排列，每行最多显示四个</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">正则表达式已复制到剪贴板！</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttonsContainer = document.getElementById('buttons-container');
+            const outputTextarea = document.getElementById('output');
+            const addButtonBtn = document.getElementById('add-button');
+            const deleteButtonBtn = document.getElementById('delete-button');
+            const copyRegexBtn = document.getElementById('copy-regex');
+            const buttonTitleInput = document.getElementById('button-title');
+            const buttonContentInput = document.getElementById('button-content');
+            const notification = document.getElementById('notification');
+            const regexPattern = document.getElementById('regex-pattern');
+            const regexReplacement = document.getElementById('regex-replacement');
+            const regexExample = document.getElementById('regex-example');
+            
+            // 初始按钮数据
+            const initialButtons = [
+                { title: "确认", content: "已确认" },
+                { title: "取消", content: "已取消" },
+                { title: "保存", content: "已保存" },
+                { title: "删除", content: "已删除" },
+                { title: "编辑", content: "进入编辑模式" },
+                { title: "预览", content: "进入预览模式" }
+            ];
+            
+            // 存储所有按钮
+            let buttons = [];
+            
+            // 初始化按钮
+            initialButtons.forEach(btn => {
+                buttons.push(btn);
+                createButton(btn.title, btn.content);
+            });
+            
+            // 更新正则表达式预览
+            updateRegexPreview();
+            
+            // 添加按钮事件
+            addButtonBtn.addEventListener('click', function() {
+                const title = buttonTitleInput.value.trim();
+                const content = buttonContentInput.value.trim();
+                
+                if (title && content) {
+                    buttons.push({ title, content });
+                    createButton(title, content);
+                    buttonTitleInput.value = '';
+                    buttonContentInput.value = '';
+                    buttonTitleInput.focus();
+                    updateRegexPreview();
+                } else {
+                    alert('请输入按钮标题和内容');
+                }
+            });
+            
+            // 删除按钮事件
+            deleteButtonBtn.addEventListener('click', function() {
+                if (buttons.length > 0) {
+                    buttons.pop();
+                    buttonsContainer.removeChild(buttonsContainer.lastChild);
+                    updateRegexPreview();
+                } else {
+                    alert('没有更多按钮可以删除');
+                }
+            });
+            
+            // 复制正则表达式事件
+            copyRegexBtn.addEventListener('click', function() {
+                copyRegexCode();
+            });
+            
+            // 创建按钮函数
+            function createButton(title, content) {
+                const button = document.createElement('button');
+                button.className = 'btn';
+                
+                // 创建标题和内容的HTML结构
+                button.innerHTML = `
+                    <div class="button-title">${title}</div>
+                    <div class="button-content">${content}</div>
+                `;
+                
+                // 点击事件
+                button.addEventListener('click', function() {
+                    const contentElement = this.querySelector('.button-content');
+                    const contentText = contentElement.textContent;
+                    
+                    // 添加文本而不是替换
+                    if (outputTextarea.value) {
+                        outputTextarea.value += ' ' + contentText;
+                    } else {
+                        outputTextarea.value = contentText;
+                    }
+                    
+                    // 触发输入事件，以便其他监听器可以捕获
+                    outputTextarea.dispatchEvent(new Event('input'));
+                    
+                    // 添加视觉反馈
+                    button.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        button.style.transform = '';
+                    }, 150);
+                });
+                
+                // 阻止移动端长按冒泡事件
+                button.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+                button.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                });
+                button.addEventListener('touchend', function(e) {
+                    e.stopPropagation();
+                });
+                
+                buttonsContainer.appendChild(button);
+            }
+            
+            // 更新正则表达式预览
+            function updateRegexPreview() {
+                const { pattern, replacement, example } = generateRegexCode();
+                regexPattern.textContent = `正则表达式: ${pattern}`;
+                regexReplacement.textContent = `替换代码: ${replacement}`;
+                regexExample.textContent = `被替换式示例: ${example}`;
+            }
+            
+            // 生成正则表达式代码函数
+            function generateRegexCode() {
+                // 生成正则表达式模式
+                let patternGroups = '';
+                for (let i = 0; i < buttons.length * 2; i++) {
+                    patternGroups += `(.*?)`;
+                    if (i < buttons.length * 2 - 1) {
+                        patternGroups += '\\|';
+                    }
+                }
+                
+                const pattern = `/\\[XXX\\|${patternGroups}\\]/s`;
+                
+                // 生成替换代码
+                const compressedCSS = `<style>.e{display:flex;flex-wrap:wrap;justify-content:center;margin-top:40px}.f{background:#EDF;padding:8px 12px;border-radius:8px;color:#234;cursor:pointer;transition:.2s;box-shadow:0 1px 2px #002;min-width:120px;position:relative;text-align:center;margin:1.5px 0;z-index:1}.f:hover{background:#DDF;transform:translateY(-2px);box-shadow:0 3px 6px #004;z-index:2}.f:active{transform:none}.button-title{font-weight:bold;font-size:16px}.button-content{display:none}</style>`;
+                
+                let replacementHTML = '<div class="e" onclick="(f=event.target.closest(\'.f\'))&&(event.stopPropagation(),(a=document.querySelector(\'textarea\')).value+=\' \'+f.querySelector(\'.button-content\').textContent,a.dispatchEvent(new Event(\'input\')))" ontouchstart="event.stopPropagation()" ontouchmove="event.stopPropagation()" ontouchend="event.stopPropagation()">';
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    replacementHTML += `<div class="f"><div class="button-title">$${i*2+1}</div><div class="button-content">$${i*2+2}</div></div>`;
+                }
+                
+                replacementHTML += '</div>';
+                
+                const replacement = compressedCSS + replacementHTML;
+                
+                // 生成被替换式示例
+                let example = '[XXX';
+                buttons.forEach(btn => {
+                    example += `|${btn.title}|${btn.content}`;
+                });
+                example += ']';
+                
+                return {
+                    pattern: pattern,
+                    replacement: replacement,
+                    example: example
+                };
+            }
+            
+            // 复制正则表达式函数
+            function copyRegexCode() {
+                const { pattern, replacement, example } = generateRegexCode();
+                const code = `被替换式示例：${example}\n正则表达式：${pattern}\n替换代码：${replacement}`;
+                
+                // 复制到剪贴板
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).then(function() {
+                        showNotification();
+                    }).catch(function(err) {
+                        console.error('复制失败: ', err);
+                        fallbackCopy(code);
+                    });
+                } else {
+                    fallbackCopy(code);
+                }
+            }
+            
+            // 兼容旧浏览器的复制方法
+            function fallbackCopy(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showNotification();
+                } catch (err) {
+                    console.error('复制失败: ', err);
+                    alert('复制失败，请手动选择代码并复制');
+                }
+                document.body.removeChild(textarea);
+            }
+            
+            // 显示通知
+            function showNotification() {
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            }
+            
+            // 允许按Enter键添加按钮
+            buttonTitleInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addButtonBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

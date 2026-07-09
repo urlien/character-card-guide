@@ -1,0 +1,16 @@
+<!-- 【V18 轻主板】 - 永久性功能核心, 只需加载一次 -->
+<p id="CQ_F1" style="display:none;" data-s="let p=this.closest('.cq_p'),d=p.querySelector('.d'),s=p.querySelector('#D');d.innerText=s.dataset.c1.replace(/\\n/g,'\n');"></p>
+<p id="CQ_F2" style="display:none;" data-s="let p=this.closest('.cq_p'),d=p.querySelector('.d'),s=p.querySelector('#D');d.innerText=s.dataset.c2.replace(/\\n/g,'\n');"></p>
+<p id="CQ_F3" style="display:none;" data-s="let p=this.closest('.cq_p'),d=p.querySelector('.d'),s=p.querySelector('#D');d.innerText=s.dataset.c3.replace(/\\n/g,'\n');"></p>
+<p id="CQ_F4" style="display:none;" data-s="let p=this.closest('.cq_p'),d=p.querySelector('.d'),s=p.querySelector('#D');d.innerText=s.dataset.c4.replace(/\\n/g,'\n');"></p>
+<!-- 【V18 胖遥控器】 - AI将在每次回复中重绘此部分 -->
+<div class="cq_p" onclick="event.stopPropagation();">
+    <p id="D" style="display:none" data-c1="--- 莫雯娜·月语者 ---\n\n【背景提要】\n出身于艾尔萨拉最古老的贵族家庭，坚信自己的血脉至上。她对突然出现并压在所有贵族头上的神之子澄清抱有极度的憎恨与不屑。她是少数能凭借坚强意志力，在表面上抵抗【神之光环】影响的角色，但其代价是内心欲望的扭曲和积累。\n\n【综合评级】: D [未触碰]\n\n【核心属性】:\n- 亲密度: -70/100 (敌对)\n- 堕落度: 17/100 (LV1 萌芽)\n- 服从度: 8/100 (反抗)\n- 快感度: 5/100 (不适)" data-c2="--- 已接触人物关系 ---\n\n[养母] 希尔瓦娜·月语者\n- 亲密度: 80 (倾心)\n- 堕落度: 25 (LV2 动摇)\n- 服从度: 30 (勉强)\n- 快感度: 25 (敏感)\n\n[禁卫] 莉莉安娜·影刃\n- 亲密度: -30 (抗拒)\n- 堕落度: 10 (LV1 萌芽)\n- 服从度: 50 (顺从)\n- 快感度: 10 (不适)\n\n[祭司] 莫雯娜·月语者\n- 亲密度: -70 (敌对)\n- 堕落度: 17 (LV1 萌芽)\n- 服从度: 8 (反抗)\n- 快感度: 5 (不适)" data-c3="--- 已征服后宫成员 ---\n\n[当前成员：无]" data-c4="--- 可选剧情推进方向 ---\n\n1.【言语压制】\n“低等生物？你似乎忘了，是谁的神谕让你们整个种族得以延续。跪下，祭司，对我放尊重些。”\n(效果: 大幅增加/降低服从度，少量增加堕落度)\n\n2.【力量展示】\n直接抓住她撑在桌上的手腕，将她拉近，让她更清晰地感受【神之光环】的力量。\n(效果: 大幅增加堕落度，少量增加/降低服从度，有概率触发反抗)\n\n3.【顺势而为】\n“哦？你想知道我有什么特别之处？那你靠得这么近，是自己想亲身体会一下吗？”\n(效果: 增加堕落度和快感度，可能降低亲密度)"></p>
+    <style>.cq_p{background:linear-gradient(145deg,#1e2030,#1a1b26);color:#c0caf5;font-family:monospace;padding:15px;border:1px solid #414868;border-radius:12px;max-width:400px;font-size:14px;box-shadow:0 4px 15px rgba(0,0,0,.4)}.cq_p .t{text-align:center;font-size:16px;color:#bb9af7;margin-bottom:12px;padding-bottom:5px;border-bottom:1px solid #2a2e40;font-weight:bold}.cq_p .b{background:#24283b;color:#a9b1d6;border:1px solid #414868;padding:7px 0;margin:10px 4px 0px;border-radius:6px;cursor:pointer;font-size:13px;text-align:center;transition:all .2s ease}.cq_p .b:hover{background:#414868;color:#bb9af7}.cq_p .d{background:rgba(0,0,0,.2);border:1px solid #2a2e40;box-shadow:inset 0 0 10px rgba(0,0,0,.4);border-radius:8px;margin-top:10px;padding:12px;min-height:150px;font-size:13px;white-space:pre-wrap;line-height:1.6}</style>
+    <div class="t">征服进度系统</div>
+    <div class="b" onclick="eval(CQ_F1.dataset.s)">属性状态</div>
+    <div class="b" onclick="eval(CQ_F2.dataset.s)">关系</div>
+    <div class="b" onclick="eval(CQ_F3.dataset.s)">后宫</div>
+    <div class="b" onclick="eval(CQ_F4.dataset.s)">剧情</div>
+    <div class="d">点击上方按钮查看信息...</div>
+</div>

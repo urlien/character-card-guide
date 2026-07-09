@@ -1,0 +1,218 @@
+地图代码
+<div class="teapot-map-sidebar" onclick="event.stopPropagation()">
+    <div class="teapot-map-btn" onclick="var p=this.closest('.teapot-map-sidebar').querySelector('.teapot-map-popup');p.style.display=p.style.display==='none'?'block':'none'">地图</div>
+    
+    <div class="teapot-map-popup" style="display:none;">
+        <div class="teapot-map-close" onclick="this.closest('.teapot-map-popup').style.display='none';var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='none'">✕</div>
+        
+        <div class="map-point" style="top: 32%; left: 30%;" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【湖畔别墅】');d.querySelector('.teapot-detail-title').textContent='湖畔别墅';d.querySelector('.teapot-map-text').textContent='你的住宅。位置：镜湖富人区A-01栋，拥有私人码头和最佳湖景视野。已选择【湖畔别墅】，请点击下方按钮查看。';d.setAttribute('data-target','')">湖畔别墅</div>
+        <div class="map-point" style="top: 26%; left: 64%;" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【桦南大学】');d.querySelector('.teapot-detail-title').textContent='桦南大学';d.querySelector('.teapot-map-text').textContent='你和苏棠就读的大学。桦南市最好的大学，全国顶尖。剧情触发地点：食堂、教室、图书馆，人工湖';d.setAttribute('data-target','')">桦南大学</div>
+        <div class="map-point" style="top: 38%; left: 63%; transform: translate(-50%, -50%) scale(0.9);" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【镜湖】');d.querySelector('.teapot-detail-title').textContent='镜湖';d.querySelector('.teapot-map-text').textContent='紧邻别墅区的大湖，风景优美。剧情触发地点：脚踏船、小卖部、芦苇荡';d.setAttribute('data-target','')">镜湖</div>
+        <div class="map-point" style="top: 48%; left: 38%;" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【星光万象城】');d.querySelector('.teapot-detail-title').textContent='星光万象城';d.querySelector('.teapot-map-text').textContent='超级大商场。剧情触发点：服装店、内衣店、甜品站';d.setAttribute('data-target','')">星光万象城</div>
+        <div class="map-point" style="top: 48%; left: 68%;" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【梧桐老巷】');d.querySelector('.teapot-detail-title').textContent='梧桐老巷';d.querySelector('.teapot-map-text').textContent='苏棠之前的住所，条件很差，胜在房租便宜。走廊、楼下阿姨的面摊';d.setAttribute('data-target','')">梧桐老巷</div>
+        <div class="map-point" style="top: 56%; left: 22%;" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【小洋房】');d.querySelector('.teapot-detail-title').textContent='小洋房';d.querySelector('.teapot-map-text').textContent='苏棠和苏奶奶曾经的住所，后来因为苏奶奶患病，卖掉给她治病。前往即可触发';d.setAttribute('data-target','')">小洋房</div>
+        <div class="map-point" style="top: 62%; left: 65%;" onclick="var d=this.closest('.teapot-map-popup').querySelector('.teapot-map-detail');d.style.display='flex';d.setAttribute('data-loc','【桦南疗养院】');d.querySelector('.teapot-detail-title').textContent='桦南疗养院';d.querySelector('.teapot-map-text').textContent='全市最好的疗养院，你家的产业。';d.setAttribute('data-target','')">桦南疗养院</div>
+
+        <div class="teapot-map-detail" style="display:none;" data-loc="" data-target="">
+            <div class="teapot-map-detail-close" onclick="this.closest('.teapot-map-detail').style.display='none'">✕</div>
+            <div class="teapot-detail-title">区域详情</div>
+            <div class="teapot-map-text">请选择建筑查看详情</div>
+            <div class="teapot-map-confirm" onclick="var d=this.closest('.teapot-map-detail');var loc=d.getAttribute('data-loc');var a=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(a){a.value='前往 '+loc;a.dispatchEvent(new Event('input'))}d.style.display='none'">前往该地</div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* 侧边栏容器 */
+.teapot-map-sidebar { 
+    position: fixed; 
+    left: 0; 
+    top: 50%; 
+    margin-top: -25px; 
+    z-index: 9999; 
+    font-family: sans-serif; 
+}
+
+/* 地图按钮 - 暗黑金属渐变 */
+.teapot-map-btn { 
+    box-sizing: border-box; 
+    width: 26px; 
+    padding: 10px 4px; 
+    background: linear-gradient(180deg, #6B1E1E 0%, #4A1515 100%);
+    border: 1px solid #912a2a;
+    border-left: none; 
+    border-radius: 0 6px 6px 0; 
+    color: #E8C47C;
+    cursor: pointer; 
+    writing-mode: vertical-rl; 
+    font-size: 13px; 
+    text-align: center; 
+    box-shadow: 2px 0 8px rgba(0,0,0,0.7);
+    transition: all 0.2s ease;
+}
+.teapot-map-btn:hover {
+    background: linear-gradient(180deg, #7c2323 0%, #5a1818 100%);
+    border-color: #a53232;
+}
+
+/* 地图弹窗容器 - 1:1正方形比例 */
+.teapot-map-popup {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 80vw; 
+    max-width: 500px; 
+    height: 80vw;
+    max-height: 500px; 
+    background-image: url('https://files.catbox.moe/mpaom5.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #912a2a;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px #2a0d0d, 0 20px 80px rgba(0,0,0,0.9);
+    z-index: 10000;
+}
+
+/* 弹窗关闭按钮 */
+.teapot-map-close { 
+    position: absolute; 
+    top: 8px; 
+    right: 8px; 
+    color: #E8C47C;
+    background: rgba(42, 13, 13, 0.8);
+    width: 22px; 
+    height: 22px; 
+    border-radius: 50%; 
+    text-align: center; 
+    line-height: 20px; 
+    font-size: 14px; 
+    cursor: pointer; 
+    z-index: 5; 
+    border: 1px solid #a53232;
+    transition: background 0.2s ease;
+}
+.teapot-map-close:hover {
+    background: rgba(52, 16, 16, 0.9);
+}
+
+/* 地图点位样式 */
+.map-point {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: rgba(42, 13, 13, 0.9);
+    color: #E8C47C;
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-size: 10px; 
+    font-weight: bold;
+    border: 1px solid #a53232;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+    z-index: 2;
+    transition: all 0.2s ease;
+}
+.map-point:hover {
+    background: rgba(52, 16, 16, 0.95);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+.map-point::after { 
+    content: ''; 
+    position: absolute; 
+    bottom: -4px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    border-width: 4px 4px 0; 
+    border-style: solid; 
+    border-color: #a53232 transparent transparent transparent; 
+}
+
+/* 区域详情面板 - 暗调磨砂质感 */
+.teapot-map-detail {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: rgba(20, 8, 8, 0.95);
+    backdrop-filter: blur(2px);
+    padding: 12px;
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px;
+    z-index: 10; 
+    border-radius: 8px;
+    border: 1px solid #4a1515;
+}
+
+/* 详情面板关闭按钮 */
+.teapot-map-detail-close { 
+    position: absolute; 
+    top: 8px; 
+    right: 8px; 
+    color: #E8C47C;
+    font-size: 18px; 
+    cursor: pointer; 
+    transition: color 0.2s ease;
+    text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+.teapot-map-detail-close:hover {
+    color: #f5d08a;
+}
+
+/* 详情标题 */
+.teapot-detail-title { 
+    font-size: 15px; 
+    color: #E8C47C;
+    text-align: center; 
+    font-weight: bold; 
+    border-bottom: 1px solid #4a1515;
+    padding-bottom: 4px; 
+    margin: 0; 
+    text-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+/* 详情文本区域 - 浅暗基底 */
+.teapot-map-text { 
+    flex: 1; 
+    background: rgba(32, 12, 12, 0.6);
+    border: 1px solid #4a1515;
+    border-radius: 4px; 
+    padding: 8px; 
+    color: #E8C47C;
+    font-size: 11px; 
+    line-height: 1.4; 
+    overflow-y: auto; 
+    white-space: pre-line; 
+}
+.teapot-map-text::-webkit-scrollbar {
+    width: 6px;
+}
+.teapot-map-text::-webkit-scrollbar-thumb {
+    background: #4a1515;
+    border-radius: 3px;
+}
+.teapot-map-text::-webkit-scrollbar-track {
+    background: rgba(20, 8, 8, 0.5);
+}
+
+/* 确认按钮 */
+.teapot-map-confirm { 
+    background: linear-gradient(180deg, #7c2323 0%, #5a1818 100%);
+    color: #E8C47C;
+    padding: 8px; 
+    text-align: center; 
+    border-radius: 4px; 
+    font-size: 13px; 
+    font-weight: bold; 
+    margin-top: 2px; 
+    cursor: pointer; 
+    border: 1px solid #a53232;
+    transition: all 0.2s ease;
+}
+.teapot-map-confirm:hover {
+    background: linear-gradient(180deg, #8b2828 0%, #691c1c 100%);
+    border-color: #b93a3a;
+}
+</style>

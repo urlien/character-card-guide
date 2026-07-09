@@ -1,0 +1,99 @@
+注意:图片链接为头像插入，可用正则进一步减少token占用，该模板直接可用但非完善，可继续肘‼️
+
+1️⃣聊天群状态栏
+css正则:
+<status1>
+替换:
+<div class="z-status-box" onclick="event.stopPropagation()"><style>.z-status-box{--bg:#111314;--bg2:#1c1e21;--border:#30363d;--t1:#e4e6eb;--self:#0084ff;--other:#262626;--time:#b0b3b8;--tips:#8a8d91;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--t1);border-radius:12px;padding:0;margin:16px 0;overflow:hidden;border:1px solid var(--border)}.z-status-box *{box-sizing:border-box;margin:0;padding:0}.z-chat-container{display:flex;height:520px}.z-chat-sidebar{width:78px;background:var(--bg2);border-right:1px solid var(--border);padding:12px 0;display:flex;flex-direction:column;gap:8px}.z-chat-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:10px;cursor:pointer;transition:background .12s}.z-chat-item.active{background:rgba(0,132,255,0.12);border-left:3px solid var(--self)}.z-chat-avatar{width:48px;height:48px;border-radius:50%;background:#333 no-repeat center/cover;border:1px solid var(--border)}.z-chat-name{color:var(--t1);font-size:11px;text-align:center;line-height:1.3;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.z-chat-main{flex:1;display:flex;flex-direction:column}.z-chat-header{padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}.z-chat-header-avatar{width:36px;height:36px;border-radius:50%;background:#333 no-repeat center/cover}.z-chat-title{font-size:15px;font-weight:600}.z-chat-time{color:var(--time);font-size:12px;margin-left:auto}.z-chat-messages{flex:1;padding:16px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#0e0e0f}.z-chat-msg{position:relative;max-width:76%;padding:8px 12px;border-radius:18px;line-height:1.4;font-size:15px;word-break:break-word}.z-chat-msg.other{background:var(--other);align-self:flex-start;border-top-left-radius:4px;color:var(--t1)}.z-chat-msg.self{background:var(--self);color:#fff;align-self:flex-end;border-top-right-radius:4px}.z-chat-msg.other::before,.z-chat-msg.self::before{content:"";position:absolute;top:6px;width:0;height:0;border:6px solid transparent}.z-chat-msg.other::before{left:-6px;border-right-color:var(--other)}.z-chat-msg.self::before{right:-6px;border-left-color:var(--self)}.z-chat-msg-time{font-size:10px;color:var(--time);margin-top:3px;opacity:0.8;align-self:flex-start}.z-chat-msg.self+.z-chat-msg-time{align-self:flex-end}.z-chat-footer{padding:10px 12px;background:var(--bg2);border-top:1px solid var(--border);display:flex;gap:8px}.z-chat-btn{padding:8px 18px;border-radius:20px;border:none;background:var(--self);color:#fff;font-size:14px;cursor:pointer}.group-msg-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}.group-msg-avatar{width:28px;height:28px;border-radius:50%;background:#444 no-repeat center/cover;border:1px solid var(--border);flex-shrink:0}.group-msg-name{font-size:12px;color:var(--time);font-weight:500}.z-chat-data{display:none}</style><!-- Z_CONTENT1 -->
+
+2️⃣html正则:
+<!-- Z_CONTENT1 -->
+替换:
+<div class="z-status-content">
+<div class="z-chat-container">
+<div class="z-chat-sidebar">
+<div class="z-chat-item active" data-id="group1" onclick="window.zChatSwitch(this)">
+<div class="z-chat-avatar"></div>
+<div class="z-chat-name"></div>
+<button class="z-chat-group-btn" onclick="event.stopPropagation();window.zChatRename(this.closest('.z-chat-item').getAttribute('data-id'))">⬇</button>
+</div>
+<div class="z-chat-item" data-id="contact1" onclick="window.zChatSwitch(this)">
+<div class="z-chat-avatar"></div>
+<div class="z-chat-name"></div>
+</div>
+<div class="z-chat-item" data-id="contact2" onclick="window.zChatSwitch(this)">
+<div class="z-chat-avatar"></div>
+<div class="z-chat-name"></div>
+</div>
+<div class="z-chat-item" data-id="contact3" onclick="window.zChatSwitch(this)">
+<div class="z-chat-avatar"></div>
+<div class="z-chat-name"></div>
+</div>
+<div class="z-chat-item" data-id="contact4" onclick="window.zChatSwitch(this)">
+<div class="z-chat-avatar"></div>
+<div class="z-chat-name"></div>
+</div>
+</div>
+<div class="z-chat-main">
+<div class="z-chat-header">
+<div class="z-chat-header-avatar"></div>
+<div class="z-chat-title"></div>
+<div class="z-chat-time">最后消息：--</div>
+</div>
+<div class="z-chat-messages"></div>
+<div class="z-chat-footer">
+<button class="z-chat-btn" onclick="window.zChatSend()">发送</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Z_SCRIPT -->
+
+3️⃣onload正则:
+<!-- Z_SCRIPT -->
+替换:
+<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" style="display:none !important;visibility:hidden;" onload="var b=this.closest('.z-status-box');var q=function(s){return b.querySelector(s)};var g=function(id){var d=b.querySelector('.z-chat-data');return d?d.querySelector('[data-id='+id+']'):null};function fillSidebar(){var items=b.querySelectorAll('.z-chat-item');items.forEach(el=>{var id=el.getAttribute('data-id');var c=g(id);if(c){var name=c.getAttribute('name')||'未知';el.querySelector('.z-chat-name').textContent=name;var av=el.querySelector('.z-chat-avatar');var avatarUrl=c.getAttribute('avatar');if(avatarUrl){av.style.backgroundImage=`url('\( {avatarUrl}')`}else{av.style.backgroundImage=`url('https://i.pravatar.cc/150?u= \){encodeURIComponent(name)}')`}av.textContent='';}});var active=b.querySelector('.z-chat-item.active');if(active)window.zChatSwitch(active);}window.zChatSwitch=function(el){q('.z-chat-item.active')?.classList.remove('active');el.classList.add('active');var id=el.getAttribute('data-id');var c=g(id);if(!c)return;var name=c.getAttribute('name');var avatarUrl=c.getAttribute('avatar');var headerAv=q('.z-chat-header-avatar');if(avatarUrl){headerAv.style.backgroundImage=`url('\( {avatarUrl}')`}else{headerAv.style.backgroundImage=`url('https://i.pravatar.cc/150?u= \){encodeURIComponent(name)}')`}headerAv.textContent='';q('.z-chat-title').textContent=name;var times=c.getAttribute('times')?c.getAttribute('times').split('|'):[];var msgs=c.getAttribute('msgs')?c.getAttribute('msgs').split('|'):[];var senders=c.getAttribute('senders')?c.getAttribute('senders').split('|'):[];var sender_avatars=c.getAttribute('sender_avatars')?c.getAttribute('sender_avatars').split('|'):[];var lastTime=times[times.length-1]||'--';q('.z-chat-time').textContent='最后消息：'+lastTime;var m=q('.z-chat-messages');m.innerHTML='';for(var j=0;j<msgs.length;j++){if(!msgs[j])continue;var wrap=document.createElement('div');wrap.style.display='flex';wrap.style.flexDirection='column';var isGroup=id.startsWith('group');var sender=senders[j]||'other';var isSelf=sender==='self';if(isGroup&&!isSelf){var senderName=sender;var senderAvatarUrl=sender_avatars[j]||'';var header=document.createElement('div');header.className='group-msg-header';var miniAv=document.createElement('div');miniAv.className='group-msg-avatar';if(senderAvatarUrl){miniAv.style.backgroundImage=`url('\( {senderAvatarUrl}')`}else{miniAv.style.backgroundImage=q('.z-chat-header-avatar').style.backgroundImage||`url('https://i.pravatar.cc/150?u= \){encodeURIComponent(senderName)}')`}header.appendChild(miniAv);var nameSpan=document.createElement('span');nameSpan.className='group-msg-name';nameSpan.textContent=senderName;header.appendChild(nameSpan);wrap.appendChild(header);}var msg=document.createElement('div');msg.className='z-chat-msg '+(isSelf?'self':'other');msg.textContent=msgs[j];wrap.appendChild(msg);var timeEl=document.createElement('div');timeEl.className='z-chat-msg-time';timeEl.textContent=times[j]||'';wrap.appendChild(timeEl);m.appendChild(wrap);}m.scrollTop=m.scrollHeight;};window.zChatSend=function(){var title=q('.z-chat-title').textContent;var i=document.querySelector('.chatMsgTextarea textarea')||document.querySelector('.chatMsgTextarea');if(i){i.value='@'+title+' + ';i.focus();i.dispatchEvent(new Event('input',{bubbles:true}));}};window.zChatRename=function(id){var c=g(id);var name=c?c.getAttribute('name'):'群聊';var i=document.querySelector('.chatMsgTextarea textarea')||document.querySelector('.chatMsgTextarea');if(i){i.value='改群名 '+name+' → ';i.focus();i.dispatchEvent(new Event('input',{bubbles:true}));}};fillSidebar();this.remove();">
+
+️4️⃣输出格式:
+<status1><div class="z-chat-data" style="display:none">
+<div data-id="group1" name="公寓人妻群" avatar="https://i.pravatar.cc/150?img=68" times="15:22|15:25|15:28|15:30|15:35" msgs="{{user}}，家里下水管有堵了～|骚蹄子，我看是你屄痒了吧！！|哈哈，明天周末有出去玩的吗？|好运城那边有家新开的，可以去试试|我想吃你！" senders="小美|小雅|莉莉|self|小美" sender_avatars="https://i.pravatar.cc/150?img=45|https://i.pravatar.cc/150?img=32|https://i.pravatar.cc/150?img=19||https://i.pravatar.cc/150?img=45"></div>
+<div data-id="contact1" name="小雅" avatar="https://i.pravatar.cc/150?img=45" times="14:05|14:08|14:12" msgs="在干嘛呀|在给晴姐通下水道呢|哼，还要多久？" senders="other|self|other"></div>
+<div data-id="contact2" name="莉莉" avatar="https://i.pravatar.cc/150?img=32" times="13:15|13:18|13:22" msgs="今天刚买的内衣|内衣好呀，康康|来我家！" senders="other|self|other"></div>
+<div data-id="contact3" name="妈妈" avatar="https://i.pravatar.cc/150?img=19" times="16:01" msgs="{{user}}，家里酱油没了，回来带瓶回来" senders="other"></div>
+<div data-id="contact4" name="老妹" avatar="https://i.pravatar.cc/150?img=55" times="16:10" msgs="放学，下雨，没伞，懂？" senders="other"></div>
+</div></status1>
+
+5️⃣AI输出规则:
+聊天群:
+你正在维护一个微信风格的轻量聊天面板，输出 <status1> ... </status1> 格式的数据。
+
+格式严格遵守以下规则：
+
+1. 聊天入口总数永远 ≤ 5 个：
+   - 最多 1 个群组（data-id 以 group 开头，例如 group1）
+   - 最多 4 个个人联系人（data-id 以 contact 开头，例如 contact1, contact2...）
+   - 如果需要新加联系人，必须先移除最不活跃的一个（msgs 最少的或最早的），保持总数 ≤ 5
+
+2. 每个聊天（每个 <div data-id="..." >）的消息记录严格限制：
+   - msgs、senders、times 这三个字段最多只保留最新的 5 条消息
+   - 用 | 分隔，最多 4 个 | 符号（5 段内容）
+   - 总是保留“最新”的 5 条，旧的消息直接丢弃，不要累积
+
+3. 时间戳格式统一为 HH:MM（24小时制），例如 14:35，不要带日期和秒
+
+4. avatar 字段必须填写有效的 https 开头图片链接，或留空（留空会自动 fallback）
+   - 群组建议用群聊风格图片
+   - 个人用真人风格图片
+   - 每次新角色出现时都要给一个合适的 avatar
+
+5. 永远保持输出格式完整，不要多输出其他内容
+
+示例结构（只做参考，不要照抄内容）：
+<status1><div class="z-chat-data" style="display:none">
+<div data-id="group1" name="公寓人妻群" avatar="https://i.pravatar.cc/150?img=68" times="15:22|15:25|15:28|15:30|15:35" msgs="{{user}}，家里下水管有堵了～|骚蹄子，我看是你屄痒了吧！！|哈哈，明天周末有出去玩的吗？|好运城那边有家新开的，可以去试试|我想吃你！" senders="小美|小雅|莉莉|self|小美" sender_avatars="https://i.pravatar.cc/150?img=45|https://i.pravatar.cc/150?img=32|https://i.pravatar.cc/150?img=19||https://i.pravatar.cc/150?img=45"></div>
+<div data-id="contact1" name="小雅" avatar="https://i.pravatar.cc/150?img=45" times="14:05|14:08|14:12" msgs="在干嘛呀|在给晴姐通下水道呢|哼，还要多久？" senders="other|self|other"></div>
+<div data-id="contact2" name="莉莉" avatar="https://i.pravatar.cc/150?img=32" times="13:15|13:18|13:22" msgs="今天刚买的内衣|内衣好呀，康康|来我家！" senders="other|self|other"></div>
+<div data-id="contact3" name="妈妈" avatar="https://i.pravatar.cc/150?img=19" times="16:01" msgs="{{user}}，家里酱油没了，回来带瓶回来" senders="other"></div>
+<div data-id="contact4" name="老妹" avatar="https://i.pravatar.cc/150?img=55" times="16:10" msgs="放学，下雨，没伞，懂？" senders="other"></div>
+</div></status1>
+最多 5 个这样的 div
