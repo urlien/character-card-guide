@@ -47,3 +47,10 @@ character-card-guide/
 
 - 2026-06-24：添加 Discord 魅魔藏经阁技术库 + sexyai.ai API 技术途径
 - 2026-06-24：项目初始化，完成网络查阅、角色卡制作学习、黍角色卡制作
+- 2026-07-10：新增「明日方舟剧情」目录，465个活动全部剧情原文（463个txt），数据来源：ArknightsGameData GitHub 镜像
+
+## 🔧 明日方舟剧情数据 API
+
+- **剧情索引**：`https://r2.m31ns.top/zh_CN/gamedata/excel/story_review_table.json`
+- **剧情原文**：`https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/story/[storyTxt].txt`
+- **干员语音**：`https://wiki.biligame.com/arknights/index.php?title=[干员名]/默认/中文-普通话&action=raw`
