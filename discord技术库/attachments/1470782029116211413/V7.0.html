@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>魅魔数据合并工具 V5.0</title>
+<style>
+* {box-sizing: border-box; -webkit-tap-highlight-color: transparent;}
+body, html {margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; background: #1e1e1e; overflow: hidden; touch-action: manipulation;}
+
+header {height: 55px; background: #2d2d2d; border-bottom: 1px solid #3e3e3e; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; color: #ccc; user-select: none; flex-shrink: 0;}
+h1 {font-size: 16px; margin: 0; color: #fff; display: flex; align-items: center; gap: 8px;}
+.badge {background: linear-gradient(135deg, #FF1744, #F50057); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; box-shadow: 0 0 10px rgba(245, 0, 87, 0.4);}
+
+.header-controls {display: flex; gap: 8px; align-items: center;}
+button.action-btn {background: #444; color: #fff; border: 1px solid #555; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-size: 11px; min-height: 36px; white-space: nowrap;}
+button.action-btn:hover {background: #555; border-color: #666;}
+button.primary-btn {background: linear-gradient(135deg, #F50057, #C51162); border: 1px solid #FF1744; font-weight: bold;}
+button.primary-btn:hover {background: linear-gradient(135deg, #FF1744, #F50057); box-shadow: 0 0 12px rgba(245, 0, 87, 0.5);}
+button.success-btn {background: linear-gradient(135deg, #00C853, #00E676); border: 1px solid #69F0AE;}
+button.success-btn:hover {background: linear-gradient(135deg, #00E676, #69F0AE); box-shadow: 0 0 12px rgba(0, 200, 83, 0.5);}
+button.warning-btn {background: linear-gradient(135deg, #FF6D00, #FF9100); border: 1px solid #FFAB40;}
+button.warning-btn:hover {background: linear-gradient(135deg, #FF9100, #FFAB40); box-shadow: 0 0 12px rgba(255, 109, 0, 0.5);}
+
+#file-input {display: none;}
+
+.mode-selector {display: flex; gap: 8px; background: #1e1e1e; padding: 10px 15px; border-bottom: 1px solid #3e3e3e;}
+.mode-btn {background: #2d2d2d; color: #aaa; border: 1px solid #3e3e3e; padding: 8px 16px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-size: 12px; min-height: 36px;}
+.mode-btn:hover {border-color: #555; color: #fff;}
+.mode-btn.active {background: linear-gradient(135deg, #F50057, #C51162); color: #fff; border-color: #FF1744; font-weight: bold;}
+
+.main-container {display: flex; height: calc(100% - 110px); position: relative; overflow: hidden;}
+.panel {display: flex; flex-direction: column; background: #252526; overflow: hidden; min-width: 50px; flex-shrink: 0;}
+#import-panel {width: 30%;}
+#entry-panel {width: 40%;}
+#preview-panel {width: 30%;}
+
+.panel-header {background: #1e1e1e; padding: 10px 12px; border-bottom: 2px solid #F50057; color: #F50057; font-weight: bold; font-size: 13px; user-select: none; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;}
+.panel-body {flex: 1; overflow-y: auto; padding: 15px;}
+
+.import-zone {border: 2px dashed #555; border-radius: 8px; padding: 25px; text-align: center; color: #aaa; cursor: pointer; transition: all 0.3s; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;}
+.import-zone:hover {border-color: #F50057; background: rgba(245, 0, 87, 0.05);}
+.import-zone.dragover {border-color: #00E676; background: rgba(0, 230, 118, 0.1); color: #00E676;}
+.import-icon {font-size: 36px;}
+.import-text {font-size: 13px;}
+.import-hint {font-size: 11px; color: #666;}
+
+.file-list {margin-top: 15px;}
+.file-item {background: #1e1e1e; border: 1px solid #3e3e3e; border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; min-height: 44px;}
+.file-info {flex: 1;}
+.file-name {color: #fff; font-size: 12px; word-break: break-all;}
+.file-meta {color: #666; font-size: 10px; margin-top: 4px;}
+.file-controls {display: flex; gap: 6px;}
+.file-remove {background: #D32F2F; color: #fff; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 11px; min-height: 32px; min-width: 60px;}
+.file-select-all {background: #00C853; color: #fff; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 11px; min-height: 32px; min-width: 60px;}
+.file-deselect-all {background: #FF6D00; color: #fff; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 11px; min-height: 32px; min-width: 60px;}
+.file-remove:hover {background: #E53935;}
+.file-select-all:hover {background: #00E676;}
+.file-deselect-all:hover {background: #FF9100;}
+
+/* 新增：文件分组样式 */
+.entry-group {margin-bottom: 15px; border-radius: 6px; overflow: hidden;}
+.entry-group-header {background: #2d2d2d; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 12px; font-weight: bold; color: #fff;}
+.entry-group-toggle {font-size: 16px; line-height: 1;}
+.entry-group-body {background: #1e1e1e; padding: 8px; display: block; /* 修改：默认展开 */}
+
+.entry-list {display: flex; flex-direction: column; gap: 10px;}
+.entry-item {background: #1e1e1e; border: 1px solid #3e3e3e; border-radius: 6px; padding: 12px; transition: all 0.2s; margin-bottom: 6px;}
+.entry-item.selected {border-color: #00E676; background: rgba(0, 230, 118, 0.05);}
+.entry-item.filtered {display: none;}
+.entry-header {display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; min-height: 32px;}
+.entry-checkbox {width: 20px; height: 20px; accent-color: #00E676; cursor: pointer; flex-shrink: 0; margin-top: 2px;}
+.entry-info {flex: 1; min-width: 0;}
+.entry-title {color: #F50057; font-size: 12px; font-weight: bold; word-break: break-all;}
+.entry-source {font-size: 10px; margin-top: 4px; padding: 2px 4px; border-radius: 2px; display: inline-block;}
+.entry-preview {color: #aaa; font-size: 11px; margin-top: 8px; padding: 8px; background: #2d2d2d; border-radius: 4px; font-family: 'Consolas', monospace; word-break: break-all; max-height: 100px; overflow: hidden; text-overflow: ellipsis; white-space: pre-wrap;}
+
+.controls {display: flex; gap: 8px; flex-wrap: wrap;}
+
+.preview-content {background: #1e1e1e; border: 1px solid #3e3e3e; border-radius: 6px; padding: 12px; font-family: 'Consolas', monospace; font-size: 11px; color: #d4d4d4; max-height: calc(100vh - 300px); overflow-y: auto; word-break: break-all; white-space: pre-wrap;}
+
+.empty-state {text-align: center; color: #666; padding: 40px 20px; font-size: 13px;}
+
+.hamburger {display: none; background: transparent; border: none; color: #fff; cursor: pointer; font-size: 24px; padding: 5px; min-height: 36px; min-width: 36px;}
+.hamburger:hover {color: #F50057;}
+.mobile-menu {display: none; position: absolute; top: 55px; right: 10px; background: #2d2d2d; border: 1px solid #3e3e3e; border-radius: 6px; padding: 10px; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.5); min-width: 200px;}
+.mobile-menu.active {display: flex; flex-direction: column; gap: 8px;}
+.mobile-menu button {width: 100%; justify-content: center;}
+
+.tab-nav {display: none; background: #2d2d2d; border-bottom: 1px solid #3e3e3e; padding: 0; overflow-x: auto; white-space: nowrap;}
+.tab-nav button {background: transparent; border: none; color: #aaa; padding: 12px 20px; cursor: pointer; font-size: 12px; border-bottom: 2px solid transparent; transition: all 0.2s; min-height: 44px;}
+.tab-nav button.active {color: #F50057; border-bottom-color: #F50057;}
+.tab-nav button:hover {color: #fff; background: rgba(255,255,255,0.05);}
+
+@media (max-width: 768px) {
+  .main-container {flex-direction: column; height: calc(100% - 165px);}
+  .panel {min-width: 100%; width: 100% !important; display: none;}
+  .panel.active {display: flex;}
+  .tab-nav {display: flex;}
+  .header-controls {display: none;}
+  .hamburger {display: block;}
+  .panel-header {font-size: 14px; padding: 12px;}
+  .panel-body {padding: 12px;}
+  .mode-selector {padding: 8px 10px;}
+  .mode-btn {padding: 6px 12px; font-size: 11px;}
+}
+
+@media (max-width: 480px) {
+  header {height: 50px; padding: 0 10px;}
+  h1 {font-size: 14px;}
+  .badge {font-size: 10px; padding: 2px 6px;}
+  .tab-nav button {padding: 10px 15px; font-size: 11px;}
+  .entry-preview {font-size: 10px; max-height: 80px;}
+  .import-zone {padding: 20px; min-height: 100px;}
+  .import-icon {font-size: 28px;}
+  button.action-btn {font-size: 10px; padding: 5px 10px;}
+  .file-select-all, .file-deselect-all, .file-remove {min-width: 50px; padding: 4px 8px; font-size: 10px;}
+}
+</style>
+</head>
+<body>
+<header>
+<h1>魅魔数据合并工具 <span class="badge">V5.0</span></h1>
+<div class="header-controls">
+<button class="action-btn success-btn" onclick="exportMergedData()">导出合并数据</button>
+</div>
+<button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+<div class="mobile-menu" id="mobile-menu">
+<button class="action-btn success-btn" onclick="exportMergedData(); toggleMobileMenu()">导出合并数据</button>
+</div>
+</header>
+
+<div class="mode-selector">
+<button class="mode-btn active" onclick="switchMode('all')">全部显示</button>
+<button class="mode-btn" onclick="switchMode('regex')">仅正则</button>
+<button class="mode-btn" onclick="switchMode('worldbook')">仅世界书</button>
+</div>
+
+<nav class="tab-nav">
+<button class="active" onclick="switchTab(0)">导入文件</button>
+<button onclick="switchTab(1)">数据条目</button>
+<button onclick="switchTab(2)">预览结果</button>
+</nav>
+
+<div class="main-container">
+<div class="panel active" id="import-panel">
+<div class="panel-header">导入文件 最多5个</div>
+<div class="panel-body">
+<div class="import-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+<div class="import-icon">📁</div>
+<div class="import-text">点击选择/拖拽文件到此处</div>
+<div class="import-hint">支持正则表达式 世界书JSON格式</div>
+</div>
+<input type="file" id="file-input" accept=".json" multiple onchange="handleFiles(this.files)">
+<div class="file-list" id="file-list"></div>
+</div>
+</div>
+
+<div class="panel" id="entry-panel">
+<div class="panel-header">
+<span>数据条目 <span id="selected-count">0</span> <span id="total-count">0</span></span>
+<div class="controls">
+<button class="action-btn" onclick="selectAll()">全选</button>
+<button class="action-btn" onclick="deselectAll()">全不选</button>
+<button class="action-btn" onclick="invertSelection()">反选</button>
+</div>
+</div>
+<div class="panel-body" id="entry-panel-body">
+<div id="entry-list" class="entry-list"></div>
+</div>
+</div>
+
+<div class="panel" id="preview-panel">
+<div class="panel-header">预览合并结果</div>
+<div class="panel-body">
+<div id="preview-content" class="preview-content"></div>
+</div>
+</div>
+</div>
+
+<script>
+let importedFiles = [];
+let allEntries = [];
+let currentTab = 0;
+let currentMode = 'all';
+// 新增：记录滚轮位置
+let scrollPositions = {
+  entryPanel: 0,
+  previewPanel: 0
+};
+// 新增：定义文件来源颜色映射（最多支持8个文件，循环使用）
+const sourceColors = [
+  { bg: 'rgba(245, 0, 87, 0.1)', color: '#ff80ab' },
+  { bg: 'rgba(63, 81, 181, 0.1)', color: '#9fa8da' },
+  { bg: 'rgba(76, 175, 80, 0.1)', color: '#a5d6a7' },
+  { bg: 'rgba(255, 152, 0, 0.1)', color: '#ffcc80' },
+  { bg: 'rgba(156, 39, 176, 0.1)', color: '#e1bee7' },
+  { bg: 'rgba(0, 188, 212, 0.1)', color: '#b2ebf2' },
+  { bg: 'rgba(233, 30, 99, 0.1)', color: '#f8bbd0' },
+  { bg: 'rgba(103, 58, 183, 0.1)', color: '#d1c4e9' }
+];
+
+// 新增：监听滚轮事件，记录位置
+document.getElementById('entry-panel-body').addEventListener('scroll', function() {
+  scrollPositions.entryPanel = this.scrollTop;
+});
+
+document.querySelector('#preview-panel .panel-body').addEventListener('scroll', function() {
+  scrollPositions.previewPanel = this.scrollTop;
+});
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', (e) => {e.preventDefault(); dropZone.classList.add('dragover');});
+dropZone.addEventListener('dragleave', () => {dropZone.classList.remove('dragover');});
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.json'));
+  handleFiles(files);
+});
+
+function handleFiles(files) {
+  const validFiles = Array.from(files).filter(f => f.name.endsWith('.json'));
+  if (importedFiles.length + validFiles.length > 5) {
+    alert('最多只能导入5个文件');
+    return;
+  }
+  validFiles.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        const fileType = detectFileType(data);
+        if (fileType === 'unknown') {
+          alert(`文件 ${file.name} 格式无法识别\n请确保是标准的魅魔正则或世界书格式`);
+          return;
+        }
+        const fileInfo = {name: file.name, data: data, type: fileType};
+        importedFiles.push(fileInfo);
+        processFiles();
+      } catch (err) {
+        console.error('解析JSON失败:', err);
+        alert(`文件 ${file.name} 解析失败: ${err.message}`);
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
+function detectFileType(data) {
+  if (data.regex_scripts && Array.isArray(data.regex_scripts)) return 'regex';
+  if (data.entries && typeof data.entries === 'object' && !Array.isArray(data.entries)) return 'worldbook';
+  if (data.worldbook && Array.isArray(data.worldbook)) return 'worldbook';
+  if (Array.isArray(data)) {
+    if (data.length > 0 && data[0].hasOwnProperty('findRegex')) return 'regex';
+    if (data.length > 0 && (data[0].hasOwnProperty('keys') || data[0].hasOwnProperty('key'))) return 'worldbook';
+  }
+  return 'unknown';
+}
+
+function processFiles() {
+  // 保存当前滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  renderFileList();
+  extractEntries();
+  renderEntryList();
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+// 修改：渲染文件列表，增加全选/取消选择按钮
+function renderFileList() {
+  const fileList = document.getElementById('file-list');
+  if (importedFiles.length === 0) {fileList.innerHTML = ''; return;}
+  fileList.innerHTML = importedFiles.map((file, idx) => `
+    <div class="file-item">
+      <div class="file-info">
+        <div class="file-name">${file.name}</div>
+        <div class="file-meta">类型 ${file.type === 'regex' ? '正则表达式' : file.type === 'worldbook' ? '世界书' : '未知'}</div>
+      </div>
+      <div class="file-controls">
+        <button class="file-select-all" onclick="selectFileEntries(${idx})">全选</button>
+        <button class="file-deselect-all" onclick="deselectFileEntries(${idx})">取消</button>
+        <button class="file-remove" onclick="removeFile(${idx})">删除</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 新增：选中指定文件的所有条目
+function selectFileEntries(fileIdx) {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  allEntries.forEach(e => {
+    // 条目ID格式：fileIdx-type-idx
+    if (e.id.startsWith(`${fileIdx}-`) && (currentMode === 'all' || e.type === currentMode)) {
+      e.selected = true;
+    }
+  });
+  renderEntryList();
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+// 新增：取消选中指定文件的所有条目
+function deselectFileEntries(fileIdx) {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  allEntries.forEach(e => {
+    if (e.id.startsWith(`${fileIdx}-`) && (currentMode === 'all' || e.type === currentMode)) {
+      e.selected = false;
+    }
+  });
+  renderEntryList();
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+function removeFile(idx) {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  importedFiles.splice(idx, 1);
+  processFiles();
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+}
+
+function extractEntries() {
+  allEntries = [];
+  importedFiles.forEach((file, fileIdx) => {
+    if (file.type === 'regex') {
+      let scripts = file.data.regex_scripts || file.data;
+      if (!Array.isArray(scripts)) scripts = [];
+      scripts.forEach((script, scriptIdx) => {
+        allEntries.push({
+          type: 'regex', 
+          source: `${file.name} #${scriptIdx + 1}`, 
+          data: script, 
+          selected: false, 
+          id: `${fileIdx}-regex-${scriptIdx}`,
+          fileIdx: fileIdx, // 新增：记录所属文件索引，用于颜色标记
+          fileName: file.name // 新增：记录所属文件名，用于分组
+        });
+      });
+    } else if (file.type === 'worldbook') {
+      let entries = [];
+      if (file.data.entries && typeof file.data.entries === 'object') {
+        entries = Object.values(file.data.entries).filter(e => e && typeof e === 'object');
+      } else if (file.data.worldbook && Array.isArray(file.data.worldbook)) {
+        entries = file.data.worldbook.filter(e => e && typeof e === 'object');
+      } else if (Array.isArray(file.data)) {
+        entries = file.data.filter(e => e && typeof e === 'object');
+      }
+      entries.forEach((entry, entryIdx) => {
+        allEntries.push({
+          type: 'worldbook', 
+          source: `${file.name} #${entryIdx + 1}`, 
+          data: entry, 
+          selected: false, 
+          id: `${fileIdx}-worldbook-${entryIdx}`,
+          fileIdx: fileIdx, // 新增：记录所属文件索引，用于颜色标记
+          fileName: file.name // 新增：记录所属文件名，用于分组
+        });
+      });
+    }
+  });
+}
+
+// 重写：渲染条目列表，改为分组显示+折叠/展开+颜色标记
+function renderEntryList() {
+  const entryList = document.getElementById('entry-list');
+  const totalCount = document.getElementById('total-count');
+  const selectedCount = document.getElementById('selected-count');
+
+  const filteredEntries = allEntries.filter(e => currentMode === 'all' || e.type === currentMode);
+  totalCount.textContent = `/${filteredEntries.length}`;
+  selectedCount.textContent = filteredEntries.filter(e => e.selected).length;
+
+  if (allEntries.length === 0) {
+    entryList.innerHTML = '<div class="empty-state">暂无数据条目<br>请先导入文件</div>';
+    return;
+  }
+
+  // 按文件分组
+  const fileGroups = {};
+  importedFiles.forEach((file, idx) => {
+    fileGroups[idx] = {
+      name: file.name,
+      entries: allEntries.filter(e => e.fileIdx === idx && (currentMode === 'all' || e.type === currentMode))
+    };
+  });
+
+  // 生成分组HTML
+  let html = '';
+  Object.keys(fileGroups).forEach(fileIdx => {
+    const group = fileGroups[fileIdx];
+    if (group.entries.length === 0) return;
+    
+    // 获取该文件的颜色
+    const color = sourceColors[parseInt(fileIdx) % sourceColors.length];
+    const groupId = `group-${fileIdx}`;
+    
+    html += `
+      <div class="entry-group">
+        <div class="entry-group-header" style="background: ${color.bg}; color: ${color.color};" onclick="toggleGroup('${groupId}')">
+          <span>${group.name} (${group.entries.length}条)</span>
+          <span class="entry-group-toggle">-</span> <!-- 修改：默认显示减号 -->
+        </div>
+        <div id="${groupId}" class="entry-group-body">
+          ${group.entries.map((entry, idx) => {
+            const isFiltered = currentMode !== 'all' && entry.type !== currentMode;
+            let titleRaw = '';
+            let previewRaw = '';
+            if (entry.type === 'regex') {
+              titleRaw = entry.data.scriptName || entry.data.findRegex || '未命名正则';
+              previewRaw = `find ${entry.data.findRegex || ''}\nreplace ${entry.data.replaceString || ''}`;
+            } else if (entry.type === 'worldbook') {
+              titleRaw = entry.data.comment || entry.data.key?.[0] || entry.data.keys?.[0] || '未命名条目';
+              const keysRaw = entry.data.key || entry.data.keys || [];
+              const keysecondaryRaw = entry.data.keysecondary || [];
+              const keys = Array.isArray(keysRaw) ? keysRaw : [keysRaw];
+              const keysecondary = Array.isArray(keysecondaryRaw) ? keysecondaryRaw : [keysecondaryRaw];
+              const content = entry.data.content || '';
+              previewRaw = `key ${keys.join(' ')}\nkeysecondary ${keysecondary.join(' ')}\ncontent ${content.substring(0, 100)}...`;
+            }
+            const title = escapeHtml(titleRaw);
+            const preview = escapeHtml(previewRaw);
+            const source = escapeHtml(entry.source);
+            
+            // 找到条目的全局索引
+            const globalIdx = allEntries.findIndex(e => e.id === entry.id);
+            
+            return `
+              <div class="entry-item ${entry.selected ? 'selected' : ''} ${isFiltered ? 'filtered' : ''}" onclick="toggleEntry(${globalIdx}); event.stopPropagation();">
+                <div class="entry-header">
+                  <input type="checkbox" class="entry-checkbox" ${entry.selected ? 'checked' : ''} onclick="event.stopPropagation(); toggleEntry(${globalIdx})">
+                  <div class="entry-info">
+                    <div class="entry-title">${title}</div>
+                    <div class="entry-source" style="background: ${color.bg}; color: ${color.color};">来源 ${source} | 类型 ${entry.type === 'regex' ? '正则' : '世界书'}</div>
+                  </div>
+                </div>
+                <div class="entry-preview">${preview}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  entryList.innerHTML = html;
+}
+
+// 新增：切换分组的折叠/展开状态
+function toggleGroup(groupId) {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  const groupBody = document.getElementById(groupId);
+  const toggleIcon = groupBody.parentElement.querySelector('.entry-group-toggle');
+  
+  if (groupBody.style.display === 'block') {
+    groupBody.style.display = 'none';
+    toggleIcon.textContent = '+';
+  } else {
+    groupBody.style.display = 'block';
+    toggleIcon.textContent = '-';
+  }
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+}
+
+function toggleEntry(idx) {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  allEntries[idx].selected = !allEntries[idx].selected; 
+  renderEntryList(); 
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+function selectAll() {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  allEntries.forEach(e => {if (currentMode === 'all' || e.type === currentMode) e.selected = true;});
+  renderEntryList(); 
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+function deselectAll() {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  allEntries.forEach(e => {if (currentMode === 'all' || e.type === currentMode) e.selected = false;});
+  renderEntryList(); 
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+function invertSelection() {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  allEntries.forEach(e => {if (currentMode === 'all' || e.type === currentMode) e.selected = !e.selected;});
+  renderEntryList(); 
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+function switchMode(mode) {
+  // 保存滚动位置
+  const currentScroll = scrollPositions.entryPanel;
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderEntryList();
+  // 恢复滚动位置
+  document.getElementById('entry-panel-body').scrollTop = currentScroll;
+  updatePreview();
+}
+
+function updatePreview() {
+  // 保存预览面板滚动位置
+  const previewScroll = scrollPositions.previewPanel;
+  const previewContent = document.getElementById('preview-content');
+  const selectedEntries = allEntries.filter(e => e.selected && (currentMode === 'all' || e.type === currentMode));
+
+  if (selectedEntries.length === 0) {
+    previewContent.innerHTML = '<div class="empty-state">未选择任何条目</div>';
+    return;
+  }
+
+  const regexEntries = selectedEntries.filter(e => e.type === 'regex');
+  const worldbookEntries = selectedEntries.filter(e => e.type === 'worldbook');
+
+  let result = {};
+  if (currentMode === 'all' || currentMode === 'regex') {
+    if (regexEntries.length > 0) {
+      result.regex = {pageDepth: 2, statusbar: '', beginning: '', regex_scripts: regexEntries.map(e => e.data)};
+    }
+  }
+  if (currentMode === 'all' || currentMode === 'worldbook') {
+    if (worldbookEntries.length > 0) {
+      const entries = {};
+      worldbookEntries.forEach((e, idx) => {entries[idx] = e.data;});
+      result.worldbook = {entries: entries};
+    }
+  }
+
+  previewContent.textContent = JSON.stringify(result, null, 2);
+  // 恢复预览面板滚动位置
+  document.querySelector('#preview-panel .panel-body').scrollTop = previewScroll;
+}
+
+function exportMergedData() {
+  const selectedEntries = allEntries.filter(e => e.selected && (currentMode === 'all' || e.type === currentMode));
+  if (selectedEntries.length === 0) {alert('请先选择要导出的条目'); return;}
+
+  const regexEntries = selectedEntries.filter(e => e.type === 'regex');
+  const worldbookEntries = selectedEntries.filter(e => e.type === 'worldbook');
+
+  if ((currentMode === 'all' || currentMode === 'regex') && regexEntries.length > 0) {
+    const regexData = {pageDepth: 2, statusbar: '', beginning: '', regex_scripts: regexEntries.map(e => e.data)};
+    downloadJSON(regexData, '合并后的正则表达式.json');
+  }
+
+  if ((currentMode === 'all' || currentMode === 'worldbook') && worldbookEntries.length > 0) {
+    const entries = {};
+    worldbookEntries.forEach((e, idx) => {entries[idx] = e.data;});
+    const worldbookData = {entries: entries};
+    downloadJSON(worldbookData, '合并后的世界书.json');
+  }
+}
+
+function downloadJSON(data, filename) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function toggleMobileMenu() {document.getElementById('mobile-menu').classList.toggle('active');}
+
+function switchTab(tabIndex) {
+  currentTab = tabIndex;
+  const panels = document.querySelectorAll('.panel');
+  const tabs = document.querySelectorAll('.tab-nav button');
+  panels.forEach((panel, idx) => {panel.classList.toggle('active', idx === tabIndex);});
+  tabs.forEach((tab, idx) => {tab.classList.toggle('active', idx === tabIndex);});
+}
+
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('mobile-menu');
+  const hamburger = document.querySelector('.hamburger');
+  if (!menu.contains(e.target) && !hamburger.contains(e.target)) menu.classList.remove('active');
+});
+</script>
+</body>
+</html>

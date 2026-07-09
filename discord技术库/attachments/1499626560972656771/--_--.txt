@@ -1,0 +1,185 @@
+<!-- 侧边事件唤醒按钮 -->
+<div class="teapot-event-sidebar" onclick="event.stopPropagation()">
+    <div class="teapot-event-btn" onclick="var m=document.getElementById('hu-evt-modal');m.style.display='flex';var r=m.querySelector('.btn-roll');if(r)r.click();">事件</div>
+</div>
+
+<!-- 隐藏的事件数据库：纯 DOM 存储，绝对避开脚本拦截 -->
+<div id="hu-e-data" style="display:none;">
+    <!-- 日常事件 -->
+    <div data-cat="daily" data-tag="[ 艺人日常行程 ]" data-title="粉丝接机狂潮" data-quote="站姐的镜头快怼到脸上了，注意表情管理！" data-desc="机场到达大厅被粉丝围得水泄不通，安保人员正努力维持秩序。是一次极佳的固粉机会，但也暗藏踩踏风险。"></div>
+    <div data-cat="daily" data-tag="[ 突发后勤状况 ]" data-title="练习室意外停电" data-quote="怎么在这个节骨眼上停电了？不要停，跟着我的节拍继续练！" data-desc="备战打歌舞台期间，大楼突发局部停电。黑暗中只剩下微弱的手机手电筒光源，考验着团队的默契与抗压能力。"></div>
+    <div data-cat="daily" data-tag="[ 宿舍内务巡查 ]" data-title="深夜突击查房" data-quote="左边床底下的高热量零食是谁的？立刻没收！" data-desc="总经纪人带领团队在凌晨两点突袭偶像宿舍，严查体重管理和违禁电子产品。气氛异常紧张。"></div>
+    <!-- 人物事件 -->
+    <div data-cat="char" data-tag="[ S级公关危机 ]" data-title="地下恋情疑云" data-quote="那张同框照片真的是角度问题！我们只是剧组的普通同事！" data-desc="狗仔八卦号爆出极其暧昧的错位抓拍图，瞬间登顶热搜。唯粉大面积破防，商业代言方开始施压要求出具澄清声明。"></div>
+    <div data-cat="char" data-tag="[ 职场霸凌风波 ]" data-title="前辈的针对打压" data-quote="在这个圈子里，光有天赋可不够，得先学会怎么低头。" data-desc="在跨年晚会的联合彩排中，同公司的强势大前辈故意刁难，不仅抢占C位走位，还要求灯光师调暗你们的追光。"></div>
+    <div data-cat="char" data-tag="[ 流量爆发契机 ]" data-title="神秘大咖连麦" data-quote="大家好，刚才刷到直播间觉得很有趣，就点进来打个招呼咯~" data-desc="原本是一场普通的固粉日常直播，却意外收到了一位退圈多年的传奇顶流的连麦申请。弹幕瞬间爆炸，服务器濒临瘫痪。"></div>
+    <!-- 剧情事件 -->
+    <div data-cat="story" data-tag="[ SS级生死存亡 ]" data-title="黑公关闪击战" data-quote="热搜榜前十，有六个是我们的黑热搜，对家这是要下死手了。" data-desc="竞争对手娱乐公司投入海量资金购买水军，全网散布半真半假的黑料。星尘娱乐的股价应声下跌，企划面临生死存亡。"></div>
+    <div data-cat="story" data-tag="[ 紧急安全事故 ]" data-title="主舞台升降机故障" data-quote="快救人！切断直播信号！中止演出！" data-desc="万人演唱会进行到最高潮的唱跳环节时，中央升降舞台机械齿轮卡死并发生倾斜。现场一片混乱，全网震惊。"></div>
+    <div data-cat="story" data-tag="[ 终局的十字路口 ]" data-title="财阀的霸王邀约" data-quote="签下这份对赌协议，整个亚洲的资源都是你们的，但代价是……绝对服从。" data-desc="顶级资本集团提出全盘收购计划。如果接受，将获得无法想象的资源倾斜；如果拒绝，将面临全行业的联合封杀。"></div>
+</div>
+
+<!-- 全局事件情报终端模态框 -->
+<div id="hu-evt-modal" data-theme="warm" data-cat="daily" style="display:none;" onclick="event.stopPropagation()">
+    <div class="hu-e-container">
+        
+        <!-- 顶栏与独立切换按钮 (硬核内联逻辑) -->
+        <div class="hu-e-header">
+            <div style="flex:1;"></div>
+            <div class="hu-e-header-title">事件情报终端</div>
+            <div style="flex:1; display:flex; justify-content:flex-end; gap:8px;">
+                <div class="hu-e-theme-btn" onclick="var m=document.getElementById('hu-evt-modal');var t=m.getAttribute('data-theme');if(t=='warm'){m.setAttribute('data-theme','dark');this.innerText='暗黑';}else{m.setAttribute('data-theme','warm');this.innerText='暖杏';}">暖杏</div>
+                <div class="hu-e-close" onclick="document.getElementById('hu-evt-modal').style.display='none'">✖</div>
+            </div>
+        </div>
+
+        <!-- 顶部核心分类导航 (自带刷新逻辑) -->
+        <div class="hu-e-nav">
+            <div class="hu-e-tab active" onclick="var ts=document.querySelectorAll('.hu-e-tab');for(var i=0;i!=ts.length;i++){ts[i].classList.remove('active');}this.classList.add('active');var m=document.getElementById('hu-evt-modal');m.setAttribute('data-cat','daily');m.querySelector('.btn-roll').click();">日常事件</div>
+            <div class="hu-e-tab" onclick="var ts=document.querySelectorAll('.hu-e-tab');for(var i=0;i!=ts.length;i++){ts[i].classList.remove('active');}this.classList.add('active');var m=document.getElementById('hu-evt-modal');m.setAttribute('data-cat','char');m.querySelector('.btn-roll').click();">人物事件</div>
+            <div class="hu-e-tab" onclick="var ts=document.querySelectorAll('.hu-e-tab');for(var i=0;i!=ts.length;i++){ts[i].classList.remove('active');}this.classList.add('active');var m=document.getElementById('hu-evt-modal');m.setAttribute('data-cat','story');m.querySelector('.btn-roll').click();">剧情事件</div>
+        </div>
+
+        <!-- 焦点档案区 -->
+        <div class="hu-e-body">
+            <!-- 档案标题模块 -->
+            <div class="hu-e-archive">
+                <div class="e-tag">[ 点击底部抽取 ]</div>
+                <div class="e-title">系统待命中</div>
+                <div class="e-divider"></div>
+            </div>
+            
+            <!-- 情报简报模块 -->
+            <div class="hu-e-intel">
+                <div class="e-quote-wrapper">
+                    <div class="e-quote">等待指挥官下达检索指令...</div>
+                </div>
+                <div class="e-desc">请点击下方按钮，从星尘娱乐内网获取最新突发情报。</div>
+            </div>
+        </div>
+
+        <!-- 底部执行区 (硬核检索逻辑) -->
+        <div class="hu-e-footer">
+            <div class="hu-e-btn btn-roll" onclick="var m=document.getElementById('hu-evt-modal');var cat=m.getAttribute('data-cat');var all=document.getElementById('hu-e-data').children;var v=[];for(var i=0;i!=all.length;i++){if(all[i].getAttribute('data-cat')==cat)v.push(all[i]);}if(v.length!=0){var r=v[Math.floor(Math.random()*v.length)];m.querySelector('.e-tag').innerText=r.getAttribute('data-tag');m.querySelector('.e-title').innerText=r.getAttribute('data-title');m.querySelector('.e-quote').innerText=r.getAttribute('data-quote');m.querySelector('.e-desc').innerText=r.getAttribute('data-desc');}">获取最新情报</div>
+            <div class="hu-e-btn btn-apply" onclick="var m=document.getElementById('hu-evt-modal');var a=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(a){var txt='【触发事件】：'+m.querySelector('.e-title').innerText+'\n【当前状况】：'+m.querySelector('.e-desc').innerText;a.value=txt;a.dispatchEvent(new Event('input'));}m.style.display='none';">下达应对预案</div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+/* CSS 主题变量体系 */
+#hu-evt-modal[data-theme="warm"] {
+    --e-bg: #FDF6F0; --e-card: #FFFCFA; --e-border: #D4A5A5; --e-border-strong: #C27D7D; 
+    --e-text: #594D46; --e-text-light: #A68D81; --e-header-text: #FFF; --e-radius: 12px; 
+    --e-shadow: rgba(212, 165, 165, 0.4); --e-quote-bg: rgba(253, 246, 240, 1);
+}
+#hu-evt-modal[data-theme="dark"] {
+    --e-bg: #000; --e-card: #0A0A0A; --e-border: #ff3333; --e-border-strong: #ff3333; 
+    --e-text: #EAEAEA; --e-text-light: #888; --e-header-text: #000; --e-radius: 4px; 
+    --e-shadow: rgba(255, 51, 51, 0.4); --e-quote-bg: rgba(20, 20, 20, 1);
+}
+
+/* 侧边唤醒按钮 (定位在地图按钮下方) */
+.teapot-event-sidebar { position: fixed; left: 0; top: 54%; transform: translateY(-50%); z-index: 9999; }
+.teapot-event-btn {
+    box-sizing: border-box; width: 28px; padding: 15px 4px; 
+    background: #D4A5A5; border: 1.5px solid #594D46; border-left: none; 
+    border-radius: 0 8px 8px 0; color: #FFF; cursor: pointer; 
+    writing-mode: vertical-rl; font-size: 14px; letter-spacing: 3px; 
+    text-align: center; box-shadow: 2px 0 10px rgba(212, 165, 165, 0.4); 
+    transition: all 0.3s; font-weight: bold;
+}
+.teapot-event-btn:hover { background: #C27D7D; width: 34px; }
+
+/* 模态框全屏遮罩 */
+#hu-evt-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6); z-index: 10000;
+    display: flex; justify-content: center; align-items: center; backdrop-filter: blur(2px);
+    transition: background 0.3s;
+}
+
+/* 核心容器 */
+.hu-e-container {
+    width: 90vw; max-width: 500px; 
+    background: var(--e-bg); border: 2px solid var(--e-border); border-radius: var(--e-radius);
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 0 20px var(--e-shadow); transition: all 0.3s ease;
+}
+
+/* 顶栏与控制按钮 */
+.hu-e-header {
+    background: var(--e-border); color: var(--e-header-text); padding: 8px 15px;
+    display: flex; align-items: center; justify-content: space-between; transition: all 0.3s;
+}
+.hu-e-header-title { font-weight: 900; font-size: 16px; letter-spacing: 2px; }
+.hu-e-theme-btn, .hu-e-close {
+    background: var(--e-card); color: var(--e-border-strong); height: 26px; 
+    border-radius: var(--e-radius); text-align: center; line-height: 24px; 
+    font-size: 12px; cursor: pointer; border: 1px solid var(--e-card); font-weight: bold;
+    padding: 0 10px; transition: all 0.2s; box-sizing: border-box;
+}
+.hu-e-close { padding: 0; width: 26px; font-size: 14px; }
+.hu-e-theme-btn:hover, .hu-e-close:hover { background: var(--e-border-strong); color: var(--e-card); }
+
+/* 分类导航 */
+.hu-e-nav {
+    display: flex; background: var(--e-card); border-bottom: 1px solid var(--e-border);
+}
+.hu-e-tab {
+    flex: 1; text-align: center; padding: 12px 0; font-size: 14px; font-weight: bold;
+    color: var(--e-text-light); cursor: pointer; transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+}
+.hu-e-tab:hover { color: var(--e-border-strong); }
+.hu-e-tab.active { color: var(--e-border-strong); border-bottom: 3px solid var(--e-border-strong); }
+
+/* 主体内容区 */
+.hu-e-body {
+    padding: 30px 20px; display: flex; flex-direction: column; gap: 25px; flex: 1;
+}
+
+/* 档案标题排版 */
+.hu-e-archive { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.e-tag {
+    font-size: 12px; font-weight: bold; color: var(--e-border-strong);
+    border: 1px solid var(--e-border-strong); padding: 2px 8px; border-radius: 4px;
+    letter-spacing: 1px;
+}
+.e-title { font-size: 26px; font-weight: 900; color: var(--e-text); letter-spacing: 2px; line-height: 1.2; }
+.e-divider { width: 40px; height: 3px; background: var(--e-border-strong); border-radius: 2px; margin-top: 5px; }
+
+/* 情报简报区 */
+.hu-e-intel { display: flex; flex-direction: column; gap: 15px; }
+.e-quote-wrapper { position: relative; margin-bottom: 5px; }
+.e-quote {
+    background: var(--e-quote-bg); color: var(--e-text); font-weight: bold; font-size: 14px;
+    padding: 15px; border: 1.5px solid var(--e-border); border-radius: var(--e-radius);
+    line-height: 1.5; font-style: italic; position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.e-quote::after {
+    content: ''; position: absolute; bottom: -8px; left: 20px;
+    border-width: 8px 8px 0; border-style: solid; border-color: var(--e-border) transparent transparent transparent;
+}
+.e-desc {
+    background: var(--e-card); color: var(--e-text); font-size: 13px; line-height: 1.8;
+    padding: 15px; border-radius: var(--e-radius); text-align: justify;
+    border-left: 4px solid var(--e-border-strong); opacity: 0.95;
+}
+
+/* 底部执行区 */
+.hu-e-footer {
+    display: flex; gap: 15px; padding: 15px 20px 20px; background: var(--e-card);
+    border-top: 1px dashed var(--e-border);
+}
+.hu-e-btn {
+    flex: 1; text-align: center; padding: 12px 0; font-size: 14px; font-weight: bold;
+    border-radius: var(--e-radius); cursor: pointer; transition: all 0.2s; border: 2px solid var(--e-border-strong);
+}
+.btn-roll { background: var(--e-bg); color: var(--e-border-strong); }
+.btn-roll:hover { background: var(--e-border-strong); color: var(--e-bg); }
+.btn-apply { background: var(--e-border-strong); color: var(--e-bg); box-shadow: 0 4px 10px var(--e-shadow); }
+.btn-apply:hover { transform: translateY(-2px); box-shadow: 0 6px 15px var(--e-shadow); }
+</style>

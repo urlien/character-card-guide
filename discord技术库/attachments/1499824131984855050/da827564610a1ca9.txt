@@ -1,0 +1,29 @@
+
+
+
+
+
+匹配正则：
+
+/【选项开始】\s*(\d+)\s*[|｜]\s*([\s\S]*?)[|｜]\s*([\s\S]*?)[|｜]\s*([\s\S]*?)【选项结束】/s
+
+
+替换内容：
+
+<div id="tp_opt_$1" style="display:flex; flex-direction:column; gap:8px; margin-top:10px;" onclick="event.stopPropagation()">
+  <div class="tp_btn" style="background:#000000; border:1px solid #FFFFFF; border-radius:6px; padding:12px; cursor:pointer; font-size:14px; color:#FFFFFF; text-align:center;" onclick="var a=document.querySelector('textarea'); if(a){a.value=''+this.innerText+'\n'; a.dispatchEvent(new Event('input'));}">$2</div>
+  <div class="tp_btn" style="background:#000000; border:1px solid #FFFFFF; border-radius:6px; padding:12px; cursor:pointer; font-size:14px; color:#FFFFFF; text-align:center;" onclick="var a=document.querySelector('textarea'); if(a){a.value=''+this.innerText+'\n'; a.dispatchEvent(new Event('input'));}">$3</div>
+  <div class="tp_btn" style="background:#000000; border:1px solid #FFFFFF; border-radius:6px; padding:12px; cursor:pointer; font-size:14px; color:#FFFFFF; text-align:center;" onclick="var a=document.querySelector('textarea'); if(a){a.value=''+this.innerText+'\n'; a.dispatchEvent(new Event('input'));}">$4</div>
+</div>
+
+
+
+
+以下放人设内
+
+
+<h1>核心协议：选项输出规范</h1>
+<p>在状态栏之后，如果有互动需求，请输出选项数据。</p>
+<p>格式模板：
+【选项开始】 Unix时间戳 | 选项一文本 | 选项二文本 | 选项三文本 【选项结束】
+注意：Unix时间戳必须与状态栏保持一致。</p>

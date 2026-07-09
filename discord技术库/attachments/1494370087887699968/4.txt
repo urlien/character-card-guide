@@ -1,0 +1,57 @@
+【4】
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【悬空抱立特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【磨桌角特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【互相指交】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【窒息控制】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【咬痕标记】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【假寐特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【顶膝特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【校服】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【医护服】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【女仆装】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【和服浴衣】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【西装正装】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【运动体操服】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【睡衣居家服】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【穿戴式假阳具】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【跳蛋特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【震动棒】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【温度游戏】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【口塞】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【旗袍特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【项圈特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【眼罩】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【精油】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【军装】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【婚纱】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【炮机】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【温酒特化】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【乳夹】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【肛塞】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【木马】</div>
+                        <div class="spec-item" style="display:none;" onclick="window._curEl=this; eval(document.getElementById('FUNC_SPEC_CLICK').dataset.s)">【皮鞭】</div>
+                    </div>
+                </div>
+            </div>
+            <div class="yw-content" id="yw-c3">
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">手动修复状态栏方法</div><div class="yw-faq-a">&lt;status&gt;<br>
+&lt;div class="wf-status-data" style="display:none"&gt;<br>
+&lt;div data-env turn='填入数字' time='填入时间' loc='填入地点'&gt;&lt;/div&gt;<br>
+&lt;div data-char n='角色名' lv='这里填写当前修为' look='外貌描写' wear='衣装描写' pos='姿势描写' chest='雪乳：描述胸部状态' foot='玉足：描述足部状态' priv='小穴：描述私处状态' rear='蜜臀：描述臀部状态' love='50' lust='50' mind='这里填写她的内心独白'&gt;&lt;/div&gt;<br>
+&lt;div data-mc n='主角姓名' lv='这里填写主角修为' stg='这里填写当前目标' ltg='这里填写长期目标' mod='这里记录加载的MOD' st='描述主角当前的动作、肉棒状态或心理活动'&gt;&lt;/div&gt;<br>
+&lt;div data-opt c1='选项一' c2='选项二' c3='选项三'&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/status&gt;
+</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">推荐什么模型？</div><div class="yw-faq-a">首推claude 4.6o，其次claude4.6s，GLM与DeepSeek较为平庸可以当作没有克时的替代品，gemini3.1p涩涩一流，缺点也是太容易发情</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">推荐使用什么模型总结？</div><div class="yw-faq-a">推荐使用claude3.7/4.0、DeepSeek、kimi进行总结</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">回复出现问题怎么办？</div><div class="yw-faq-a">回复截断、空白回复、奇怪语言乱入、道德审查打回、暴露英文思维链等现象，是各大模型官方API普遍存在的现象，建议换不同模型重试。<br><br>若发送内容被秒打回，可能是触发了官方的色情审核。<br><br>出现大量"由于"可以使用编辑中的一键"去除异常文字"功能！（超大量由于建议直接回溯，请保持上文没有"由于"的污染）<br><br>繁体可以使用魅魔自带的繁转简功能看看效果。</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">玩久了总结超出字数怎么办？</div><div class="yw-faq-a">删减：检查一下之前的总结，看看有没有无关紧要的NPC占据了大量文字，让AI一句话带过。<br><br>手动：若实在太长，手动复制之前的正确总结，开5电ai随便发送一句得到ai回复，将总结整合粘贴进回复中。</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">为什么我总是丢设定？</div><div class="yw-faq-a">总结：AI记忆有限，必须每5~7轮总结一次！</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">指令什么时候用？</div><div class="yw-faq-a">游玩指令：建议每一句都使用，确保体验。<br><br>总结指令：务必每5~7轮使用一次！</div></div>
+                <div class="yw-faq" onclick="window._curEv=event;eval(document.getElementById('FUNC_TOGGLE_FAQ').dataset.s)"><div class="yw-faq-q">状态栏崩了怎么办？</div><div class="yw-faq-a">截断：回溯并开启高电重新生成，或降低字数上限。<br><br>抽风：AI抽风漏掉或搞错英文符号（实测概率极低），建议直接回溯重新生成，非常喜欢本次生成的内容就使用"功能按键"中的"修复"按钮。</div></div>
+            </div>
+        </div>
+    </div> 
+</div>
+

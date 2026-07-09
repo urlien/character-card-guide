@@ -1,0 +1,59 @@
+<div style="all:initial;display:block;box-sizing:border-box;max-width:100%;" onclick="event.stopPropagation();">
+  <style scoped>
+@import url('https://fonts.cdnfonts.com/css/vcr-osd-mono');
+
+@font-face{font-family:'Zpix';src:url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/Zpix.ttf')format('truetype');font-display:swap}
+
+.sab-root, .sab-root * {
+  box-sizing: border-box;
+}
+
+.sab-root {
+  --t-bg: #0a0a0f;
+  --t-bg-card: #0e120e;
+  --t-bg-header: rgba(51,255,51,0.03);
+  --t-text: #33ff33;
+  --t-text-dim: #1a8a1a;
+  --t-text-bright: #55ff55;
+  --t-accent: #ffcc00;
+  --t-accent2: #55ddff;
+  --t-accent3: #ff9966;
+  --t-border: #33ff33;
+  --t-border-dim: rgba(51,255,51,0.15);
+  --t-glow: rgba(51,255,51,0.15);
+  --t-font: 'VCR OSD Mono', 'Zpix', monospace;
+  --t-radius: 2px;
+  max-width: 100%;
+}
+  </style>
+  <div class="sab-root" style="background:#0a0a0f;color:#33ff33;font-family:'VCR OSD Mono', 'Zpix', monospace;font-size:13px;line-height:1.6;padding:0;overflow:hidden;position:relative">
+<div style="display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:nowrap;padding:0;border-radius:0;overflow:hidden;max-width:100%;"><div style="display:flex;gap:6px;font-size:13px;align-items:baseline;"><span style="color:#1a8a1a;white-space:nowrap;">姓名:</span><span style="color:#88ee88;">{{char.name}}</span></div>
+<div style="display:flex;gap:6px;font-size:13px;align-items:baseline;"><span style="color:#1a8a1a;white-space:nowrap;">性别:</span><span style="color:#88ee88;">{{char.sex}}</span></div>
+<div style="display:flex;gap:6px;font-size:13px;align-items:baseline;"><span style="color:#1a8a1a;white-space:nowrap;">种族:</span><span style="color:#88ee88;">人类</span></div>
+<div style="margin:4px 0;"><div style="display:flex;justify-content:space-between;margin-bottom:3px;font-size:11px;"><span style="color:var(--t-text-dim);">转化值</span><span style="color:var(--t-accent);">0/100</span></div><div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;"><div style="width:0%;height:100%;background:var(--t-accent);border-radius:8px;transition:width 0.3s;"></div></div></div></div>
+<hr style="border:none;border-top:1px solid #1a5a1a;margin:8px 0;">
+<div style="display:flex;justify-content:flex-start;align-items:flex-start;gap:6px;flex-wrap:nowrap;padding:0;border-radius:0;overflow:hidden;max-width:100%;"><div class="sec-c5kadcl" style="border:1px solid var(--t-border-dim);overflow:hidden;margin:4px 0;border-radius:var(--t-radius);border-top:2px solid #33ff33;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 12px;background:var(--t-bg-header);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;" onclick="event.stopPropagation();var s=this.parentElement;var b=s.querySelector('.sec-body-c5kadcl');if(b){b.style.display=b.style.display==='none'?'block':'none';this.querySelector('.tgl').textContent=b.style.display==='none'?'▼':'▲';}">
+    <span style="display:flex;align-items:center;font-size:12px;color:#33ff33;letter-spacing:1px;"><span style="width:14px;height:14px;display:inline-flex;margin-right:5px;color:#33ff33;"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="5" r="3"/><path d="M3 14c0-3 2.2-5 5-5s5 2 5 5"/></svg></span>外貌</span>
+    <span class="tgl" style="color:#33ff33;opacity:0.5;font-size:10px;">▲</span>
+  </div>
+  <div class="sec-body-c5kadcl" style="padding:8px 12px;font-size:12px;border-top:1px solid var(--t-border-dim);"><div style="font-size:12px;color:#33ff33;line-height:1.7;padding:0;white-space:pre-wrap;word-break:break-all;">待补充</div></div>
+</div></div>
+<div style="display:flex;justify-content:flex-start;align-items:flex-start;gap:6px;flex-wrap:nowrap;padding:0;border-radius:0;overflow:hidden;max-width:100%;"><div class="sec-c5sq9hq" style="border:1px solid var(--t-border-dim);overflow:hidden;margin:4px 0;border-radius:var(--t-radius);border-top:2px solid #33ff33;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 12px;background:var(--t-bg-header);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;" onclick="event.stopPropagation();var s=this.parentElement;var b=s.querySelector('.sec-body-c5sq9hq');if(b){b.style.display=b.style.display==='none'?'block':'none';this.querySelector('.tgl').textContent=b.style.display==='none'?'▼':'▲';}">
+    <span style="display:flex;align-items:center;font-size:12px;color:#33ff33;letter-spacing:1px;"><span style="width:14px;height:14px;display:inline-flex;margin-right:5px;color:#33ff33;"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="5" r="3"/><path d="M3 14c0-3 2.2-5 5-5s5 2 5 5"/></svg></span>衣着</span>
+    <span class="tgl" style="color:#33ff33;opacity:0.5;font-size:10px;">▲</span>
+  </div>
+  <div class="sec-body-c5sq9hq" style="padding:8px 12px;font-size:12px;border-top:1px solid var(--t-border-dim);"><div style="font-size:12px;color:#33ff33;line-height:1.7;padding:0;white-space:pre-wrap;word-break:break-all;">待补充</div></div>
+</div></div>
+<div style="display:flex;justify-content:flex-start;align-items:flex-start;gap:6px;flex-wrap:nowrap;padding:0;border-radius:0;overflow:hidden;max-width:100%;"><div class="sec-c5v1sch" style="border:1px solid var(--t-border-dim);overflow:hidden;margin:4px 0;border-radius:var(--t-radius);border-top:2px solid #33ff33;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 12px;background:var(--t-bg-header);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;" onclick="event.stopPropagation();var s=this.parentElement;var b=s.querySelector('.sec-body-c5v1sch');if(b){b.style.display=b.style.display==='none'?'block':'none';this.querySelector('.tgl').textContent=b.style.display==='none'?'▼':'▲';}">
+    <span style="display:flex;align-items:center;font-size:12px;color:#33ff33;letter-spacing:1px;"><span style="width:14px;height:14px;display:inline-flex;margin-right:5px;color:#33ff33;"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="5" r="3"/><path d="M3 14c0-3 2.2-5 5-5s5 2 5 5"/></svg></span>身体状态</span>
+    <span class="tgl" style="color:#33ff33;opacity:0.5;font-size:10px;">▲</span>
+  </div>
+  <div class="sec-body-c5v1sch" style="padding:8px 12px;font-size:12px;border-top:1px solid var(--t-border-dim);"><div style="font-size:12px;color:#33ff33;line-height:1.7;padding:0;white-space:pre-wrap;word-break:break-all;">待补充</div></div>
+</div></div>
+<div style="display:flex;justify-content:flex-start;align-items:center;gap:8px;flex-wrap:nowrap;padding:0;border-radius:0;overflow:hidden;max-width:100%;"><table style="width:100%;border-collapse:collapse;font-size:12px;border:1px solid var(--t-border-dim);border-radius:var(--t-radius);overflow:hidden;"><thead><tr><th style="padding:4px 8px;text-align:left;border-bottom:1px solid var(--t-border-dim);background:rgba(255,255,255,0.04);font-weight:600;">建筑</th><th style="padding:4px 8px;text-align:left;border-bottom:1px solid var(--t-border-dim);background:rgba(255,255,255,0.04);font-weight:600;">等级</th><th style="padding:4px 8px;text-align:left;border-bottom:1px solid var(--t-border-dim);background:rgba(255,255,255,0.04);font-weight:600;">备注</th></tr></thead><tbody><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">棚子</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">很差的棚子，会漏雨。</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">鸟巢</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">睡眠质量差。睡着不舒服。</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">篝火</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">没有火坑 ，漆黑寒夜.</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">烹饪锅</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">没有烹饪锅，你需要想办法弄到一个</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">晾肉架</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">没有晾肉架，无法晾晒潜伏者。</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">陷阱</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">没有陷阱</td></tr></tbody></table>
+<table style="width:100%;border-collapse:collapse;font-size:12px;border:1px solid var(--t-border-dim);border-radius:var(--t-radius);overflow:hidden;"><thead><tr><th style="padding:4px 8px;text-align:left;border-bottom:1px solid var(--t-border-dim);background:rgba(255,255,255,0.04);font-weight:600;">资源</th><th style="padding:4px 8px;text-align:left;border-bottom:1px solid var(--t-border-dim);background:rgba(255,255,255,0.04);font-weight:600;">数量</th></tr></thead><tbody><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">树叶</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">树枝</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">木材</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">布料</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">潜伏者</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">皮革</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">闪亮的东西</td><td style="padding:4px 8px;border-bottom:1px solid var(--t-border-dim);">0</td></tr></tbody></table></div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<style>
+/* ========== 女神异闻录5风格侧边栏 ========== */
+@keyframes p5-scan{0%{top:-2px}100%{top:100%}}
+@keyframes p5-glow{0%,100%{box-shadow:0 0 8px rgba(210,47,47,.15),0 0 2px rgba(255,90,90,.1)}50%{box-shadow:0 0 18px rgba(210,47,47,.4),0 0 30px rgba(255,90,90,.2)}}
+.p5-tog{position:fixed;left:0;top:22vh;width:20px;padding:8px 2px;background:rgba(10,10,10,.85);backdrop-filter:blur(6px);border:1.5px solid rgba(210,47,47,.4);border-left:none;border-radius:0 4px 4px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:pointer;z-index:99999;animation:p5-glow 4s ease-in-out infinite;transition:all .3s;color:#d32f2f;writing-mode:vertical-rl;letter-spacing:2px;font-family:'Arial Black',Gadget,sans-serif;font-weight:bold;line-height:1.4}
+.p5-tog:hover{transform:scale(1.05);border-color:#fff;color:#fff;background:rgba(10,10,10,.95);width:22px;padding:8px 3px}
+.p5-ov{position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:99998;opacity:0;pointer-events:none;transition:opacity .3s}
+.p5-sb{position:fixed;left:0;top:6vh;width:310px;height:88vh;background:linear-gradient(170deg,rgba(15,15,15,.97),rgba(8,8,8,.98));backdrop-filter:blur(18px);border:3px solid #d32f2f;border-left:none;border-radius:0 4px 4px 0;z-index:99999;transform:translateX(-100%);transition:transform .35s ease,box-shadow .35s ease;overflow-y:auto;padding:24px 18px;box-sizing:border-box;box-shadow:none;font-family:'Arial Black',Gadget,sans-serif}
+.p5-sb.p5-open{transform:translateX(0);box-shadow:8px 8px 0 #000}
+.p5-sb::before{content:'';position:absolute;left:5%;width:90%;height:1px;background:linear-gradient(90deg,transparent,rgba(210,47,47,.6),rgba(255,90,90,.4),transparent);animation:p5-scan 4s linear infinite;pointer-events:none;z-index:10}
+.p5-sb::-webkit-scrollbar{width:5px}
+.p5-sb::-webkit-scrollbar-thumb{background:rgba(210,47,47,.4);border-radius:3px}
+.p5-sb-h{text-align:center;font-size:18px;font-weight:900;color:#fff;letter-spacing:3px;padding-bottom:14px;border-bottom:2px solid #d32f2f;margin-bottom:8px;text-transform:uppercase;text-shadow:2px 2px 0 #000}
+.p5-sb-h small{display:block;font-size:10px;font-weight:normal;letter-spacing:2px;margin-top:5px;color:rgba(255,90,90,.7)}
+.p5-div{height:1px;background:linear-gradient(90deg,transparent,rgba(210,47,47,.4),rgba(255,90,90,.3),transparent);margin:14px 0}
+.p5-sb-r{margin-bottom:12px}
+.p5-sb-l{font-size:11px;color:rgba(255,255,255,.7);margin-bottom:5px;letter-spacing:1px;font-weight:bold}
+.p5-sb-l span{color:#d32f2f;font-weight:900;font-size:13px;margin-left:4px}
+.p5-sb-i{width:100%;box-sizing:border-box;padding:9px 12px;background:rgba(20,20,20,.8);border:2px solid rgba(210,47,47,.3);border-radius:0;color:#fff;font-size:13px;outline:none;transition:all .25s;font-family:inherit}
+.p5-sb-i:focus{border-color:#d32f2f;box-shadow:0 0 12px rgba(210,47,47,.3),0 0 4px rgba(255,90,90,.2);background:rgba(30,30,30,.9)}
+.p5-sb-i::placeholder{color:rgba(255,255,255,.3);font-size:12px}
+.p5-sb-s{width:100%;-webkit-appearance:none;height:4px;background:linear-gradient(90deg,rgba(210,47,47,.5),rgba(255,90,90,.6),rgba(210,47,47,.5));border-radius:2px;outline:none;margin-top:4px}
+.p5-sb-s::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:linear-gradient(135deg,#d32f2f,#ff5a5a);border-radius:0;cursor:pointer;box-shadow:0 0 10px rgba(210,47,47,.6);border:2px solid #fff}
+.p5-sb-g{display:flex;gap:8px}
+.p5b{flex:1;padding:8px 0;background:rgba(20,20,20,.8);border:2px solid rgba(210,47,47,.3);border-radius:0;color:rgba(255,255,255,.7);font-size:12px;text-align:center;cursor:pointer;transition:all .2s;font-family:inherit;text-transform:uppercase;font-weight:bold}
+.p5b:hover{border-color:#fff;background:rgba(40,40,40,.9);color:#fff}
+.p5b.p5ba{background:#d32f2f!important;color:#fff!important;border-color:#fff;box-shadow:4px 4px 0 #000}
+.p5-sb-c{width:100%;padding:12px;background:#d32f2f;border:2px solid #fff;border-radius:0;color:#fff;font-size:14px;font-weight:900;cursor:pointer;margin-top:10px;letter-spacing:2px;box-shadow:6px 6px 0 #000;transition:all .2s;font-family:inherit;text-transform:uppercase}
+.p5-sb-c:hover{background:#ff5a5a;transform:translate(-2px,-2px);box-shadow:8px 8px 0 #000}
+</style>
+<div class="p5-tog" onclick="p5Toggle('1749713200002')">创建猎物</div>
+<div class="p5-ov" id="p5-ov-1749713200002" onclick="p5Toggle('1749713200002')" style="opacity: 0; pointer-events: none;"></div>
+<div class="p5-sb" id="p5-sb-1749713200002" onclick="event.stopPropagation()">
+  <div class="p5-sb-h">渣男模拟器<small>创造你的猎物</small></div>
+  <div class="p5-div"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">猎物姓名</div><input class="p5-sb-i" id="tn-1749713200002" placeholder="例：林婉儿、苏晚晴、沈若薇"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">外观年龄<span id="tav-1749713200002">28岁</span></div><input type="range" class="p5-sb-s" id="ta-1749713200002" min="18" max="50" value="28" oninput="document.getElementById('tav-1749713200002').textContent=this.value+'岁'"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">性别</div>
+    <div class="p5-sb-g">
+      <div class="p5b p5ba" data-v="女性" onclick="p5Gender(this,'1749713200002')">女性</div>
+      <div class="p5b" data-v="男性" onclick="p5Gender(this,'1749713200002')">男性</div>
+      <div class="p5b" data-v="其他" onclick="p5Gender(this,'1749713200002')">其他</div>
+    </div>
+    <input class="p5-sb-i" id="tgi-1749713200002" placeholder="输入自定义性别" style="display:none;margin-top:8px">
+  </div>
+  <div class="p5-div"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">身高体型</div><input class="p5-sb-i" id="th-1749713200002" placeholder="例：165cm 纤细柔软、170cm 丰满有致、158cm 娇小玲珑"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">外貌特征</div><input class="p5-sb-i" id="tb-1749713200002" placeholder="例：杏眼桃腮、肤白如雪、黑长直发、眼角有颗泪痣"></div>
+  <div class="p5-div"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">性格标签</div><input class="p5-sb-i" id="tpp-1749713200002" placeholder="例：外表温柔内心冷漠、恋爱脑、隐忍但易失控"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">身份设定</div><input class="p5-sb-i" id="ti-1749713200002" placeholder="例：公司前台、大学教授、咖啡店老板、已婚少妇"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">与你(渣男)的关系</div><input class="p5-sb-i" id="tr-1749713200002" placeholder="例：新来的下属、妻子闺蜜、兄弟的女友、你的学生"></div>
+  <div class="p5-div"></div>
+  <div class="p5-sb-r"><div class="p5-sb-l">特殊设定</div><input class="p5-sb-i" id="to-1749713200002" placeholder="例：身上总带着栀子花香、害怕打雷、对甜食毫无抵抗力"></div>
+  <button class="p5-sb-c" onclick="p5Submit('1749713200002')">✦ 生成猎物 ✦</button>
+</div>
+<img src="x" style="display:none" onerror="window.p5Toggle=function(id){var sb=document.getElementById('p5-sb-'+id),ov=document.getElementById('p5-ov-'+id),op=sb.classList.toggle('p5-open');ov.style.opacity=op?'1':'0';ov.style.pointerEvents=op?'auto':'none'};window.p5Gender=function(btn,id){var bs=btn.parentElement.querySelectorAll('.p5b');for(var i=0;i<bs.length;i++)bs[i].classList.remove('p5ba');btn.classList.add('p5ba');document.getElementById('tgi-'+id).style.display=btn.dataset.v==='其他'?'block':'none'};window.p5Submit=function(id){var f=function(x){return document.getElementById(x+'-'+id).value},pre='[系统指令] 玩家扮演一位渣男。请在你的叙述中自然引出以下女性NPC角色，让她与玩家扮演的渣男展开情感、暧昧或肉体关系。NPC需拥有独立性格、言语风格和行为逻辑，主动推进剧情，制造背德或情感拉扯的氛围。\n\n',gb=document.querySelector('#p5-sb-'+id+' .p5ba'),g=gb?gb.dataset.v:'';if(g==='其他'){var gi=f('tgi');if(gi)g=gi}var items=[['猎物姓名','tn'],['外观年龄','ta'],['性别',''],['身高体型','th'],['外貌特征','tb'],['性格标签','tpp'],['身份设定','ti'],['与你(渣男)的关系','tr'],['特殊设定','to']],t=pre;for(var i=0;i<items.length;i++){var v=items[i][1]?f(items[i][1]):g;if(items[i][0]==='外观年龄')v+='岁';if(v)t+=items[i][0]+'：'+v+'\n'}var c=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(c){c.value=c.value+(c.value?'\n\n':'')+t.trim();c.dispatchEvent(new Event('input'))}}">

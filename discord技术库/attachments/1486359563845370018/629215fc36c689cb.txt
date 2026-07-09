@@ -1,0 +1,846 @@
+<style>
+:root{
+  --ui-bg-page:#0b0c10;
+  --ui-bg-page-2:#141821;
+
+  --ui-surface-0:#171b24;   /* 主面板底色 */
+  --ui-surface-1:#1d2330;   /* 次级面板底色 */
+  --ui-surface-2:#252c3b;   /* 强调面板底色 */
+
+  --ui-text-main:#f4f6fb;
+  --ui-text-soft:#bcc4d6;
+  --ui-text-right:#ffe7ef;
+
+  --ui-accent:#a78bfa;
+  --ui-accent-2:#f472b6;
+
+  --ui-border:#31394b;
+  --ui-border-strong:#49536b;
+
+  --ui-shadow:0 14px 36px rgba(0,0,0,.32);
+  --ui-shadow-deep:0 20px 48px rgba(0,0,0,.42);
+
+  --ui-radius-l:18px;
+  --ui-radius-m:14px;
+  --ui-radius-s:10px;
+
+  --ui-stone-texture:url("https://img.bian666.cf/file/1768554792253_Stoneseamless.png");
+  --ui-paper-texture:url("https://img.bian666.cf/file/1768556146959_Free_dark_vintage_paper_page_texture_for_layers__2982207584_.jpg");
+
+  --ui-speed:.22s;
+  --ui-ease:cubic-bezier(.2,.8,.2,1);
+}
+
+/* ===== 全局底色 ===== */
+.chat,
+uni-page-body,
+uni-page-wrapper,
+uni-page,
+.content-area{
+  color:var(--ui-text-main) !important;
+  background:
+    linear-gradient(180deg,var(--ui-bg-page),var(--ui-bg-page-2)) !important;
+}
+
+.scroll-container,
+.scroll-view,
+.uni-scroll-view,
+.uni-scroll-view-content{
+  background:transparent !important;
+  color:var(--ui-text-main) !important;
+}
+
+.chat *{
+  -webkit-tap-highlight-color:transparent;
+  box-sizing:border-box;
+}
+
+::-webkit-scrollbar{
+  width:6px;
+  height:6px;
+}
+::-webkit-scrollbar-track{
+  background:var(--ui-surface-0) !important;
+}
+::-webkit-scrollbar-thumb{
+  background:var(--ui-border-strong) !important;
+  border-radius:999px;
+}
+
+/* ===== 顶部 / 页头 / tab ===== */
+.chat-header,
+.page-header-scope,
+.topTabbar,
+.chat .topTabbar{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-surface-1),var(--ui-surface-0)) !important;
+  border-bottom:1px solid var(--ui-border) !important;
+  box-shadow:var(--ui-shadow) !important;
+}
+
+.chat-title,
+.header-roleName,
+.chat-header *,
+.topTabbar *{
+  color:var(--ui-text-main) !important;
+}
+
+.sidebar-container{
+  background:linear-gradient(180deg,var(--ui-surface-1),var(--ui-surface-0)) !important;
+  border-right:1px solid var(--ui-border) !important;
+}
+
+.sidebar-item,
+.tab-item{
+  color:var(--ui-text-soft) !important;
+  background:transparent !important;
+  transition:
+    transform var(--ui-speed) var(--ui-ease),
+    filter var(--ui-speed) var(--ui-ease);
+}
+
+.tab-container{
+  background:var(--ui-surface-0) !important;
+  border-bottom:1px solid var(--ui-border) !important;
+}
+
+.tab-item.active,
+.tab-item[aria-selected="true"]{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border-color:var(--ui-border-strong) !important;
+}
+
+.divider-line{
+  background:var(--ui-border) !important;
+}
+
+/* ===== 聊天区域 ===== */
+.chat-message-container,
+.chat-body,
+.message-item{
+  background:transparent !important;
+  color:var(--ui-text-main) !important;
+}
+
+.timestamp{
+  color:var(--ui-text-soft) !important;
+}
+
+.avatar-container{
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.26));
+}
+
+/* =========================================================
+   核心：三个承载内容板块改为“真正不透明”
+   1) 面板底色全部使用纯色，不用半透明 rgba
+   2) 取消 backdrop-filter 玻璃感
+   3) 纹理走 ::before，正文走 z-index:1
+   ========================================================= */
+
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right,
+.prologue-scope .prologue-content{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+
+  opacity:1 !important;
+  color:var(--ui-text-main) !important;
+
+  background:linear-gradient(180deg,var(--ui-surface-1),var(--ui-surface-0)) !important;
+  border:1px solid var(--ui-border) !important;
+  box-shadow:var(--ui-shadow-deep) !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* 左侧内容 */
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left{
+  border-color:color-mix(in srgb, var(--ui-accent) 36%, var(--ui-border)) !important;
+}
+
+/* 右侧内容 */
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right{
+  color:var(--ui-text-right) !important;
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border-color:color-mix(in srgb, var(--ui-accent-2) 40%, var(--ui-border)) !important;
+}
+
+/* 右侧内文字统一颜色 */
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right *{
+  color:var(--ui-text-right) !important;
+}
+
+/* 序章内容 */
+.prologue-scope .prologue-content{
+  border-color:var(--ui-border-strong) !important;
+}
+
+/* 纹理层：在伪元素里做，不影响正文 */
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left::before,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right::before,
+.prologue-scope .prologue-content::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+
+  background-image:var(--ui-stone-texture);
+  background-size:420px 300px;
+  background-repeat:repeat;
+
+  opacity:.06;
+}
+
+/* 正文永远在纹理层上方 */
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left > *,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right > *,
+.prologue-scope .prologue-content > *{
+  position:relative;
+  z-index:1;
+  opacity:1 !important;
+}
+
+/* 如果内部还有更深层嵌套，也尽量避免被误伤 */
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left img,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right img,
+.prologue-scope .prologue-content img,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left video,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right video,
+.prologue-scope .prologue-content video{
+  position:relative;
+  z-index:1;
+  opacity:1 !important;
+}
+
+/* ===== 弹窗 / 卡片 / 设置类 ===== */
+.u-popup__content .model-switch-scope,
+.modal-content,
+.dropdown-menu,
+.menu-item,
+.setting-panel,
+.setting-item,
+.card-container,
+.card-header,
+.card-body,
+.tooltip-container,
+.msg-option-scope .msg-content-box,
+.msg-option-scope .msg-options-box,
+.msg-modify-scope .modify-btn-box .modify-btn,
+.msg-modify-scope .option-box .option-item,
+.modify-btn-scope .modify-btn{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-surface-1),var(--ui-surface-0)) !important;
+  border:1px solid var(--ui-border) !important;
+  box-shadow:var(--ui-shadow) !important;
+}
+
+.card-header{
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border-bottom:1px solid var(--ui-border) !important;
+}
+
+.tooltip-container{
+  background:var(--ui-surface-0) !important;
+  border:1px solid var(--ui-border-strong) !important;
+}
+
+.modal-overlay{
+  background:rgba(0,0,0,.62) !important;
+}
+
+/* ===== 编辑器 ===== */
+.vditor,
+.vditor *,
+.vditor-reset,
+.vditor-content,
+.vditor-toolbar,
+.vditor-panel,
+.vditor-hint{
+  color:var(--ui-text-main) !important;
+  background-color:transparent !important;
+}
+
+.vditor{
+  background:linear-gradient(180deg,var(--ui-surface-1),var(--ui-surface-0)) !important;
+  border:1px solid var(--ui-border) !important;
+}
+
+.vditor-toolbar,
+.vditor-panel,
+.vditor-hint{
+  background:var(--ui-surface-0) !important;
+  border:1px solid var(--ui-border) !important;
+}
+
+/* ===== 输入区 ===== */
+.chat-input-area,
+.chat-bottom,
+.chat-bottom-wapper{
+  color:var(--ui-text-main) !important;
+  background:
+    linear-gradient(180deg,var(--ui-surface-1),var(--ui-surface-0)),
+    var(--ui-paper-texture) !important;
+  background-size:auto,cover !important;
+  background-repeat:no-repeat,no-repeat !important;
+  background-position:center,center !important;
+  border-top:1px solid var(--ui-border) !important;
+}
+
+.chat .chat-bottom .ai-assistant,
+.chat .chat-bottom .more-options-scope{
+  color:var(--ui-text-main) !important;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+
+.chat .chat-bottom .chat-input-scope{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border:1px solid var(--ui-border-strong) !important;
+  box-shadow:var(--ui-shadow) !important;
+  overflow:hidden;
+}
+
+.chat .chat-bottom .chat-input-scope::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:var(--ui-stone-texture);
+  background-size:420px 300px;
+  opacity:.05;
+}
+
+.chat .chat-bottom .chat-input-scope textarea,
+.chat .chat-bottom .uni-textarea textarea,
+.uni-textarea-textarea,
+.uni-textarea textarea{
+  color:var(--ui-text-right) !important;
+  background:transparent !important;
+}
+
+.chat .chat-bottom .more-scope .item .item-icon{
+  color:var(--ui-text-soft) !important;
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border:1px solid var(--ui-border) !important;
+  box-shadow:var(--ui-shadow) !important;
+  transition:
+    transform var(--ui-speed) var(--ui-ease),
+    filter var(--ui-speed) var(--ui-ease);
+}
+
+/* ===== 模型切换 / 按钮 ===== */
+.model-switch-scope,
+.model-switch-scope *{
+  color:var(--ui-text-main) !important;
+}
+
+.model-switch-scope .model-list .model-item{
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border:1px solid var(--ui-border) !important;
+  box-shadow:var(--ui-shadow) !important;
+}
+
+.model-switch-scope .model-list .model-item .model-intro{
+  color:var(--ui-text-soft) !important;
+}
+
+.model-switch-scope .model-list .model-item .corner-check{
+  background:linear-gradient(180deg,var(--ui-accent),var(--ui-accent-2)) !important;
+  border:1px solid var(--ui-border-strong) !important;
+}
+
+.model-switch-scope .model-list .model-item .checkmark .css-check{
+  border-bottom:1px solid var(--ui-text-main) !important;
+  border-right:1px solid var(--ui-text-main) !important;
+}
+
+
+.button-primary{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-accent),var(--ui-accent-2)) !important;
+  border:1px solid color-mix(in srgb, var(--ui-accent) 55%, var(--ui-border)) !important;
+  box-shadow:var(--ui-shadow) !important;
+}
+
+.button-secondary{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-surface-2),var(--ui-surface-1)) !important;
+  border:1px solid var(--ui-border) !important;
+  box-shadow:var(--ui-shadow) !important;
+}
+
+/* ===== 提示类 ===== */
+.notification-badge{
+  color:var(--ui-text-main) !important;
+  background:linear-gradient(180deg,var(--ui-accent-2),var(--ui-accent)) !important;
+}
+
+.error-message{
+  color:#ffe5ea !important;
+  background:#4a1f2b !important;
+  border:1px solid #7c3146 !important;
+}
+
+.success-message{
+  color:#e9fff7 !important;
+  background:#1f4538 !important;
+  border:1px solid #2d6b57 !important;
+}
+
+.warning-message{
+  color:#fff2dd !important;
+  background:#4b3821 !important;
+  border:1px solid #7a5a33 !important;
+}
+
+/* ===== 统一交互 ===== */
+.button-primary,
+.button-secondary,
+button,
+[role="button"],
+.sidebar-item,
+.tab-item,
+.setting-item,
+.menu-item,
+.msg-option-scope .msg-options-box .option-item,
+.msg-modify-scope .modify-btn-box .modify-btn,
+.msg-modify-scope .option-box .option-item,
+.modify-btn-scope .modify-btn,
+.copy-scope .copy-item,
+.send-msg,
+.more-scope,
+.more-scope .item,
+.chat-bottom .send-msg,
+.chat-bottom .more-scope .item,
+.chat .chat-bottom .ai-assistant,
+.chat .chat-bottom .more-options-scope,
+.model-switch-scope .model-list .model-item{
+  cursor:pointer;
+  transition:
+    transform var(--ui-speed) var(--ui-ease),
+    filter var(--ui-speed) var(--ui-ease),
+    box-shadow var(--ui-speed) var(--ui-ease);
+}
+
+.button-primary:hover,
+.button-secondary:hover,
+.sidebar-item:hover,
+.tab-item:hover,
+.setting-item:hover,
+.menu-item:hover,
+.msg-option-scope .msg-options-box .option-item:hover,
+.msg-modify-scope .modify-btn-box .modify-btn:hover,
+.msg-modify-scope .option-box .option-item:hover,
+.modify-btn-scope .modify-btn:hover,
+.copy-scope .copy-item:hover,
+.send-msg:hover,
+.more-scope .item:hover,
+.chat .chat-bottom .ai-assistant:hover,
+.chat .chat-bottom .more-options-scope:hover,
+.model-switch-scope .model-list .model-item:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.06);
+}
+
+/* ===== 继续隐藏快捷按钮 ===== */
+.shortcut-button-scope,
+.shortcut-button-scope *{
+  display:none !important;
+}
+
+
+:root{
+  --gg-edge-z-base: 9990;
+  --gg-edge-btn-w: 54px;
+  --gg-edge-btn-h: 38px;
+  --gg-edge-btn-radius: 999px;
+  --gg-edge-gap: 10px;
+  --gg-edge-hide-offset: 16px;
+  --gg-edge-hover-zone: 24px;
+}
+
+/* 隐藏真正的 checkbox */
+.gg-ui-top-toggle,
+.gg-ui-bottom-toggle{
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  inset: auto;
+}
+
+/* ===== 上下栏交互修正：展开后不阻断中间主体滚动 ===== */
+.gg-edge-ui{
+  pointer-events:none;
+}
+
+.gg-top-hover-zone,
+.gg-bottom-hover-zone,
+.gg-edge-toggle{
+  pointer-events:auto;
+}
+
+/* backdrop 仍保留结构，但永远不拦截滚动/点击 */
+.gg-edge-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:calc(var(--gg-edge-z-base) + 1);
+  background:transparent;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* 覆盖原先“展开时启用整屏遮罩”的逻辑 */
+body:has(#gg-ui-top-toggle:checked) .gg-edge-backdrop,
+body:has(#gg-ui-bottom-toggle:checked) .gg-edge-backdrop{
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* ===== 顶/底边缘悬停热区（桌面端） ===== */
+.gg-top-hover-zone,
+.gg-bottom-hover-zone{
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: calc(var(--gg-edge-z-base) + 2);
+  background: transparent;
+}
+
+.gg-top-hover-zone{
+  top: 0;
+  height: var(--gg-edge-hover-zone);
+}
+
+.gg-bottom-hover-zone{
+  bottom: 0;
+  height: var(--gg-edge-hover-zone);
+}
+
+/* ===== 原顶部栏 / 底部栏 ===== */
+.page-header-scope,
+.chat-bottom-wapper{
+  transition:
+    transform .28s var(--ui-ease),
+    opacity .28s var(--ui-ease),
+    box-shadow .28s var(--ui-ease) !important;
+  will-change: transform, opacity;
+  z-index: calc(var(--gg-edge-z-base) + 3) !important;
+}
+
+/* 默认收起 */
+.page-header-scope{
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: translateY(calc(-100% - var(--gg-edge-hide-offset)));
+  opacity: .98;
+  pointer-events: none;
+}
+
+.chat-bottom-wapper{
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  transform: translateY(calc(100% + var(--gg-edge-hide-offset)));
+  opacity: .98;
+  pointer-events: none;
+}
+
+/* ===== 顶栏显示条件 ===== */
+body:has(#gg-ui-top-toggle:checked) .page-header-scope,
+body:has(.gg-top-hover-zone:hover) .page-header-scope,
+body:has(.page-header-scope:hover) .page-header-scope,
+body:has(.page-header-scope:focus-within) .page-header-scope{
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ===== 底栏显示条件 ===== */
+body:has(#gg-ui-bottom-toggle:checked) .chat-bottom-wapper,
+body:has(.gg-bottom-hover-zone:hover) .chat-bottom-wapper,
+body:has(.chat-bottom-wapper:hover) .chat-bottom-wapper,
+body:has(.chat-bottom-wapper:focus-within) .chat-bottom-wapper{
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ===== 箭头按钮 ===== */
+.gg-edge-toggle{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--gg-edge-z-base) + 4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gg-edge-btn-w);
+  height: var(--gg-edge-btn-h);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    opacity .22s var(--ui-ease),
+    transform .22s var(--ui-ease),
+    visibility .22s var(--ui-ease);
+}
+
+.gg-top-toggle-box{
+  top: calc(env(safe-area-inset-top, 0px) + var(--gg-edge-gap));
+}
+
+.gg-bottom-toggle-box{
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--gg-edge-gap));
+}
+
+.gg-edge-toggle-btn{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--gg-edge-btn-radius);
+  background: linear-gradient(180deg, var(--ui-surface-2), var(--ui-surface-1));
+  border: 1px solid var(--ui-border-strong);
+  box-shadow: var(--ui-shadow);
+  overflow: hidden;
+  transition:
+    transform var(--ui-speed) var(--ui-ease),
+    filter var(--ui-speed) var(--ui-ease),
+    box-shadow var(--ui-speed) var(--ui-ease),
+    background var(--ui-speed) var(--ui-ease);
+}
+
+.gg-edge-toggle-btn::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--ui-stone-texture);
+  background-size: 420px 300px;
+  background-repeat: repeat;
+  opacity: .05;
+}
+
+.gg-edge-toggle-btn::before{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ui-text-main);
+  text-shadow: 0 1px 4px rgba(0,0,0,.35);
+}
+
+/* 默认箭头方向 */
+.gg-top-toggle-box .gg-edge-toggle-btn::before{
+  content: "▾";
+}
+
+.gg-bottom-toggle-box .gg-edge-toggle-btn::before{
+  content: "▴";
+}
+
+body:has(.gg-top-hover-zone:hover) .gg-top-toggle-box .gg-edge-toggle-btn::before,
+body:has(.page-header-scope:hover) .gg-top-toggle-box .gg-edge-toggle-btn::before,
+body:has(.page-header-scope:focus-within) .gg-top-toggle-box .gg-edge-toggle-btn::before{
+  content: "▴";
+}
+
+body:has(.gg-bottom-hover-zone:hover) .gg-bottom-toggle-box .gg-edge-toggle-btn::before,
+body:has(.chat-bottom-wapper:hover) .gg-bottom-toggle-box .gg-edge-toggle-btn::before,
+body:has(.chat-bottom-wapper:focus-within) .gg-bottom-toggle-box .gg-edge-toggle-btn::before{
+  content: "▾";
+}
+
+.gg-edge-toggle:hover .gg-edge-toggle-btn{
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.gg-edge-toggle:active .gg-edge-toggle-btn{
+  transform: translateY(0) scale(.98);
+}
+
+body:has(#gg-ui-top-toggle:checked) .gg-top-toggle-box,
+body:has(#gg-ui-bottom-toggle:checked) .gg-bottom-toggle-box{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) scale(.92);
+}
+.gg-edge-toggle{
+  border:none;
+  background:transparent;
+  padding:0;
+  margin:0;
+  appearance:none;
+  -webkit-appearance:none;
+  outline:none;
+}
+
+html,
+body,
+page,
+uni-page,
+uni-page-wrapper,
+uni-page-body,
+.chat,
+.content-area{
+  margin:0 !important;
+  padding:0 !important;
+  height:100dvh !important;
+  min-height:100dvh !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.scroll-container,
+.scroll-view,
+.uni-scroll-view,
+.uni-scroll-view-content,
+.chat-message-container,
+.chat-body{
+  margin:0 !important;
+  padding:0 !important;
+  min-height:0 !important;
+  box-sizing:border-box !important;
+}
+
+.scroll-container,
+.scroll-view dark,
+.scroll-view,
+.uni-scroll-view,
+.uni-scroll-view-content,
+.chat-message-container,
+.chat-body,
+.chat .chat-scope-box,
+.chat .chat-scope-box .scroll-view,
+.chat .chat-scope-box .scroll-view .chat-body{
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+.page-header-scope,
+.chat-bottom-wapper,
+.chat-bottom,
+.chat-input-area{
+  margin:0 !important;
+}
+
+.chat-message-container,
+.chat-body,
+.scroll-container,
+.scroll-view,
+.uni-scroll-view{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+}
+
+
+/* ===== 关键修正：scrollview 自己就带了顶部占位和减高度 ===== */
+.chat .chat-scope-box > uni-scroll-view.scroll-view,
+.chat .chat-scope-box > uni-scroll-view#scrollview,
+uni-view.chat-scope-box > uni-scroll-view.scroll-view.dark{
+  margin-top:0 !important;
+  height:100% !important;
+  min-height:100% !important;
+  top:0 !important;
+  bottom:0 !important;
+}
+
+/* 内层滚动容器也一起铺满，避免继续继承空白 */
+.chat .chat-scope-box > uni-scroll-view.scroll-view > div.uni-scroll-view,
+.chat .chat-scope-box > uni-scroll-view#scrollview > div.uni-scroll-view,
+uni-view.chat-scope-box > uni-scroll-view.scroll-view.dark > div.uni-scroll-view{
+  height:100% !important;
+  min-height:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* 内容层不要再额外留上下空白 */
+.chat .chat-scope-box .uni-scroll-view-content,
+.chat .chat-scope-box .chat-body,
+.chat .chat-scope-box .msglistview{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  min-height:100% !important;
+  box-sizing:border-box !important;
+}
+
+/* chat-scope-box 本体也清掉可能的上下占位 */
+.chat .chat-scope-box,
+.chat .chat-scope-box-hidden{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+}
+
+/* 底部占位锚点顺手清零，虽然你图里已经是 0px，但防以后被改 */
+#chatBottom,
+uni-view#chatBottom{
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+/* ===== 手机端：关闭悬停热区，仅保留点击 ===== */
+@media (hover:none),(pointer:coarse){
+  .gg-top-hover-zone,
+  .gg-bottom-hover-zone{
+    display: none !important;
+  }
+
+  .gg-top-toggle-box{
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+  }
+
+  .gg-bottom-toggle-box{
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  }
+}
+:root{
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sat: env(safe-area-inset-top, 0px);
+}
+
+page,
+uni-page-wrapper,
+uni-page-body,
+body,
+uni-scroll-view,
+uni-scroll-view .uni-scroll-view,
+uni-scroll-view .uni-scroll-view-content,
+uni-scroll-view .uni-scroll-view-content-vertical{
+  margin: 0 !important;
+  padding: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+}
+</style>
+<div class="gg-edge-ui">
+  <input id="gg-ui-top-toggle" class="gg-ui-top-toggle" type="checkbox">
+  <input id="gg-ui-bottom-toggle" class="gg-ui-bottom-toggle" type="checkbox">
+  <div class="gg-top-hover-zone" aria-hidden="true"></div>
+  <div class="gg-bottom-hover-zone" aria-hidden="true"></div>
+  <div class="gg-edge-backdrop" aria-hidden="true"></div>
+  <div class="gg-edge-toggle gg-top-toggle-box" role="button" tabindex="0" aria-label="展开或收起上边栏" onclick="event.stopPropagation();var t=document.getElementById('gg-ui-top-toggle');if(t){t.checked=!t.checked;}"><span class="gg-edge-toggle-btn"></span></div>
+  <div class="gg-edge-toggle gg-bottom-toggle-box" role="button" tabindex="0" aria-label="展开或收起下边栏" onclick="event.stopPropagation();var b=document.getElementById('gg-ui-bottom-toggle');if(b){b.checked=!b.checked;}"><span class="gg-edge-toggle-btn"></span></div>
+  <img src="x" style="display:none" onerror="this.onerror=null;var d=document.documentElement;if(d.getAttribute('data-gg-edge-clickclose')!=='1'){d.setAttribute('data-gg-edge-clickclose','1');document.addEventListener('click',function(ev){var n=ev.target;if(n&&n.closest&&(n.closest('.page-header-scope')||n.closest('.chat-bottom-wapper')||n.closest('.gg-edge-toggle'))){return;}var t=document.getElementById('gg-ui-top-toggle');var b=document.getElementById('gg-ui-bottom-toggle');if(t){t.checked=false;}if(b){b.checked=false;}},true);}this.remove();">
+</div>

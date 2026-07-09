@@ -1,0 +1,69 @@
+<!-- ========== 更多标签选择区（可复制多个） ========== -->
+<div class="xr-card"><div class="xr-card-title">/*【此处填入标签选择区标题】*/</div><div class="xr-row" style="flex-wrap:wrap">
+<!-- 
+  【此处复制普通标签模板，填入你自己的选项】
+  标签模板：<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('【键名】','【值】')">【显示文字】</span>
+-->
+</div></div>
+
+<div class="xr-card"><div class="xr-card-title">/*【此处填入标签选择区标题】*/</div><div class="xr-row" style="flex-wrap:wrap">
+<!-- 【此处复制普通标签模板，填入你自己的选项】 -->
+</div></div>
+
+<div class="xr-card"><div class="xr-card-title">/*【此处填入标签选择区标题】*/</div><div class="xr-scroll" style="max-height:180px"><div class="xr-row" style="flex-wrap:wrap">
+<!-- 【此处复制普通标签模板，填入你自己的选项】 -->
+</div></div></div>
+
+</div></div></div>
+<img src="x" style="display:none" onerror="
+window.xrAppend=function(k,v){var ta=document.querySelector('.chat-input-scope textarea')||document.querySelector('.chatMsgTextarea textarea')||document.querySelector('textarea');if(ta){ta.value+='\n【'+k+'】'+v;ta.dispatchEvent(new Event('input',{bubbles:true}))}};
+/* 【此处填入滑块描述数组，格式：var 数组名=['描述1','描述2',...];】 */
+var rb=['描述1','描述2','描述3','描述4','描述5','描述6','描述7','描述8','描述9','描述10','描述11','描述12','描述13','描述14','描述15','描述16'];
+var bb=['描述1','描述2','描述3','描述4','描述5','描述6','描述7','描述8'];
+window.xrRb=rb;window.xrBb=bb;
+/* 【滑块实时更新函数 - 根据类型更新数值和描述】 */
+window.xrUpdateSlider=function(input,type){
+var card=input.closest('.xr-card');if(!card)return;
+var s=card.querySelector('.xr-slider-val');var d=card.querySelector('.xr-slider-desc');var v=input.value;
+if(type=='penis'){s.textContent=v+'cm';d.textContent=rb[Math.min(Math.floor(v/2.2),15)]}
+else if(type=='bust'){s.textContent=String.fromCharCode(64+parseInt(v))+'罩杯';d.textContent=bb[parseInt(v)]}
+else if(type=='vagina'){s.textContent=v;d.textContent=v<50?'描述1':v<150?'描述2':v<300?'描述3':v<450?'描述4':'描述5'}
+else if(type=='anal'){s.textContent=v;d.textContent=v<50?'描述1':v<150?'描述2':v<300?'描述3':v<450?'描述4':'描述5'}
+else if(type=='foot'){s.textContent=v;d.textContent=v<50?'描述1':v<150?'描述2':v<300?'描述3':v<450?'描述4':'描述5'}
+};
+/* 【滑块确认函数 - 点击确认后追加到输入框】 */
+window.xrConfirmPenis=function(){var v=document.getElementById('xr-penis-slider').value;window.xrAppend('【键名】',v+'cm')};
+window.xrConfirmBust=function(){var v=document.getElementById('xr-bust-slider').value;window.xrAppend('【键名】',String.fromCharCode(64+parseInt(v))+'罩杯')};
+window.xrConfirmVagina=function(){var v=document.getElementById('xr-vagina-slider').value;window.xrAppend('【键名】',v)};
+window.xrConfirmAnal=function(){var v=document.getElementById('xr-anal-slider').value;window.xrAppend('【键名】',v)};
+window.xrConfirmFoot=function(){var v=document.getElementById('xr-foot-slider').value;window.xrAppend('【键名】',v)};
+/* 【性别设置函数 - 根据性别动态显示私密属性面板】 */
+var xrGender='';
+window.xrSetGender=function(g,t){
+xrGender=g;window.xrAppend('【键名】',g);
+var tags=t.parentElement.querySelectorAll('.xr-gender-tag');for(var i=0;i<tags.length;i++)tags[i].classList.remove('active');t.classList.add('active');
+var extra=document.getElementById('xr-gender-extra');extra.innerHTML='';
+if(g=='男'){extra.innerHTML='<div class=xr-card style=margin-top:8px><div class=xr-card-title>/*【此处填入男性私密属性标题】*/</div><input type=range class=xr-slider id=xr-penis-slider min=0 max=35 value=14 oninput=window.xrUpdateSlider(this,\'penis\')><div class=xr-row><span class=xr-slider-val>14cm</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmPenis()>/*【确认按钮文字】*/</div></div>'}
+else if(g=='女'){extra.innerHTML='<div class=xr-card style=margin-top:8px><div class=xr-card-title>/*【此处填入女性私密属性标题1，如：👙 胸部大小】*/</div><input type=range class=xr-slider id=xr-bust-slider min=0 max=6 value=2 oninput=window.xrUpdateSlider(this,\'bust\')><div class=xr-row><span class=xr-slider-val>C罩杯</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmBust()>/*【确认按钮文字】*/</div></div>';
+extra.innerHTML+='<div class=xr-card style=margin-top:6px><div class=xr-card-title>/*【此处填入女性私密属性标题2，如：🌸 小穴敏感度】*/</div><input type=range class=xr-slider id=xr-vagina-slider min=0 max=500 value=100 oninput=window.xrUpdateSlider(this,\'vagina\')><div class=xr-row><span class=xr-slider-val>100</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmVagina()>/*【确认按钮文字】*/</div></div>';
+extra.innerHTML+='<div class=xr-card style=margin-top:6px><div class=xr-card-title>/*【此处填入女性私密属性标题3，如：🕳️ 后庭敏感度】*/</div><input type=range class=xr-slider id=xr-anal-slider min=0 max=500 value=50 oninput=window.xrUpdateSlider(this,\'anal\')><div class=xr-row><span class=xr-slider-val>50</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmAnal()>/*【确认按钮文字】*/</div></div>';
+extra.innerHTML+='<div class=xr-card style=margin-top:6px><div class=xr-card-title>/*【此处填入女性私密属性标题4，如：🦶 玉足敏感度】*/</div><input type=range class=xr-slider id=xr-foot-slider min=0 max=500 value=80 oninput=window.xrUpdateSlider(this,\'foot\')><div class=xr-row><span class=xr-slider-val>80</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmFoot()>/*【确认按钮文字】*/</div></div>';
+/* 【此处可复制上面的卡片模板，添加更多女性私密属性，如名器选择区】 */}
+else if(g=='扶她'){extra.innerHTML='<div class=xr-card style=margin-top:8px><div class=xr-card-title>/*【此处填入扶她私密属性标题1】*/</div><input type=range class=xr-slider id=xr-penis-slider min=0 max=35 value=16 oninput=window.xrUpdateSlider(this,\'penis\')><div class=xr-row><span class=xr-slider-val>16cm</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmPenis()>/*【确认按钮文字】*/</div></div>';
+extra.innerHTML+='<div class=xr-card style=margin-top:6px><div class=xr-card-title>/*【此处填入扶她私密属性标题2】*/</div><input type=range class=xr-slider id=xr-bust-slider min=0 max=6 value=2 oninput=window.xrUpdateSlider(this,\'bust\')><div class=xr-row><span class=xr-slider-val>C罩杯</span><span class=xr-slider-desc>/*【默认描述】*/</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmBust()>/*【确认按钮文字】*/</div></div>'}
+else if(g=='伪娘'){window.xrAppend('【键名】','/*【默认值】*/');window.xrAppend('【键名】','/*【默认值】*/');window.xrAppend('【键名】','/*【默认值】*/');extra.innerHTML='<div class=xr-card style=margin-top:8px><div class=xr-card-title>/*【此处填入伪娘默认属性标题1】*/</div><div class=xr-row><span class=xr-slider-val>/*【默认值显示】*/</span><span class=xr-slider-desc>/*【默认描述】*/</span></div></div><div class=xr-card style=margin-top:6px><div class=xr-card-title>/*【此处填入伪娘默认属性标题2】*/</div><div class=xr-row><span class=xr-slider-val>/*【默认值显示】*/</span><span class=xr-slider-desc>/*【默认描述】*/</span></div></div>'}};
+/* 【分类设置函数 - 根据选择的分类动态生成身份选项】 */
+window.xrSetSect=function(s,t,tag){window.xrAppend('【键名】',s);var tags=tag.parentElement.querySelectorAll('.xr-sect-tag');for(var i=0;i<tags.length;i++)tags[i].classList.remove('active');tag.classList.add('active');
+var di=document.getElementById('xr-sect-identity');var ids=[];
+if(t=='类型1')ids=['身份1','身份2','身份3','身份4','身份5'];
+else ids=['身份A','身份B','身份C','身份D'];
+di.innerHTML='<div class=xr-card-title style=margin-top:6px>/*【此处填入身份区标题，如：🎭 可选身份】*/</div><div class=xr-row style=flex-wrap:wrap>'+ids.map(function(id){return'<span class=xr-tag onclick=event.stopPropagation();window.xrAppend(\'【键名】\',\''+id+'\')>'+id+'</span>'}).join('')+'</div>'};
+/* 【折叠选择设置函数 - 如灵根选择】 */
+window.xrSetLinggen=function(lg,t){window.xrAppend('【键名】',lg);var tags=t.parentElement.querySelectorAll('.xr-linggen-tag');for(var i=0;i<tags.length;i++)tags[i].classList.remove('active');t.classList.add('active');
+var detail=document.getElementById('xr-linggen-detail');
+var ele=['选项1','选项2','选项3','选项4','选项5','选项6','选项7','选项8','选项9','选项10'];
+/* 【此处填入你自己的折叠逻辑，根据lg的值动态生成组合选项】 */
+if(lg=='选项值1')detail.innerHTML='/*【此处填入折叠内容的HTML】*/';
+else if(lg=='选项值2')detail.innerHTML='/*【此处填入折叠内容的HTML】*/';
+else detail.innerHTML='/*【此处填入默认折叠内容的HTML】*/'};
+this.remove()">

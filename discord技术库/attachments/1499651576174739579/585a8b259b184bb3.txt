@@ -1,0 +1,271 @@
+<!-- 侧边唤醒按钮 (定位: top 63%，宽度 26px) -->
+<div class="teapot-rand2-sidebar" onclick="event.stopPropagation()">
+    <!-- 唤醒时重置到区域选择界面 -->
+    <div class="teapot-rand2-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.style.display='flex';m.querySelector('.r2-combo-view').style.display='none';m.querySelector('.r2-select-view').style.display='flex';">重组</div>
+</div>
+
+<!-- 隐藏的专属事件库：42个事件，6大区域完美等分 -->
+<div id="hu-r2-data" style="display:none;">
+    
+    <!-- 1. 明昼城 (极致工业/冷酷竞争/资源角力) -->
+    <div data-loc="明昼城" data-tag="[ 资本角力 ]" data-title="财报对赌的牺牲品" data-quote="这个季度的KPI必须达成，哪怕让她们连跳三天三夜！" data-desc="董事会下达了极其严苛的盈利指标，为了完成对赌协议，高层决定无视安全标准，强行增加商业站台的频次。"></div>
+    <div data-loc="明昼城" data-tag="[ 恶性竞争 ]" data-title="消失的备用音源" data-quote="马上就要上台了，为什么系统里只有伴奏没有原声轨？" data-desc="顶级打歌节目直播前五分钟，原本储存在内网的备用人声轨道被蓄意删除，演出面临全开麦走音的巨大风险。"></div>
+    <div data-loc="明昼城" data-tag="[ 极限施压 ]" data-title="冰水浇灌的惩罚" data-quote="连表情管理都做不到，给我拿冰水泼醒她！" data-desc="在一场极其严苛的规则之秤考核中，导师对失误的练习生采取了极度侮辱性的惩罚措施。这一幕被隐藏摄像头偷拍。"></div>
+    <div data-loc="明昼城" data-tag="[ 桃色交易 ]" data-title="顶层会议室的名单" data-quote="只要在这份名单上签字，明昼城的资源随便你挑。" data-desc="一份暗藏潜规则的资源置换名单在练习生间流传。只要愿意在深夜前往指定的雾镜塔高层专属区域，就能跃升至出道位。"></div>
+    <div data-loc="明昼城" data-tag="[ 监控风暴 ]" data-title="练习室的隐形眼" data-quote="你们的一举一动，甚至呼吸的频率，都在公司的监控之下。" data-desc="纪律委员会为了严格控制艺人私生活，在休息区安装了未公开的监控。这批高度隐私的数据却不慎流向了暗网。"></div>
+    <div data-loc="明昼城" data-tag="[ 粉丝哗变 ]" data-title="被涂黑的应援墙" data-quote="我们花了那么多钱打投，这就是你们给的工业垃圾？" data-desc="由于近期推出的团体概念严重敷衍，愤怒的核心粉丝群体在深夜用油漆涂黑了中央大道的巨型宣发海报。"></div>
+    <div data-loc="明昼城" data-tag="[ 史诗阴谋 ]" data-title="通天塔的控制代码" data-quote="只要修改这行代码，整个明昼城的大屏都会变成我们的标志。" data-desc="极客黑客组织试图入侵核心控制枢纽。一旦成功，全城的零延迟演艺系统将被瘫痪，甚至被迫播报伪造的丑闻通告。"></div>
+
+    <!-- 2. 星洲城 (潮流电音/海港狂欢/赛博失控) -->
+    <div data-loc="星洲城" data-tag="[ 演出意外 ]" data-title="全息投影的乱码" data-quote="见鬼了，伴舞的投影怎么全变成了恐怖的骷髅？" data-desc="海港浮空舞台正在进行赛博电音节，由于不明信号干扰，耗资巨大的全息投影系统突然出现诡异的乱码和不雅图案。"></div>
+    <div data-loc="星洲城" data-tag="[ 狂热失控 ]" data-title="冲破警戒线的快艇" data-quote="保安！有狂热粉丝开着快艇直接冲向舞台底座了！" data-desc="在一场海上游轮派对中，失去理智的私生群体租赁了数艘快艇，强行突破了海警的封锁线，试图攀爬上艺人所在的甲板。"></div>
+    <div data-loc="星洲城" data-tag="[ 创意窃取 ]" data-title="泄露的编曲工程" data-quote="这段Drop的旋律，明明是我们下个月才要发的新概念！" data-desc="一首融合了前卫电子元素的未公开主打歌，其核心工程文件在制作人的私人派对上被匿名人士拷贝，并在地下电音圈传播。"></div>
+    <div data-loc="星洲城" data-tag="[ 极限狂欢 ]" data-title="缺氧的派对后半场" data-quote="场馆里的干冰放太多了，前排已经有人喘不过气了！" data-desc="为了追求极致的视觉效果，演唱会现场违规释放了超量的舞台烟雾。密闭的场馆内氧气浓度急剧下降，引发了群体恐慌。"></div>
+    <div data-loc="星洲城" data-tag="[ 赛博绯闻 ]" data-title="AI合成的艳照门" data-quote="哪怕我们都知道那是AI换脸，但大众只相信他们看到的。" data-desc="极其逼真的AI换脸技术生成了涉及多名当红艺人的不良视频，在地下黑客论坛疯狂传播。由于技术过于完美，澄清变得异常艰难。"></div>
+    <div data-loc="星洲城" data-tag="[ 资本博弈 ]" data-title="被截胡的国际代言" data-quote="霓虹灯管再亮，也照不透资本的黑幕。" data-desc="原本已经敲定的全球顶奢代言，在签约前一秒被拥有深厚海外背景的神秘空降兵截胡。前期的所有预热宣传全部成了笑话。"></div>
+    <div data-loc="星洲城" data-tag="[ 史诗危机 ]" data-title="棕榈大道的熄灭" data-quote="这是星洲城建城以来，第一次彻底失去光芒。" data-desc="遭到境外黑客组织的网络核打击，全球最长的应援灯饰步行街瞬间瘫痪。失去了引以为傲的智能光影，星洲城的旅游业与偶像产业面临停摆。"></div>
+
+    <!-- 3. 澄江城 (古典传统/水榭画舫/艺术碰撞) -->
+    <div data-loc="澄江城" data-tag="[ 理念冲突 ]" data-title="改编古曲的争议" data-quote="这种加入了重低音的改编，是对传统艺术的亵渎！" data-desc="企划试图将古老的江南丝竹与现代舞曲融合，却遭到了传统文化保护协会的强烈抗议。老一辈艺术家联名要求封杀该演出。"></div>
+    <div data-loc="澄江城" data-tag="[ 意外灾害 ]" data-title="被烧毁的祈福纸鸢" data-quote="风向突变，着火的纸鸢落在了存放高定戏服的仓库顶上！" data-desc="江畔的祈福活动发生意外，携带明火的纸鸢失控坠落，不仅烧毁了大量昂贵的演出物资，还差点引发大规模踩踏。"></div>
+    <div data-loc="澄江城" data-tag="[ 艺术瓶颈 ]" data-title="无法共鸣的琴弦" data-quote="技巧很完美，但里面没有灵魂，你根本不懂这首曲子的哀愁。" data-desc="重点培养的古典风练习生在面临关键考核时陷入了深度的自我怀疑。无论怎么练习，都无法达到导师要求的意境，精神临近崩溃。"></div>
+    <div data-loc="澄江城" data-tag="[ 秘密私会 ]" data-title="画舫深处的酒局" data-quote="只要把这杯酒敬给那位大人物，这女一号的角色就是你的。" data-desc="在看似雅致的木船画舫深处，正在进行一场不为人知的利益交换。传统的茶道表演沦为了权贵物色猎物的掩护。"></div>
+    <div data-loc="澄江城" data-tag="[ 恶意破坏 ]" data-title="被折断的紫竹笛" data-quote="这是专门定制的乐器！到底是谁在上面踩了一脚？" data-desc="重要的水榭舞台首演前，首席乐手珍贵的定制乐器遭到人为破坏。显然是内部人员为了争夺出场机会而痛下黑手。"></div>
+    <div data-loc="澄江城" data-tag="[ 人设反噬 ]" data-title="崩塌的清冷滤镜" data-quote="那个天天在镜头前抄经书的古典美人，私底下居然在夜店狂舞？" data-desc="长期维持不食人间烟火、古典雅致人设的当家花旦，被狗仔拍到在其他城市的地下酒吧疯狂蹦迪，强烈的反差让粉丝信仰碎裂。"></div>
+    <div data-loc="澄江城" data-tag="[ 史诗决裂 ]" data-title="出逃的首席舞者" data-quote="你们要的只是一个提线木偶，而不是真正的艺术。" data-desc="企划内最具天赋的灵魂人物，因为无法忍受公司将古典艺术过度商业化，在最重要的全国巡演首站开演前一小时，离奇失踪。"></div>
+
+    <!-- 4. 云洐市 (梦幻高空/纯洁人设/人造仙境) -->
+    <div data-loc="云洐市" data-tag="[ 气候异常 ]" data-title="无法消散的浓雾" data-quote="雾太大了，连第一排的观众都看不见舞台，怎么演出？" data-desc="由于极端天气影响，云端塔周边的雾气浓度远超预期，导致原定的露天梦幻公演变成了盲人摸象，收音设备也严重受潮。"></div>
+    <div data-loc="云洐市" data-tag="[ 极限走音 ]" data-title="稀薄空气的反噬" data-quote="高音C根本上不去，她的声带已经充血发炎了！" data-desc="为了追求极致的高空演唱效果，频繁的缺氧训练对艺人的声带造成了不可逆的损伤。在一次重要彩排中，主唱彻底失声。"></div>
+    <div data-loc="云洐市" data-tag="[ 安全事故 ]" data-title="断裂的威亚滑索" data-quote="安全扣松了！快让她降下来！" data-desc="标志性的星轨滑翔演出中，机械滑索突发严重故障。艺人被悬挂在数百米的高空进退两难，全网直播的镜头见证了这惊险一幕。"></div>
+    <div data-loc="云洐市" data-tag="[ 纯洁裂痕 ]" data-title="伪造的医疗记录" data-quote="大家都以为那是天然的完美嗓音，其实是做过声带微创手术的。" data-desc="一份高度机密的医疗档案被黑市高价兜售。一直以天然天籁之音作为卖点的顶级Vocal，其人设面临毁灭性的质疑。"></div>
+    <div data-loc="云洐市" data-tag="[ 资源霸凌 ]" data-title="被剪光的单人片段" data-quote="我的声音在这首歌里完全成了她的和声背景垫音！" data-desc="原本主打双主唱的单曲，在最终发布时，其中一人的高光片段被无情一剪没，全部用来烘托另一位有高层背景的成员。"></div>
+    <div data-loc="云洐市" data-tag="[ 狂热越界 ]" data-title="寄到公司的血书" data-quote="我愿意为你从云端塔跳下去，只要你肯看我一眼。" data-desc="一位走火入魔的极端狂热粉，将写满恐怖情话的信件和危险物品直接寄到了羽翼创意园区的前台，引发了大规模恐慌。"></div>
+    <div data-loc="云洐市" data-tag="[ 史诗丑闻 ]" data-title="假唱协议的曝光" data-quote="那些空灵的现场，全都是修音师在后台实时垫音的成果。" data-desc="离职的首席混音师实名举报，云洐市引以为傲的全开麦现场，实际上存在大规模的技术造假。整个区域的公信力降至冰点。"></div>
+
+    <!-- 5. 安弥市 (岁月温情/老旧羁绊/陈年隐患) -->
+    <div data-loc="安弥市" data-tag="[ 版权纠纷 ]" data-title="丢失的绝版母带" data-quote="这首歌的翻唱权到底在谁手里？当年的合同根本找不到了！" data-desc="企划试图复刻十年前的经典神曲，却发现原版版权归属极其混乱。原唱的家属突然跳出来索要天价版权费，并扬言要对簿公堂。"></div>
+    <div data-loc="安弥市" data-tag="[ 情感勒索 ]" data-title="前队友的控诉信" data-quote="凭什么只有你踩着我们当年的情怀爬到了顶峰？" data-desc="在记忆剧场的周年纪念会上，一位早已退圈的前成员突然现身，声泪俱下地控诉现任顶流当年在团内的打压与背叛。"></div>
+    <div data-loc="安弥市" data-tag="[ 后勤危机 ]" data-title="被虫蛀的高定戏服" data-quote="这可是当年巡演的绝版战袍，就这么毁了？" data-desc="由于仓库管理员的疏忽，几件具有重大历史纪念意义、即将用于文化展览的高定演出服遭到了严重的虫蛀与受潮，无法修复。"></div>
+    <div data-loc="安弥市" data-tag="[ 隐私越界 ]" data-title="拆封的十年旧信" data-quote="谁允许你们把粉丝写给我的私人信件当做素材公开的！" data-desc="节目组为了制造催泪效果，未经允许擅自拆阅了多年前粉丝寄给艺人的私密信件，并公开朗读。此举彻底激怒了当事人。"></div>
+    <div data-loc="安弥市" data-tag="[ 暗流涌动 ]" data-title="记忆剧场的幽会" data-quote="在最神圣的纪念舞台背后，他们竟然在做这种事。" data-desc="狗仔潜入了安弥记忆剧场，在满是回忆杀的天鹅绒幕布后，拍到了现役艺人与某位已婚资本大佬极度亲密的举止。"></div>
+    <div data-loc="安弥市" data-tag="[ 恶意抹黑 ]" data-title="被篡改的放映机" data-quote="广场上的大屏幕怎么播起了我们出道时的黑历史？" data-desc="拾光旧影广场的控制室被入侵，原本循环播放的辉煌时刻被全部替换成了组合早期极其尴尬的车祸现场和未公开丑闻素材。"></div>
+    <div data-loc="安弥市" data-tag="[ 史诗决裂 ]" data-title="拒绝编织的围巾" data-quote="所谓的羁绊都是假的，今天宣布单飞。" data-desc="在全城瞩目的时光编织节上，人气断层的核心成员突然在舞台上扯断了象征团魂的巨型围巾，毫无预兆地单方面宣布解约。"></div>
+
+    <!-- 6. 景明镇 (深山自然/治愈反差/孤岛求生) -->
+    <div data-loc="景明镇" data-tag="[ 自然反噬 ]" data-title="突发暴雨的露营祭" data-quote="帐篷全塌了，发电机也进水了，快把设备搬回室内！" data-desc="毫无预兆的极端强对流天气袭击了演出现场。泥石流切断了下山的路，大量人员被困在深山中，彻底失去通讯信号。"></div>
+    <div data-loc="景明镇" data-tag="[ 动保争议 ]" data-title="迷路的野生幼鹿" data-quote="马上停止拍摄！你们的闪光灯吓到它了！" data-desc="在森林深处拍摄时，剧组为了强行制造与自然互动的虚假画面，不顾警告使用诱饵吸引野生动物，遭到了环保组织的强烈谴责。"></div>
+    <div data-loc="景明镇" data-tag="[ 隐私曝光 ]" data-title="花房里的窃听器" data-quote="这里不是避风港吗？为什么连盆栽的泥土里都藏着麦克风？" data-desc="进行例行安全检查时，在艺人每天早读的玻璃花房内搜出了多个微型窃听设备。大量毫无防备的私密谈话已被录音。"></div>
+    <div data-loc="景明镇" data-tag="[ 极限试探 ]" data-title="篝火旁的夜半低语" data-quote="麦克风已经关了，镜头也盖上了，现在只有我们两个人。" data-desc="在一场野外生存真人秀中，两人在深夜篝火旁发生了超出剧本范围的暧昧互动。他们以为没有被拍到，但其实红外摄像机正在运转。"></div>
+    <div data-loc="景明镇" data-tag="[ 内部霸凌 ]" data-title="消失的应急物资" data-quote="谁把她的指南针和对讲机偷偷拿走了？深山里会出人命的！" data-desc="在森林定向考核环节，由于强烈的嫉妒心，某人的重要求生装备被同伴恶意藏匿，导致其在深山老林中彻底迷失方向。"></div>
+    <div data-loc="景明镇" data-tag="[ 虚假人设 ]" data-title="被遗弃的宠物犬" data-quote="她在镜头前抱着小狗哭得那么伤心，转头就把狗扔给了助理。" data-desc="某位以充满爱心著称的治愈系艺人，被爆出私下对动物极其冷漠甚至有虐待倾向，苦心经营的完美滤镜瞬间破灭。"></div>
+    <div data-loc="景明镇" data-title="资本推平回音谷" data-tag="[ 史诗地震 ]" data-quote="推土机已经开到谷口了，他们要在挂满风铃的地方建度假酒店！" data-desc="大型财阀强行收购了大片土地，计划推平承载粉丝精神寄托的风铃回音谷进行商业地产开发。原生态的净土面临毁灭。"></div>
+</div>
+
+<!-- 核心重组处理器：在当前选定的城市内，分别抽取Tag/Title/Quote/Desc进行无序缝合 -->
+<div id="hu-r2-updater" style="display:none;" onclick="var m=document.getElementById('hu-rand2-modal');var loc=m.getAttribute('data-city');var all=document.getElementById('hu-r2-data').children;var pool=[];for(var i=0;i!=all.length;i++){if(all[i].getAttribute('data-loc')==loc)pool.push(all[i]);}var L=pool.length;if(L!=0){m.querySelector('.r2-city-label').innerText='【 '+loc+'专属事件链 】';m.querySelector('.r2-tag').innerText=pool[Math.floor(Math.random()*L)].getAttribute('data-tag');m.querySelector('.r2-title').innerText=pool[Math.floor(Math.random()*L)].getAttribute('data-title');m.querySelector('.r2-quote').innerText=pool[Math.floor(Math.random()*L)].getAttribute('data-quote');m.querySelector('.r2-desc').innerText=pool[Math.floor(Math.random()*L)].getAttribute('data-desc');}"></div>
+
+<!-- 全局重组终端模态框 -->
+<div id="hu-rand2-modal" data-theme="warm" data-city="明昼城" style="display:none;" onclick="event.stopPropagation()">
+    <div class="hu-r2-container">
+        
+        <!-- 顶栏与主题切换按钮 -->
+        <div class="hu-r2-header">
+            <div style="flex:1;"></div>
+            <div class="hu-r2-header-title">区域限定 · 灵感重组</div>
+            <div style="flex:1; display:flex; justify-content:flex-end; gap:8px;">
+                <div class="hu-r2-theme-btn" onclick="var m=document.getElementById('hu-rand2-modal');var t=m.getAttribute('data-theme');if(t=='warm'){m.setAttribute('data-theme','dark');this.innerText='暗黑';}else{m.setAttribute('data-theme','warm');this.innerText='暖杏';}">暖杏</div>
+                <div class="hu-r2-close" onclick="document.getElementById('hu-rand2-modal').style.display='none'">✖</div>
+            </div>
+        </div>
+
+        <!-- 视图一：坐标选择面板 -->
+        <div class="r2-select-view" style="display:flex;">
+            <div class="r2-sv-title">请选择事件发生的区域坐标：</div>
+            <div class="r2-grid">
+                <div class="r2-city-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.setAttribute('data-city','明昼城');m.querySelector('.r2-select-view').style.display='none';m.querySelector('.r2-combo-view').style.display='flex';document.getElementById('hu-r2-updater').click();">
+                    <div class="rc-name">明昼城</div><div class="rc-sub">极致工业 · 资源中心</div>
+                </div>
+                <div class="r2-city-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.setAttribute('data-city','星洲城');m.querySelector('.r2-select-view').style.display='none';m.querySelector('.r2-combo-view').style.display='flex';document.getElementById('hu-r2-updater').click();">
+                    <div class="rc-name">星洲城</div><div class="rc-sub">赛博幻彩 · 潮流海港</div>
+                </div>
+                <div class="r2-city-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.setAttribute('data-city','澄江城');m.querySelector('.r2-select-view').style.display='none';m.querySelector('.r2-combo-view').style.display='flex';document.getElementById('hu-r2-updater').click();">
+                    <div class="rc-name">澄江城</div><div class="rc-sub">古典雅致 · 传统艺术</div>
+                </div>
+                <div class="r2-city-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.setAttribute('data-city','云洐市');m.querySelector('.r2-select-view').style.display='none';m.querySelector('.r2-combo-view').style.display='flex';document.getElementById('hu-r2-updater').click();">
+                    <div class="rc-name">云洐市</div><div class="rc-sub">梦幻高空 · 纯净人设</div>
+                </div>
+                <div class="r2-city-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.setAttribute('data-city','安弥市');m.querySelector('.r2-select-view').style.display='none';m.querySelector('.r2-combo-view').style.display='flex';document.getElementById('hu-r2-updater').click();">
+                    <div class="rc-name">安弥市</div><div class="rc-sub">岁月温情 · 怀旧羁绊</div>
+                </div>
+                <div class="r2-city-btn" onclick="var m=document.getElementById('hu-rand2-modal');m.setAttribute('data-city','景明镇');m.querySelector('.r2-select-view').style.display='none';m.querySelector('.r2-combo-view').style.display='flex';document.getElementById('hu-r2-updater').click();">
+                    <div class="rc-name">景明镇</div><div class="rc-sub">深山自然 · 治愈疗养</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 视图二：区域内无序缝合面板 -->
+        <div class="r2-combo-view" style="display:none; flex-direction:column; flex:1;">
+            
+            <div class="r2-back-bar" onclick="var m=document.getElementById('hu-rand2-modal');m.querySelector('.r2-combo-view').style.display='none';m.querySelector('.r2-select-view').style.display='flex';">
+                <span>‹ 返回区域选择</span>
+                <span class="r2-city-label"></span>
+            </div>
+
+            <div class="hu-r2-body">
+                <div class="hu-r2-archive">
+                    <div class="r2-tag">[ 混沌重组 ]</div>
+                    <div class="r2-title">正在提取档案</div>
+                    <div class="r2-divider"></div>
+                </div>
+                
+                <div class="hu-r2-intel">
+                    <div class="r2-quote-wrapper"><div class="r2-quote">获取台词中...</div></div>
+                    <div class="r2-desc">同步内网数据中...</div>
+                </div>
+            </div>
+
+            <div class="hu-r2-footer">
+                <div class="hu-r2-btn btn-roll" onclick="document.getElementById('hu-r2-updater').click();">在此区域内重新抽取</div>
+                <div class="hu-r2-btn btn-apply" onclick="var m=document.getElementById('hu-rand2-modal');var a=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(a){var txt='触发事件『'+m.querySelector('.r2-title').innerText+'』\n【详细状况】：'+m.querySelector('.r2-desc').innerText+'\n\n立即在两轮内合理的引入';a.value=txt;a.dispatchEvent(new Event('input'));}m.style.display='none';">下达应对预案</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+/* CSS 主题变量体系 */
+#hu-rand2-modal[data-theme="warm"] {
+    --r2-bg: #FDF6F0; --r2-card: #FFFCFA; --r2-border: #D4A5A5; --r2-border-strong: #C27D7D; 
+    --r2-text: #594D46; --r2-text-light: #A68D81; --r2-header-text: #FFF; --r2-radius: 12px; 
+    --r2-shadow: rgba(212, 165, 165, 0.4); --r2-quote-bg: rgba(253, 246, 240, 1);
+}
+#hu-rand2-modal[data-theme="dark"] {
+    --r2-bg: #000; --r2-card: #0A0A0A; --r2-border: #ff3333; --r2-border-strong: #ff3333; 
+    --r2-text: #EAEAEA; --r2-text-light: #888; --r2-header-text: #000; --r2-radius: 4px; 
+    --r2-shadow: rgba(255, 51, 51, 0.4); --r2-quote-bg: rgba(20, 20, 20, 1);
+}
+
+/* 侧边唤醒按钮 (定位: top 63%，宽度 26px) */
+.teapot-rand2-sidebar { position: fixed; left: 0; top: 63%; transform: translateY(-50%); z-index: 9999; }
+.teapot-rand2-btn {
+    box-sizing: border-box; width: 26px; padding: 15px 4px; 
+    background: #D4A5A5; border: 1.5px solid #594D46; border-left: none; 
+    border-radius: 0 8px 8px 0; color: #FFF; cursor: pointer; 
+    writing-mode: vertical-rl; font-size: 14px; letter-spacing: 3px; 
+    text-align: center; box-shadow: 2px 0 10px rgba(212, 165, 165, 0.4); 
+    transition: all 0.3s; font-weight: bold;
+}
+.teapot-rand2-btn:hover { background: #C27D7D; width: 32px; }
+
+/* 模态框全屏遮罩 */
+#hu-rand2-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6); z-index: 10000;
+    display: flex; justify-content: center; align-items: center; backdrop-filter: blur(2px);
+    transition: background 0.3s;
+}
+
+/* 核心容器 */
+.hu-r2-container {
+    width: 90vw; max-width: 500px; min-height: 400px;
+    background: var(--r2-bg); border: 2px solid var(--r2-border); border-radius: var(--r2-radius);
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 0 20px var(--r2-shadow); transition: all 0.3s ease;
+}
+
+/* 顶栏 */
+.hu-r2-header {
+    background: var(--r2-border); color: var(--r2-header-text); padding: 8px 15px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.hu-r2-header-title { font-weight: 900; font-size: 16px; letter-spacing: 2px; }
+
+/* 优化后的顶栏控制按钮：防挤压换行，立体突出 */
+.hu-r2-theme-btn, .hu-r2-close {
+    background: var(--r2-card); 
+    color: var(--r2-border-strong); 
+    height: 28px; 
+    border-radius: 14px; 
+    text-align: center; 
+    line-height: 24px; 
+    font-size: 13px; 
+    font-weight: 900; 
+    cursor: pointer; 
+    border: 2px solid var(--r2-card); 
+    padding: 0 14px; 
+    box-sizing: border-box;
+    white-space: nowrap; /* 防止换行核心 */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* 立体悬浮核心 */
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.hu-r2-close { padding: 0; width: 28px; font-size: 14px; }
+.hu-r2-theme-btn:hover, .hu-r2-close:hover { 
+    background: var(--r2-border-strong); 
+    color: var(--r2-card); 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 15px var(--r2-shadow); 
+}
+
+/* ==== 视图一：坐标选择网格 ==== */
+.r2-select-view { flex-direction: column; padding: 25px; flex: 1; }
+.r2-sv-title { text-align: center; font-weight: bold; color: var(--r2-text); margin-bottom: 20px; font-size: 15px; }
+.r2-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 1; align-content: center; }
+.r2-city-btn {
+    background: var(--r2-card); border: 2px solid var(--r2-border); border-radius: var(--r2-radius);
+    padding: 15px 10px; text-align: center; cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+.r2-city-btn:hover { border-color: var(--r2-border-strong); transform: translateY(-3px); box-shadow: 0 6px 15px var(--r2-shadow); }
+.rc-name { font-size: 16px; font-weight: 900; color: var(--r2-border-strong); letter-spacing: 1px; margin-bottom: 5px; }
+.rc-sub { font-size: 12px; color: var(--r2-text-light); }
+
+/* ==== 视图二：重组缝合区 ==== */
+.r2-back-bar {
+    background: var(--r2-card); border-bottom: 1px solid var(--r2-border); padding: 10px 15px;
+    display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+    font-size: 13px; font-weight: bold; color: var(--r2-text-light); transition: 0.2s;
+}
+.r2-back-bar:hover { color: var(--r2-border-strong); background: var(--r2-bg); }
+.r2-city-label { color: var(--r2-border-strong); }
+
+.hu-r2-body { padding: 30px 20px; display: flex; flex-direction: column; gap: 20px; flex: 1; }
+.hu-r2-archive { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.r2-tag {
+    font-size: 12px; font-weight: bold; color: var(--r2-border-strong);
+    border: 1px solid var(--r2-border-strong); padding: 2px 8px; border-radius: 4px; letter-spacing: 1px;
+}
+.r2-title { font-size: 24px; font-weight: 900; color: var(--r2-text); letter-spacing: 2px; line-height: 1.2; }
+.r2-divider { width: 40px; height: 3px; background: var(--r2-border-strong); border-radius: 2px; }
+
+.hu-r2-intel { display: flex; flex-direction: column; gap: 15px; margin-top: 5px; }
+.r2-quote-wrapper { position: relative; margin-bottom: 5px; }
+.r2-quote {
+    background: var(--r2-quote-bg); color: var(--r2-text); font-weight: bold; font-size: 14px;
+    padding: 15px; border: 1.5px solid var(--r2-border); border-radius: var(--r2-radius);
+    line-height: 1.5; font-style: italic; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.r2-quote::after {
+    content: ''; position: absolute; bottom: -8px; left: 20px;
+    border-width: 8px 8px 0; border-style: solid; border-color: var(--r2-border) transparent transparent transparent;
+}
+.r2-desc {
+    background: var(--r2-card); color: var(--r2-text); font-size: 13px; line-height: 1.8;
+    padding: 15px; border-radius: var(--r2-radius); text-align: justify;
+    border-left: 4px solid var(--r2-border-strong); opacity: 0.95;
+}
+
+.hu-r2-footer {
+    display: flex; gap: 15px; padding: 15px 20px 20px; background: var(--r2-card);
+    border-top: 1px dashed var(--r2-border);
+}
+.hu-r2-btn {
+    flex: 1; text-align: center; padding: 12px 0; font-size: 14px; font-weight: bold;
+    border-radius: var(--r2-radius); cursor: pointer; transition: all 0.2s; border: 2px solid var(--r2-border-strong);
+}
+.btn-roll { background: var(--r2-bg); color: var(--r2-border-strong); }
+.btn-roll:active { background: var(--r2-border-strong); color: var(--r2-bg); }
+.btn-apply { background: var(--r2-border-strong); color: var(--r2-bg); box-shadow: 0 4px 10px var(--r2-shadow); }
+.btn-apply:active { transform: translateY(-2px); box-shadow: 0 6px 15px var(--r2-shadow); }
+</style>

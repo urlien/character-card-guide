@@ -1,0 +1,52 @@
+<div class="tarot-ui-wrapper">
+<style class="tarot-style">
+.tarot-side-btn { position: fixed; right: 0; top: 60%; transform: translateY(-50%); z-index: 9990 !important; background: #141414; color: #bd00ff; padding: 8px 2px; border: 1.5px solid #bd00ff; border-right: none; border-radius: 6px 0 0 6px; cursor: pointer; box-shadow: -2px 2px 6px rgba(0,0,0,0.6); transition: 0.3s; writing-mode: vertical-lr; letter-spacing: 1px; font-family: "Microsoft YaHei", sans-serif; font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+.tarot-side-btn:hover { background: #1f002b; padding-right: 6px; }
+.tarot-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); z-index: 10000 !important; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
+.tarot-modal.active { display: flex; opacity: 1; }
+.tarot-panel { background: #0a0a0a; border: 2px solid #bd00ff; border-radius: 12px; padding: 20px; width: 300px; text-align: center; box-shadow: 0 0 20px rgba(189,0,255,0.3); position: relative; }
+.tarot-title { color: #fff; font-size: 16px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px dashed #bd00ff; padding-bottom: 10px; letter-spacing: 2px; }
+.tarot-card-box { width: 140px; height: 220px; margin: 0 auto 20px; perspective: 1000px; cursor: pointer; }
+.tarot-card-inner { width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; position: relative; }
+.tarot-card-box.flipped .tarot-card-inner { transform: rotateY(180deg); }
+.tarot-card-front, .tarot-card-back { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #444; }
+.tarot-card-front { background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 10px, #222 10px, #222 20px); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+.tarot-card-front::after { content: '🔮'; font-size: 40px; }
+.tarot-card-back { background: #111; transform: rotateY(180deg); border-color: #bd00ff; box-shadow: 0 0 15px rgba(189,0,255,0.4); padding: 10px; }
+.tarot-emoji { font-size: 50px; margin-bottom: 10px; transition: 0.3s; }
+.tarot-name { color: #fff; font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+.tarot-pos { color: #bd00ff; font-size: 11px; font-weight: bold; background: #1f002b; padding: 2px 6px; border-radius: 4px; }
+.tarot-result { min-height: 60px; color: #e0e0e0; font-size: 14px; line-height: 1.6; margin-bottom: 15px; padding: 12px; background: #141414; border-radius: 6px; border: 1px dashed #444; font-family: "KaiTi", "STKaiti", "SimSun", serif; transition: opacity 0.3s; }
+.tarot-btn-draw { background: #1f002b; border: 1px solid #bd00ff; color: #fff; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 8px; transition: 0.2s; }
+.tarot-btn-draw:hover { background: #bd00ff; box-shadow: 0 0 10px rgba(189,0,255,0.5); }
+.tarot-btn-inject { background: #2b0a12; border: 1px solid #ff2a6d; color: #ff2a6d; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 8px; transition: 0.2s; display: none; }
+.tarot-btn-inject:hover { background: #ff2a6d; color: #fff; box-shadow: 0 0 10px rgba(255,42,109,0.5); }
+.tarot-btn-close { background: transparent; border: 1px solid #444; color: #888; padding: 6px 15px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 11px; transition: 0.2s; }
+.tarot-btn-close:hover { border-color: #fff; color: #fff; }
+</style>
+
+<div class="tarot-side-btn" onclick="event.stopPropagation();document.getElementById('tarot-modal').classList.add('active');">🔮 占卜</div>
+
+<div id="tarot-modal" class="tarot-modal" onclick="event.stopPropagation();this.classList.remove('active');">
+    <div class="tarot-panel" onclick="event.stopPropagation();">
+        <div class="tarot-title">命运之轮 · 占卜</div>
+        <div id="tarot-card" class="tarot-card-box">
+            <div class="tarot-card-inner">
+                <div class="tarot-card-front"></div>
+                <div class="tarot-card-back">
+                    <div id="t-emoji" class="tarot-emoji">❓</div>
+                    <div id="t-name" class="tarot-name">未知</div>
+                    <div id="t-pos" class="tarot-pos">位置</div>
+                </div>
+            </div>
+        </div>
+        <div id="t-result" class="tarot-result">请洗牌并抽取属于你的命运指引。</div>
+        
+        <button class="tarot-btn-draw" onclick="window.drawTarot()">抽取命运</button>
+        <button id="t-btn-inject" class="tarot-btn-inject" onclick="window.injectFate()">👉 将此基调注入剧情</button>
+        <button class="tarot-btn-close" onclick="document.getElementById('tarot-modal').classList.remove('active');">收起牌阵</button>
+    </div>
+</div>
+
+<img src="x" style="display:none" onerror="var w=this.closest('.tarot-ui-wrapper');if(w){var isNew=true;var btns=document.querySelectorAll('.tarot-side-btn');for(var i=0;i<btns.length;i++){if(!w.contains(btns[i])){isNew=false;break;}}if(isNew){var s=w.querySelector('.tarot-style'),b=w.querySelector('.tarot-side-btn'),m=w.querySelector('#tarot-modal');if(s)document.body.appendChild(s);if(b)document.body.appendChild(b);if(m)document.body.appendChild(m);}w.remove();}this.remove();">
+</div>

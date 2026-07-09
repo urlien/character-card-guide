@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动物城身份证</title>
+<style>
+.xr-root{max-width:520px;margin:0 auto;font-family:'Microsoft YaHei',serif;color:#ffffff;padding:8px}
+.xr-shell{background:linear-gradient(175deg,#0b070a,#24141b,#321923);border:2px solid #6a3a48;border-radius:16px;padding:16px 14px;box-shadow:0 4px 20px rgba(0,0,0,0.6);position:relative;overflow:hidden}
+.xr-shell::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,50 Q25,25 50,50 T100,50" stroke="%236a3a48" stroke-width="0.5" fill="none" opacity="0.1"/></svg>') repeat;pointer-events:none;z-index:0}
+.xr-content{position:relative;z-index:1}
+.xr-title{text-align:center;font-size:20px;font-weight:bold;color:#ff9bb8;letter-spacing:6px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid rgba(255,92,122,0.4)}
+.xr-card{background:rgba(36,20,27,0.8);border:1px solid rgba(106,58,72,0.3);border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
+.xr-card-title{font-size:11px;color:#ff9bb8;font-weight:bold;letter-spacing:2px;margin-bottom:8px;padding-left:6px;border-left:3px solid #ff5c7a}
+.xr-row{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap;align-items:center}
+.xr-input{flex:1;min-width:100px;padding:8px 10px;background:rgba(255,255,255,0.1);border:1px solid #6a3a48;border-radius:8px;font-size:10px;color:#ffffff;outline:none;transition:0.2s;font-family:'Microsoft YaHei',serif}
+.xr-input:focus{border-color:#ff5c7a;box-shadow:0 0 8px rgba(255,92,122,0.3)}
+.xr-btn{display:inline-block;padding:8px 16px;background:linear-gradient(135deg,#ff5c7a,#d8445a);border:1px solid #6a3a48;border-radius:8px;font-size:10px;color:#ffffff;cursor:pointer;transition:0.2s;font-weight:bold;letter-spacing:2px;text-align:center;white-space:nowrap}
+.xr-btn:hover{background:linear-gradient(135deg,#d8445a,#b83046);color:#ffffff;box-shadow:0 2px 8px rgba(255,92,122,0.4)}
+.xr-tag{display:inline-block;padding:6px 12px;background:rgba(255,255,255,0.1);border:1px solid rgba(106,58,72,0.5);border-radius:20px;font-size:9px;color:#ffffff;cursor:pointer;transition:0.2s;margin:2px}
+.xr-tag:hover{background:rgba(255,92,122,0.2);border-color:#ff5c7a;color:#ff9bb8}
+.xr-tag.active{background:#ff5c7a;border-color:#ff9bb8;color:#ffffff;font-weight:bold}
+.xr-fold{display:none;margin-top:6px;padding:8px;background:rgba(36,20,27,0.6);border-radius:8px}
+.xr-slider-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.xr-slider-label{font-size:9px;color:#ff9bb8;min-width:50px;text-align:right}
+.xr-slider{flex:1;height:6px;-webkit-appearance:none;background:linear-gradient(90deg,#6a3a48,#b8445a);border-radius:3px;outline:none;min-width:80px}
+.xr-slider::-webkit-slider-thumb{width:18px;height:18px;background:#ff5c7a;border-radius:50%;cursor:pointer;border:2px solid #ffffff}
+.xr-slider-val{font-size:9px;color:#ff5c7a;font-weight:bold;min-width:40px}
+.xr-slider-desc{font-size:8px;color:#ff9bb8;font-style:italic;text-align:center;margin-top:2px;width:100%}
+.xr-scroll{max-height:250px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#ff5c7a transparent}
+.xr-scroll::-webkit-scrollbar{width:4px}
+.xr-scroll::-webkit-scrollbar-thumb{background:#ff5c7a;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="xr-root" onclick="event.stopPropagation()">
+<div class="xr-shell"><div class="xr-content">
+<div class="xr-title">动物城身份证</div>
+
+<!-- 姓名 -->
+<div class="xr-card"><div class="xr-card-title">📝 姓名</div><div class="xr-row">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入姓名:');if(v){window.xrAppend('姓名',v)}">+ 自定义</span>
+</div></div>
+
+<!-- 性别 -->
+<div class="xr-card" id="xr-gender-card"><div class="xr-card-title">⚤ 生理性别</div><div class="xr-row">
+<span class="xr-tag xr-gender-tag" data-g="雄性" onclick="event.stopPropagation();window.xrSetGender('雄性',this)">雄性</span>
+<span class="xr-tag xr-gender-tag" data-g="雌性" onclick="event.stopPropagation();window.xrSetGender('雌性',this)">雌性</span>
+<span class="xr-tag xr-gender-tag" data-g="双性" onclick="event.stopPropagation();window.xrSetGender('双性',this)">双性</span>
+<span class="xr-tag xr-gender-tag" data-g="无性" onclick="event.stopPropagation();window.xrSetGender('无性',this)">无性</span>
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入自定义性别:');if(v){window.xrAppend('性别',v)}">+ 自定义</span>
+</div><div id="xr-gender-extra"></div></div>
+
+<!-- 年龄 -->
+<div class="xr-card"><div class="xr-card-title">🎂 年龄</div><div class="xr-row">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入年龄(岁):');if(v){window.xrAppend('年龄',v+'岁')}">+ 自定义</span>
+</div></div>
+
+<!-- 身体数据 -->
+<div class="xr-card"><div class="xr-card-title">📏 身体数据</div><div class="xr-row">
+<span class="xr-tag" onclick="event.stopPropagation();var h=prompt('请输入身高(cm):');var w=prompt('请输入体重(kg):');if(h||w){window.xrAppend('身体数据',(h||'--')+'cm / '+(w||'--')+'kg')}">+ 自定义</span>
+</div></div>
+
+<!-- 开局身份 -->
+<div class="xr-card" id="xr-sect-card"><div class="xr-card-title">🏛️ 开局身份</div><div class="xr-scroll" style="max-height:200px"><div class="xr-row" style="flex-wrap:wrap">
+<span class="xr-tag xr-sect-tag" data-sect="ZPD警官" data-type="执法" onclick="event.stopPropagation();window.xrSetSect('ZPD警官','执法',this)">ZPD警官</span>
+<span class="xr-tag xr-sect-tag" data-sect="纯净之血信徒" data-type="宗教" onclick="event.stopPropagation();window.xrSetSect('纯净之血信徒','宗教',this)">纯净之血信徒</span>
+<span class="xr-tag xr-sect-tag" data-sect="黑市线人" data-type="地下" onclick="event.stopPropagation();window.xrSetSect('黑市线人','地下',this)">黑市线人</span>
+<span class="xr-tag xr-sect-tag" data-sect="独立记者" data-type="媒体" onclick="event.stopPropagation();window.xrSetSect('独立记者','媒体',this)">独立记者</span>
+<span class="xr-tag xr-sect-tag" data-sect="雨林居民" data-type="平民" onclick="event.stopPropagation();window.xrSetSect('雨林居民','平民',this)">雨林居民</span>
+<span class="xr-tag xr-sect-tag" data-sect="冰川镇居民" data-type="平民" onclick="event.stopPropagation();window.xrSetSect('冰川镇居民','平民',this)">冰川镇居民</span>
+</div></div><div id="xr-sect-identity" style="margin-top:8px"></div>
+<div class="xr-row" style="margin-top:8px">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入自定义开局身份:');if(v){window.xrAppend('开局身份',v)}">+ 自定义</span>
+</div></div>
+
+<!-- 种族选择 -->
+<div class="xr-card"><div class="xr-card-title">🐾 种族选择</div><div class="xr-scroll" style="max-height:180px"><div class="xr-row" style="flex-wrap:wrap">
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('赤狐','有着带结的红色狐阴茎')">赤狐</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('灰狼','有着带结的红色狼阴茎')">灰狼</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('棉尾兔','有着细长粉嫩的兔阴茎')">棉尾兔</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('北极熊','有着粗大宽头的白色熊阴茎')">北极熊</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('猎豹','有着带软倒刺的豹阴茎')">猎豹</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('大象','有着粗长灰色的大象阴茎')">大象</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('水獭','有着小巧灵活的水獭阴茎')">水獭</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('鼩鼱','有着微小粉嫩的鼩鼱阴茎')">鼩鼱</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppendRace('陆马','有着粗长带肉冠的马阴茎')">陆马</span>
+</div></div>
+<div class="xr-row" style="margin-top:8px">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入自定义种族:');if(v){window.xrAppend('种族',v)}">+ 自定义</span>
+</div></div>
+
+<!-- 天赋技能 -->
+<div class="xr-card"><div class="xr-card-title">🔮 天赋技能</div><div class="xr-scroll" style="max-height:180px"><div class="xr-row" style="flex-wrap:wrap">
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','不老不死')">不老不死</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','无限体力')">无限体力</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','无限精力')">无限精力</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','催眠')">催眠</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','瞬间移动')">瞬间移动</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','读心术')">读心术</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','变形')">变形</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','元素控制')">元素控制</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','时间停止')">时间停止</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('天赋技能','隐身')">隐身</span>
+</div></div>
+<div class="xr-row" style="margin-top:8px">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入自定义天赋技能:');if(v){window.xrAppend('天赋技能',v)}">+ 自定义</span>
+</div></div>
+
+<!-- 阴茎尺寸 -->
+<div class="xr-card"><div class="xr-card-title">🍆 阴茎尺寸</div><div class="xr-row" style="flex-wrap:wrap">
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('阴茎尺寸','8cm')">8cm</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('阴茎尺寸','12cm')">12cm</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('阴茎尺寸','18cm')">18cm</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('阴茎尺寸','20cm')">20cm</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('阴茎尺寸','25cm')">25cm</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('阴茎尺寸','30cm')">30cm</span>
+</div>
+<div class="xr-row" style="margin-top:8px">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入自定义阴茎尺寸(cm):');if(v){window.xrAppend('阴茎尺寸',v)}">+ 自定义</span>
+</div></div>
+
+<!-- 乳房尺寸 -->
+<div class="xr-card"><div class="xr-card-title">🍑 乳房尺寸</div><div class="xr-row" style="flex-wrap:wrap">
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('乳房尺寸','AA杯')">AA杯</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('乳房尺寸','A杯')">A杯</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('乳房尺寸','B杯')">B杯</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('乳房尺寸','C杯')">C杯</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('乳房尺寸','D杯')">D杯</span>
+<span class="xr-tag" onclick="event.stopPropagation();window.xrAppend('乳房尺寸','E杯及以上')">E杯及以上</span>
+</div>
+<div class="xr-row" style="margin-top:8px">
+<span class="xr-tag" onclick="event.stopPropagation();var v=prompt('请输入自定义乳房尺寸描述:');if(v){window.xrAppend('乳房尺寸',v)}">+ 自定义</span>
+</div></div>
+
+</div></div></div>
+<img src="x" style="display:none" onerror="
+window.xrAppend=function(k,v){var ta=document.querySelector('.uni-textarea-textarea, textarea');if(ta){ta.value+='\n【'+k+'】'+v;ta.dispatchEvent(new Event('input',{bubbles:true}))}};
+window.xrAppendRace=function(race,description){var ta=document.querySelector('.uni-textarea-textarea, textarea');if(ta){ta.value+='\n【种族】'+race+'，'+description;ta.dispatchEvent(new Event('input',{bubbles:true}))}};
+var bb=['平坦运动型','略有弧度','小巧圆润','饱满一手握','丰腴柔软','硕大沉重','夸张变形'];
+window.xrBb=bb;
+window.xrUpdateSlider=function(input,type){
+var card=input.closest('.xr-card');if(!card)return;
+var s=card.querySelector('.xr-slider-val');var d=card.querySelector('.xr-slider-desc');var v=input.value;
+if(type=='bust'){s.textContent=String.fromCharCode(64+parseInt(v))+'罩杯';d.textContent=bb[parseInt(v)]}
+};
+window.xrConfirmBust=function(){var v=document.getElementById('xr-bust-slider').value;window.xrAppend('乳房尺寸',String.fromCharCode(64+parseInt(v))+'罩杯')};
+var xrGender='';
+window.xrSetGender=function(g,t){
+xrGender=g;window.xrAppend('性别',g);
+var tags=t.parentElement.querySelectorAll('.xr-gender-tag');for(var i=0;i<tags.length;i++)tags[i].classList.remove('active');t.classList.add('active');
+var extra=document.getElementById('xr-gender-extra');extra.innerHTML='';
+if(g=='雄性'){extra.innerHTML='<div class=xr-card style=margin-top:8px><div class=xr-card-title>🍆 阴茎尺寸（厘米数）</div><input type=range class=xr-slider id=xr-penis-slider min=8 max=30 value=12 oninput=window.xrUpdateSlider(this,\'penis\')><div class=xr-row><span class=xr-slider-val>12cm</span><span class=xr-slider-desc></span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrAppend(\'阴茎尺寸\',document.getElementById(\'xr-penis-slider\').value+\'cm\')>确认尺寸</div></div>'}
+else if(g=='雌性'){extra.innerHTML='<div class=xr-card style=margin-top:8px><div class=xr-card-title>🍑 乳房尺寸（动物城对照标准）</div><input type=range class=xr-slider id=xr-bust-slider min=0 max=6 value=2 oninput=window.xrUpdateSlider(this,\'bust\')><div class=xr-row><span class=xr-slider-val>C罩杯</span><span class=xr-slider-desc>小巧圆润</span></div><div class=xr-btn style=margin-top:6px;width:100%;text-align:center onclick=event.stopPropagation();window.xrConfirmBust()>确认尺寸</div></div>'}
+};
+window.xrSetSect=function(s,t,tag){window.xrAppend('开局身份',s);var tags=tag.parentElement.querySelectorAll('.xr-sect-tag');for(var i=0;i<tags.length;i++)tags[i].classList.remove('active');tag.classList.add('active');
+var di=document.getElementById('xr-sect-identity');var ids=[];
+if(t=='执法')ids=['ZPD警官','特警队成员','侦探','交警','狱警'];
+else if(t=='宗教')ids=['纯净之血信徒','祭司','传教士','狂热者','长老'];
+else if(t=='地下')ids=['黑市线人','走私犯','黑客','杀手','中间人'];
+else if(t=='媒体')ids=['独立记者','摄影师','编辑','专栏作家','调查记者'];
+else if(t=='平民')ids=['雨林居民','冰川镇居民','市中心居民','农民','工人'];
+di.innerHTML='<div class=xr-card-title style=margin-top:6px>🎭 具体身份</div><div class=xr-row style=flex-wrap:wrap>'+ids.map(function(id){return'<span class=xr-tag onclick=event.stopPropagation();window.xrAppend(\'具体身份\',\''+id+'\')>'+id+'</span>'}).join('')+'</div>'};
+this.remove()">

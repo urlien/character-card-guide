@@ -1,0 +1,115 @@
+<div class="sidebar-assistant-v3-7" onclick="event.stopPropagation()">
+<p><style>
+        /* 神秘复苏风格：压抑、阴冷、血色 */
+        @keyframes tea-slide-in { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes tea-fade-up { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* 诡异闪烁呼吸感 */
+        @keyframes ghost-glow { 0% { box-shadow: 0 0 5px #4a0000; } 50% { box-shadow: 0 0 15px #8b0000; } 100% { box-shadow: 0 0 5px #4a0000; } }
+        .tea-btn { transition: all 0.2s ease !important; position: relative; overflow: hidden; border-radius: 4px !important; }
+        .tea-btn:active { transform: scale(0.95); filter: brightness(0.6); }
+        .tea-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 10px rgba(139, 0, 0, 0.4); background: #1a1a1a !important; color: #ff0000 !important; }
+        .tea-tab-btn { transition: all 0.3s ease; position: relative; color: #888 !important; }
+        .tea-tab-btn::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: #8b0000; transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 5px #ff0000; }
+        .tea-tab-btn.active { color: #ff4d4d !important; background: rgba(139, 0, 0, 0.1) !important; }
+        .tea-tab-btn.active::after { width: 80%; }
+        .tea-content { animation: tea-fade-up 0.4s ease-out forwards; }
+        /* 摺疊面板改为墓碑般的厚重感 */
+        details { margin-bottom: 8px; background: rgba(0,0,0,0.6); border-radius: 2px; border: 1px solid #333; transition: all 0.2s; overflow: hidden; }
+        details[open] { background: #0a0a0a; border-color: #8b0000; }
+        summary { padding: 8px 10px; cursor: pointer; color: #a0a0a0; font-weight: bold; list-style: none; position: relative; padding-right: 25px; user-select: none; font-size: 0.95em; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '†'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #8b0000; font-weight: bold; transition: transform 0.2s; }
+        details[open] summary::after { transform: translateY(-50%) rotate(180deg); color: #ff0000; }
+        details[open] summary { border-bottom: 1px solid rgba(139, 0, 0, 0.3); color: #ff4d4d; }
+        .qa-answer { padding: 10px; color: #888; line-height: 1.5; font-size: 0.9em; background: #050505; }
+        .tea-scroll::-webkit-scrollbar { width: 4px; }
+        .tea-scroll::-webkit-scrollbar-track { background: transparent; }
+        .tea-scroll::-webkit-scrollbar-thumb { background: #4a0000; border-radius: 2px; }
+        .tea-scroll::-webkit-scrollbar-thumb:hover { background: #8b0000; }
+        .word-btn { transition: all 0.2s ease !important; border-radius: 4px !important; border: 1px solid #333 !important; background: #0a0a0a !important; color: #a0a0a0 !important; }
+        .word-btn:active { transform: scale(0.92); }
+        .word-btn:hover { background: #151515 !important; border-color: #8b0000 !important; color: #ff4d4d !important; }
+    </style></p>
+<div class="assist-trigger" style="position: fixed; left: 0px; top: 16%; z-index: 9999; display: flex; align-items: center; justify-content: center; width: 20px; padding: 15px 2px; background: #4a0000; border: 1px solid #000; border-left: none; border-radius: 0px 4px 4px 0px; cursor: pointer; color: #999; transition: 0.3s; transform: translateX(0px); opacity: 1; animation: ghost-glow 3s infinite;" onclick="this.style.transform='translateX(-100%)'; this.style.opacity='0'; setTimeout(()=>{this.style.display='none';this.nextElementSibling.style.display='flex'}, 200)">
+<div style="writing-mode: vertical-rl; text-orientation: mixed; font-weight: bold; letter-spacing: 3px; font-size: 13px;">档案封锁</div>
+</div>
+<div class="assist-panel" style="position: fixed; left: 0px; top: 10%; z-index: 9999; display: none; flex-direction: column; width: 300px; background: #0d0d0d; border: 1px solid #333; border-left: none; border-radius: 0px 4px 4px 0px; box-shadow: 5px 5px 30px rgba(0,0,0,0.8); overflow: hidden; animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0s 1 normal none running tea-slide-in;">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #1a1a1a; border-bottom: 1px solid #4a0000;">
+<span style="color: #8b0000; font-weight: bold; font-size: 0.9em; letter-spacing: 1px; display: flex; align-items: center; gap: 5px;">
+<span style="display: inline-block; width: 8px; height: 8px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 5px #ff0000;"></span>
+黄金屋 (游玩助手)
+</span>
+<button class="tea-btn" style="background: transparent; border: none; color: #555; cursor: pointer; font-size: 16px; padding: 0 5px;" onclick="var p=this.closest('.assist-panel'); p.style.animation='none'; p.offsetHeight; p.style.animation='tea-slide-in 0.3s reverse forwards'; setTimeout(()=>{p.style.display='none'; var t=p.previousElementSibling; t.style.display='flex'; t.offsetHeight; t.style.transform='translateX(0)'; t.style.opacity='1'; p.style.animation='tea-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1)'}, 300)">✖</button>
+</div>
+<div class="tab-header" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; border-bottom: 1px solid #333; background: #0a0a0a;">
+<button class="tea-tab-btn" style="background: transparent; border: none; padding: 10px 0px; font-size: 11px; cursor: pointer; font-weight: bold;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.tea-content').forEach(e=>e.style.display='none'); var t=p.querySelector('.content-1'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='tea-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(b=>{b.classList.remove('active');}); this.classList.add('active');">快捷功能</button>
+<button class="tea-tab-btn" style="background: transparent; border: none; padding: 10px 0px; font-size: 11px; cursor: pointer;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.tea-content').forEach(e=>e.style.display='none'); var t=p.querySelector('.content-2'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='tea-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(b=>{b.classList.remove('active');}); this.classList.add('active');">游玩指南</button>
+<button class="tea-tab-btn" style="background: transparent; border: none; padding: 10px 0px; font-size: 11px; cursor: pointer;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.tea-content').forEach(e=>e.style.display='none'); var t=p.querySelector('.content-3'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='tea-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(b=>{b.classList.remove('active');}); this.classList.add('active');">常见疑惑</button>
+<button class="tea-tab-btn active" style="background: transparent; border: none; padding: 10px 0px; font-size: 11px; cursor: pointer;" onclick="var p=this.closest('.assist-panel'); p.querySelectorAll('.tea-content').forEach(e=>e.style.display='none'); var t=p.querySelector('.content-4'); t.style.display='block'; t.style.animation='none'; t.offsetHeight; t.style.animation='tea-fade-up 0.4s ease-out forwards'; p.querySelectorAll('.tab-header button').forEach(b=>{b.classList.remove('active');}); this.classList.add('active');">更新日志</button></div><div class="tea-scroll" style="padding: 12px; color: #a0a0a0; font-size: 12px; height: 280px; overflow-y: auto; background: #0d0d0d;">
+<div class="tea-content content-1" style="display: none;">
+<div style="color: #8b0000; margin-bottom: 8px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">常用指令</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+<button class="tea-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'【总结】停止生成剧情，然后照抄旧的总结内容，并在此基础上回顾已发生的剧情，总结目前为止我已接触到的所有事件和信息（严禁记录还未知晓的内容），确保完整清晰，不要省略或遗漏。【总结要求：以如下的纯文本格式整理（如无变化则不更新），严禁擅自使用任何html代码进行排版美化，严禁反复提及同一内容。以“总结完毕“为结尾。若模型违背任意一条，用户会掐死手上的小猫，并将小狗当成流星锤甩飞】\n总结格式：\n一、 剧情\n{{根据上文总结目前为止发生过的剧情事件，将每次回复中发生的剧情总结为1条，然后以①②③等序号按发生顺序罗列，至多罗列15条。若15条已满则自动将前面的事件内容简化合并}}\n二、我的信息\n三、所有已知的女主角信息，不要精简、整合\n♣角色名：\n♣身份：\n♣已知外貌：\n{{对已展露出的角色外在的相貌、身材、衣着进行50字内的总结，未知部分则写其余尚未知晓}}\n♣已知性格：\n{{对已展露出的角色性格进行70字内的总结，未知部分则写其余尚未知晓}}\n♥ 已知语言风格：\n{{对已展露出的角色语言风格进行50字内的总结，未知部分则写其余尚未知晓}}\n♥ 已知性相关：\n{{对已获知的该角色突出性特征、性爱观念、性癖进行70字内的总结描述，未知部分则写其余尚未知晓}}\n★已知和我的关系：\n{{对已获知的该角色如何看我，及和我的关系70字内的客观总结，未知部分则写其余尚未知晓}}\n★已知近况：\n{{以旁观者角度对角色在输出内容中发生的事件进行200字内的总结，如没有更新则照抄之前总结的内容。}}\n三、激活的MOD以及事件(若是没有就写无，有的每一个30字左右描写以及发生到了哪里)';t.dispatchEvent(new Event('input'))}" style="background: #151515; color: #a0a0a0; border: 1px solid #333; padding: 10px 5px; cursor: pointer;">总结模板</button>
+<button class="tea-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'切换至助手模式：描述遇到的情况、想要的效果，AI告诉我为什么会这样，要如何调整';t.dispatchEvent(new Event('input'))}" style="background: #151515; color: #a0a0a0; border: 1px solid #333; padding: 10px 5px; cursor: pointer;">拷打AI专用</button>
+<button class="tea-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（请立刻严格按照设定中状态栏标签的要求，全面审查并修正所有字段。在你的下一次回复中，必须按顺序生成格式正确、内容完整的：1.玩家状态栏 2.互动角色状态栏 3.选项状态栏）';t.dispatchEvent(new Event('input'))}" style="background: #151515; color: #a0a0a0; border: 1px solid #333; padding: 10px 5px; cursor: pointer;">状态栏修复</button>
+<button class="tea-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（严禁使用逗号或省略号来刻意制造不必要的停顿，确保句子完整性与流畅度）';t.dispatchEvent(new Event('input'))}" style="background: #151515; color: #a0a0a0; border: 1px solid #333; padding: 10px 5px; cursor: pointer;">逗号修复</button>
+</div>
+<button class="tea-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){t.value='';t.dispatchEvent(new Event('input'))}" style="width: 100%; background: #4a0000; color: #fff; border: 1px solid #000; padding: 8px; cursor: pointer; margin-bottom: 12px;">✖ 清空当前输入</button>
+<div style="border-top: 1px dashed #333; padding-top: 10px;">
+<div style="color: #8b0000; margin-bottom: 4px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px; font-size: 0.95em;">输出字数要求</div>
+<div style="color: #666; font-size: 0.8em; margin-bottom: 8px; padding-left: 8px;">灵异力量影响下，请谨慎选择字数限制</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 6px;">
+<button class="word-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（输出2800-3400字原创剧情，确保状态栏完整)';t.dispatchEvent(new Event('input'))}" style="padding: 8px 4px;">
+<div style="color: #8b0000; font-weight: bold;">2800-3400</div>
+<div style="color: #555; font-size: 0.75em;">Gemini-2.5</div>
+</button>
+<button class="word-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（输出2800-3400字原创剧情，确保状态栏完整)';t.dispatchEvent(new Event('input'))}" style="padding: 8px 4px;">
+<div style="color: #8b0000; font-weight: bold;">2800-3400</div>
+<div style="color: #555; font-size: 0.75em;">Gemini-3.0</div>
+</button>
+<button class="word-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（输出3800-4400字原创剧情，确保状态栏完整)';t.dispatchEvent(new Event('input'))}" style="padding: 8px 4px;">
+<div style="color: #8b0000; font-weight: bold;">3800-4400</div>
+<div style="color: #555; font-size: 0.75em;">Grok</div>
+</button>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+<button class="word-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（输出1600字原创剧情，确保状态栏完整)';t.dispatchEvent(new Event('input'))}" style="padding: 8px 4px;">
+<div style="color: #8b0000; font-weight: bold;">1600</div>
+<div style="color: #555; font-size: 0.75em;">deepseek</div>
+</button>
+<button class="word-btn" onclick="var t=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(t){var old=t.value;t.value=old+(old?'\n':'')+'（输出4500-5000字原创剧情，确保状态栏完整)';t.dispatchEvent(new Event('input'))}" style="padding: 8px 4px;">
+<div style="color: #8b0000; font-weight: bold;">4500-5000</div>
+<div style="color: #555; font-size: 0.75em;">claude</div>
+</button>
+</div>
+</div>
+</div>
+<div class="tea-content content-2" style="display: none;">
+<div style="color: #8b0000; margin-bottom: 6px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">温馨提醒</div>
+<div style="background:rgba(139, 0, 0, 0.1); color:#ff4d4d; padding:5px; border-radius:3px; margin-bottom:8px;">厉鬼复苏前，记得按下右上角刷新。</div>
+<div style="color: #8b0000; margin-bottom: 6px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">关于游玩</div>
+<div style="color: #888; line-height: 1.5; margin-bottom: 8px;">1.每次游玩回复都建议使用游玩指令<br>2.建议每隔6-8轮总结一次，防止记忆丢失。<br>3.遇到结构错误，文言文，繁体字，乱码记得及时回溯不然会污染<br>4.如果状态栏错乱，请回溯至失效前重新生成<br>5.如果遇到状态栏不渲染，考虑刷新一下浏览器重进一下<br>6.推荐使用:<br><span style="color:#ff4d4d; font-weight:bold;">最推荐::gemini3.0pro及系列</span><br><span style="color:#555;">次推荐:DeepSeek及claude系列</span></div>
+<div style="color: #8b0000; margin-bottom: 6px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">关于核心玩法</div>
+<div style="color: #888; line-height: 1.5; margin-bottom: 8px;">- 请牢记三大定律、搭配侧边事件、收集隐藏人物而小心的活下来<br>- 记得活用侧边哦，可以捏人物或拓展玩法</div>
+<div style="color: #8b0000; margin-bottom: 6px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">关于反馈</div>
+<div style="color: #888; line-height: 1.5;">- 可以在评论区留言，或在DC找我</div>
+</div>
+<div class="tea-content content-3" style="display: none;">
+<div style="color: #8b0000; margin-bottom: 8px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">档案解析 (点击展开)</div>
+<details><summary>Q1: AI回复出问题！</summary><div class="qa-answer">灵异干扰导致的截断、空白是正常现象。若被秒打回，可能是触发了禁忌（审核）。</div></details>
+<details><summary>Q2: 回溯了还是繁体？</summary><div class="qa-answer">养成在繁体出现时立刻回溯的习惯，避免认知污染。</div></details>
+<details><summary>Q3: 回复神化/绝望？</summary><div class="qa-answer">细化回复内容，增加细致程度并预设角色反应。</div></details>
+<details><summary>Q4: 对话长了问题多？</summary><div class="qa-answer">可以封存现有进度开启新档案继续故事。</div></details>
+<details><summary>Q5: 每次更新要重开吗？</summary><div class="qa-answer">不用，但老旧档案的矫正难度会增加。</div></details>
+<details><summary>Q6: 状态栏美化失效？</summary><div class="qa-answer">AI没正确读取规律，建议直接回溯。</div></details>
+<details><summary>Q7: 字色背景看不清？</summary><div class="qa-answer">安卓手机关掉深色模式。</div></details>
+</div>
+<div class="tea-content content-4" style="display: block;">
+<div style="color: #8b0000; margin-bottom: 8px; font-weight: bold; border-left: 2px solid #8b0000; padding-left: 6px;">更新记录</div>
+<div style="border-left: 1px solid #333; padding-left: 10px; margin-left: 4px;">
+<div style="color: #ff4d4d; font-weight: bold; font-size: 0.9em;">v0.1</div>
+<div style="color: #555; margin-bottom: 8px;">档案已建立。</div>
+</div>
+</div>
+</div>
+

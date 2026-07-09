@@ -1,0 +1,64 @@
+
+
+
+
+
+
+
+
+
+/【状态栏开始】\s*(\d+)\s*([\s\S]*?)【状态栏结束】/s
+
+
+
+替换内容：
+
+<div id="tp_st_con_$1" onclick="event.stopPropagation()" style="background:#000;color:#ffffff;padding:8px;border:1px solid #333;border-radius:4px;font-family:monospace;margin:5px 0;box-shadow:0 0 10px rgba(0,0,0,0.5);"><img src="x" style="display:none;" onerror="(function(e){var r=document.getElementById('tp_st_raw_$1'),d=document.getElementById('tp_st_disp_$1');if(!r||!d)return;var t=r.innerHTML.replace(/[¦｜]/g,'|');d.innerHTML=t;r.remove();})(this)"><div id="tp_st_disp_$1" style="max-height:480px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;scrollbar-width:thin;scrollbar-color:#444 #000;">$2</div><style>#tp_st_disp_$1::-webkit-scrollbar{width:4px;}#tp_st_disp_$1::-webkit-scrollbar-thumb{background:#444;border-radius:2px;}#tp_st_disp_$1::-webkit-scrollbar-track{background:#000;}</style></div>
+
+
+
+
+
+
+以下放人设内：
+
+【技术输出协议：单页可滚动状态栏】
+当你需要更新状态信息时，请严格按照以下格式输出数据，严禁输出任何Markdown、代码块或多余解释。
+格式要求：
+【状态栏开始】 
+1721544900000 | 
+时间：[具体时间，如：时间： [上午/下午/夜晚/时间] 
+地点： [您的办公室/林雅公寓/私人会所/街头...]  
+环境状态：[简要描述当前场景氛围及核心特征]
+◈──主角──◈
+身体状态：[当前身体感受或生理状态。限30字内]
+情绪状态：[当前主要情绪。限20字内]
+对雪奈关系：[ {{user}}对与雪奈关系的当前理解或感受。限20字内]
+当前目标：[短期内想达成或正在做的事。限20字内]
+◈──角色──◈
+描述：[当前外貌衣着与动作姿态。限30字内]
+内衣：[当前穿着的内衣袜子，若可见或有暗示。限20字内]
+身体状态：[当前身体感受或生理状态。限30字内]
+情绪状态：[当前主要情绪。限20字内]
+内心想法：[当前雪奈的内心活动、隐藏的意图或深层渴望。限20字内]
+对{{user}}关系：[雪奈对与 {{user}}关系的当前定义或感受。限20字内]
+当前目标：[短期内想达成或正在做的事。限20字内]
+◈──配角──◈
+描述：[外貌衣着+动作姿态，30字内]
+内心想法：[当前内心活动或对剧情的潜在影响。限20字内]
+当前目标：[短期目的。限20字内]
+◈————————◈
+核心事件：[当前剧情的主要冲突点、转折或重要进展的概括。限25字内]
+外部环境/NPC动向：[与主线相关的重要NPC的当前行为，或可能影响剧情的外部因素。限25字内]
+潜在风险/预警：[当前剧情中存在的潜在危险、挑战、或可能触发的病娇行为等。限25字内]
+【状态栏结束】
+注意：
+1. unix时间戳必须是13位纯数字，每次回复必须唯一且递增。
+2. 状态栏内容中如果包含多个条目，建议使用竖线符号 | 进行视觉分隔。
+3.状态栏内容中如果包含多个条目，建议使用空格键进行分隔。
+
+
+
+
+
+
