@@ -14,7 +14,12 @@ character-card-guide/
 │   ├── research-methods.md ← 如何自主查阅角色卡
 │   ├── resources.md        ← 访问网址的资料汇总
 │   ├── reflection-log.md   ← 反思日志
-│   └── README.md           ← 制作指南说明
+│   └── README.md
+├── 明日方舟剧情/           ← 明日方舟全剧情原文（465个活动，按活动合并为txt）
+│   ├── 辞岁行.txt         ← 示例：2026春节活动剧情
+│   ├── 怀黍离.txt         ← 示例：2024春节活动剧情
+│   └── ...                ← 共463个txt文件
+└── README.md           ← 制作指南说明
 ├── discord技术库/           ← Discord「魅魔藏经阁」技术帖爬取（466篇/18917条消息）
 │   ├── KNOWLEDGE-BASE.md   ← 14个技术领域知识库
 │   ├── thread-list.json    ← 帖子索引
@@ -22,6 +27,11 @@ character-card-guide/
 ├── 角色卡识别技术途径/       ← sexyai.ai API 接入与技术文档
 │   ├── README.md           ← API 快速开始
 │   └── sexyai-api-guide.md ← 完整调用指南
+└── README.md
+├── 明日方舟剧情/           ← 明日方舟全剧情原文（465个活动，按活动合并为txt）
+│   ├── 辞岁行.txt         ← 示例：2026春节活动剧情
+│   ├── 怀黍离.txt         ← 示例：2024春节活动剧情
+│   └── ...                ← 共463个txt文件
 └── README.md               ← 本文件
 ```
 
