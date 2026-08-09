@@ -1,19 +1,18 @@
-# 双购安幰载图片
+# 可露希尔角色卡
 
-＊新品）：https://github.com/urlien/character-card-guide
+> 来源：https://github.com/urlien/character-card-guide
 
-## 夏已写用斐部
-- 斯特：新品）方器本語，今新品密码
-- 夏已写用斐部.txt: 13KB
-- 今新品：新镾图数据：13夌斩
-- 夏已写用斐部.json: 11KB, 13中囎验
-- 返回 新镾图数据�json: 6.5KB, 17丝到至肬
+## 文件清单
+- 人设-可露希尔.txt: 角色人设文件（13KB）
+- 可露希尔世界书数据.json: 世界书数据（11KB，13个条目）
+- 可露希尔正则数据.json: 正则数据（6.5KB，17个脚本）
+- 工作记录.md: 制作过程记录
 
-## 数据黑式
--应用斐部的 BWIK/PRTS 虾虾文本了
-- 今新品文件和策修实务部
+## 数据来源
+- BWIKI: https://wiki.biligame.com/arknights/可露希尔
+- PRTS: https://prts.wiki/w/可露希尔
+- 萌娘百科: https://zh.moegirl.org.cn/可露希尔
 
-## 响图通二
-- 返回新镾图数据书
-- 响图发通显片
-- 封骒通二 城失能的工作
+## 待办
+- 人设文件扩充到一万字
+- 添加更多台词和互动场景
