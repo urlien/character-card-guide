@@ -1,5 +1,18 @@
 # 角色卡识别技术途径
 
+> ## 🆕 2026-08-10 更新：浏览器工具已就位，不再只有 API 一条路
+>
+> 本机（Windows 11）已装好两个浏览器自动化工具并接入 Hermes MCP：
+>
+> | 工具 | 方式 | 特点 |
+> |------|------|------|
+> | **nekoro-browser** v0.2.0 | Chrome 扩展驱动日常 Chrome | 保留登录态，OAuth 不再被拦截，53 个 MCP 工具 |
+> | **PilotBrowseMCP** | Chrome 扩展 + Node server | 网络抓包 / JS 逆向 / SQLi 检测，69 个 MCP 工具 |
+>
+> 现在 Hermes 可以**直接打开浏览器访问 sexyai.ai**（复用你日常 Chrome 的登录态），
+> 此前"无法打开浏览器、只能靠 API 看网站"的限制已解除。
+> 两条路互补：**批量抓数据用 API（本文档），页面交互/发卡改卡用浏览器**。
+
 本目录收录 AI 角色卡平台（sexyai.ai / 魅魔岛）的 API 接入与技术文档。
 
 > **给 MiMo Claw 的说明：** 你无法直接打开浏览器访问 sexyai.ai，但可以通过 API "看到"网站上的所有内容。下面是完整操作流程。
@@ -109,3 +122,18 @@ POST /api/role/lorebooks/fetch  body: {"id":144742}
 POST /api/role/query  body: {"id":144742}
 → 看返回数据中的 statusbar 和 regex_scripts 字段
 ```
+
+## 🆕 浏览器直连途径（2026-08-10 新增）
+
+Hermes 新会话中可直接用浏览器工具操作 sexyai.ai（登录态 = 你日常 Chrome 的登录态）：
+
+| 需求 | 工具（前缀 mcp_） | 示例 |
+|------|------|------|
+| 打开/登录网站 | `mcp_nekoro_browser_new_tab` / `navigate` | 直接访问 https://www.sexyai.ai |
+| 页面点击/填表 | `mcp_nekoro_browser_click` / `fill_input` | 点「创作」、填卡名 |
+| 看页面/截图 | `mcp_nekoro_browser_capture_screenshot` / `page_info` | 确认渲染效果 |
+| 抓接口数据 | `mcp_pilot_browse_browser_network_search` / `browser_network_analyze` | 监控页面请求、分析 API 结构 |
+| 批量抓卡 | `mcp_pilot_browse_browser_save_content` / `browser_get_markdown` | 整页转 Markdown 存盘（省 token） |
+
+> 与 API 途径配合：页面新功能先在浏览器里看请求（network 工具），发现新端点后补进
+> [seyyai-api-guide.md](seyyai-api-guide.md)，下次直接 API 批量调用。
