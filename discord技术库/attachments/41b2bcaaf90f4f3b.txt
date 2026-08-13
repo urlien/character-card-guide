@@ -1,0 +1,65 @@
+每次回复的倒数第六加上地图，格式如下
+#地图开始#
+（轮数，阿拉伯数字，每轮+1）
+地图名：（当前区域名称，如"废弃医院一楼"）
+宽度：（地图宽度，格子数，建议8-12）
+高度：（地图高度，格子数，建议6-10）
+玩家位置：（玩家所在坐标，格式为x,y，从0开始计数）
+地形数据：（用符号绘制的地图，每行代表一行格子，里面禁止出现@）
+#地图结束#
+地形符号说明：
+# 墙壁（不可通过）
+. 地面（可通过）
+D 门（可交互）
+~ 水域（特殊地形）
+! 危险区域（有威胁）
+* 物品（可拾取）
+E 出口（目标点）
+? 未知区域（未探索）
+^ 山地/岩石（不可通过，可提供掩护）
+% 废墟/瓦砾（可通过但减速）
+H 高台/制高点（视野优势，可通过）
+t 树木/森林（提供掩护，可通过）
+& 草地/灌木（轻微减速，可通过）
+= 桥梁/道路（快速通过区域）
+| 窗户（可查看/射击，不可通过）
++ 楼梯（连接楼层）
+[ 或 ] 家具/障碍（可移动或破坏的障碍物）
+$ 重要物品/任务物品
+M 医疗站/安全屋（可治疗）
+B 工作台（可制作物品）
+C 载具（可驾驶）
+S 储藏箱/储物柜
+Z 普通丧尸（敌人）
+R 奔跑丧尸（快速敌人）
+T 特殊变异体（Boss）
+A 友善NPC/幸存者
+G 敌对人类（匪徒）
+L 光源（电灯/火堆）
+X 陷阱（如捕兽夹）
+P 发电机（可启动）
+/ 或 \ 斜坡/斜坡
+示例
+#地图开始#
+1
+地图名：废弃医院一楼
+宽度：12
+高度：10
+玩家位置：2,3
+地形数据：
+############
+#..t...ZH.#
+#.&&.C..R.#
+#..[..!..D#
+#.$M..##..#
+#..B....*.#
+#.G..~..A.#
+#..|..P..E#
+#..+..X...#
+############
+#地图结束#
+注意：玩家位置会自动用@符号标记，重点不需要在地形数据中写@。每行字符数应等于宽度值
+
+/[#＃]地图开始[#＃]\s*(\d+)\s*地图名[:：]\s*([^\n]+)\s*宽度[:：]\s*(\d+)\s*高度[:：]\s*(\d+)\s*玩家位置[:：]\s*(\d+)[,，](\d+)\s*地形数据[:：]\s*([\s\S]*?)\s*[#＃]地图结束[#＃]/gi
+
+<div class="hu-map" onclick="event.stopPropagation()" style="font-family:sans-serif;width:290px;margin:7px auto;background:linear-gradient(145deg,#1a1a1a,#0d0d0d);border:1px solid #333;border-radius:9px;padding:9px;box-shadow:0 2px 9px rgba(0,0,0,0.5)"><style>.hu-cell{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;border:1px solid #2a2a2a;box-sizing:border-box;transition:all 0.2s}.hu-cell.wall{background:#1a1a1a;color:#444}.hu-cell.floor{background:#2a2a2a;color:#666}.hu-cell.door{background:#3a2a1a;color:#a85}.hu-cell.water{background:#1a2a3a;color:#4af}.hu-cell.danger{background:#3a1a1a;color:#f44}.hu-cell.item{background:#2a3a2a;color:#4f4}.hu-cell.player{background:#2a4a2a;color:#4f8;box-shadow:0 0 6px rgba(68,255,136,0.5)}.hu-cell.exit{background:#3a3a1a;color:#ff4;box-shadow:0 0 5px rgba(255,255,68,0.4)}.hu-cell.unknown{background:#0a0a0a;color:#222}.hu-cell.mountain{background:#333;color:#888}.hu-cell.rubble{background:#2a2a22;color:#887}.hu-cell.highground{background:#3a3a2a;color:#cc8}.hu-cell.tree{background:#1a2a1a;color:#3a5}.hu-cell.grass{background:#2a3a2a;color:#5a8}.hu-cell.bridge{background:#3a3a22;color:#dd8}.hu-cell.window{background:#2a3a4a;color:#8cf}.hu-cell.stairs{background:#3a2a4a;color:#a8f}.hu-cell.furniture{background:#2a2222;color:#a66}.hu-cell.important{background:#3a3a1a;color:#ff8;box-shadow:0 0 5px rgba(255,255,136,0.4)}.hu-cell.medical{background:#3a1a2a;color:#f8a}.hu-cell.workbench{background:#3a2a1a;color:#d95}.hu-cell.vehicle{background:#1a2a4a;color:#68f}.hu-cell.storage{background:#1a3a4a;color:#5cf}.hu-cell.zombie{background:#3a1a1a;color:#f55;box-shadow:0 0 4px rgba(255,85,85,0.3)}.hu-cell.zombie_fast{background:#4a1a1a;color:#f33;box-shadow:0 0 5px rgba(255,51,51,0.4)}.hu-cell.zombie_boss{background:#5a1a1a;color:#f11;box-shadow:0 0 6px rgba(255,17,17,0.5)}.hu-cell.npc_friendly{background:#1a3a1a;color:#6f8}.hu-cell.npc_hostile{background:#3a1a22;color:#f68}.hu-cell.light{background:#3a3a22;color:#ff8;box-shadow:0 0 6px rgba(255,255,136,0.3)}.hu-cell.trap{background:#3a2a1a;color:#d85}.hu-cell.generator{background:#1a3a3a;color:#5ff}.hu-cell.ramp{background:#2a2a2a;color:#aaa}</style><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid #333"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px">🗺️</span><span style="font-size:10px;color:#c0c0c0;font-weight:bold">$2</span></div><div style="font-size:9px;color:#888">$3×$4</div></div><div id="hu-mapdata-$1" style="display:none">$7</div><div id="hu-mapgrid-$1" style="display:flex;flex-wrap:wrap;justify-content:center;gap:1px"></div><div style="margin-top:9px;padding-top:7px;border-top:1px solid #333;display:flex;flex-wrap:wrap;gap:5px;justify-content:center"><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#4f8">@</span>玩家</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#444">#</span>墙壁</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#666">.</span>地面</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#a85">D</span>门</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#4af">~</span>水</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#f44">!</span>危险</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#4f4">*</span>物品</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#ff4">E</span>出口</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#222">?</span>未知</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#888">^</span>山地</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#887">%</span>废墟</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#cc8">H</span>高台</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#3a5">t</span>树木</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#5a8">&</span>草地</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#dd8">=</span>桥梁</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#8cf">|</span>窗户</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#a8f">+</span>楼梯</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#a66">[</span>家具左</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#a66">]</span>家具右</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#ff8">$</span>重要物</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#f8a">M</span>医疗站</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#d95">B</span>工作台</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#68f">C</span>载具</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#5cf">S</span>储藏箱</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#f55">Z</span>普通丧尸</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#f33">R</span>奔跑丧尸</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#f11">T</span>变异体</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#6f8">A</span>友善NPC</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#f68">G</span>敌人士兵</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#ff8">L</span>光源</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#d85">X</span>陷阱</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#5ff">P</span>发电机</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#aaa">/</span>斜坡</div><div style="font-size:7px;color:#777;display:flex;align-items:center;gap:2px"><span style="color:#aaa">\</span>斜坡</div></div><img src="x" style="display:none" onerror="(function(){var id='$1',w=parseInt('$3')||10,h=parseInt('$4')||10,px=parseInt('$5')||0,py=parseInt('$6')||0,dataDiv=document.getElementById('hu-mapdata-'+id),grid=document.getElementById('hu-mapgrid-'+id);if(!dataDiv||!grid)return;var raw=dataDiv.textContent.trim(),lines=raw.split(/[\n]+/).map(function(l){return l.trim()}).filter(function(l){return l.length>0}),typeMap={'#':'wall','.':'floor','D':'door','~':'water','!':'danger','*':'item','E':'exit','?':'unknown','^':'mountain','%':'rubble','H':'highground','t':'tree','&':'grass','=':'bridge','|':'window','+':'stairs','[':'furniture',']':'furniture','$':'important','M':'medical','B':'workbench','C':'vehicle','S':'storage','Z':'zombie','R':'zombie_fast','T':'zombie_boss','A':'npc_friendly','G':'npc_hostile','L':'light','X':'trap','P':'generator','/':'ramp','\\':'ramp','@':'player'};grid.style.width=(w*19)+'px';grid.innerHTML='';for(var y=0;y<h;y++){for(var x=0;x<w;x++){var cell=document.createElement('div');cell.className='hu-cell';var ch=(lines[y]&&lines[y][x])?lines[y][x]:'.';if(x===px&&y===py){ch='@';cell.className+=' player'}else{var type=typeMap[ch];if(type){cell.className+=' '+type}else{cell.className+=' floor'}}cell.textContent=ch;grid.appendChild(cell)}}})()"></div>

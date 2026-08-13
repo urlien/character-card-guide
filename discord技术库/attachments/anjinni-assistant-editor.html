@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安心院小助手 · 先行版 配置编辑器</title>
+<style>
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --surface2: #0f3460;
+  --accent: #e94560;
+  --accent2: #533483;
+  --text: #eee;
+  --text2: #aaa;
+  --border: #2a2a4a;
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+header {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 16px 20px;
+  text-align: center;
+}
+header h1 { font-size: 1.2rem; }
+header span { font-size: 0.75rem; opacity: 0.8; }
+
+.main-layout {
+  display: flex;
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: calc(100vh - 70px);
+}
+
+/* --- Left: Config Panel --- */
+.config-panel {
+  flex: 1;
+  min-width: 320px;
+  max-width: 480px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  max-height: calc(100vh - 70px);
+}
+.section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px;
+  border: 1px solid var(--border);
+}
+.section h2 {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+input[type="text"], input[type="url"], input[type="number"], textarea, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.preview-img-wrap {
+  text-align: center;
+  margin: 8px 0;
+}
+.preview-img-wrap img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 12px rgba(233,69,96,0.3);
+}
+.preview-img-wrap .error {
+  color: #f55;
+  font-size: 0.75rem;
+}
+.preview-img-wrap img.fallback {
+  border-color: #555;
+  box-shadow: none;
+}
+
+/* button size slider */
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.size-row input[type="range"] { flex: 1; }
+.size-row .size-val { font-size: 0.8rem; color: var(--text2); min-width: 40px; }
+
+/* presets */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+.preset-btn {
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.7rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.preset-btn:hover, .preset-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+/* --- Right: Preview + Code --- */
+.output-panel {
+  flex: 1;
+  min-width: 320px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  max-height: calc(100vh - 70px);
+}
+.code-block {
+  background: #0d0d1a;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: #a8d8a8;
+  position: relative;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.copy-btn.copied {
+  background: #4caf50;
+}
+
+/* phone preview */
+.phone-frame {
+  width: 200px;
+  height: 360px;
+  border: 3px solid #333;
+  border-radius: 20px;
+  background: #111;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.phone-assistant {
+  position: absolute;
+  cursor: pointer;
+  transition: none;
+}
+.phone-assistant img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(233,69,96,0.4);
+}
+.phone-label {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  border: 0;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* mobile */
+@media (max-width: 720px) {
+  .main-layout { flex-direction: column; }
+  .config-panel { max-width: 100%; max-height: none; }
+  .output-panel { max-height: none; }
+  .phone-frame { width: 150px; height: 280px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🛡️ 安心院小助手 · 先行版</h1>
+  <span>配置编辑器 v1.0 — 调整参数 → 生成代码</span>
+</header>
+
+<div class="main-layout">
+
+<!-- ===== LEFT: CONFIG ===== -->
+<div class="config-panel">
+
+  <!-- 1. 按钮图片 -->
+  <div class="section">
+    <h2>🖼️ 按钮图片</h2>
+    <label>图片 URL</label>
+    <input type="url" id="imgUrl" placeholder="https://...">
+    <div class="preview-img-wrap">
+      <img id="imgPreview" src="" alt="预览" onerror="this.classList.add('fallback');this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2264%22><rect fill=%22%23333%22 width=%2264%22 height=%2264%22/><text fill=%22%23666%22 x=%2232%22 y=%2236%22 text-anchor=%22middle%22 font-size=%2212%22>无图片</text></svg>';">
+    </div>
+    <label>头像大小 (px)</label>
+    <div class="size-row">
+      <input type="range" id="avatarSize" min="40" max="100" value="60">
+      <span class="size-val" id="avatarSizeVal">60px</span>
+    </div>
+
+    <label style="margin-top:6px;">快捷图集</label>
+    <div class="preset-grid">
+      <button class="preset-btn active" data-set="hsr">崩铁 (430张)</button>
+      <button class="preset-btn" data-set="genshin">原神 (911张)</button>
+    </div>
+    <label style="margin-top:6px;">图片编号 (1~</label><span id="maxNum">430</span>)</label>
+    <div style="display:flex;gap:6px;">
+      <input type="number" id="imgNum" min="1" max="430" value="1">
+      <button id="randBtn" style="padding:8px 12px;border:0;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-size:0.8rem;">🎲 随机</button>
+    </div>
+  </div>
+
+  <!-- 2. 提醒设置 -->
+  <div class="section">
+    <h2>⏰ 提醒设置</h2>
+    <label>未总结提醒轮数</label>
+    <input type="number" id="reminderInterval" min="1" max="50" value="8">
+    <label style="margin-top:6px;">提醒用语（{X} = 轮数）</label>
+    <input type="text" id="reminderMsg" value="已经 {X} 轮未总结啦，该总结咯！">
+  </div>
+
+  <!-- 3. 正则/按钮生成 -->
+  <div class="section">
+    <h2>📋 导出</h2>
+    <div class="tabs" style="margin-bottom:10px;">
+      <button class="tab-btn active" data-tab="author">作者用（正则）</button>
+      <button class="tab-btn" data-tab="player">玩家用（按钮）</button>
+    </div>
+    <label>CDN 地址</label>
+    <input type="text" id="cdnUrl" value="https://cdn.jsdelivr.net/gh/s0s9s8s7s6s5s-netizen/ai-tools/assistant.js">
+    <p style="font-size:0.7rem;color:var(--text2);margin-top:4px;">💡 默认用 jsDelivr CDN，可换成你自己的托管地址</p>
+  </div>
+
+</div>
+
+<!-- ===== RIGHT: OUTPUT ===== -->
+<div class="output-panel">
+
+  <!-- Phone Preview -->
+  <div class="section" style="text-align:center;">
+    <h2>📱 预览 (MMD 内效果)</h2>
+    <div class="phone-frame">
+      <div class="phone-screen" id="phoneScreen">
+        <div class="phone-assistant" id="phoneAssistant" style="width:60px;height:60px;bottom:60px;right:30px;">
+          <img src="" alt="小助手" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><circle fill=%22%23555%22 cx=%2230%22 cy=%2230%22 r=%2230%22/><text fill=%22%23999%22 x=%2230%22 y=%2235%22 text-anchor=%22middle%22 font-size=%2210%22>btn</text></svg>';">
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.65rem;color:var(--text2);margin-top:6px;">模拟位置：右下角浮动按钮</p>
+  </div>
+
+  <!-- Author Code -->
+  <div class="section">
+    <h2>🔧 作者用（正则替换）</h2>
+    <p style="font-size:0.7rem;color:var(--text2);margin-bottom:6px;">粘贴到 MMD 正则替换规则中</p>
+    <div class="code-block" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode('authorCode')">复制</button>
+      <code id="authorCode"></code>
+    </div>
+  </div>
+
+  <!-- Player Code -->
+  <div class="section">
+    <h2>🎮 玩家用（聊天按钮）</h2>
+    <p style="font-size:0.7rem;color:var(--text2);margin-bottom:6px;">编辑消息后粘贴这段 HTML，发送即可</p>
+    <div class="code-block" style="position:relative;">
+      <button class="copy-btn" onclick="copyCode('playerCode')">复制</button>
+      <code id="playerCode"></code>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+// ============ STATE ============
+const DEFAULTS = {
+  imgUrl: 'https://meimoaiimg.com/user/1351181/button%20(1).png?i=1182931',
+  imgSet: 'hsr',
+  imgNum: 1,
+  avatarSize: 60,
+  reminderInterval: 8,
+  reminderMsg: '已经 {X} 轮未总结啦，该总结咯！',
+  cdnUrl: 'https://cdn.jsdelivr.net/gh/s0s9s8s7s6s5s-netizen/ai-tools/assistant.js',
+};
+
+const IMG_SETS = {
+  hsr: { label: '崩铁', prefix: 'button', count: 430 },
+  genshin: { label: '原神', prefix: 'button2', count: 911 },
+};
+
+let state = { ...DEFAULTS };
+
+// Load from localStorage
+try {
+  const saved = JSON.parse(localStorage.getItem('anjinni_assistant_config'));
+  if (saved) Object.assign(state, saved);
+} catch(e) {}
+
+// Derive imgSet + imgNum from URL
+function parseUrl(u) {
+  const decoded = decodeURIComponent(u || '');
+  const m = decoded.match(/\/(button2|button)\s*\((\d+)\)\.png/i);
+  if (!m) return { set: 'hsr', num: 1 };
+  return {
+    set: m[1].toLowerCase() === 'button2' ? 'genshin' : 'hsr',
+    num: parseInt(m[2], 10) || 1,
+  };
+}
+
+// Build URL from set + num
+function buildUrl(set, num) {
+  const s = IMG_SETS[set];
+  return `https://meimoaiimg.com/user/1351181/${s.prefix}%20(${num}).png`;
+}
+
+// Init from state
+(function init() {
+  const parsed = parseUrl(state.imgUrl);
+  // If current imgUrl matches a known pattern, sync set/num
+  if (parsed.set && parsed.num) {
+    state.imgSet = parsed.set;
+    state.imgNum = parsed.num;
+  }
+
+  document.getElementById('imgUrl').value = state.imgUrl;
+  document.getElementById('imgNum').value = state.imgNum;
+  document.getElementById('imgNum').max = IMG_SETS[state.imgSet].count;
+  document.getElementById('maxNum').textContent = IMG_SETS[state.imgSet].count;
+  document.getElementById('avatarSize').value = state.avatarSize;
+  document.getElementById('avatarSizeVal').textContent = state.avatarSize + 'px';
+  document.getElementById('reminderInterval').value = state.reminderInterval;
+  document.getElementById('reminderMsg').value = state.reminderMsg;
+  document.getElementById('cdnUrl').value = state.cdnUrl;
+
+  updateSetButtons();
+  updateAll();
+})();
+
+// ============ EVENT BINDINGS ============
+
+// imgUrl manual change
+document.getElementById('imgUrl').addEventListener('input', function() {
+  state.imgUrl = this.value;
+  const parsed = parseUrl(this.value);
+  if (parsed.set && parsed.num) {
+    state.imgSet = parsed.set;
+    state.imgNum = parsed.num;
+    document.getElementById('imgNum').value = state.imgNum;
+    document.getElementById('imgNum').max = IMG_SETS[state.imgSet].count;
+    document.getElementById('maxNum').textContent = IMG_SETS[state.imgSet].count;
+    updateSetButtons();
+  }
+  saveAndUpdate();
+});
+
+// imgNum change
+document.getElementById('imgNum').addEventListener('input', function() {
+  let n = parseInt(this.value) || 1;
+  n = Math.max(1, Math.min(n, IMG_SETS[state.imgSet].count));
+  this.value = n;
+  state.imgNum = n;
+  state.imgUrl = buildUrl(state.imgSet, n);
+  document.getElementById('imgUrl').value = state.imgUrl;
+  saveAndUpdate();
+});
+
+// Random
+document.getElementById('randBtn').addEventListener('click', function() {
+  const max = IMG_SETS[state.imgSet].count;
+  state.imgNum = Math.floor(Math.random() * max) + 1;
+  state.imgUrl = buildUrl(state.imgSet, state.imgNum);
+  document.getElementById('imgUrl').value = state.imgUrl;
+  document.getElementById('imgNum').value = state.imgNum;
+  saveAndUpdate();
+});
+
+// Set buttons
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    state.imgSet = this.dataset.set;
+    state.imgNum = 1;
+    state.imgUrl = buildUrl(state.imgSet, 1);
+    document.getElementById('imgUrl').value = state.imgUrl;
+    document.getElementById('imgNum').value = 1;
+    document.getElementById('imgNum').max = IMG_SETS[state.imgSet].count;
+    document.getElementById('maxNum').textContent = IMG_SETS[state.imgSet].count;
+    updateSetButtons();
+    saveAndUpdate();
+  });
+});
+
+// avatarSize
+document.getElementById('avatarSize').addEventListener('input', function() {
+  state.avatarSize = parseInt(this.value);
+  document.getElementById('avatarSizeVal').textContent = state.avatarSize + 'px';
+  saveAndUpdate();
+});
+
+// reminderInterval
+document.getElementById('reminderInterval').addEventListener('input', function() {
+  state.reminderInterval = parseInt(this.value) || 8;
+  saveAndUpdate();
+});
+
+// reminderMsg
+document.getElementById('reminderMsg').addEventListener('input', function() {
+  state.reminderMsg = this.value;
+  saveAndUpdate();
+});
+
+// cdnUrl
+document.getElementById('cdnUrl').addEventListener('input', function() {
+  state.cdnUrl = this.value;
+  updateAll();
+});
+
+// Tab buttons
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ============ UPDATE FUNCTIONS ============
+
+function updateSetButtons() {
+  document.querySelectorAll('.preset-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.set === state.imgSet);
+  });
+}
+
+function updateAll() {
+  // Image preview
+  const preview = document.getElementById('imgPreview');
+  preview.classList.remove('fallback');
+  preview.src = state.imgUrl;
+
+  // Phone assistant
+  const pa = document.getElementById('phoneAssistant');
+  pa.style.width = state.avatarSize + 'px';
+  pa.style.height = state.avatarSize + 'px';
+  pa.querySelector('img').src = state.imgUrl;
+
+  // Generate codes
+  const cdn = state.cdnUrl;
+  const interval = state.reminderInterval;
+
+  // Author: onerror 正则 — 防重复加载 + 先写 localStorage config + 加载 assistant.js
+  const escUrl = state.imgUrl.replace(/'/g, "\\'");
+  const escMsg = state.reminderMsg.replace(/'/g, "\\'");
+
+  const authorCode = `<img src="1" onerror="
+if(!window.aiLoaded){
+window.aiLoaded=1;
+var c=JSON.parse(localStorage.getItem('aiAssistantConfig')||'{}');
+c.imgUrl='${escUrl}';
+c.reminderInterval=${interval};
+c.reminderMsg='${escMsg}';
+localStorage.setItem('aiAssistantConfig',JSON.stringify(c));
+fetch('${cdn}').then(r=>r.text()).then(t=>new Function(t)());
+}
+" style="display:none;">`;
+
+  // Player button — 稳定版，防重复加载 + 重复点提示
+  const playerCode = `<button onclick="
+if(!window.aiLoaded){
+window.aiLoaded=1;
+var c=JSON.parse(localStorage.getItem('aiAssistantConfig')||'{}');
+c.imgUrl='${escUrl}';
+c.reminderInterval=${interval};
+c.reminderMsg='${escMsg}';
+localStorage.setItem('aiAssistantConfig',JSON.stringify(c));
+fetch('${cdn}').then(r=>r.text()).then(t=>new Function(t)());
+}else{alert('小助手已經啟動中囉！');}
+">啟動小助手</button>`;
+
+  document.getElementById('authorCode').textContent = authorCode;
+  document.getElementById('playerCode').textContent = playerCode;
+}
+
+function saveAndUpdate() {
+  try {
+    localStorage.setItem('anjinni_assistant_config', JSON.stringify(state));
+  } catch(e) {}
+  updateAll();
+}
+
+// ============ COPY ============
+function copyCode(id) {
+  const el = document.getElementById(id);
+  const text = el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.parentElement.querySelector('.copy-btn');
+    btn.textContent = '已复制!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '复制';
+      btn.classList.remove('copied');
+    }, 1500);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = el.parentElement.querySelector('.copy-btn');
+    btn.textContent = '已复制!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '复制';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+</script>
+
+</body>
+</html>

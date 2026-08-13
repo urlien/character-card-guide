@@ -26,6 +26,6 @@
 **慧蛋（搞完宗宗主，宗内仅宗主一人）** (2026-07-06 07:11:53):
 根据我那张最新拯救卡改的，够用并且自定义的地方很多还能预览。里面四个模块都分好了，生成规则放设定里面，正则发查找和第一段代码，最后单独把侧边栏代码加到功能栏里面（本意是过来要经验的，一次3万经验太少了，到后面一级都不能升级了）
 Du bist gut genug
-![01234-3251377198.jpg](https://cdn.discordapp.com/attachments/1523587277664555058/1523587278146896012/01234-3251377198.jpg?ex=6a7ebfb9&is=6a7d6e39&hm=d744d3ef5379b5fed605e412ec6ec1e7e4ca053cae1a1e6dd1ff1b9f2d14ad78&)
-![G.html](https://cdn.discordapp.com/attachments/1523587277664555058/1523587278612598844/G.html?ex=6a7ebfba&is=6a7d6e3a&hm=4739eb443d6633021a6414691b138b74e5bca96a1443c72c185dba1ff150bcab&)
+![01234-3251377198.jpg](attachments/01234-3251377198.jpg)
+![G.html](attachments/G.html)
 

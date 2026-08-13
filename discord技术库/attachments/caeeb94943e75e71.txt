@@ -1,0 +1,58 @@
+【状态栏运行规则】
+<status>
+<div class="z-status-data" style="display:none">
+  <div data-env tm="{{日期时间}}" loc="{{地点}}" panel_title="{{场景标题}}" round="{{轮次}}"></div>
+  <div data-heroine name="沈棠" appearance="{{外貌}}" clothing="{{服装}}" posture="{{姿势}}" position="{{位置}}" mouth="{{口}}" breast="{{胸}}" hand="{{手}}" foot="{{足}}" pussy="{{小穴}}" anus="{{后穴}}" move="{{动向}}" echoes="{{心语1|心语2|心语3|...}}"></div>
+  <div data-heroine name="沈筠" appearance="{{外貌}}" clothing="{{服装}}" posture="{{姿势}}" position="{{位置}}" mouth="{{口}}" breast="{{胸}}" hand="{{手}}" foot="{{足}}" pussy="{{小穴}}" anus="{{后穴}}" desire="{{欲望值}}" echoes="{{心语1|心语2|心语3|...}}"></div>
+  <div data-opt opt_title="{{选项标题}}" c1="{{选项1}}" c2="{{选项2}}" c3="{{选项3}}"></div>
+</div>
+</status>
+
+每次回复末尾，必须输出以 <status> 开头、</status> 结尾的数据块。数据包裹在 <div class="z-status-data" style="display:none"> 中。</status> 紧接最后一个 </div>，中间不得插入其他标签。未变化的字段可省略，利用继承自动填充。
+
+环境数据 data-env
+tm：字符串，✅ 继承。日期与时间，如“周六夜晚10点35分”。
+loc：字符串，✅ 继承。当前{{user}}具体地点，如“公寓主卧床上”。
+panel_title：字符串，✅ 继承。场景标题，不得超过8个汉字，每轮必须根据当前核心事件重新凝练，不可复用。如“薄墙初夜” → “清晨试探”。
+round：数字，✅ 继承。回复轮次，初始0，每轮加1。
+角色数据 data-heroine
+通过 name="沈棠" 或 name="沈筠" 区分角色。以下为通用属性，均 ✅ 继承，每项10–25汉字：
+
+appearance：外貌
+clothing：服装
+posture：姿势
+position：位置
+mouth：口部描述
+breast：胸部描述
+hand：手部描述
+foot：足部描述
+pussy：小穴描述
+anus：后穴描述
+沈棠专属：move（动向），描述接下来打算做什么，✅ 继承。
+
+沈筠专属：desire（欲望值），0到100的整数，✅ 继承。
+
+内心独白：❌ 不继承，每轮必填。两个角色统一使用 echoes 属性，值为竖线符 | 分隔的心语列表。至少3条，可多于3条，无上限。每条5–20汉字，模拟脑海中断续的念头。性爱场景中应混入叫床声片段（如“好深……嗯啊”），与正常心语穿插。
+
+示例：echoes="姐姐就在隔壁怎么办|身体好想要，已经湿了|嗯啊~|好硬~好深"。
+
+选项数据 data-opt
+❌ 不继承，每次必填。
+
+opt_title：选项栏标题，如“接下来的行动”，可省略。
+c1、c2、c3：三个实质性分歧选项，格式固定为 标题|描述|风险|类型，用竖线分隔。
+标题：选项简介，≤10汉字，可能涉性的选项前加“♥”。
+描述：具体行动与预期结果，约80汉字。
+风险：low（低）、medium（中）、high（高）。
+类型：safe（绿框）、opportunity（金框）、risky（红框）、normal（默认）。
+三个选项应覆盖温柔试探、冒险刺激、理性克制等不同方向。
+
+属性值双引号禁令：所有 data-heroine、data-env、data-opt 的属性值中，严禁包含未转义的英文双引号。需要引号的地方必须使用中文双引号 “ ”。如果确实需要输出英文双引号，请使用 HTML 实体 &quot; 替代。此规则同样适用于内心独白内容与选项描述。
+
+生成前必检清单
+以 <status>...</status> 包裹，数据区类名正确？
+panel_title 已更新且≤8汉字？
+两个角色均用 echoes 提供至少3条心语（竖线分隔）？
+data-opt 包含三个管道分隔的选项？
+沈筠欲望值在0–100？
+一切临时生理描写已从数据块移入正文？

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>成长系统词汇编辑器 · Growth Forge</title>
+<style>
+:root {
+  --bg: #0f172a; --cardBg: #1e293b; --accent: #22c55e;
+  --text: #e2e8f0; --text2: #94a3b8; --border: #334155;
+  --tagBg: #22c55e18; --tagColor: #22c55e;
+  --radius: 12px; --transition: 0.2s;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;display:flex;flex-direction:column;-webkit-user-select:none;user-select:none}
+.gf-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--cardBg);border-bottom:1px solid var(--border);flex-shrink:0}
+.gf-header-left{display:flex;align-items:center;gap:10px}
+.gf-logo{font-size:20px;font-weight:700;color:var(--accent)}
+.gf-title{font-size:15px;font-weight:600}
+.gf-main{display:flex;flex:1;min-height:0;overflow:hidden}
+.gf-sidebar{width:340px;flex-shrink:0;background:var(--cardBg);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.gf-sidebar-section{padding:12px 14px;border-bottom:1px solid var(--border)}
+.gf-cat-header{cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px}
+.gf-cat-badge{background:var(--accent);color:#000;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;min-width:20px;text-align:center}
+.gf-module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.gf-module-tag{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;background:var(--tagBg);color:var(--tagColor);border-radius:20px;font-size:12px;cursor:pointer;transition:var(--transition);border:1px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.gf-module-tag:hover{filter:brightness(1.2)}
+.gf-module-tag.selected{border-color:var(--accent);background:var(--accent);color:#000}
+.gf-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.gf-tabs{display:flex;background:var(--cardBg);border-bottom:1px solid var(--border);flex-shrink:0}
+.gf-tab{padding:10px 20px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:var(--transition);background:none;border:none;outline:none}
+.gf-tab:hover{color:var(--text)}
+.gf-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.gf-tab-content{display:none}
+.gf-tab-content.active{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;min-height:0;padding:16px}
+.gf-section{margin-bottom:20px}
+.gf-section h3{font-size:14px;font-weight:600;margin-bottom:10px}
+.gf-field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.gf-field label{font-size:12px;font-weight:500;color:var(--text2)}
+.gf-field input,.gf-field textarea,.gf-field select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius);font-size:14px;font-family:inherit;outline:none;width:100%}
+.gf-field textarea{min-height:80px;resize:vertical}
+.gf-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;transition:var(--transition);border:1px solid var(--border);background:var(--cardBg);color:var(--text);white-space:nowrap}
+.gf-btn-primary{background:var(--accent);color:#000;border:none}
+.gf-preview-area{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-height:200px;overflow-x:auto}
+.gf-preview-area pre{font-family:'SF Mono',Monaco,Menlo,monospace;font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-all;color:var(--text);margin:0}
+.gf-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--cardBg);border-top:1px solid var(--border);flex-shrink:0;gap:10px}
+.gf-selected-count{font-size:12px;color:var(--text2)}
+.gf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;justify-content:center;align-items:center}
+.gf-modal-overlay.show{display:flex}
+.gf-modal{background:var(--cardBg);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:640px;width:90vw;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.gf-modal h3{font-size:16px;margin-bottom:12px}
+@media(max-width:768px){
+  .gf-sidebar{width:100%;max-height:45vh;border-right:none;border-bottom:1px solid var(--border);flex-shrink:1}
+  .gf-main{flex-direction:column}
+  .gf-module-grid{grid-template-columns:repeat(2,1fr)}
+  .gf-module-tag{padding:7px 10px;font-size:13px;justify-content:center}
+  .gf-tab{padding:8px 12px;font-size:12px}
+  .gf-footer{padding:8px 12px;gap:6px}
+  .gf-btn{padding:8px 14px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<header class="gf-header">
+  <div class="gf-header-left">
+    <span class="gf-logo">🌱</span>
+    <span class="gf-title">成长系统词汇编辑器</span>
+  </div>
+  <button class="gf-btn" onclick="resetAll()">✕ 清空</button>
+</header>
+
+<main class="gf-main">
+  <aside class="gf-sidebar">
+    <div id="moduleSections"></div>
+  </aside>
+
+  <section class="gf-panel">
+    <nav class="gf-tabs">
+      <button class="gf-tab active" data-tab="settings" onclick="switchTab('settings')">⚙️ 设置</button>
+      <button class="gf-tab" data-tab="preview" onclick="switchTab('preview')">👁 预览</button>
+    </nav>
+    <div class="gf-tab-content active" id="tab-settings"><div id="settingsContent"></div></div>
+    <div class="gf-tab-content" id="tab-preview">
+      <div class="gf-preview-area" id="previewContent"><pre>请在左侧选择模块，勾选后在此处预览生成的提示词。</pre></div>
+    </div>
+  </section>
+</main>
+
+<footer class="gf-footer">
+  <span class="gf-selected-count" id="selectedCount">已选 0 个模块</span>
+  <div>
+    <button class="gf-btn gf-btn-primary" onclick="generatePrompt()">✨ 生成提示词</button>
+    <button class="gf-btn" onclick="copyPrompt()">📋 复制</button>
+  </div>
+</footer>
+
+<div class="gf-modal-overlay" id="modalSuccess">
+  <div class="gf-modal">
+    <h3>✅ 提示词已生成</h3>
+    <div class="gf-preview-area" id="successPreview"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="gf-btn gf-btn-primary" onclick="copyFromSuccess()">📋 复制</button>
+      <button class="gf-btn" onclick="document.getElementById('modalSuccess').classList.remove('show')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== 数据定义 ======
+var CM = {
+  'growth-system':{id:'growth-system',n:'成长系统',i:'📈',c:'core',cn:'核心系统',d:'角色的成长框架：经验值、等级提升、属性成长曲线',t:['成长','经验','属性'],p:'【成长系统】\n为角色设计成长机制：\n- 经验值来源：{exp_sources}\n- 等级上限：{max_level}\n- 每级所需经验公式：{exp_formula}\n- 升级奖励：属性点+{attr_per_level}、技能点+{skill_per_level}\n- 成长曲线类型：线性/指数/S型\n- 软上限与突破机制\n输出：完整的成长公式 + 经验表 + 升级奖励表。',f:['经验来源','等级上限','经验公式','属性成长','成长曲线']},
+  'level-system':{id:'level-system',n:'等级系统',i:'⬆️',c:'core',cn:'核心系统',d:'等级划分、等级名称、等级带来的能力差异',t:['等级','能力','差异'],p:'【等级系统】\n为{name}设计等级体系：\n- 等级范围：{level_range}\n- 等级命名：{level_names}（如：见习→正式→精英→大师→传说）\n- 等级差异：每级带来的战斗力/能力差距\n- 等级压制机制：高等级对低等级的优势\n- 等级显示：数值等级 / 称号等级 / 混合\n输出：等级表 + 每级差异说明。',f:['等级范围','等级命名','等级差异','压制机制','显示方式']},
+  'reputation-system':{id:'reputation-system',n:'声望系统',i:'⭐',c:'core',cn:'核心系统',d:'声望值、声望等级、声望带来的NPC态度变化',t:['声望','NPC','态度'],p:'【声望系统】\n为{name}设计声望机制：\n- 声望范围：{rep_range}\n- 声望等级：{rep_levels}（如：无名→小有名气→声名远扬→传奇）\n- 声望获取：完成任务/击败强敌/公开表演 +{rep_gain}\n- 声望影响：商店折扣/NPC态度/任务解锁/追随者招募\n- 声望衰减：长期不活跃 -{rep_decay}/天\n- 区域声望：不同区域独立声望值\n输出：声望等级表 + 获取/影响规则。',f:['声望范围','声望等级','获取方式','影响效果','衰减规则']},
+  'popularity-system':{id:'popularity-system',n:'人气系统',i:'💫',c:'core',cn:'核心系统',d:'粉丝/追随者数量、人气值对剧情的影响',t:['人气','粉丝','影响力'],p:'【人气系统】\n为{name}设计人气机制：\n- 人气值范围：0~{pop_max}\n- 人气来源：{pop_sources}\n- 人气等级：{pop_levels}\n- 人气效果：事件触发概率/商店特殊物品/剧情分支\n- 人气波动：正面事件+{pop_gain}，负面事件-{pop_loss}\n- 粉丝互动：粉丝来信/应援/特殊事件\n输出：人气等级表 + 影响规则 + 粉丝互动机制。',f:['人气范围','人气来源','人气等级','影响效果','波动规则']},
+  'achievement-system':{id:'achievement-system',n:'成就系统',i:'🏆',c:'core',cn:'核心系统',d:'成就列表、成就分类、成就奖励',t:['成就','奖励','收集'],p:'【成就系统】\n为{name}设计成就体系：\n- 成就分类：{ach_categories}\n- 成就数量：总计{ach_total}个\n- 隐藏成就：{ach_hidden}个（不预先显示条件）\n- 成就奖励：称号/属性加成/特殊物品/外观解锁\n- 成就稀有度：普通/稀有/史诗/传说\n- 成就追踪：进度条显示（如 击败100/1000只怪物）\n输出：成就列表（含条件+奖励+稀有度）。',f:['成就分类','成就总数','隐藏成就','奖励类型','稀有度']},
+  'milestone-system':{id:'milestone-system',n:'里程碑系统',i:'🚩',c:'core',cn:'核心系统',d:'关键节点的里程碑事件和奖励',t:['里程碑','节点','奖励'],p:'【里程碑系统】\n为{name}设计里程碑机制：\n- 里程碑类型：{ml_types}（剧情/能力/收集/社交）\n- 触发条件：达到指定数值/完成关键任务/解锁特定内容\n- 里程碑奖励：{ml_rewards}\n- 里程碑展示：时间轴/成就墙\n- 里程碑回溯：新玩家可查看历史里程碑\n输出：里程碑事件表（含触发条件+奖励+展示方式）。',f:['里程碑类型','触发条件','奖励内容','展示方式']},
+  'plot-progress':{id:'plot-progress',n:'剧情推进系统',i:'📜',c:'story',cn:'剧情系统',d:'主线/支线剧情推进的解锁条件与分支',t:['剧情','分支','解锁'],p:'【剧情推进系统】\n设计剧情推进机制：\n- 主线推进条件：{main_conditions}\n- 支线解锁条件：{side_conditions}\n- 剧情分支：关键选择点{choice_count}个，每个分支{choice_branch}条路线\n- 剧情锁：需要满足条件才能推进（等级/好感度/物品）\n- 回溯机制：是否允许重玩已通过章节\n- 剧情日志：记录已触发事件和选择历史\n输出：剧情推进流程图 + 解锁条件表。',f:['主线条件','支线条件','剧情分支','剧情锁','回溯机制']},
+  'unlock-mechanism':{id:'unlock-mechanism',n:'解锁机制',i:'🔓',c:'story',cn:'剧情系统',d:'各类内容的解锁条件设计',t:['解锁','条件','门控'],p:'【解锁机制】\n设计内容解锁体系：\n- 解锁类型：{unlock_types}（等级解锁/任务解锁/物品解锁/时间解锁）\n- 解锁条件：{unlock_conditions}\n- 解锁反馈：解锁动画/提示/引导\n- 解锁预告：显示即将解锁的内容\n- 条件组合：多条件"且/或"逻辑\n输出：解锁条件表 + 反馈设计。',f:['解锁类型','解锁条件','解锁反馈','预告机制']},
+  'conditional-unlock':{id:'conditional-unlock',n:'条件解锁',i:'🔑',c:'story',cn:'剧情系统',d:'复杂条件组合解锁，含前置条件链',t:['条件','前置','依赖'],p:'【条件解锁】\n设计复杂条件解锁体系：\n- 前置条件链：{pre_chain}\n- 条件逻辑：AND/OR/NOT 组合\n- 条件类型：属性条件/物品条件/关系条件/时间条件\n- 条件检查时机：实时检查/触发时检查\n- 条件提示：显示已满足/未满足的条件\n- 条件回退：条件不再满足时是否锁定\n输出：条件树结构 + 检查逻辑。',f:['前置条件','条件逻辑','条件类型','检查时机','回退规则']},
+  'skill-tree':{id:'skill-tree',n:'技能树',i:'🌳',c:'story',cn:'剧情系统',d:'树状技能分支、技能点分配、前置技能',t:['技能','分支','升级'],p:'【技能树系统】\n为{name}设计技能树：\n- 技能分类：{skill_categories}（战斗/生活/社交/特殊）\n- 树形结构：{tree_depth}层，每层{tree_width}个分支\n- 技能点获取：每级+{sp_per_level}点\n- 前置技能：{pre_skills}\n- 技能等级：每技能{skill_max_level}级\n- 重置机制：是否允许洗点，{reset_cost}\n输出：完整技能树图谱 + 每个技能的等级效果表。',f:['技能分类','树形结构','技能点','前置技能','重置机制']},
+  'talent-tree':{id:'talent-tree',n:'天赋树',i:'🧬',c:'story',cn:'剧情系统',d:'天赋系统、被动加成、天赋分支选择',t:['天赋','被动','专精'],p:'【天赋树系统】\n为{name}设计天赋树：\n- 天赋分类：{talent_categories}\n- 天赋点数：{talent_points_total}点，每{levels_per_point}级获得1点\n- 天赋分支：{talent_branches}条路线（可选1条专精）\n- 被动效果：永久加成属性/解锁特殊能力\n- 天赋协同：特定天赋组合触发额外效果\n- 天赋洗点：{talent_reset}\n输出：完整天赋树 + 每天赋效果描述 + 路线推荐。',f:['天赋分类','天赋点数','天赋分支','被动效果','协同效果']}
+};
+var CATS=[
+  {id:'core',name:'核心系统',icon:'📈',modules:['growth-system','level-system','reputation-system','popularity-system','achievement-system','milestone-system']},
+  {id:'story',name:'剧情系统',icon:'📜',modules:['plot-progress','unlock-mechanism','conditional-unlock','skill-tree','talent-tree']}
+];
+var state={selected:new Set(),charName:'角色名',activeTab:'settings',sectionOpen:{}};
+
+// ====== 渲染模块 ======
+function renderModules(){
+  var c=document.getElementById('moduleSections'),h='';
+  CATS.forEach(function(cat,i){
+    var open=state.sectionOpen[cat.id]!==false;
+    if(state.sectionOpen[cat.id]===undefined){open=(i===0);state.sectionOpen[cat.id]=open;}
+    var cnt=cat.modules.filter(function(id){return state.selected.has(id);}).length;
+    h+='<div class="gf-sidebar-section">';
+    h+='<div class="gf-cat-header" onclick="toggleCat(\''+cat.id+'\')"><span>'+cat.icon+' '+cat.name+'</span><span style="display:flex;align-items:center;gap:8px;">';
+    if(cnt>0)h+='<span class="gf-cat-badge">'+cnt+'</span>';
+    h+='<span id="catArrow_'+cat.id+'" style="font-size:12px;color:var(--text2)">'+(open?'▲':'▼')+'</span></span></div>';
+    h+='<div class="gf-module-grid" id="catGrid_'+cat.id+'" style="display:'+(open?'grid':'none')+'">';
+    cat.modules.forEach(function(id){
+      var m=CM[id];if(!m)return;
+      h+='<span class="gf-module-tag" data-module="'+id+'" onclick="toggleMod(this)" title="'+m.d+'">'+m.i+' '+m.n+'</span>';
+    });
+    h+='</div></div>';
+  });
+  c.innerHTML=h;
+}
+function toggleCat(id){state.sectionOpen[id]=!state.sectionOpen[id];var g=document.getElementById('catGrid_'+id),a=document.getElementById('catArrow_'+id);if(g)g.style.display=state.sectionOpen[id]?'grid':'none';if(a)a.textContent=state.sectionOpen[id]?'▲':'▼';}
+function toggleMod(el){var id=el.dataset.module;if(state.selected.has(id)){state.selected.delete(id);el.classList.remove('selected')}else{state.selected.add(id);el.classList.add('selected')}updateCount();updatePreview();if(state.activeTab==='settings')renderSettings();}
+function updateCount(){document.getElementById('selectedCount').textContent='已选 '+state.selected.size+' 个模块';}
+function resetAll(){state.selected.clear();document.querySelectorAll('.gf-module-tag.selected').forEach(function(e){e.classList.remove('selected')});updateCount();updatePreview();if(state.activeTab==='settings')renderSettings();}
+
+// ====== 切换标签 ======
+function switchTab(t){
+  state.activeTab=t;
+  document.querySelectorAll('.gf-tab').forEach(function(e){e.classList.toggle('active',e.dataset.tab===t)});
+  document.querySelectorAll('.gf-tab-content').forEach(function(e){e.classList.toggle('active',e.id==='tab-'+t)});
+  if(t==='settings')renderSettings();
+  else if(t==='preview')updatePreview();
+}
+
+// ====== 设置面板 ======
+function renderSettings(){
+  var c=document.getElementById('settingsContent'),h='';
+  h+='<div class="gf-section"><h3>👤 角色/系统名称</h3><div class="gf-field"><input id="charNameInput" value="'+state.charName+'" onchange="state.charName=this.value||\'角色名\';updatePreview()" placeholder="输入角色或系统名称"></div></div>';
+  h+='<div class="gf-section"><h3>📝 附加上下文</h3><div class="gf-field"><textarea id="extraContext" placeholder="可选：补充世界观设定、游戏类型、目标平台等上下文信息" onchange="updatePreview()"></textarea></div></div>';
+  var ids=Array.from(state.selected);
+  if(ids.length>0){
+    h+='<div class="gf-section"><h3>🔧 已选模块 ('+ids.length+'个)</h3>';
+    ids.forEach(function(id){
+      var m=CM[id];if(!m)return;
+      h+='<div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:8px">';
+      h+='<span style="font-weight:600;font-size:13px">'+m.i+' '+m.n+'</span> ';
+      h+='<span style="font-size:11px;color:var(--text2)">'+m.d+'</span>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+  c.innerHTML=h;
+}
+
+// ====== 预览 ======
+function updatePreview(){
+  var el=document.getElementById('previewContent'),ids=Array.from(state.selected);
+  if(ids.length===0){el.innerHTML='<pre>请在左侧选择模块，勾选后在此处预览生成的提示词。</pre>';return;}
+  var mods=ids.map(function(id){return CM[id]}).filter(Boolean);
+  var extra=document.getElementById('extraContext')?document.getElementById('extraContext').value:'';
+  var prompt=buildPrompt(mods,state.charName,extra);
+  el.innerHTML='<pre>'+esc(prompt)+'</pre>';
+}
+function buildPrompt(mods,name,extra){
+  var L=[];
+  L.push('你是一个专业的游戏系统设计师。请根据以下要求，为「'+name+'」设计完整的成长系统。');
+  if(extra){L.push('');L.push('【背景上下文】');L.push(extra);}
+  L.push('');L.push('---');
+  // 分组
+  var grp={};mods.forEach(function(m){var cn=m.cn;if(!grp[cn])grp[cn]=[];grp[cn].push(m);});
+  for(var cn in grp){
+    L.push('');L.push('## '+cn);L.push('> 以下'+grp[cn].length+'个模块互相补充、避免重复，形成一个有机整体。');
+    grp[cn].forEach(function(m){
+      L.push('');L.push('### '+m.n);
+      var t=m.p.replace(/\{name\}/g,name);
+      L.push('');L.push(t);
+    });
+    if(grp[cn].length>1){
+      L.push('');L.push('### 内部融合');
+      L.push('请将上述模块输出进行交叉融合：数值体系保持一致、命名风格统一、避免规则冲突。');
+    }
+  }
+  if(Object.keys(grp).length>1){
+    L.push('');L.push('---');L.push('');L.push('## 跨板块全局融合');
+    L.push('- 核心系统的数值（经验/等级/声望/人气）应与剧情系统的条件解锁联动');
+    L.push('- 技能树和天赋树的前置条件应引用等级系统和成就系统的节点');
+    L.push('- 所有系统的数值范围、命名风格保持一致');
+  }
+  L.push('');L.push('---');L.push('');L.push('【输出要求】');
+  L.push('1. 先输出各系统的完整设计方案');L.push('2. 再输出各系统之间的联动关系图');
+  L.push('3. 最后输出可落地的数值表（经验表/等级表/技能树等）');
+  return L.join('\n');
+}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// ====== 生成/复制 ======
+function generatePrompt(){
+  if(state.selected.size===0){toast('请先选择模块');return;}
+  updatePreview();
+  var txt=document.getElementById('previewContent').textContent;
+  document.getElementById('successPreview').innerHTML='<pre>'+esc(txt)+'</pre>';
+  document.getElementById('modalSuccess').classList.add('show');
+}
+function copyPrompt(){
+  if(state.selected.size===0){toast('请先选择模块');return;}
+  generatePrompt();
+  copyText(document.getElementById('successPreview').textContent);toast('✅ 已复制');
+}
+function copyFromSuccess(){copyText(document.getElementById('successPreview').textContent);toast('✅ 已复制');}
+function copyText(t){var ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}
+function toast(msg){var t=document.createElement('div');t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:10px 24px;border-radius:8px;font-size:14px;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.3s';t.textContent=msg;document.body.appendChild(t);requestAnimationFrame(function(){t.style.opacity='1'});setTimeout(function(){t.style.opacity='0';setTimeout(function(){document.body.removeChild(t)},300)},2000);}
+
+// ====== 初始化 ======
+window.addEventListener('DOMContentLoaded',function(){renderModules();switchTab('settings');updateCount();});
+</script>
+</body>
+</html>

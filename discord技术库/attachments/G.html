@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>解锁图鉴自定义编辑器 v3</title>
+<style>
+:root{--bg:#0b0920;--panel:#14112c;--panel2:#1b1738;--line:#342d63;--text:#e8e4ff;--muted:#9d95c9;--soft:#6f68a5;--accent:#8c7cff;--accent2:#c8bfff;--danger:#ff6f91;--ok:#67e8a5;--warn:#ffd166;--input:#0f0c24;--shadow:0 18px 50px rgba(0,0,0,.38)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#23194c 0,#0b0920 38%,#070614 100%);font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;color:var(--text)}button,input,textarea,select{font:inherit}button{border:1px solid var(--line);background:linear-gradient(180deg,#2d265d,#1b1738);color:var(--text);border-radius:10px;padding:8px 12px;cursor:pointer;transition:.18s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}button.small{padding:5px 8px;font-size:12px;border-radius:8px}.danger{background:linear-gradient(180deg,#5a2234,#351524);border-color:#8f3550}.ok{background:linear-gradient(180deg,#1e5b45,#123326);border-color:#2d8e68}.ghost{background:#11102a}.wrap{max-width:1500px;margin:0 auto;padding:22px}.top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:16px}.top h1{margin:0;font-size:25px;letter-spacing:2px}.top p{margin:7px 0 0;color:var(--muted);font-size:14px;line-height:1.6}.layout{display:grid;grid-template-columns:420px minmax(0,1fr);gap:16px}.col{display:flex;flex-direction:column;gap:14px}.box{background:linear-gradient(180deg,rgba(27,23,56,.96),rgba(15,12,36,.96));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.box h2{margin:0;padding:13px 16px;border-bottom:1px solid var(--line);font-size:16px;letter-spacing:1px;background:rgba(255,255,255,.025)}.box .body{padding:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{color:var(--muted);font-size:12px}.field input,.field textarea,.field select{width:100%;background:var(--input);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 10px;outline:none}.field input[type="color"]{padding:2px;height:38px}.field textarea{min-height:74px;resize:vertical;line-height:1.5}.hint{color:var(--soft);font-size:12px;line-height:1.6}.hr{height:1px;background:var(--line);margin:12px 0}.role-list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto;padding-right:3px}.role{border:1px solid var(--line);background:rgba(8,6,22,.45);border-radius:14px;padding:12px}.role-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.role-title{font-size:13px;color:var(--accent2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.checks{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.checks label{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px}.preview-frame{width:100%;height:620px;border:1px solid var(--line);border-radius:14px;background:#05040d}.preview-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{font-size:13px}.tab.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(140,124,255,.32) inset}.output textarea{min-height:180px;font-family:Consolas,Monaco,monospace;font-size:12px;white-space:pre;overflow:auto}.output.big textarea{min-height:330px}.status{color:var(--muted);font-size:12px;margin-left:auto}.pill{display:inline-flex;align-items:center;border:1px solid var(--line);background:#100d28;color:var(--muted);border-radius:999px;padding:5px 9px;font-size:12px}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.warn{color:var(--warn)}@media(max-width:980px){.layout{grid-template-columns:1fr}.preview-frame{height:520px}.top{display:block}.status{margin-left:0}}@media(max-width:720px){html,body{width:100%;max-width:100%;overflow-x:hidden}.wrap{width:100%;padding:10px}.top{margin-bottom:10px}.top h1{font-size:20px;letter-spacing:1px}.top p{font-size:12px;line-height:1.55}.layout{display:block}.col{gap:10px}.box{border-radius:12px;margin-bottom:10px}.box h2{padding:11px 12px;font-size:15px}.box .body{padding:10px}.grid2,.grid3{grid-template-columns:1fr;gap:8px}.field input,.field textarea,.field select{font-size:14px;padding:8px 9px}.field textarea{min-height:68px}.role-list{max-height:none;overflow:visible;padding-right:0}.role{padding:10px;border-radius:12px}.role-head{align-items:flex-start;flex-direction:column}.role-head>div:last-child{display:flex;gap:6px;flex-wrap:wrap}.toolbar,.tabs,.preview-tools{gap:6px}.toolbar button,.tabs button,.preview-tools button{flex:1 1 auto}.output textarea{min-height:140px;font-size:11px}.output.big textarea{min-height:220px}.preview-frame{height:72vh;min-height:420px;border-radius:12px}.pill{margin-top:8px}.hint{font-size:11px}}@media(max-width:420px){.wrap{padding:8px}.top h1{font-size:18px}.box h2{font-size:14px}.preview-frame{height:68vh;min-height:360px}button{padding:7px 9px}button.small{font-size:11px}.checks{gap:6px}.preview-tools{position:sticky;top:0;z-index:5;background:rgba(11,9,32,.92);padding:6px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>解锁图鉴自定义编辑器</h1>
+      <p>用于生成“剧情口令 → localStorage 解锁 → 图鉴显示角色”的完整代码。角色数量不限，能看见的主要样式都可改，生成的图鉴代码可直接复制到你的环境里。</p>
+    </div>
+    <div class="pill" id="saveStatus">未保存</div>
+  </div>
+
+  <div class="layout">
+    <div class="col">
+      <div class="box">
+        <h2>基础设置</h2>
+        <div class="body">
+          <div class="grid2">
+            <div class="field"><label>图鉴标题</label><input id="title" value="角色图鉴"></div>
+            <div class="field"><label>存储 key（正则和图鉴必须一致）</label><input id="storageKey" value="hu_codex_unlock"></div>
+            <div class="field"><label>代码命名空间</label><input id="namespace" value="hu_codex_custom"></div>
+            <div class="field"><label>层级 z-index</label><input id="zIndex" type="number" value="99999"></div>
+          </div>
+          <div class="hr"></div>
+          <div class="hint">重要：你原始示例里，解锁代码写入 <span class="warn">hu_codex_unlock</span>，但图鉴读取 <span class="warn">hu_codex_ns1_unlock</span>，两边不一致会导致“口令触发了但图鉴不解锁”。这里会统一使用上面的存储 key。</div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>侧边栏按钮样式</h2>
+        <div class="body">
+          <div class="grid2">
+            <div class="field"><label>按钮文字</label><input id="buttonText" value="图鉴"></div>
+            <div class="field"><label>按钮类型</label><select id="buttonMode"><option value="text">文字按钮</option><option value="image">图片按钮（无背景边框）</option></select></div>
+            <div class="field"><label>按钮图片 URL（图片按钮模式）</label><input id="buttonImg" placeholder="https://..."></div>
+            <div class="field"><label>图片宽度 px（高度自动）</label><input id="buttonImgWidth" type="number" value="56"></div>
+            <div class="field"><label>左右位置</label><select id="side"><option value="left">左侧</option><option value="right">右侧</option></select></div>
+            <div class="field"><label>距离顶部 %</label><input id="buttonTop" type="number" value="45"></div>
+            <div class="field"><label>按钮宽度 px</label><input id="buttonWidth" type="number" value="20"></div>
+            <div class="field"><label>上下内边距 px</label><input id="buttonPadY" type="number" value="15"></div>
+            <div class="field"><label>左右内边距 px</label><input id="buttonPadX" type="number" value="2"></div>
+            <div class="field"><label>字体大小 px</label><input id="buttonFont" type="number" value="14"></div>
+            <div class="field"><label>字间距 px</label><input id="buttonLetter" type="number" value="3"></div>
+            <div class="field"><label>圆角 px</label><input id="buttonRadius" type="number" value="8"></div>
+            <div class="field"><label>按钮背景</label><input id="buttonBg" type="color" value="#15122a"></div>
+            <div class="field"><label>按钮文字色</label><input id="buttonColor" type="color" value="#8a86a8"></div>
+            <div class="field"><label>按钮边框色</label><input id="buttonBorder" type="color" value="#2a2447"></div>
+            <div class="field"><label>悬停背景</label><input id="buttonHoverBg" type="color" value="#1c1838"></div>
+            <div class="field"><label>悬停文字色</label><input id="buttonHoverColor" type="color" value="#bdb8d8"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>图鉴界面样式</h2>
+        <div class="body">
+          <div class="grid2">
+            <div class="field"><label>面板宽度 px</label><input id="panelWidth" type="number" value="300"></div>
+            <div class="field"><label>面板顶部 %</label><input id="panelTop" type="number" value="50"></div>
+            <div class="field"><label>打开后离边 px</label><input id="panelGap" type="number" value="34"></div>
+            <div class="field"><label>面板圆角 px</label><input id="panelRadius" type="number" value="10"></div>
+            <div class="field"><label>面板内边距 px</label><input id="panelPad" type="number" value="16"></div>
+            <div class="field"><label>面板背景</label><input id="panelBg" type="color" value="#0d0a1f"></div>
+            <div class="field"><label>面板边框</label><input id="panelBorder" type="color" value="#2a2447"></div>
+            <div class="field"><label>标题文字色</label><input id="titleColor" type="color" value="#8a86a8"></div>
+            <div class="field"><label>标签背景</label><input id="tabBg" type="color" value="#100c24"></div>
+            <div class="field"><label>标签普通文字</label><input id="tabColor" type="color" value="#5a557a"></div>
+            <div class="field"><label>标签选中文字</label><input id="tabActiveColor" type="color" value="#bdb8d8"></div>
+            <div class="field"><label>锁定文字色</label><input id="lockedColor" type="color" value="#2e2a48"></div>
+            <div class="field"><label>滑块颜色</label><input id="indicatorBg" type="color" value="#1f1a3d"></div>
+            <div class="field"><label>卡片背景</label><input id="cardBg" type="color" value="#0a0818"></div>
+            <div class="field"><label>角色名颜色</label><input id="nameColor" type="color" value="#a89cc4"></div>
+            <div class="field"><label>介绍背景</label><input id="descBg" type="color" value="#100c24"></div>
+            <div class="field"><label>介绍文字色</label><input id="descColor" type="color" value="#7d789a"></div>
+            <div class="field"><label>锁定遮罩文字</label><input id="lockText" value="???"></div>
+            <div class="field"><label>锁定图片亮度 0~1</label><input id="lockedBrightness" type="number" step="0.05" min="0" max="1" value="0"></div>
+            <div class="field"><label>角色导航排列</label><select id="tabLayout"><option value="scroll">固定宽度滑轮</option><option value="wrap">自动换行</option><option value="equal">均分一行</option></select></div>
+            <div class="field"><label>导航单项宽度 px</label><input id="tabItemWidth" type="number" value="86"></div>
+            <div class="field"><label>导航最大高度 px</label><input id="tabMaxHeight" type="number" value="98"></div>
+            <div class="field"><label>导航字体大小 px</label><input id="tabFont" type="number" value="13"></div>
+          </div>
+          <div class="field" style="margin-top:10px"><label>高级追加 CSS（可空，会追加到生成的 style 最后）</label><textarea id="extraCss" placeholder="例如：.hu-card-desc{font-weight:bold;}"></textarea></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>角色管理</h2>
+        <div class="body">
+          <div class="toolbar"><button class="ok" id="addRole">增加角色</button><button class="ghost" id="exportJson">导出配置</button><button class="ghost" id="importJson">导入配置</button><button class="danger" id="resetAll">恢复默认</button></div>
+          <div class="role-list" id="roleList"></div>
+          <input id="jsonFile" type="file" accept="application/json" style="display:none">
+          <div class="hint" style="margin-top:10px">角色键名建议只用英文小写、数字、下划线，例如 role4。勾选“需要解锁”的角色，剧情出现时才输出 【⑧】角色键名【⑧】。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="box">
+        <h2>实时预览</h2>
+        <div class="body">
+          <div class="preview-tools">
+            <div id="previewUnlockBtns" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"></div>
+            <button class="small danger" id="previewClearUnlock">清空预览解锁</button>
+            <span class="hint">需要解锁的角色会自动生成对应的预览解锁按钮，只影响这个编辑器。</span>
+          </div>
+          <iframe class="preview-frame" id="preview"></iframe>
+        </div>
+      </div>
+
+      <div class="box output">
+        <h2>剧情输出规则</h2>
+        <div class="body">
+          <div class="toolbar"><button class="small" data-copy="ruleText">复制规则</button><span class="hint">放到你的剧情规则/提示词里。</span></div>
+          <textarea id="ruleText" readonly></textarea>
+        </div>
+      </div>
+
+      <div class="box output">
+        <h2>正则与替换代码</h2>
+        <div class="body">
+          <div class="toolbar"><button class="small" data-copy="regexText">复制正则</button><button class="small" data-copy="replaceText">复制替换代码</button></div>
+          <div class="field"><label>正则</label><textarea id="regexText" readonly></textarea></div>
+          <div class="field" style="margin-top:10px"><label>替换代码</label><textarea id="replaceText" readonly></textarea></div>
+        </div>
+      </div>
+
+      <div class="box output big">
+        <h2>生成的图鉴代码</h2>
+        <div class="body">
+          <div class="toolbar"><button class="small" data-copy="codexText">复制图鉴代码</button><button class="small" id="downloadTxt">下载生成代码 txt</button><span class="status" id="codeSize"></span></div>
+          <textarea id="codexText" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+var STORE='hu_codex_editor_state_v3';
+var ids=['title','storageKey','namespace','zIndex','buttonText','buttonMode','buttonImg','buttonImgWidth','side','buttonTop','buttonWidth','buttonPadY','buttonPadX','buttonFont','buttonLetter','buttonRadius','buttonBg','buttonColor','buttonBorder','buttonHoverBg','buttonHoverColor','panelWidth','panelTop','panelGap','panelRadius','panelPad','panelBg','panelBorder','titleColor','tabBg','tabColor','tabActiveColor','lockedColor','indicatorBg','cardBg','nameColor','descBg','descColor','lockText','lockedBrightness','tabLayout','tabItemWidth','tabMaxHeight','tabFont','extraCss'];
+var defaults={
+  title:'角色图鉴',storageKey:'hu_codex_unlock',namespace:'hu_codex_custom',zIndex:99999,buttonText:'图鉴',buttonMode:'text',buttonImg:'',buttonImgWidth:56,side:'left',buttonTop:45,buttonWidth:20,buttonPadY:15,buttonPadX:2,buttonFont:14,buttonLetter:3,buttonRadius:8,buttonBg:'#15122a',buttonColor:'#8a86a8',buttonBorder:'#2a2447',buttonHoverBg:'#1c1838',buttonHoverColor:'#bdb8d8',panelWidth:300,panelTop:50,panelGap:34,panelRadius:10,panelPad:16,panelBg:'#0d0a1f',panelBorder:'#2a2447',titleColor:'#8a86a8',tabBg:'#100c24',tabColor:'#5a557a',tabActiveColor:'#bdb8d8',lockedColor:'#2e2a48',indicatorBg:'#1f1a3d',cardBg:'#0a0818',nameColor:'#a89cc4',descBg:'#100c24',descColor:'#7d789a',lockText:'???',lockedBrightness:0,tabLayout:'scroll',tabItemWidth:86,tabMaxHeight:98,tabFont:13,extraCss:'',
+  roles:[
+    {key:'role1',name:'白梓霜',img:'https://img.bian666.cf/file/1782790819104_女主正常.webp',desc:'一个需要你拯救的角色。',locked:false},
+    {key:'role2',name:'魏芝曦',img:'https://img.bian666.cf/file/1782790813530_女主母亲正常1.webp',desc:'女主的母亲。',locked:true},
+    {key:'role3',name:'倪冰悦',img:'https://img.bian666.cf/file/1782790304473_女二正常.webp',desc:'你的前女友。',locked:true}
+  ]
+};
+var state=load();
+var dirtyTimer=null;
+function $(id){return document.getElementById(id)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function load(){try{var s=JSON.parse(localStorage.getItem(STORE)||'null');if(s&&s.roles)return Object.assign(clone(defaults),s)}catch(e){}return clone(defaults)}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));$('saveStatus').textContent='已自动保存';}catch(e){$('saveStatus').textContent='保存失败';}}
+function schedule(){clearTimeout(dirtyTimer);$('saveStatus').textContent='正在编辑';dirtyTimer=setTimeout(save,250)}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escAttr(s){return esc(s).replace(/"/g,'&quot;')}
+function attrJs(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function jsStr(s){return JSON.stringify(String(s==null?'':s))}
+function num(v,d){v=parseFloat(v);return isFinite(v)?v:d}
+function safeNs(s){s=String(s||'hu_codex_custom').replace(/[^a-zA-Z0-9_-]/g,'_');return s||'hu_codex_custom'}
+function safeKey(s){s=String(s||'').toLowerCase().replace(/[^a-z0-9_]/g,'');return s||'role'+Date.now()}
+function getForm(){ids.forEach(function(id){var el=$(id); if(!el)return; state[id]=el.value;});
+  ['zIndex','buttonImgWidth','buttonTop','buttonWidth','buttonPadY','buttonPadX','buttonFont','buttonLetter','buttonRadius','panelWidth','panelTop','panelGap','panelRadius','panelPad','lockedBrightness','tabItemWidth','tabMaxHeight','tabFont'].forEach(function(k){state[k]=num(state[k],defaults[k])});
+  state.roles=state.roles.map(function(r,i){return {key:safeKey(r.key||('role'+(i+1))),name:r.name||('角色'+(i+1)),img:r.img||'',desc:r.desc||'',locked:!!r.locked}});
+}
+function fillForm(){ids.forEach(function(id){var el=$(id); if(el) el.value=state[id]==null?'':state[id];});renderRoles();generate();}
+function renderRoles(){var box=$('roleList');box.innerHTML='';state.roles.forEach(function(r,i){var div=document.createElement('div');div.className='role';div.innerHTML='<div class="role-head"><div class="role-title">#'+(i+1)+' ｜ '+esc(r.key)+' ｜ '+esc(r.name)+'</div><div><button class="small" data-act="up">上移</button> <button class="small" data-act="down">下移</button> <button class="small danger" data-act="del">删除</button></div></div><div class="grid2"><div class="field"><label>角色键名 data-key</label><input data-k="key" value="'+escAttr(r.key)+'"></div><div class="field"><label>角色名字</label><input data-k="name" value="'+escAttr(r.name)+'"></div></div><div class="field" style="margin-top:10px"><label>角色图片 URL</label><input data-k="img" value="'+escAttr(r.img)+'"></div><div class="field" style="margin-top:10px"><label>角色介绍</label><textarea data-k="desc">'+esc(r.desc)+'</textarea></div><div class="checks" style="margin-top:10px"><label><input type="checkbox" data-k="locked" '+(r.locked?'checked':'')+'>需要解锁</label><span class="hint">不勾选 = 默认可见</span></div>';
+    div.querySelectorAll('[data-k]').forEach(function(el){el.addEventListener('input',function(){var k=el.getAttribute('data-k');state.roles[i][k]=k==='locked'?el.checked:el.value;getForm();renderRoles();schedule();generate();});el.addEventListener('change',function(){var k=el.getAttribute('data-k');state.roles[i][k]=k==='locked'?el.checked:el.value;getForm();renderRoles();schedule();generate();});});
+    div.querySelector('[data-act="del"]').onclick=function(){if(state.roles.length<=1){alert('至少保留一个角色。');return;}state.roles.splice(i,1);renderRoles();schedule();generate();};
+    div.querySelector('[data-act="up"]').onclick=function(){if(i<=0)return;var t=state.roles[i-1];state.roles[i-1]=state.roles[i];state.roles[i]=t;renderRoles();schedule();generate();};
+    div.querySelector('[data-act="down"]').onclick=function(){if(i>=state.roles.length-1)return;var t=state.roles[i+1];state.roles[i+1]=state.roles[i];state.roles[i]=t;renderRoles();schedule();generate();};
+    box.appendChild(div);
+  });}
+function renderPreviewUnlockButtons(){var box=$('previewUnlockBtns');if(!box)return;box.innerHTML='';var locked=state.roles.filter(function(r){return r.locked});if(!locked.length){var sp=document.createElement('span');sp.className='hint';sp.textContent='当前没有需要解锁的角色';box.appendChild(sp);return;}locked.forEach(function(r){var b=document.createElement('button');b.className='small';b.textContent='预览解锁 '+r.key;b.title=r.name||r.key;b.onclick=function(){var key=state.storageKey;var s={};try{s=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){s={};}s[r.key]=1;localStorage.setItem(key,JSON.stringify(s));generate();};box.appendChild(b);});}
+function commonStyle(st,rootId){var scope=safeNs(st.namespace);var side=st.side==='right'?'right':'left';var closeSide=side==='left'?'left':'right';var off=num(st.panelWidth,300)+80;var br=side==='left'?'0 '+st.buttonRadius+'px '+st.buttonRadius+'px 0':st.buttonRadius+'px 0 0 '+st.buttonRadius+'px';var borderNone=side==='left'?'border-left:none;':'border-right:none;';var n=Math.max(1,st.roles.length);var panelPad=num(st.panelPad,16);var tabLayout=st.tabLayout||'scroll';var tabW=num(st.tabItemWidth,86);var tabMax=num(st.tabMaxHeight,98);var tabFont=num(st.tabFont,13);var isImg=st.buttonMode==='image';var imgW=num(st.buttonImgWidth,56);var nameBarCss='';var indicatorCss='';var tabCss='';var activeCss='';if(tabLayout==='wrap'){nameBarCss='display:flex;flex-wrap:wrap;align-items:stretch;gap:3px;max-height:'+tabMax+'px;overflow:auto;padding:3px;';indicatorCss='display:none;';tabCss='flex:1 1 '+tabW+'px;min-width:'+tabW+'px;border-radius:6px;';activeCss='background:'+st.indicatorBg+';';}else if(tabLayout==='equal'){nameBarCss='display:flex;overflow:hidden;';indicatorCss='width:'+(100/n)+'%;display:block;';tabCss='flex:1;min-width:0;';activeCss='';}else{nameBarCss='display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding:3px;scrollbar-width:thin;';indicatorCss='display:none;';tabCss='flex:0 0 '+tabW+'px;width:'+tabW+'px;border-radius:6px;';activeCss='background:'+st.indicatorBg+';';}var btnCss=isImg?('box-sizing:border-box;width:auto;min-width:0;padding:0;background:transparent;border:none;border-radius:0;color:'+st.buttonColor+';cursor:pointer;writing-mode:horizontal-tb;text-orientation:mixed;font-size:0;letter-spacing:0;text-align:center;line-height:0;user-select:none;box-shadow:none;overflow:visible;'):('box-sizing:border-box;width:'+num(st.buttonWidth,20)+'px;padding:'+num(st.buttonPadY,15)+'px '+num(st.buttonPadX,2)+'px;background-color:'+st.buttonBg+';border:1px solid '+st.buttonBorder+';'+borderNone+'border-radius:'+br+';color:'+st.buttonColor+';cursor:pointer;writing-mode:vertical-rl;text-orientation:mixed;font-size:'+num(st.buttonFont,14)+'px;letter-spacing:'+num(st.buttonLetter,3)+'px;text-align:center;user-select:none;');var btnHover=isImg?('filter:brightness(1.08);background:transparent;color:'+st.buttonColor+';'):('background-color:'+st.buttonHoverBg+';color:'+st.buttonHoverColor+';');return '<style>.'+scope+' .teapot-flex-container{position:fixed;'+side+':0;top:'+num(st.buttonTop,45)+'%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:'+num(st.zIndex,99999)+';}.'+scope+' .teapot-flex-btn{'+btnCss+'}.'+scope+' .teapot-flex-btn:hover{'+btnHover+'}.'+scope+' .hu-btn-img{display:block;width:'+imgW+'px;height:auto;max-width:none;object-fit:contain;border:none;background:transparent;box-shadow:none;pointer-events:none;}.'+scope+' .hu-panel{position:fixed;'+closeSide+':-'+off+'px;top:'+num(st.panelTop,50)+'%;transform:translateY(-50%);width:'+num(st.panelWidth,300)+'px;max-width:calc(100vw - 18px);background:'+st.panelBg+';border:1px solid '+st.panelBorder+';border-radius:'+num(st.panelRadius,10)+'px;padding:'+panelPad+'px '+Math.max(8,panelPad-2)+'px '+Math.max(10,panelPad+2)+'px;transition:'+closeSide+' .35s cubic-bezier(.2,.8,.2,1);box-sizing:border-box;z-index:'+(num(st.zIndex,99999)+1)+';}.'+scope+' .hu-panel.open{'+closeSide+':'+num(st.panelGap,34)+'px;}.'+scope+' .hu-close{position:absolute;right:10px;top:8px;color:'+st.titleColor+';cursor:pointer;font-size:14px;}.'+scope+' .hu-title{text-align:center;color:'+st.titleColor+';font-size:17px;letter-spacing:3px;margin-bottom:12px;}.'+scope+' .hu-name-bar{position:relative;border:1px solid '+st.panelBorder+';border-radius:8px;background:'+st.tabBg+';margin-bottom:14px;'+nameBarCss+'}.'+scope+' .hu-name-bar::-webkit-scrollbar{height:6px;width:6px;}.'+scope+' .hu-name-bar::-webkit-scrollbar-thumb{background:'+st.indicatorBg+';border-radius:99px;}.'+scope+' .hu-indicator{position:absolute;left:0;top:0;height:100%;background:'+st.indicatorBg+';border-bottom:2px solid '+st.panelBorder+';transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:0;'+indicatorCss+'}.'+scope+' .hu-name-tab{position:relative;z-index:1;text-align:center;padding:9px 6px;color:'+st.tabColor+';font-size:'+tabFont+'px;cursor:pointer;transition:color .3s,background .3s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'+tabCss+'}.'+scope+' .hu-name-tab.active{color:'+st.tabActiveColor+';'+activeCss+'}.'+scope+' .hu-name-tab.locked{color:'+st.lockedColor+';}.'+scope+' .hu-viewport{overflow:hidden;border-radius:8px;border:1px solid '+st.panelBorder+';background:'+st.cardBg+';touch-action:pan-y;user-select:none;cursor:grab;}.'+scope+' .hu-viewport.dragging{cursor:grabbing;}.'+scope+' .hu-track{display:flex;width:100%;transition:transform .4s cubic-bezier(.2,.8,.2,1);}.'+scope+' .hu-card{flex:0 0 100%;box-sizing:border-box;padding:14px 14px 18px;text-align:center;pointer-events:none;}.'+scope+' .hu-card-name{color:'+st.nameColor+';font-size:16px;letter-spacing:2px;margin-bottom:10px;}.'+scope+' .hu-card-img-wrap{position:relative;width:100%;padding-top:100%;border-radius:8px;border:1px solid '+st.panelBorder+';background:'+st.panelBg+';overflow:hidden;}.'+scope+' .hu-card-img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;display:block;}.'+scope+' .hu-card-desc{margin-top:12px;color:'+st.descColor+';font-size:13px;line-height:1.7;text-align:left;background:'+st.descBg+';border-radius:6px;padding:10px 12px;border:1px solid '+st.indicatorBg+';}.'+scope+' .hu-locked .hu-card-name{color:'+st.lockedColor+';}.'+scope+' .hu-locked .hu-card-img{filter:brightness('+num(st.lockedBrightness,0)+');}.'+scope+' .hu-locked .hu-card-desc{display:none;}.'+scope+' .hu-lock-mask::after{content:"'+String(st.lockText||'???').replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'";position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:'+st.tabColor+';font-size:48px;letter-spacing:6px;background:'+st.panelBg+';border-radius:8px;z-index:2;}@media(max-width:520px){.'+scope+' .hu-panel{width:min('+num(st.panelWidth,300)+'px,calc(100vw - 18px));}.'+scope+' .hu-panel.open{'+closeSide+':9px;}.'+scope+' .hu-title{font-size:15px}.'+scope+' .hu-card{padding:12px 10px 14px}.'+scope+' .hu-card-desc{font-size:12px;line-height:1.6}}'+(st.extraCss||'')+'</style>';}
+function buildCodex(st){var scope=safeNs(st.namespace);var rootId=scope+'_'+Date.now();var lockText=st.lockText||'???';var tabs=st.roles.map(function(r,i){return '<div class="hu-name-tab '+(i===0?'active ':'')+(r.locked?'locked':'')+'">'+esc(r.locked?lockText:r.name)+'</div>';}).join('');var cards=st.roles.map(function(r){return '<div class="hu-card '+(r.locked?'hu-locked':'')+'" data-key="'+escAttr(r.key)+'" data-lock="'+(r.locked?'1':'0')+'" data-name="'+escAttr(r.name)+'"><div class="hu-card-name">'+esc(r.locked?lockText:r.name)+'</div><div class="hu-card-img-wrap '+(r.locked?'hu-lock-mask':'')+'"><img class="hu-card-img" src="'+escAttr(r.img)+'" alt="'+escAttr(r.name)+'"></div><div class="hu-card-desc">'+esc(r.desc)+'</div></div>';}).join('');var btnInner=(st.buttonMode==='image'&&st.buttonImg)?'<img class="hu-btn-img" src="'+escAttr(st.buttonImg)+'" alt="'+escAttr(st.buttonText||'图鉴')+'">':esc(st.buttonText||'图鉴');var html='<div class="'+scope+'" id="'+rootId+'" onclick="event.stopPropagation()">'+commonStyle(st,rootId)+'<div class="teapot-flex-container"><div class="teapot-flex-btn" data-hu-btn>'+btnInner+'</div></div><div class="hu-panel" data-hu-panel data-idx="0" data-sx="0" data-dragging="0"><div class="hu-close" data-hu-close>✕</div><div class="hu-title">'+esc(st.title)+'</div><div class="hu-name-bar"><div class="hu-indicator"></div>'+tabs+'</div><div class="hu-viewport"><div class="hu-track" style="transform:translateX(0%)">'+cards+'</div></div></div></div>';
+var js='(function(){var root=document.getElementById('+jsStr(rootId)+');if(!root||root.getAttribute("data-ready")=="1")return;root.setAttribute("data-ready","1");var storageKey='+jsStr(st.storageKey)+';var lockText='+jsStr(lockText)+';var p=root.querySelector("[data-hu-panel]");var btn=root.querySelector("[data-hu-btn]");var close=root.querySelector("[data-hu-close]");var track=root.querySelector(".hu-track");var ind=root.querySelector(".hu-indicator");var vp=root.querySelector(".hu-viewport");function read(){var s={};try{s=JSON.parse(localStorage.getItem(storageKey)||"{}");}catch(e){s={};}return s||{};}function apply(){var s=read();var cards=root.querySelectorAll(".hu-card");var tabs=root.querySelectorAll(".hu-name-tab");for(var i=0;i<cards.length;i++){var key=cards[i].getAttribute("data-key");var alwaysOn=cards[i].getAttribute("data-lock")!="1";var wrap=cards[i].querySelector(".hu-card-img-wrap");if(alwaysOn||s[key]){cards[i].classList.remove("hu-locked");tabs[i].classList.remove("locked");tabs[i].textContent=cards[i].getAttribute("data-name");cards[i].querySelector(".hu-card-name").textContent=cards[i].getAttribute("data-name");if(wrap)wrap.classList.remove("hu-lock-mask");}else{cards[i].classList.add("hu-locked");tabs[i].classList.add("locked");tabs[i].textContent=lockText;cards[i].querySelector(".hu-card-name").textContent=lockText;if(wrap)wrap.classList.add("hu-lock-mask");}}}function go(n){var tabs=root.querySelectorAll(".hu-name-tab");if(n<0)n=0;if(n>tabs.length-1)n=tabs.length-1;p.setAttribute("data-idx",n);track.style.transition="";track.style.transform="translateX(-"+(n*100)+"%)";if(ind)ind.style.transform="translateX("+(n*100)+"%)";for(var i=0;i<tabs.length;i++){tabs[i].classList.toggle("active",i==n);}try{tabs[n].scrollIntoView({block:"nearest",inline:"nearest"});}catch(e){}}btn.onclick=function(e){if(e)e.stopPropagation();p.classList.toggle("open");apply();};close.onclick=function(e){if(e)e.stopPropagation();p.classList.remove("open");};var tabs=root.querySelectorAll(".hu-name-tab");for(var i=0;i<tabs.length;i++){(function(n){tabs[n].onclick=function(e){if(e)e.stopPropagation();go(n);};})(i);}vp.onpointerdown=function(e){p.setAttribute("data-sx",e.clientX);p.setAttribute("data-dragging","1");track.style.transition="none";vp.classList.add("dragging");try{vp.setPointerCapture(e.pointerId);}catch(x){}};vp.onpointermove=function(e){if(p.getAttribute("data-dragging")!="1")return;var cur=parseInt(p.getAttribute("data-idx")||"0");var sx=parseFloat(p.getAttribute("data-sx")||"0");var dx=e.clientX-sx;var w=vp.offsetWidth||1;track.style.transform="translateX("+(-(cur*100)+(dx/w*100))+"%)";};vp.onpointerup=function(e){if(p.getAttribute("data-dragging")!="1")return;p.setAttribute("data-dragging","0");vp.classList.remove("dragging");var cur=parseInt(p.getAttribute("data-idx")||"0");var sx=parseFloat(p.getAttribute("data-sx")||"0");var dx=e.clientX-sx;var w=vp.offsetWidth||1;var tabs=root.querySelectorAll(".hu-name-tab");var n=cur;if(dx<-w*.2&&cur<tabs.length-1)n=cur+1;else if(dx>w*.2&&cur>0)n=cur-1;go(n);};vp.onpointercancel=function(){p.setAttribute("data-dragging","0");vp.classList.remove("dragging");go(parseInt(p.getAttribute("data-idx")||"0"));};apply();})();';
+return html+'<img src="x" style="display:none;" onerror="'+attrJs(js)+'">';}
+function buildRule(st){var unlock=st.roles.filter(function(r){return r.locked}).map(function(r){return r.key});var list=unlock.length?unlock.join('、'):'暂无';return '当剧情中出现“明确见到了某个隐藏角色”的情节时，必须在该次回复的末尾输出一行解锁口令。\n格式严格如下：\n【⑧】角色键名【⑧】\n说明：\n角色键名必须和图鉴代码里的 data-key 完全一致。\n当前可解锁的键名为：'+list+'\n若本次剧情未触及任何解锁条件，则不输出此口令。\n示例：若解锁 role2，则输出：\n【⑧】role2【⑧】';}
+function generate(){getForm();renderPreviewUnlockButtons();var codex=buildCodex(state);$('codexText').value=codex;$('codeSize').textContent='图鉴代码长度：'+codex.length+' 字符';$('regexText').value='/【⑧】([a-zA-Z0-9_]+)【⑧】/g';var rep='<img src="x" style="display:none;" onerror="(function(){var k=\'$1\';var s={};try{s=JSON.parse(localStorage.getItem(\''+state.storageKey.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')||\'{}\');}catch(e){s={};}s[k]=1;try{localStorage.setItem(\''+state.storageKey.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\',JSON.stringify(s));}catch(e){}})()">';$('replaceText').value=rep;$('ruleText').value=buildRule(state);updatePreview(codex);}
+function updatePreview(codex){var tip=state.buttonMode==='image'?'点击侧边图片按钮查看图鉴；拖动画面可切换角色。':'点击侧边“'+esc(state.buttonText)+'”按钮查看图鉴；拖动画面可切换角色。';var doc='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:radial-gradient(circle at 35% 10%,#27204e,#070612 70%);font-family:Microsoft YaHei,Arial;color:#ddd}.tip{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);color:#8e88b8;font-size:12px;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}@media(max-width:520px){.tip{font-size:11px;bottom:10px}}</style></head><body><div class="tip">'+tip+'</div>'+codex+'</body></html>';$('preview').srcdoc=doc;}
+ids.forEach(function(id){var el=$(id);if(el){el.addEventListener('input',function(){getForm();schedule();generate();});el.addEventListener('change',function(){getForm();schedule();generate();});}});
+$('addRole').onclick=function(){state.roles.push({key:'role'+(state.roles.length+1),name:'新角色'+(state.roles.length+1),img:'',desc:'这里填写角色介绍。',locked:true});renderRoles();schedule();generate();};
+$('resetAll').onclick=function(){if(confirm('确定恢复默认配置？当前编辑会被覆盖。')){state=clone(defaults);fillForm();save();}};
+$('exportJson').onclick=function(){getForm();var blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hu-codex-editor-config.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000);};
+$('importJson').onclick=function(){$('jsonFile').click();};
+$('jsonFile').addEventListener('change',function(){var f=this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var data=JSON.parse(rd.result);if(!data.roles)throw new Error('bad');state=Object.assign(clone(defaults),data);fillForm();save();}catch(e){alert('导入失败：不是正确的配置 JSON。')}};rd.readAsText(f);this.value='';});
+document.querySelectorAll('[data-copy]').forEach(function(btn){btn.onclick=function(){var id=btn.getAttribute('data-copy');navigator.clipboard.writeText($(id).value).then(function(){btn.textContent='已复制';setTimeout(function(){btn.textContent=btn.textContent.replace('已复制','复制'+(id==='ruleText'?'规则':id==='regexText'?'正则':id==='replaceText'?'替换代码':'图鉴代码'))},900);}).catch(function(){var t=$(id);t.focus();t.select();document.execCommand('copy');});};});
+$('downloadTxt').onclick=function(){var text='【剧情输出规则】\n'+$('ruleText').value+'\n\n【正则】\n'+$('regexText').value+'\n\n【替换代码】\n'+$('replaceText').value+'\n\n【图鉴代码】\n'+$('codexText').value;var blob=new Blob([text],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='解锁图鉴生成代码.txt';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000);};
+$('previewClearUnlock').onclick=function(){localStorage.removeItem(state.storageKey);generate();};
+fillForm();save();
+})();
+</script>
+</body>
+</html>

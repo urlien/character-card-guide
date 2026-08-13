@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片链接压缩器 v3 — 规则引擎版</title>
+<style>
+:root {
+  --bg: #111827; --surface: #1f2937; --surface2: #374151;
+  --accent: #f59e0b; --accent2: #d97706; --text: #f3f4f6;
+  --text2: #9ca3af; --border: #374151; --radius: 10px; --green: #10b981;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+}
+header {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 12px 18px; text-align: center; font-size: 0.95rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+header span { opacity: 0.85; font-size: 0.7rem; font-weight: 400; }
+
+main {
+  max-width: 900px; margin: 0 auto; padding: 14px; display: flex; flex-direction: column; gap: 14px;
+}
+
+/* Sections */
+.section {
+  background: var(--surface); border-radius: var(--radius); padding: 14px;
+  border: 1px solid var(--border);
+}
+.section h2 {
+  font-size: 0.9rem; margin-bottom: 10px; color: var(--accent);
+  display: flex; align-items: center; gap: 6px;
+}
+label { display: block; font-size: 0.78rem; color: var(--text2); margin-bottom: 4px; }
+textarea, input[type="text"] {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface2); color: var(--text); font-size: 0.82rem; font-family: inherit;
+}
+textarea { resize: vertical; min-height: 140px; }
+input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+button {
+  padding: 8px 16px; border: 0; border-radius: 6px; cursor: pointer; font-size: 0.82rem;
+  transition: all 0.15s; display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-main { background: var(--accent); color: #111; font-weight: 600; }
+.btn-main:hover { background: var(--accent2); }
+.btn-sec { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-sec:hover { border-color: var(--accent); }
+.btn-small { padding: 4px 10px; font-size: 0.72rem; }
+.btn-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* Analysis result */
+.result-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;
+  margin-top: 10px; max-height: 280px; overflow-y: auto;
+}
+.var-card {
+  background: var(--surface2); border-radius: 6px; padding: 8px; text-align: center;
+  border: 1px solid var(--border); font-size: 0.75rem; cursor: pointer; transition: all 0.15s;
+}
+.var-card:hover { border-color: var(--accent); }
+.var-card .var-name { font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+.var-card .var-url { color: var(--text2); font-size: 0.65rem; word-break: break-all; }
+.var-card .var-label { font-size: 0.65rem; color: var(--text2); margin-top: 2px; }
+.var-card .var-label input { width: 100%; font-size: 0.65rem; padding: 2px 4px; margin-top: 2px; }
+
+/* Number pattern detection */
+.num-badge {
+  display: inline-block; background: var(--green); color: #111; padding: 2px 8px;
+  border-radius: 10px; font-size: 0.68rem; font-weight: 600;
+}
+.summary-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: 0.78rem; color: var(--text2); margin-bottom: 8px;
+}
+.summary-row strong { color: var(--text); }
+
+/* Code output */
+.code-block {
+  background: #0a0a1a; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px; position: relative; max-height: 320px; overflow-y: auto;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.7rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all;
+  color: #a8d8a8;
+}
+.code-block .copy-btn {
+  position: absolute; top: 8px; right: 8px; padding: 5px 12px; border: 0;
+  border-radius: 5px; background: var(--accent); color: #111; font-size: 0.7rem;
+  cursor: pointer; font-weight: 600;
+}
+.code-block .copy-btn.copied { background: var(--green); }
+.stats-badge {
+  font-size: 0.65rem; color: var(--text2); background: var(--surface2);
+  padding: 4px 8px; border-radius: 4px; display: inline-block;
+}
+
+/* Preview */
+.preview-box {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; margin-top: 8px;
+}
+.preview-img {
+  width: 48px; height: 48px; border-radius: 8px; object-fit: cover;
+  border: 2px solid var(--border); cursor: pointer;
+}
+.preview-img:hover { border-color: var(--accent); }
+.preview-img.fallback { border-color: #555; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.tab { flex: 1; padding: 7px; border: 0; background: var(--surface); color: var(--text2); font-size: 0.78rem; cursor: pointer; transition: all 0.15s; }
+.tab.active { background: var(--accent); color: #111; font-weight: 600; }
+
+/* dialog */
+.dialog-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100;
+  display: none; align-items: center; justify-content: center;
+}
+.dialog-mask.show { display: flex; }
+.dialog-box {
+  background: var(--surface); border-radius: var(--radius); padding: 18px;
+  width: min(90vw, 420px); max-height: 80vh; overflow-y: auto;
+  border: 1px solid var(--border);
+}
+.dialog-box h3 { font-size: 0.9rem; margin-bottom: 10px; color: var(--accent); }
+
+/* mobile */
+@media (max-width: 640px) {
+  main { padding: 8px; gap: 10px; }
+  .section { padding: 10px; }
+  .result-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  🗜️ 图片链接压缩器 <span>v3 — 规则引擎版</span>
+</header>
+
+<main>
+
+  <!-- Step 1: Paste URLs -->
+  <div class="section">
+    <h2>📥 1. 粘贴图片 URL</h2>
+    <p style="font-size:0.7rem;color:var(--text2);margin-bottom:6px;">
+      粘贴所有图片链接（每行一个），支持混合格式。自动清理 ?i=xxx 参数 + URL解码。
+    </p>
+    <textarea id="urlInput" placeholder="https://meimoaiimg.com/user/1351181/button (1).png?i=1182931
+https://meimoaiimg.com/user/1351181/button (2).png?i=2203847
+..."></textarea>
+    <div class="btn-row" style="margin-top:8px;">
+      <button class="btn-main" onclick="analyze()">🔍 分析</button>
+      <button class="btn-sec" onclick="loadDemo()">📦 加载示例</button>
+      <button class="btn-sec" onclick="clearAll()">🗑 清空</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Analysis result -->
+  <div class="section" id="analysisSection" style="display:none;">
+    <h2>📊 2. 分析结果</h2>
+    <div class="summary-row" id="analysisSummary"></div>
+    <div class="result-grid" id="varGrid"></div>
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn-sec btn-small" onclick="addVar()">➕ 手动添加</button>
+      <button class="btn-sec btn-small" onclick="editAllLabels()">✏ 批量改名</button>
+      <button class="btn-main btn-small" onclick="generateCode()">⚡ 生成代码</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Generated code -->
+  <div class="section" id="codeSection" style="display:none;">
+    <h2>⚡ 3. 生成的代码</h2>
+    <div class="tabs" style="margin-bottom:10px;">
+      <button class="tab active" data-tab="export-regex">MMD 正则替换</button>
+      <button class="tab" data-tab="export-rules">规则摘要</button>
+    </div>
+    <div id="tab-export-regex">
+      <p style="font-size:0.7rem;color:var(--text2);margin-bottom:4px;">
+        直接导入到 MMD 的正则替换规则中。AI 使用 <code>[img:变量名]</code> 即可。运行时按规则引擎还原完整URL。
+      </p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode('regexOutput')">复制</button>
+        <code id="regexOutput"></code>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:6px;">
+        <span class="stats-badge" id="statFind"></span>
+        <span class="stats-badge" id="statReplace"></span>
+        <span class="stats-badge" id="statEngine"></span>
+      </div>
+    </div>
+    <div id="tab-export-rules" style="display:none;">
+      <p style="font-size:0.7rem;color:var(--text2);margin-bottom:4px;">
+        规则引擎内部结构预览。只存公共部分 + 差异部分，跟 assistant.js 一样。
+      </p>
+      <div class="code-block" style="max-height:500px;">
+        <code id="rulesOutput"></code>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn-sec btn-small" onclick="testEngine()">🧪 测试引擎</button>
+      <button class="btn-sec btn-small" onclick="navigator.clipboard.writeText(JSON.stringify(rules,null,2));alert('规则JSON已复制')">📋 复制规则JSON</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- Dialog -->
+<div class="dialog-mask" id="dialog">
+  <div class="dialog-box" id="dialogBox"></div>
+</div>
+
+<script>
+// ============ STATE ============
+let rules = null; // { prefix, suffix, vars: { varName: {url, label} }, numPattern: {start, end, digits, prefix, suffix} | null }
+let urlEntries = []; // [{url, cleanedUrl, varName, label}]
+
+const LS_KEY = 'img_compressor_v3';
+
+function loadState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(LS_KEY));
+    if (s && s.urlEntries) {
+      urlEntries = s.urlEntries;
+      rules = s.rules || null;
+      document.getElementById('urlInput').value = urlEntries.map(e => e.url).join('\n');
+      if (rules) {
+        showAnalysis();
+        showCode();
+      }
+    }
+  } catch(e) {}
+}
+function saveState() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify({ urlEntries, rules })); } catch(e) {}
+}
+
+// ============ CLEAN URL ============
+function cleanUrl(u) {
+  let s = u.trim();
+  if (!s || s.startsWith('#')) return null;
+  // Strip ?i=xxxxx
+  s = s.replace(/\?i=\d+/, '');
+  // URL decode
+  try { s = decodeURIComponent(s); } catch(e) {}
+  return s;
+}
+
+// ============ FIND COMMON PREFIX/SUFFIX ============
+function commonPrefix(a, b) {
+  let i = 0;
+  while (i < a.length && i < b.length && a[i] === b[i]) i++;
+  return a.substring(0, i);
+}
+function commonSuffix(a, b) {
+  let i = 0;
+  while (i < a.length && i < b.length && a[a.length - 1 - i] === b[b.length - 1 - i]) i++;
+  return a.substring(a.length - i);
+}
+
+// ============ ANALYZE ============
+function analyze() {
+  const raw = document.getElementById('urlInput').value.trim();
+  if (!raw) return alert('请先粘贴图片 URL');
+
+  const lines = raw.split('\n').filter(l => l.trim());
+  urlEntries = [];
+
+  for (const line of lines) {
+    const cleaned = cleanUrl(line);
+    if (!cleaned) continue;
+    urlEntries.push({ url: line.trim(), cleanedUrl: cleaned, varName: '', label: '' });
+  }
+
+  if (urlEntries.length < 1) return alert('未识别到有效URL');
+
+  // Find common prefix among all
+  let prefix = urlEntries[0].cleanedUrl;
+  for (let i = 1; i < urlEntries.length; i++) {
+    prefix = commonPrefix(prefix, urlEntries[i].cleanedUrl);
+  }
+
+  // Find common suffix
+  let suffix = '';
+  if (prefix.length < urlEntries[0].cleanedUrl.length) {
+    suffix = urlEntries[0].cleanedUrl.substring(prefix.length);
+    for (let i = 1; i < urlEntries.length; i++) {
+      const s = urlEntries[i].cleanedUrl.substring(prefix.length);
+      suffix = commonSuffix(suffix, s);
+    }
+  }
+
+  // Extract variable names (middle part = cleanedUrl - prefix - suffix)
+  const vars = {};
+  for (const e of urlEntries) {
+    let mid = e.cleanedUrl;
+    if (prefix && mid.startsWith(prefix)) mid = mid.substring(prefix.length);
+    if (suffix && mid.endsWith(suffix)) mid = mid.substring(0, mid.length - suffix.length);
+    if (!mid) mid = 'img_' + (Object.keys(vars).length + 1);
+    e.varName = mid;
+    if (!vars[mid]) vars[mid] = { url: e.cleanedUrl, label: '' };
+  }
+
+  // Try to detect number patterns
+  const vnames = Object.keys(vars);
+  let numPattern = null;
+  const numRegex = /^(\D*?)(\d+)(.*)$/;
+  let numBase = null;
+  let numSuffixPart = '';
+  let nums = [];
+  let allMatch = true;
+  for (const vn of vnames) {
+    const m = vn.match(numRegex);
+    if (!m) { allMatch = false; break; }
+    const base = m[1];
+    const n = parseInt(m[2], 10);
+    const sp = m[3];
+    if (numBase === null) { numBase = base; numSuffixPart = sp; }
+    else if (base !== numBase || sp !== numSuffixPart) { allMatch = false; break; }
+    nums.push(n);
+  }
+  if (allMatch && nums.length >= 2) {
+    nums.sort((a, b) => a - b);
+    const digits = vnames[0].match(numRegex)[2].length;
+    numPattern = {
+      base: numBase,
+      suffixPart: numSuffixPart,
+      start: nums[0],
+      end: nums[nums.length - 1],
+      digits: digits,
+      count: nums.length,
+    };
+  }
+
+  rules = { prefix, suffix, vars, numPattern };
+  showAnalysis();
+  showCode();
+  saveState();
+}
+
+function showAnalysis() {
+  document.getElementById('analysisSection').style.display = '';
+  const summary = document.getElementById('analysisSummary');
+  const grid = document.getElementById('varGrid');
+  const vnames = Object.keys(rules.vars);
+
+  let html = `<strong>${vnames.length}</strong> 个变量`;
+  if (rules.numPattern) {
+    html += ` <span class="num-badge">数字规律: ${rules.numPattern.base}[${rules.numPattern.start}-${rules.numPattern.end}]${rules.numPattern.suffixPart}</span>`;
+  }
+  html += `<br><span style="font-size:0.7rem;">公共前缀: ${ellipsis(rules.prefix, 60)}</span>`;
+  html += `<br><span style="font-size:0.7rem;">公共后缀: ${ellipsis(rules.suffix, 60)}</span>`;
+  summary.innerHTML = html;
+
+  grid.innerHTML = '';
+  for (const vn of vnames) {
+    const v = rules.vars[vn];
+    const card = document.createElement('div');
+    card.className = 'var-card';
+    card.innerHTML = `
+      <div class="var-name">${escHtml(vn)}</div>
+      <div class="var-url">${ellipsis(v.url, 35)}</div>
+      <div class="var-label"><input value="${escAttr(v.label || '')}" placeholder="描述（可选）" onchange="updateLabel('${escAttr(vn)}', this.value)"></div>
+      <button class="btn-sec btn-small" style="margin-top:4px;font-size:0.6rem;" onclick="removeVar('${escAttr(vn)}')">✕</button>
+    `;
+    // Click to preview
+    card.onclick = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+      testSingle(vn);
+    };
+    grid.appendChild(card);
+  }
+}
+
+function showCode() {
+  document.getElementById('codeSection').style.display = '';
+  generateCode();
+}
+
+// ============ GENERATE CODE ============
+function generateCode() {
+  if (!rules) return;
+
+  // Build the rules JSON to embed in onerror
+  const engineRules = {
+    prefix: rules.prefix,
+    suffix: rules.suffix,
+    vars: rules.vars,
+  };
+  if (rules.numPattern) {
+    engineRules.numPattern = rules.numPattern;
+  }
+
+  const rulesJson = JSON.stringify(engineRules);
+  const rulesBytes = new TextEncoder().encode(rulesJson).length;
+
+  // onerror JS engine — 规则引擎版
+  // Uses approach modeled after assistant.js: store rules, resolve at runtime
+  const engineCode = `
+(function(){
+var R=${rulesJson};
+function resolve(name){
+  if(R.vars[name]) return R.vars[name].url;
+  if(R.numPattern){
+    var m=name.match(/^(\\d+)$/);
+    if(m){
+      var n=parseInt(m[1],10);
+      var ds=(R.numPattern.digits||2);
+      var pad=n.toString().padStart(ds,'0');
+      return R.prefix+R.numPattern.base+pad+R.numPattern.suffixPart+R.suffix;
+    }
+  }
+  return R.prefix+name+R.suffix;
+}
+function walk(root){
+  var imgs=root.querySelectorAll?root.querySelectorAll('img.cp-lazy'):[];
+  for(var i=0;i<imgs.length;i++){
+    var img=imgs[i];
+    var name=img.getAttribute('data-var');
+    if(!name) continue;
+    img.src=resolve(name);
+    img.classList.remove('cp-lazy');
+    img.onerror=null;
+    img.style.display='';
+  }
+}
+walk(document);
+new MutationObserver(function(ms){
+  for(var i=0;i<ms.length;i++){
+    for(var j=0;j<ms[i].addedNodes.length;j++){
+      var n=ms[i].addedNodes[j];
+      if(n.nodeType===1) walk(n);
+    }
+  }
+}).observe(document.documentElement,{childList:true,subtree:true});
+})();`.trim();
+
+  const findRegex = `\\[img:([^\\]]+)\\]`;
+  const replaceString = `<img class="cp-lazy" data-var="$1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="${engineCode.replace(/"/g, '&quot;')}" style="width:auto;max-width:100%;">`;
+
+  document.getElementById('regexOutput').textContent =
+    `findRegex: ${findRegex}\n\nreplaceString: ${replaceString}`;
+
+  document.getElementById('statFind').textContent = `findRegex: ${findRegex.length} 字符`;
+  document.getElementById('statReplace').textContent = `replaceString: ${replaceString.length} 字符`;
+  document.getElementById('statEngine').textContent = `规则数据: ${rulesBytes} bytes`;
+
+  // Rules preview
+  document.getElementById('rulesOutput').textContent = JSON.stringify(engineRules, null, 2);
+}
+
+// ============ INTERACTIONS ============
+function updateLabel(vn, val) {
+  if (rules && rules.vars[vn]) {
+    rules.vars[vn].label = val;
+    saveState();
+    generateCode();
+  }
+}
+function removeVar(vn) {
+  if (!rules) return;
+  delete rules.vars[vn];
+  // Rebuild urlEntries
+  urlEntries = urlEntries.filter(e => e.varName !== vn);
+  // Re-detect
+  const vns = Object.keys(rules.vars);
+  if (vns.length === 0) { rules = null; document.getElementById('analysisSection').style.display = 'none'; document.getElementById('codeSection').style.display = 'none'; }
+  else {
+    // Re-run numPattern detection
+    const numRegex = /^(\D*?)(\d+)(.*)$/;
+    let numBase = null, numSuffixPart = '', nums = [], allMatch = true;
+    for (const vn of vns) {
+      const m = vn.match(numRegex);
+      if (!m) { allMatch = false; break; }
+      const base = m[1], n = parseInt(m[2], 10), sp = m[3];
+      if (numBase === null) { numBase = base; numSuffixPart = sp; }
+      else if (base !== numBase || sp !== numSuffixPart) { allMatch = false; break; }
+      nums.push(n);
+    }
+    if (allMatch && nums.length >= 2) {
+      nums.sort((a, b) => a - b);
+      rules.numPattern = { base: numBase, suffixPart: numSuffixPart, start: nums[0], end: nums[nums.length - 1], digits: vns[0].match(numRegex)[2].length, count: nums.length };
+    } else {
+      rules.numPattern = null;
+    }
+  }
+  showAnalysis();
+  generateCode();
+  saveState();
+}
+
+function addVar() {
+  const name = prompt('变量名（AI使用的标识）：');
+  if (!name) return;
+  const url = prompt('完整图片URL：');
+  if (!url) return;
+  if (!rules) {
+    rules = { prefix: '', suffix: '', vars: {}, numPattern: null };
+  }
+  rules.vars[name] = { url: cleanUrl(url) || url, label: '' };
+  urlEntries.push({ url, cleanedUrl: cleanUrl(url) || url, varName: name, label: '' });
+  showAnalysis();
+  generateCode();
+  saveState();
+}
+
+function editAllLabels() {
+  if (!rules) return;
+  const lines = Object.entries(rules.vars).map(([vn, v]) => `${vn}: ${v.label || ''}`).join('\n');
+  const result = prompt('格式：变量名: 描述（每行一个）', lines);
+  if (result === null) return;
+  for (const line of result.split('\n')) {
+    const idx = line.indexOf(':');
+    if (idx === -1) continue;
+    const vn = line.substring(0, idx).trim();
+    const label = line.substring(idx + 1).trim();
+    if (rules.vars[vn]) rules.vars[vn].label = label;
+  }
+  showAnalysis();
+  generateCode();
+  saveState();
+}
+
+// ============ TEST ============
+function testSingle(vn) {
+  if (!rules) return;
+  const r = rules;
+  let url;
+  // resolve logic
+  if (r.vars[vn]) url = r.vars[vn].url;
+  else if (r.numPattern) {
+    const m = vn.match(/^(\d+)$/);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      const pad = n.toString().padStart(r.numPattern.digits || 2, '0');
+      url = r.prefix + r.numPattern.base + pad + r.numPattern.suffixPart + r.suffix;
+    } else {
+      url = r.prefix + vn + r.suffix;
+    }
+  } else {
+    url = r.prefix + vn + r.suffix;
+  }
+  // Show dialog with preview
+  const d = document.getElementById('dialog');
+  const box = document.getElementById('dialogBox');
+  box.innerHTML = `
+    <h3>测试: [img:${escHtml(vn)}]</h3>
+    <p style="font-size:0.78rem;color:var(--text2);margin-bottom:8px;">变量名: ${escHtml(vn)}</p>
+    <p style="font-size:0.72rem;color:var(--text2);margin-bottom:8px;word-break:break-all;">解析结果: ${escHtml(url)}</p>
+    <div class="preview-box">
+      <img src="${escAttr(url)}" class="preview-img" style="width:120px;height:120px;" onerror="this.style.borderColor='#f55'" onload="this.style.borderColor='var(--green)'">
+    </div>
+    <button class="btn-sec btn-small" style="margin-top:8px;" onclick="document.getElementById('dialog').classList.remove('show')">关闭</button>
+  `;
+  d.classList.add('show');
+}
+document.getElementById('dialog').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+function testEngine() {
+  if (!rules) return;
+  const vn = prompt('输入变量名（如 "01" 或 "男主01"）：', Object.keys(rules.vars)[0] || '');
+  if (vn) testSingle(vn);
+}
+
+// ============ DEMO ============
+function loadDemo() {
+  const demo = [
+    'https://meimoaiimg.com/user/1351181/button (1).png?i=1182931',
+    'https://meimoaiimg.com/user/1351181/button (2).png?i=2203847',
+    'https://meimoaiimg.com/user/1351181/button (3).png?i=3304921',
+    'https://meimoaiimg.com/user/1351181/button (4).png?i=4405987',
+    'https://meimoaiimg.com/user/1351181/button (5).png?i=5506112',
+  ];
+  document.getElementById('urlInput').value = demo.join('\n');
+  analyze();
+}
+
+function clearAll() {
+  document.getElementById('urlInput').value = '';
+  urlEntries = [];
+  rules = null;
+  document.getElementById('analysisSection').style.display = 'none';
+  document.getElementById('codeSection').style.display = 'none';
+  localStorage.removeItem(LS_KEY);
+}
+
+// ============ HELPERS ============
+function escHtml(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function escAttr(s) { return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function ellipsis(s, max) { if (!s) return '(空)'; return s.length > max ? s.substring(0, max) + '…' : s; }
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+    const tab = this.dataset.tab;
+    document.getElementById('tab-export-regex').style.display = tab === 'export-regex' ? '' : 'none';
+    document.getElementById('tab-export-rules').style.display = tab === 'export-rules' ? '' : 'none';
+  });
+});
+
+// Copy
+function copyCode(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = el.parentElement.querySelector('.copy-btn');
+    btn.textContent = '已复制!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// Init
+loadState();
+</script>
+</body>
+</html>

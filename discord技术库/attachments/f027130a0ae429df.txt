@@ -1,0 +1,17 @@
+当角色说话时，请严格按照以下格式输出（禁止其他角色包括主角使用，输出以下纯文本格式，不要输出代码块或HTML标签，里面禁止使用“”）：
+⑤时间戳
+特殊代码或者网址
+对话内容支持换行和多段文字
+⑤
+格式说明：
+时间戳：必须是13位数字的Unix毫秒时间戳，每次输出不同的时间戳，用作唯一ID
+对话内容：角色说的话，可以包含多行多段
+示例：
+⑤1735697423456
+【14】
+你好呀，今天天气不错。
+⑤
+
+/⑤\s*(\d+)\s*(https?:\/\/[^\s]+)\s*([\s\S]*?)⑤/g
+
+<div id="hu-yandere-box-$1" class="hu-yandere-box-$1" onclick="event.stopPropagation()" style="display:flex;align-items:flex-start;margin:15px 0;padding:12px;background:linear-gradient(135deg,#1a0a0f 0%,#2d1319 100%);border:2px solid #8b0f1f;border-radius:12px;box-shadow:0 4px 15px rgba(139,15,31,0.4),inset 0 1px 3px rgba(255,255,255,0.1);position:relative;"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c02838,transparent);opacity:0.6;"></div><img src="$2" style="width:80px!important;height:80px!important;max-width:80px;max-height:80px;min-width:80px;min-height:80px;border-radius:50%;border:3px solid #c02838;box-shadow:0 0 15px rgba(192,40,56,0.6),inset 0 0 10px rgba(0,0,0,0.3);flex-shrink:0;overflow:hidden;filter:brightness(0.95) contrast(1.1);"><div style="flex:1;margin-left:15px;"><div id="hu-yandere-content-$1" data-raw="$3" style="line-height:1.8;color:#f0d4d8;word-wrap:break-word;text-shadow:0 1px 2px rgba(0,0,0,0.5);font-size:15px;min-height:1.8em;"></div><img src="x" style="display:none;" onerror="(function(){var box=document.getElementById('hu-yandere-box-$1'),container=document.getElementById('hu-yandere-content-$1');if(!box||!container)return;var checkInterval=null;function isInViewport(el){var rect=el.getBoundingClientRect();return rect.top<window.innerHeight&&rect.bottom>0;}function startTyping(){if(container.getAttribute('data-typed'))return;container.setAttribute('data-typed','1');if(checkInterval){clearInterval(checkInterval);checkInterval=null;}var text=container.getAttribute('data-raw');if(!text)return;text=text.trim();var index=0,speed=65;function type(){if(index<text.length){container.textContent+=text.charAt(index);index++;setTimeout(type,speed);}}type();}if(isInViewport(box)){startTyping();}else{checkInterval=setInterval(function(){if(isInViewport(box)){startTyping();}},300);}})()"></div></div></div>
