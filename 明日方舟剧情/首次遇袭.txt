@@ -1,0 +1,938 @@
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 
+[stopmusic]
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_bar_1",screenadapt="coverall")]
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[PlayMusic(intro="$nightoflongmen_intro", key="$nightoflongmen_loop", volume=0.4)]
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]罗宾并不是职业杀手吗？
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]不是。
+[name="赫默"]这一点就连我都看得出来，她身上并没有那种感觉。
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]看来有关她的资料是正确的，她过去确实是做安保工作的，在身手上应当是可以信赖的。
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#4",focus=2)]
+[name="缪尔赛思"]不过这样的话，感觉稍微有些奇怪呢......
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#4",focus=1)]
+[name="赫默"]什么？
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#1",focus=2)]
+[name="缪尔赛思"]就是她为什么会被雇佣这一点......倒也不是什么大问题，先略过吧。
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]比起这个，看来大部分杀手都是和罗宾一样，是被单独雇佣的。
+[name="缪尔赛思"]他们并不知道自己有没有竞争对手，也不知道自己的雇主是谁。
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]......海德兄弟究竟雇佣了多少杀手？
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#4",focus=2)]
+[name="缪尔赛思"]我也不清楚。
+[name="缪尔赛思"]但是正如我之前所说，他们两个为了除掉安东尼可是下了血本的。
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]杀手是怎么进入监狱的？
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]我想你事先肯定也调查过——曼斯菲尔德监狱是那个州几座城市的政府共同建立的一座监狱，所有大州独此一份。
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]嗯。我看到的说法是，这座监狱建立的初衷是因为那个州作为开拓区，虽然发展很快，但是犯罪率一直居高不下，有许多罪犯。
+[name="赫默"]当时，这座监狱只是一个接近荒废的工业平台。
+[name="赫默"]而伦道尔，也就是现在的典狱长站了出来，提议各城政府建立了这座监狱，一举解决了这座工业平台的处置问题和囚犯的收容问题。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]这有什么问题？
+[dialog]
+[Delay(time=1)]
+[PlayMusic(intro="$mist_intro", key="$mist_loop", volume=0.4, crossfade=1)]
+[Character(name="char_249_muesys_1#1")]
+[name="缪尔赛思"]答案不是很明显了吗？
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]这也就意味着，这座监狱其实是专门用来关押一些“麻烦”的人的地方，而且是各个城市都不是很想管的那种人。
+[name="缪尔赛思"]主动想要进入这样的地方其实并不是很麻烦的事情。
+[name="缪尔赛思"]卡夫卡小姐应该没有对你说过她具体是怎么进入监狱的吧？
+[Character(name="char_108_silent_1#3")]
+[name="赫默"]......
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]当然，这座监狱戒备还是非常森严的，想要逃出来非常的困难。
+[name="缪尔赛思"]刚才也说过了，它除了每隔几个月会前往周边都市之外，平时基本上是停在荒野上的。
+[name="缪尔赛思"]囚犯就算逃出了监狱，面对的也是一望无际的荒野。
+[name="缪尔赛思"]你看，罗宾也提到了，神秘人向她许诺过，一定有办法把他们给捞出来。
+[Character(name="char_249_muesys_1#1")]
+[name="缪尔赛思"]这样他们如果没有在监狱中做一些蠢事提前把自己弄死，并且成功刺杀安东尼，只需要等着被捞出去就行了。
+[Character(name="char_108_silent_1#4")]
+[name="赫默"]但是他们送去了许多其他杀手，海德兄弟会把他们每一个都捞出去吗？
+[Character(name="char_249_muesys_1#1")]
+[name="缪尔赛思"]当然不会。
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]所以我才说每个杀手都互相不知道有对方的存在呀。
+[name="缪尔赛思"]而一旦进入监狱后，即使知道了有这么一回事，因为逃不掉，能做的也只有拼死杀掉安东尼。
+[name="缪尔赛思"]是一种简单有效的手段呢。
+[Character(name="char_108_silent_1#3")]
+[name="赫默"]......
+[name="赫默"]但我还是不明白，为什么？
+[name="赫默"]西蒙公司已经倒闭，核心成员全都在监狱里服刑，海德兄弟没有对他们下手，为什么偏偏要对一个安东尼下手？
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#3",focus=2)]
+[name="缪尔赛思"]......诶，难道我要从这里开始解释吗？
+[delay(time=0.7)]
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#3",focus=1)]
+[name="赫默"]什么意思？
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#4",focus=2)]
+[name="缪尔赛思"]好吧，赫默小姐，现在我是真的相信你过去对这方面毫不敏感了。
+[name="缪尔赛思"]不过，或许正是因为你不了解，你才会莽撞地做出这样的事，并且成功了。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#4",focus=1)]
+[name="赫默"]......
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#1",focus=2)]
+[name="缪尔赛思"]抱歉抱歉，我并没有嘲讽你的意思，倒不如说，你甚至可以认为我在夸奖你。
+[Character(name="char_249_muesys_1#1")]
+[name="缪尔赛思"]那么关于你的问题，首先，我要反问你一个问题——
+[name="缪尔赛思"]赫默小姐，你有没有想过，如果要在监狱里除掉安东尼的话，其实杀手是一种最没有效率的手段？
+[Character(name="char_108_silent_1#4")]
+[name="赫默"]......没有。
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]因为明显还有更有效率的手段，比如买通狱警，或者贿赂典狱长......
+[name="缪尔赛思"]而送杀手扮成囚犯进入监狱刺杀另一个囚犯，这听起来就很蠢，不是吗？
+[Character(name="char_108_silent_1#3")]
+[name="赫默"]因为他们......做不到？
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]没错，因为他们做不到。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]哎呀，从你刚才对这座监狱的历史的反应来看，我要从头给赫默小姐你解释这方面的东西了。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]什么意思？
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]你还记得卡夫卡的回忆中那个监狱队长巴顿说的话吗？
+[dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[musicvolume(volume=0.1,fadetime=1)]
+[Character(name="avg_npc_135")]
+[Background(image="bg_undergroundF",screenadapt="coverall")]
+[CameraEffect(effect="Grayscale", amount=0.8, keep=true)]
+[delay(time=0.51)]
+[Blocker(a=0, r=0,g=0, b=0, fadetime=1, block=true)]
+[delay(time=1)]
+[name="巴顿"]我们州立曼斯菲尔德监狱，可是首都特批的试点监狱，将来是要作为榜样推广给其他州的。
+[dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5")]
+[CameraEffect(effect="Grayscale", amount=0, keep=true)]
+[Background(image="bg_bar_1",screenadapt="coverall")]
+[delay(time=0.51)]
+[musicvolume(volume=0.4,fadetime=1)]
+[Blocker(a=0, r=0,g=0, b=0, fadetime=1, block=true)]
+[delay(time=2)]
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]他说的怎么了？
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#4",focus=2)]
+[name="缪尔赛思"]试点，特批，你知道这意味着什么吗？
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#4",focus=1)]
+[name="赫默"]什么？
+[Character(name="char_249_muesys_1#1")]
+[name="缪尔赛思"]意味着生意。
+[delay(time=0.7)]
+[Character(name="char_108_silent_1#2")]
+[CameraShake(duration=0.5, xstrength=15, ystrength=15, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="赫默"]......？！
+[Character(name="char_108_silent_1#2", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]在哥伦比亚，最赚钱的生意，永远是依附权力的生意，这座监狱就是一个典型。
+[Character(name="char_108_silent_1#2", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]你在说什么......
+[Character(name="char_108_silent_1#2", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]我在说这座监狱实际上是典狱长伦道尔的一台赚钱机器。
+[Character(name="char_108_silent_1#2", name2="char_249_muesys_1#5",focus=1)]
+[CameraShake(duration=0.5, xstrength=15, ystrength=15, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="赫默"]但这可是监狱！
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]是啊，一座戒备森严的监狱，你可以把你讨厌的人送进去让他生不如死，也可以把你想保护的人送进去好好保护。
+[name="缪尔赛思"]而这一切，只需要你有钱。
+[Character(name="char_249_muesys_1#1")]
+[name="缪尔赛思"]你不觉得这其实是一个巨大的商机？
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]......
+[name="赫默"]但是这样的话，难道不是海德兄弟付出足够的钱就可以让典狱长帮他做事了吗？
+[Character(name="char_249_muesys_1#2")]
+[name="缪尔赛思"]上一秒还在因为自己听到的事实感到震惊和恶心，下一秒就能强迫自己转换思路适应这个事实并展开思考。
+[Character(name="char_249_muesys_1#6")]
+[name="缪尔赛思"]真是了不起，赫默小姐。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]我不觉得这是一种夸奖。
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]你的疑问完全合理，但是这件事上其实我也没有明确的答案。
+[Character(name="char_249_muesys_1#5")]
+[name="缪尔赛思"]但是我们可以从结果反推——从结果上来说，他们没有这么做，而他们不可能没有这么尝试过，那么答案只能是他们失败了。
+[name="缪尔赛思"]我个人认为的原因是典狱长不想把事情做绝。
+[name="缪尔赛思"]或许虐待安东尼可以通过钱解决，但是安东尼在监狱中有很大影响力，如果他死了，可不像一个普通囚犯死了那么好解决。
+[name="缪尔赛思"]许多人都在觊觎伦道尔的位置，据我所知，他也是个极度圆滑的人，我不认为他愿意冒这个风险。
+[name="缪尔赛思"]甚至他收了海德兄弟的钱却没有办事的可能性更大一些。
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]我记得安东尼说过，他是逃到铸铁城才被捕的......
+[name="赫默"]会不会是他的父亲在这件事上有所安排？
+[Character(name="char_108_silent_1#5", name2="char_249_muesys_1#4",focus=2)]
+[name="缪尔赛思"]嗯，这也是有可能的。
+[name="缪尔赛思"]老史密斯过去在堡垒山城商场也是有不小名气的，他为了保护儿子而让他入狱我一点也不感到奇怪。
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]但是这并没有解答我的问题。
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#1",focus=2)]
+[name="缪尔赛思"]其实我已经回答了，赫默小姐，你很聪明，只是你不愿意去想。
+[Character(name="char_108_silent_1#3")]
+[name="赫默"]......我不懂。
+[delay(time=0.7)]
+[Character(name="char_108_silent_1#3", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]我说的是，他们在曼斯菲尔德监狱做不到，但这不代表他们在堡垒山城监狱做不到。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]......等等，难道他的家人......
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#1",focus=2)]
+[name="缪尔赛思"]看起来你终于明白了，赫默小姐。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]你刚才说，海德兄弟没有对安东尼的家人下手，这其实是错误的。
+[name="缪尔赛思"]他们没有死，只是因为没有这个必要。
+[name="缪尔赛思"]或许你并不了解，但是在哥伦比亚，死对一个人来说并不是最痛苦的事。
+[name="缪尔赛思"]况且，在解决西蒙公司后，海德兄弟就再无对手，他们显然不会让西蒙家的人再有翻身的机会。
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]也就是对他们来说，西蒙家的人，已经是没有威胁的了......
+[name="赫默"]而当他们发现安东尼在一座他们无法影响的监狱中服刑时，他们认为安东尼是一个威胁？！
+[Character(name="char_108_silent_1#4", name2="char_249_muesys_1#5",focus=2)]
+[name="缪尔赛思"]没错。只要安东尼活着，他们就总要面临被反扑的风险。
+[name="缪尔赛思"]而海德兄弟他们虽然能够影响当地的监狱，却影响不到隔了一个州的州立曼斯菲尔德监狱。
+[Character(name="char_108_silent_1#2", name2="char_249_muesys_1#5",focus=1)]
+[name="赫默"]不，等等，他们只是一家商业公司，即使背后有能量科背景，他们凭什么能够影响当地的监狱？！
+[Character(name="char_108_silent_1#2", name2="char_249_muesys_1#1",focus=2)]
+[name="缪尔赛思"]你觉得，他们凭什么？
+[stopmusic(fadetime=1)]
+[CameraShake(duration=0.5, xstrength=10, ystrength=10, vibrato=30, randomness=10, fadeout=true, block=false)]
+[Character(name="char_108_silent_1#2")]
+[name="赫默"]难道说，不，不可能.......
+[Character]
+[dialog]
+[delay(time=1)]
+[PlayMusic(intro="$nightoflongmen_intro", key="$nightoflongmen_loop", volume=0.4)]
+[Character(name="char_242_mayer#2",fadetime=1)]
+[PlaySound(key="$d_gen_walk_n", volume=1)]
+[Delay(time=2)]
+[name="梅尔"]我饭做好了，你们也吃一点吧。
+[name="梅尔"]咦，赫默你怎么脸色不太好。
+[Character(name="char_242_mayer#2", name2="char_108_silent_1#1",focus=2)]
+[name="赫默"]我需要冷静一下......梅尔，麻烦你继续给缪尔赛思主任讲监狱里发生的事了。
+[Character(name="char_242_mayer#2", name2="char_108_silent_1#5",focus=1)]
+[name="梅尔"]嗯？好吧~
+[name="梅尔"]赫默你要在旁边一边吃一边听吗？
+[Character(name="char_242_mayer#2", name2="char_108_silent_1#5",focus=2)]
+[name="赫默"]......不，我需要一个安静一些的地方。
+[Character(name="char_242_mayer#2", name2="char_108_silent_1#5",focus=1)]
+[name="梅尔"]那你可以去厨房那边，有桌子的。
+[Character(name="char_242_mayer#2", name2="char_108_silent_1#5",focus=2)]
+[name="赫默"]好，谢谢。
+[dialog]
+[Character(name="char_242_mayer#2", name2="char_108_silent_1#5")]
+[delay(time=1)]
+[PlaySound(key="$d_gen_walk_n", volume=1)]
+[Character(name="char_242_mayer#2", name2="char_empty",fadetime=1.7)]
+[delay(time=3)]
+[Character(name="char_249_muesys_1#5",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]话说你们聊到哪里了来着。
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]罗宾的来历以及她在监狱中做的事已经说完了。
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]啊，我知道了，接下来应该到她第一次刺杀失败的事了......
+[name="梅尔"]啊，从卡夫卡的角度来说，是她完成和安东尼接触的时候呢。
+[Character(name="char_249_muesys_1#3",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]哇，也就是说她们两个的行动交错了吗？
+[Character(name="char_249_muesys_1#3",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]嗯。
+[Character(name="char_249_muesys_1#4",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]让我猜猜，刚才罗宾的回忆里提到了进C区打扫卫生的事。
+[name="缪尔赛思"]是那个吧？
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]嗯，卡夫卡也选了这个方法。
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]毕竟是听起来最方便能接触到安东尼的方法了。
+[Character(name="char_249_muesys_1#6",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]啊哈，直接就这么刺激了啊，我喜欢~
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]中间都是一些琐碎的事情，你要听吗？
+[Character(name="char_249_muesys_1#4",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]嗯......虽然也不能说没有兴趣，感觉能听到一些有趣的东西，不过还是先关注越狱本身吧。
+[Character(name="char_249_muesys_1#4",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]那你要听卡夫卡和罗宾哪边？
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]还是罗宾那边吧。
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]好。那个时候，她已经进入监狱一个月了。
+[name="梅尔"]那段时间，她一直努力工作，终于争取到了进入C区打扫卫生的机会。
+[name="梅尔"]而她也已经用各种找来的材料做好了自己擅长的武器随身携带在身上。
+[Character(name="char_249_muesys_1#1",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]听起来似乎准备得还挺充分，难道是被安东尼发现了，还是被卡夫卡阻止了？
+[Character(name="char_242_mayer#2")]
+[name="梅尔"]不是，是因为意外。
+[Dialog]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=2, block=true)]
+[Character(name="avg_npc_134")]
+[Background(image="bg_prison_corridor",screenadapt="coverall")]
+[playMusic(intro="$farce_intro", key="$farce_loop", volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=2, block=true)]
+[Delay(time=1)]
+[Character(name="avg_npc_134")]
+[name="狱警A"]都到了吗？
+[Character(name="avg_npc_132",name2="avg_npc_132")]
+[name="A区囚犯们"]到。
+[Character(name="avg_npc_133",name2="avg_npc_133")]
+[name="B区囚犯们"]到。
+[Character(name="char_214_Kafka_1#3", name2="char_451_robin#3", focus=1)]
+[name="卡夫卡"]到~
+[Character(name="char_214_Kafka_1#4", name2="char_451_robin#3", focus=2)]
+[name="罗宾"]......
+[characteraction(name="left", type="move", xpos=20, fadetime=0.7,block=false)]
+[Character(name="char_214_Kafka_1#4", name2="char_451_robin#3", focus=1)]
+[name="卡夫卡"]（喂，你也是新来的吧？我之前在工厂看到你了。）
+[delay(time=0.7)]
+[Character(name="char_214_Kafka_1#4", name2="char_451_robin#3", focus=2)]
+[name="罗宾"]......
+[Character]
+[dialog]
+[Delay(time=1)]
+[Character(name="avg_npc_134")]
+[name="狱警A"]听着，你们中有新来的所以我重复一下规矩。
+[name="狱警A"]A区和B区负责不同的房间，我们两个会分别负责带你们。
+[name="狱警A"]不过最后都会到安东尼先生的房间打扫一次。
+[Character(name="avg_npc_133")]
+[name="B区囚犯A"]嘿嘿，为什么？
+[Character(name="avg_npc_134")]
+[name="狱警A"]这叫尊敬懂不懂？
+[Character(name="avg_npc_136#1",blackstart2=0.14,blackend2=0.4)]
+[name="狱警B"]......A区的跟我，B区的跟他。
+[Character(name="avg_npc_134")]
+[name="狱警A"]总之，进去之后，不该碰的别碰，不该拿的东西想都别想。
+[name="狱警A"]好好干活，尤其是安东尼先生的房间，用照顾你们老妈的心去打扫，听清楚了没？
+[Character(name="avg_npc_133")]
+[name="B区囚犯A"]嘿嘿，我可不想照顾我老母，嘿嘿。
+[Character(name="avg_npc_134")]
+[name="狱警A"]少废话，就是说给你这种第一次干这活的听的，别给我惹事，听到了吗？
+[Character(name="avg_npc_133")]
+[name="B区囚犯A"]懂的懂的。
+[Character(name="avg_npc_134")]
+[name="狱警A"]表现得好会让你们在空的C区牢房玩一会儿。
+[Character(name="avg_npc_133")]
+[name="B区囚犯A"]嚯，还有这样的好事，那我肯定好好表现，嘿嘿。
+[Character(name="avg_npc_134")]
+[name="狱警A"]得了，打扫工具什么的都带好了吧，带好了就准备上楼了。
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_cellroomC",screenadapt="coverall")]
+[Character]
+[delay(time=1)]
+[playMusic(intro="$mist_intro", key="$mist_loop", volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=2, block=true)]
+[Delay(time=1)]
+[PlaySound(key="$d_gen_walk_n", volume=1)]
+[Character(name="char_451_robin#2",fadetime=1)]
+[delay(time=1.5)]
+[name="罗宾"]（这里就是C区牢房......终于进来了。）
+[name="罗宾"]（每一层都有四间，每间都只和电梯连着。）
+[name="罗宾"]（不过，这里的风格和我们的牢房差得还真多，感觉......几乎没有任何隐私。）
+[Character(name="avg_npc_134")]
+[name="狱警B"]好好做事，别东张西望。
+[dialog]
+[Character]
+[delay(time=1)]
+[Character(name="avg_npc_136#1",blackstart2=0.14,blackend2=0.4)]
+[name="狱警B"]这边就是安东尼......先生的房间了。
+[name="狱警B"]看来另一边已经先到了。
+[name="狱警B"]进去之后好好打扫就行，别想着在这里和B区的斗殴。
+[name="狱警B"]我会看着你们的。
+[Character(name="avg_npc_136",blackstart2=0.14,blackend2=0.4,name2="char_451_robin#2",focus=2)]
+[name="罗宾"]（这个狱警和其他狱警不一样，给人的压迫感好强......）
+[name="罗宾"]（不过，终于要见到安东尼了。）
+[Character(name="avg_npc_136",blackstart2=0.14,blackend2=0.4,name2="char_451_robin#6",focus=2)]
+[name="罗宾"]（从照片上看，他非常的强壮，如果是正面对决，我肯定赢不了他。）
+[name="罗宾"]（但是，无论是多么强壮的人，只要能找到弱点，就有机会......）
+[name="罗宾"]（先一边打扫一边寻找机会吧，这一次哪怕只能找到他的一些弱点也好。）
+[Character(name="avg_npc_136",blackstart2=0.14,blackend2=0.4,name2="char_451_robin#2",focus=2)]
+[name="罗宾"]（爸爸，保佑我吧。）
+[dialog]
+[Delay(time=1)]
+[stopmusic]
+[PlaySound(key="$fightgeneral", volume=1)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=true)]
+[Delay(time=1)]
+[playMusic(key="$chasing_loop", volume=0.4)]
+[Character(name="avg_npc_136#4",blackstart2=0.14,blackend2=0.4,name2="char_451_robin#3",focus=0.6)]
+[name="狱警B"]嗯？怎么回事？
+[dialog]
+[Character(fadetime=0.6)]
+[PlaySound(key="$rungeneral", volume=1)]
+[PlaySound(key="$rungeneral", volume=1,delay=0.4)]
+[delay(time=2)]
+[dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.6, block=true)]
+[Character]
+[Image(image="avg_ac15_4",xScale=1.1, yScale=1.1, fadetime=0)]
+[ImageTween(xFrom=30, xTo=-10, duration=2,ease="OutSine", block=false)]
+[Blocker(a=0, fadetime=0.6, block=true)]
+[name="罗宾"]......？！
+[name="罗宾"]（狱警和几个B区的囚犯被放倒了。）
+[dialog]
+[delay(time=1)]
+[name="安东尼"]你们是什么人？为什么要杀我？
+[name="B区囚犯A"]你不需要知道是谁想要你的命，安东尼先生。
+[name="B区囚犯A"]你只需要知道你会死在这里就行了，嘿嘿。
+[name="B区囚犯B"]老大，A区的队伍来了。
+[name="B区囚犯A"]来得真快，嘿嘿。
+[name="B区囚犯A"]没关系，老二，你去把这一拨都放倒。
+[name="B区囚犯A"]别下死手，我们还要出去呢，嘿嘿。
+[dialog]
+[delay(time=1)]
+[name="罗宾"]（他们两个难道也是来刺杀安东尼的......）
+[dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.6, block=true)]
+[Character]
+[Image]
+[delay(time=0.6)]
+[Blocker(a=0, fadetime=0.6, block=true)]
+[delay(time=1)]
+[Character(name="avg_npc_133",name2="char_214_Kafka_1#4",focus=2)]
+[name="卡夫卡"]吃我这招！
+[characteraction(name="right", type="jump", xpos=-500, power=0, times=1, fadetime=0.3,block=true)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$p_imp_sword_n", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[delay(time=0.51)]
+[characteraction(name="right", type="jump", xpos=500, power=0, times=1, fadetime=0.3,block=true)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$p_imp_sword_n", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.1, block=true)]
+[delay(time=1)]
+[Character(name="avg_npc_133",name2="char_214_Kafka_1#4",focus=1)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="B区囚犯A"]小丫头，给我闪开！
+[characteraction(name="left", type="jump",power=50, xpos=200,times=1,fadetime=0.1,block=true)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.1, block=true)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=false)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=false)]
+[delay(time=1)]
+[Character(name="avg_npc_133",name2="char_214_Kafka_1#4",focus=2)]
+[name="卡夫卡"]咕啊！
+[characteraction(name="left", type="move", xpos=-150,fadetime=1,block=false)]
+[PlaySound(key="$bodyfalldown1", volume=1)]
+[dialog]
+[Character(name="avg_npc_133",name2="char_empty",fadetime=0.6)]
+[CameraShake(duration=1, xstrength=3, ystrength=3, vibrato=10, randomness=90, fadeout=true, block=true)]
+[delay(time=1)]
+[Character(name="char_451_robin#2")]
+[name="罗宾"]（那个女孩子也被他一下子打晕了......）
+[Character(name="avg_npc_136",blackstart2=0.14,blackend2=0.4,name2="char_451_robin#2",focus=1)]
+[name="狱警B"]呵。
+[dialog]
+[delay(time=1)]
+[Character(name="avg_npc_136",blackstart2=0.14,blackend2=0.4,name2="char_451_robin#3",focus=2)]
+[name="罗宾"]（咦，这个狱警，刚才是不是笑了......）
+[Character(name="avg_npc_133")]
+[name="B区囚犯B"]......
+[Character(name="char_451_robin#2")]
+[name="罗宾"]（啧，现在不是关心这个的时候，这个人杀过来了，得先应付他！）
+[Dialog]
+[Blocker(a=0, r=0,g=0, b=0, fadetime=0, block=true)]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.6, block=true)]
+[stopmusic(fadetime=1)]
+[Character]
+[Image]
+
+---
+
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 
+[stopmusic]
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_cellroomC",screenadapt="coverall")]
+[playMusic(key="$chasing_loop",fadetime=0.5, volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[delay(time=1)]
+[Dialog]
+[Character(name="avg_npc_133",fadetime=0.6)]
+[characteraction(name="middle", type="jump", xpos=0, power=5, times=5, fadetime=1.5)]
+[PlaySound(key="$rungeneral", volume=1)]
+[delay(time=1)]
+[name="B区囚犯B"]......
+[Dialog]
+[characteraction(name="middle", type="jump", xpos=-350, times=1, fadetime=0.5, block=false)]
+[Character(name="avg_npc_133",name2="avg_npc_132")]
+[PlaySound(key="$e_skill_skulsrsword", volume=1)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.1, block=true)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=0, vibrato=30, randomness=90, fadeout=true, block=false)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.1, block=true)]
+[delay(time=1)]
+[name="B区囚犯B"]哼！
+[Dialog]
+[characteraction(name="left", type="jump",power=50, xpos=300,times=1,fadetime=0.1,block=true)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[characteraction(name="left", type="jump", xpos=-150, power=50, times=1, fadetime=0.5,block=false)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=false)]
+[characteraction(name="right", type="exit", direction="right",block=false)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=false)]
+[Character(name="avg_npc_133")]
+[delay(time=1)]
+[name="B区囚犯B"]！
+[characteraction(name="middle", type="jump", xpos=350, times=1, fadetime=0.5, block=false)]
+[Character(name="avg_npc_132",name2="avg_npc_133")]
+[delay(time=1)]
+[Dialog]
+[characteraction(name="right", type="jump", xpos=-100, power=0, times=1, fadetime=0.1,block=true)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$fightgeneral", volume=0.6)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[characteraction(name="right", type="jump", xpos=100, power=0, times=1, fadetime=0.1,block=true)]
+[characteraction(name="right", type="jump", xpos=-100, power=0, times=1, fadetime=0.1,block=true)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$fightgeneral", volume=0.6)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[characteraction(name="right", type="jump", xpos=100, power=0, times=1, fadetime=0.1,block=true)]
+[characteraction(name="right", type="jump", xpos=-100, power=0, times=1, fadetime=0.1,block=true)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=false)]
+[characteraction(name="right", type="jump", xpos=100, power=50, times=1, fadetime=0.3,block=true)]
+[delay(time=1)]
+[name="A区囚犯"]呃啊......
+[Character(name="char_empty",name2="avg_npc_133",fadetime=0.6)]
+[CameraShake(duration=1, xstrength=3, ystrength=3, vibrato=10, randomness=90, fadeout=true, block=false)]
+[PlaySound(key="$bodyfalldown1", volume=1)]
+[Dialog]
+[delay(time=1.5)]
+[Character]
+[delay(time=1)]
+[Character(name="char_451_robin#2")]
+[name="罗宾"]（这个囚犯好强！其他囚犯都被他几下就放倒了。）
+[Dialog]
+[Character]
+[delay(time=0.7)]
+[Character(name="avg_npc_133",name2="avg_npc_136#1",blackstart2=0.14,blackend2=0.4)]
+[delay(time=1)]
+[name="B区囚犯B"]......去死。
+[characteraction(name="left", type="jump", xpos=100, power=0, times=1, fadetime=0.1,block=true)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$sheildimpact", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[characteraction(name="left", type="jump", xpos=-100, power=5, times=1, fadetime=1,block=true)]
+[dialog]
+[Delay(time=1)]
+[name="狱警B"]......
+[Character(name="char_451_robin#2")]
+[name="罗宾"]（这个狱警也很厉害，但是，她为什么好像只是在防守......）
+[dialog]
+[Character(name="avg_npc_133",name2="avg_npc_136#1",blackstart2=0.14,blackend2=0.4)]
+[delay(time=1)]
+[name="B区囚犯B"]喝！
+[characteraction(name="left", type="jump", xpos=100, power=0, times=1, fadetime=0.1,block=true)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[Blocker(a=1, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[Blocker(a=0, r=255, g=255, b=255, fadetime=0.05, block=true)]
+[characteraction(name="left", type="jump", xpos=-100, power=5, times=1, fadetime=1,block=true)]
+[dialog]
+[Delay(time=1)]
+[name="狱警B"]......唔。
+[Character(name="avg_npc_133",name2="char_empty",fadetime=1)]
+[dialog]
+[PlaySound(key="$bodyfalldown1", volume=1)]
+[CameraShake(duration=1, xstrength=3, ystrength=3, vibrato=10, randomness=90, fadeout=true, block=true)]
+[delay(time=1.5)]
+[Character(name="char_451_robin#2")]
+[name="罗宾"]（糟了，狱警倒下了.....）
+[name="罗宾"]（只剩下我了，但是要是我在这里和他战斗的话，之后要怎么解释。）
+[Character(name="avg_npc_133")]
+[name="B区囚犯B"]......还有你。
+[Character(name="avg_npc_133",name2="char_451_robin#2",focus=2)]
+[name="罗宾"]（怎么办，难道只能动手了吗。）
+[Character(name="avg_npc_133",name2="char_451_robin#2",focus=1)]
+[name="B区囚犯B"]......
+[Character]
+[name="安东尼"]哼。
+[Dialog]
+[delay(time=1)]
+[Character(name="avg_npc_133",name2="char_451_robin#3")]
+[delay(time=1)]
+[PlaySound(key="$atkboost", volume=1,block=false)]
+[Character(name="avg_npc_133",name2="char_264_Mountain_1#4",fadetime=0.2)]
+[delay(time=0.6)]
+[Character(name="avg_npc_133",name2="char_empty",fadetime=0.2)]
+[delay(time=1)]
+[Character(name="avg_npc_133",name2="char_empty",focus=1)]
+[name="B区囚犯B"]......真快。
+[Dialog]
+[Character]
+[delay(time=1)]
+[Character(name="char_451_robin#3",name2="char_264_Mountain_1#5",fadetime=1)]
+[delay(time=2)]
+[Character(name="char_451_robin#3",name2="char_264_Mountain_1#5",focus=1)]
+[name="罗宾"]（安东尼，救下了我？）
+[Character(name="char_451_robin#3",name2="char_264_Mountain_1#4",focus=2)]
+[name="安东尼"]虽然不知道你们是谁，但是你们不该这么做，不该在我的眼前这么做。
+[Dialog]
+[Character]
+[delay(time=1)]
+[Character(name="char_empty",name2="char_451_robin#3")]
+[characteraction(name="left", type="move", xpos=-50, times=1, fadetime=0.9, block=true)]
+[delay(time=1)]
+[characteraction(name="left", type="move", xpos=50, times=1, fadetime=0.5, block=false)]
+[PlaySound(key="$rungeneral", volume=1)]
+[Character(name="avg_npc_133",name2="char_451_robin#3",fadetime=0.8)]
+[delay(time=2)]
+[Character(name="avg_npc_133",name2="char_451_robin#3",focus=1,fadetime=0.8)]
+[name="B区囚犯A"]嘿嘿，死到临头了还关心别人吗，真是绅士作风啊，安东尼先生。
+[Character(name="avg_npc_133",name2="char_451_robin#2",focus=2)]
+[name="罗宾"]（什么时候？！）
+[Character(name="avg_npc_133",name2="char_451_robin#2",focus=1)]
+[name="B区囚犯A"]嘿嘿，小姑娘，别怪我，要怪就怪你运气不好吧。
+[name="B区囚犯A"]放心，除了安东尼，我们不想杀人，你就在这睡一会吧。
+[Character(name="avg_npc_133",name2="char_451_robin#2",focus=2)]
+[name="罗宾"]（糟了！）
+[Dialog]
+[Character(name="avg_npc_133",name2="char_451_robin#2")]
+[characteraction(name="left", type="move", xpos=100, fadetime=0.3, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=true)]
+[characteraction(name="left", type="move", xpos=-100, fadetime=1, block=true)]
+[delay(time=1)]
+[CameraShake(duration=1, xstrength=3, ystrength=3, vibrato=10, randomness=90, fadeout=true, block=false)]
+[characteraction(name="right", type="move", ypos=-30, fadetime=0.3, block=true)]
+[name="罗宾"]咕......
+[Dialog]
+[characteraction(name="left", type="move", xpos=-80, times=1, fadetime=0.9, block=true)]
+[PlaySound(key="$rungeneral", volume=1)]
+[Character(name="char_empty",name2="char_451_robin#3",fadetime=0.8)]
+[delay(time=2)]
+[Blocker(a=0.8, r=0, g=0, b=0, fadetime=0.2, block=true)]
+[characteraction(name="middle", type="move", ypos=20, fadetime=1, block=true)]
+[musicvolume(volume=0.2)]
+[Blocker(a=0.3, r=0, g=0, b=0, fadetime=0.2, block=true)]
+[name="罗宾"]（被他得手了......)
+[Blocker(a=0.9, r=0, g=0, b=0, fadetime=0.2, block=true)]
+[characteraction(name="middle", type="move", ypos=-40, fadetime=0.5, block=true)]
+[Blocker(a=0.5, r=0, g=0, b=0, fadetime=0.2, block=true)]
+[name="罗宾"](意识，开始模糊了......）
+[PlaySound(key="$bodyfalldown1", volume=1)]
+[Character(fadetime=1)]
+[CameraShake(duration=1, xstrength=3, ystrength=3, vibrato=10, randomness=90, fadeout=true, block=false)]
+[Dialog]
+[Blocker(a=0.8, r=0, g=0, b=0, fadetime=0.6, block=true)]
+[delay(time=1)]
+[stopmusic(fadetime=5)]
+[Character(name="avg_npc_133")]
+[name="B区囚犯A"]......让我们来......招待你......安东尼......
+[Blocker(a=0.9, r=0, g=0, b=0, fadetime=0.6, block=false)]
+[Character(name="char_264_Mountain_1#4")]
+[name="安东尼"]......死......
+[Blocker(a=1, r=0, g=0, b=0, fadetime=0.6, block=true)]
+[PlaySound(key="$atkboost", volume=0.3)]
+[PlaySound(key="$fightgeneral", volume=1,delay=0.2)]
+[PlaySound(key="$explolarge1", volume=0.6,delay=0.7)]
+[PlaySound(key="$explolarge1", volume=0.1,delay=1.3)]
+[PlaySound(key="$explolarge1", volume=0.05,delay=1.8 ,block=true)]
+[Character]
+[Dialog]
+[delay(time=4)]
+[Background(image="bg_bar_1",screenadapt="coverall")]
+[PlayMusic(intro="$nightoflongmen_intro", key="$nightoflongmen_loop", volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=2, block=true)]
+[Character(name="char_249_muesys_1#3",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]没想到梅尔小姐你的厨艺真不错呢。
+[Character(name="char_249_muesys_1#3",name2="char_242_mayer#4",focus=2)]
+[name="梅尔"]哼哼，没想到吧。
+[Character(name="char_249_muesys_1",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]不过，被卷入了另一个杀手的刺杀中然后昏迷过去了吗......
+[name="缪尔赛思"]真是不幸呢。
+[Character(name="char_249_muesys_1",name2="char_242_mayer#1",focus=2)]
+[name="梅尔"]是啊，好倒霉。
+[Character(name="char_249_muesys_1#4",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]那么这场刺杀是怎么收场的呢？
+[name="缪尔赛思"]虽然我们知道安东尼肯定赢了，但是毕竟这可是发生在监狱中的刺杀，不会就草草了之的吧。
+[Character(name="char_249_muesys_1",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]嗯，不过因为那时候罗宾还昏迷着，所以要从卡夫卡那边讲了。
+[Character(name="char_249_muesys_1#3",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]咦，卡夫卡不也被那个囚犯打晕过去了吗？
+[Character(name="char_249_muesys_1",name2="char_242_mayer#2",focus=2)]
+[name="梅尔"]啊，她说那是她装的。
+[Character(name="char_249_muesys_1",name2="char_242_mayer#2",focus=1)]
+[name="缪尔赛思"]啊......原来如此，确实有她之前表现出的风格呢。
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=2, block=true)]
+[playMusic(intro="$mist_intro", key="$mist_loop", volume=0.4)]
+[Character(name="avg_npc_133",name2="char_264_Mountain_1#1")]
+[Background(image="bg_cellroomC",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=2, block=true)]
+[delay(time=1)]
+[Character(name="avg_npc_133",name2="char_264_Mountain_1#1",focus=2)]
+[name="安东尼"]说，是谁派你们来的？
+[Character(name="avg_npc_133",name2="char_264_Mountain_1#1",focus=1)]
+[name="B区囚犯A"]嘿......嘿......你不会......知道的。
+[CameraShake(duration=1, xstrength=10, ystrength=10, vibrato=20, randomness=50, fadeout=true, block=false)]
+[name="B区囚犯A"]......
+[Character(name="char_empty",name2="char_264_Mountain_1#1",focus=1,fadetime=1)]
+[delay(time=2)]
+[Character(name="char_264_Mountain_1#6")]
+[name="安东尼"]......昏过去了。
+[name="安东尼"]这些人难道是......
+[Dialog]
+[delay(time=1)]
+[stopmusic(fadetime=0.5)]
+[delay(time=1)]
+[playMusic(intro="$mist_intro", key="$mist_loop", volume=0.4)]
+[name="安东尼"]......罢了，现在想这些也没有意义，先看看这些囚犯的状况。
+[Character]
+[name="囚犯们"]......
+[name="罗宾"]......
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]看来他们确实没有下死手。
+[Character]
+[name="卡夫卡"]......
+[Character(name="char_264_Mountain_1#1")]
+[name="安东尼"]还有这个小姑娘......
+[name="安东尼"]虽然不知道是谁，但是刚才帮助了我......
+[name="安东尼"]谢谢你，不知名的小姑娘。
+[Character]
+[name="卡夫卡"]你可以叫我卡夫卡。
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]嗯？你没晕？
+[name="卡夫卡"]哎，别动，身体往右边挪一下，挡住监控。
+[dialog]
+[characteraction(name="middle", type="move", xpos=200, fadetime=1, block=true)]
+[delay(time=2)]
+[name="安东尼"]可以了吗？
+[Character(name="char_empty", name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]好了，这样监控应该看不到我了。
+[Dialog]
+[delay(time=0.5)]
+[Character(name="char_214_Kafka_1#3",name2="char_264_Mountain_1#5",focus=1,fadetime=1)]
+[delay(time=1)]
+[name="卡夫卡"]幸好我打扫房间的时候观察了一下。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#1",focus=2)]
+[name="安东尼"]你是谁？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]我说了，你可以叫我卡夫卡，我是来帮你的。
+[name="卡夫卡"]不过真是倒霉，本来想找个机会给你留个纸条就完事了的，结果没想到正好撞上他们出手。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]到底是怎么回事？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]这里不是可以说话的地方，你知道哪里可以吗？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]......狱警们该听到动静赶过来了，我们可以去医务室，那里可以。
+[Dialog]
+[Character]
+[delay(time=1)]
+[PlaySound(key="$rungeneral", volume=1,block=false)]
+[Character(name="avg_npc_135#4",fadetime=0.7)]
+[delay(time=1)]
+[name="巴顿"]怎么回事！安东尼，你在搞什么鬼！
+[Character(name="char_264_Mountain_1#1",name2="avg_npc_135#1",focus=1)]
+[name="安东尼"]这是我想问的，巴顿。
+[name="安东尼"]这些囚犯里混进了想要刺杀我的人。
+[name="安东尼"]你在搞什么鬼？
+[Character(name="char_264_Mountain_1#1",name2="avg_npc_135#2",focus=2)]
+[name="巴顿"]什么？！
+[Character(name="avg_npc_136#1",blackstart1=0.14,blackend1=0.4,name2="avg_npc_135#2",focus=1)]
+[name="狱警B"]是真的，巴顿队长，我看到那两个囚犯把安东尼先生围了起来。
+[Character(name="avg_npc_136#1",blackstart1=0.14,blackend1=0.4,name2="avg_npc_135#4",focus=2)]
+[name="巴顿"]什么？你不是看着他们的吗？！
+[Character(name="avg_npc_136#1",blackstart1=0.14,blackend1=0.4,name2="avg_npc_135#2",focus=1)]
+[name="狱警B"]我被那两个囚犯放倒了，他们挺......很强。
+[Character(name="avg_npc_136#1",blackstart1=0.14,blackend1=0.4,name2="avg_npc_135#4",focus=2)]
+[name="巴顿"]啧，没用的家伙。
+[name="巴顿"]发生这种事，你让我怎么向典狱长交待？！
+[Character(name="char_264_Mountain_1#5",name2="avg_npc_135#1",focus=1)]
+[name="安东尼"]先解决现状吧，巴顿。
+[name="安东尼"]这两个人都是刺客，你们处理一下。
+[Character(name="char_264_Mountain_1#5",name2="avg_npc_135#1",focus=2)]
+[name="巴顿"]咳咳，但是，安东尼先生，你看，这件事我们不能就因为你的一面之词就......
+[Character(name="char_264_Mountain_1#5",name2="avg_npc_135#1",focus=1)]
+[name="安东尼"]我知道。
+[name="安东尼"]我受了点伤，需要先去医务室一趟，其他人都被他们打昏了，也送去医务室看一看比较好。
+[name="安东尼"]去过医务室后，我自然会去和你详细说说这件事。
+[Character(name="char_264_Mountain_1#5",name2="avg_npc_135#1",focus=2)]
+[name="巴顿"]好的好的。
+[Character(name="avg_npc_135#4")]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="巴顿"]你们几个还愣着干什么，把这两具尸体丢去停尸间，这些人也都拖出去！
+[Character(name="avg_npc_134",name2="avg_npc_137#9",blackstart2=0.13,blackend2=0.25,focus=1)]
+[name="狱警"]是、是！
+[Character(name="avg_npc_134",name2="avg_npc_137#9",blackstart2=0.13,blackend2=0.25,focus=2)]
+[name="狱警"]是！
+[Dialog]
+[Character]
+[Dialog]
+[stopmusic(fadetime=1)]
+[Delay(time=2)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_Morgue",screenadapt="coverall")]
+[playMusic(intro="$m_dia_street_intro", key="$m_dia_street_loop", volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[Character(name="char_441_lotus_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="杜玛"]狱警们都走了，安东尼。
+[name="杜玛"]发生了什么，我看他们都很慌张的样子。
+[Character(name="char_441_lotus_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]我也想知道。
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]好了，这里是安全的，卡夫卡小姑娘。
+[name="安东尼"]杜玛是我的朋友，如果说我在这座监狱里有能够信任的人，那就只有她了。
+[Character(name="char_214_Kafka_1#5",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]首先，不要叫我小姑娘，我只是个子矮。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#2",focus=2)]
+[name="安东尼"]抱歉，卡夫卡小姐。
+[Character(name="char_214_Kafka_1#2",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]......你这家伙，明明是囚犯，却比外面的人还要有礼貌诶。
+[Character(name="char_441_lotus_1#4",name2="char_214_Kafka_1#2",focus=1)]
+[name="杜玛"]安东尼就是这样的，他对谁都很有礼貌。
+[Character(name="char_214_Kafka_1#2",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]原来如此，明明很能打，却又很有礼貌，难怪这里的其他人都觉得你很厉害。
+[Character(name="char_214_Kafka_1#2",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]过奖。
+[Dialog]
+[Character]
+[delay(time=0.7)]
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]那么，轮到我问问题了。你似乎是来协助我的，也就是说，你知道这些来刺杀我的人的来历吗？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]嗯......在那之前，我要先问你一个问题。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]请问。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]你知道自己家，或者说以你父亲的姓氏命名的西蒙公司究竟发生了什么事吗？
+[name="卡夫卡"]要是你知道的话，我就不用解释得很复杂了。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#6",focus=2)]
+[name="安东尼"]......我的父亲受到了十多项指控，我知道这背后肯定不简单，但具体的我没有时间去了解。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]既然你知道，那倒是好办一点了，西蒙公司因为非......非什么来着？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]你是想说，非法？
+[Character(name="char_214_Kafka_1#3",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]哦对！非法走私源石制品罪！反正公司直接被查封了，公司核心成员全都进了监狱。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]你的家人现在都还全部在堡垒山城监狱服刑。
+[musicvolume(volume=0, fadetime=1)]
+[Character(name="char_264_Mountain_1#6")]
+[name="安东尼"]......
+[Dialog]
+[delay(time=0.7)]
+[Blocker(a=0.7, r=0, g=0, b=0, fadetime=0.5, block=true)]
+[PlaySound(key="$fightgeneral", volume=1)]
+[CameraShake(duration=0.5, xstrength=20, ystrength=20, vibrato=30, randomness=90, fadeout=true, block=false)]
+[PlaySound(key="$bottlebroken", volume=0.5,delay=0.3)]
+[PlaySound(key="$bottlebroken", volume=0.3,delay=0.5)]
+[Subtitle(text="安东尼一拳捶在旁边的桌上，将上面的东西全部震了下去。", x=200, y=360, alignment="center", size=24, delay=0.04, width=900)]
+[delay(time=1.5)]
+[Subtitle]
+[Dialog]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=0.5, block=true)]
+[delay(time=1)]
+[Character]
+[musicvolume(volume=0.4, fadetime=1)]
+[Character(name="char_264_Mountain_1#6",name2="char_441_lotus_1#4",focus=2)]
+[name="杜玛"]安东尼......
+[Character(name="char_264_Mountain_1#6",name2="char_441_lotus_1#4",focus=1)]
+[name="安东尼"]......我没事。
+[name="安东尼"]我很早就做好了心理准备。
+[name="安东尼"]他们没死，我已经很高兴了。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]那么，是谁？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]海德兄弟。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#6",focus=2)]
+[name="安东尼"]海德兄弟，果然是你们。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#6",focus=1)]
+[name="卡夫卡"]让我想想，赫默怎么说的来着......对了，你的家族，西蒙家族原本和他们是在某条线上的竞争关系。
+[name="卡夫卡"]你们互相占着这条线50%的利益，而且经常会有一些摩擦，而他们一直想要把你们这一份也占了。
+[name="卡夫卡"]然后他们就做了，就这么简单。
+[Character(name="char_264_Mountain_1#6")]
+[name="安东尼"]......海德兄弟。
+[name="安东尼"]我经常听父亲提起这个名字，甚至去过他们公司做客。
+[Character(name="char_264_Mountain_1#6",name2="char_441_lotus_1",focus=2)]
+[name="杜玛"]居然为了一点私欲就做出这样的事情......
+[Character(name="char_264_Mountain_1#6",name2="char_441_lotus_1",focus=1)]
+[name="安东尼"]我也听说过一些类似的事情，只是没想到居然真的发生在我身上。
+[Character(name="char_264_Mountain_1#6",name2="char_441_lotus_1",focus=2)]
+[name="杜玛"]安东尼，你没事吧，需要我用法术舒缓一下你的精神吗？
+[Character(name="char_264_Mountain_1#5",name2="char_441_lotus_1",focus=1)]
+[name="安东尼"]不用，谢谢你，杜玛。
+[name="安东尼"]我说过，我早有心理准备，只是没有想到事实来得这么突然。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]我相信你，卡夫卡小姐，我想你没有任何理由在这件事上欺骗我。
+[name="安东尼"]既然如此，那些刺客应该是海德兄弟派来的吧，他们为什么事到如今才来？
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]这个我是真的不知道，不过根据我的经验，刚才那绝对不是唯一的一拨。
+[name="卡夫卡"]他们肯定派了好几拨人来刺杀你，也就是说，把这当成刚刚开始比较好哦。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#1",focus=2)]
+[name="安东尼"]......
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]那么你呢，想必你不是只为了帮我抵挡这些杀手而来的吧？你的目的是什么，卡夫卡小姐？
+[Character(name="char_214_Kafka_1#5",name2="char_264_Mountain_1#5",focus=1)]
+[name="卡夫卡"]我？嗯......一时半会不好解释，反正我是受人委托来帮你越狱的。
+[Character(name="char_214_Kafka_1#4",name2="char_264_Mountain_1#5",focus=2)]
+[name="安东尼"]......
+[Character(name="char_214_Kafka_1#4")]
+[name="卡夫卡"]难道你不想出去报仇吗？
+[name="卡夫卡"]你判的是终身监禁，而且是没有假释的那种。
+[name="卡夫卡"]如果你要离开这里，那么你的选择就只有一个，那就是——越狱。
+[name="卡夫卡"]而我正是来帮你的。
+[name="卡夫卡"]当然啦，你要是不愿意出去，想在这里待一辈子，我当然也不会硬要拉你出去。
+[Character(name="char_441_lotus_1#3",name2="char_214_Kafka_1#4",focus=1)]
+[name="杜玛"]越狱......但是从没有人能够顺利逃出这座监狱。
+[Character(name="char_441_lotus_1#3",name2="char_214_Kafka_1#4",focus=2)]
+[name="卡夫卡"]诶，说是这么说，但是总是要试一试的嘛。
+[Dialog]
+[Character]
+[stopmusic(fadetime=1)]
+[delay(time=1)]
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]......你已经来到这座监狱一段时间了，卡夫卡小姐。
+[Character(name="char_214_Kafka_1#4")]
+[name="卡夫卡"]嗯？对啊。
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]那你应该听说了一些我的事情。
+[Character(name="char_214_Kafka_1#4")]
+[name="卡夫卡"]嗯，他们都说你是最强的囚犯也是最自由的囚犯，大部分囚犯都觉得你很厉害。
+[name="卡夫卡"]我现在也觉得你挺厉害的，这种时候都还能保持冷静。
+[playMusic(intro="$loading_intro", key="$loading_loop", volume=0.4)]
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]......但事实并不是这样。
+[name="安东尼"]即使我再有所谓的人格魅力，身为囚犯，想要折服这些狱警乃至典狱长也是不可能的，我本不应当获得现在的地位。
+[Character(name="char_214_Kafka_1#4")]
+[name="卡夫卡"]啊，这倒是没错，但它就是发生了啊。
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]事实上，我得到了狱卒们的优待。
+[name="安东尼"]至少据我所知，典狱长亲口交代他们，对我“好一点”。
+[name="安东尼"]这些年我一直在怀疑，我在来到铸铁城后被捕，然后来到这座监狱，是不是我父亲一开始安排好的？
+[name="安东尼"]他预见到了什么，而提前将我送到这里。
+[name="安东尼"]我总是在想这样的事情。
+[Character(name="char_214_Kafka_1#4")]
+[name="卡夫卡"]啊，赫默也是这么说的，不过她说这也只是一种可能性。
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]赫默，是你背后的人的名字吗？
+[Character(name="char_214_Kafka_1#4")]
+[name="卡夫卡"]啊......算了，没错。
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]事后我会感谢这位朋友。
+[name="安东尼"]总之，如你所说，这也只是一种可能性，如果我想知道原因，我就必须出去，这件事只有我自己才能搞清楚。
+[Character(name="char_441_lotus_1#1")]
+[name="杜玛"]安东尼，告诉她真的没关系吗？
+[Character(name="char_264_Mountain_1#5")]
+[name="安东尼"]没关系。我暂且相信你，卡夫卡小姐，所以我愿意向你开诚布公。
+[name="安东尼"]即使你没来，即使我早已习惯了在这座监狱的生活，我也无时不刻地想要离开这里。
+[name="安东尼"]我能在这里获得大部分我想要的东西，但是对于如何离开这里却也始终没有头绪。
+[Character(name="char_264_Mountain_1#6")]
+[name="安东尼"]所以其实应该是我请求你，卡夫卡小姐。
+[name="安东尼"]请你协助我越狱。
+[delay(time=1)]
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[Character]
+[stopmusic]
+[Image]
