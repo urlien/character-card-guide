@@ -1,0 +1,170 @@
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 第六关（后）
+[Background]
+[PlayMusic(intro="$fesmetal_intro", key="$fesmetal_loop", volume=0.8, crossfade=1.5)]
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.7, block=true)]
+[Character]
+[Background(image="bg_Festival_2",screenadapt="coverall")]
+[Blocker(a=0, fadetime=0.7, block=true)]
+[Character(name="avg_npc_020")]
+[name="工作人员"]   发生什么事了？喂？
+[Character(name="avg_npc_020",name2="npc_2004_Alty",focus=2)]
+[name="Alty"]    欸，出了什么事吗？外面是不是有些状况啊？
+[Character(name="avg_npc_020",name2="npc_2004_Alty",focus=1)]
+[name="工作人员"]   请不用担心，目前还没有异常。请您往这边走。
+[Dialog]
+[Character]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.7, block=true)]
+[Blocker(a=0, fadetime=0.7, block=true)]
+[Character(name="avg_npc_020")]
+[name="工作人员"]   嘉宾已就位，还有2分30秒准备登台。
+[name="工作人员"]   快！把外面的事情处理好。
+[Dialog]
+[Character]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.7, block=true)]
+[Blocker(a=0, fadetime=0.7, block=true)]
+[Character(name="avg_npc_023_2#2")]
+[name="克洛宁"]   事到如今，赫尔曼你也没有什么威望了！
+[name="克洛宁"]   这些人都是这几年我发展的手下，他们才知道什么是努力换来的回报和美好的生活！
+[name="克洛宁"]   今天就是音乐节的最高峰，我会带上我这么多年应得的所有利益离开这里。
+[name="克洛宁"]   你还被蒙在鼓里吧。
+[name="克洛宁"]   我现在就大发慈悲地告诉你，你们看到的火山监测站的数据是错的，很快它就会彻底活性化。
+[name="克洛宁"]   源石会伴随着爆发蔓延，至少半个城市都逃不过被毁灭的结局！
+[name="克洛宁"]   而我什么都不会失去，等到灾难结束我还会回来进行开采。
+[name="克洛宁"]   汐斯塔果然是我的一片宝地！我也深爱着它啊，赫尔曼！
+[Character(name="avg_npc_024")]
+[name="赫尔曼"]  你胆敢说出这样的话！
+[Character(name="avg_npc_023_2#2")]
+[name="克洛宁"]   既然我是这个城市的天灾信使，那么我当然可以。
+[name="克洛宁"]   而你们所有人都会被我在此击败，然后眼睁睁地看着汐斯塔变成一片废墟！
+[name="克洛宁"]   当然，最后死在光荣的汐斯塔火山爆发之中。除了我，没有人能把这些秘密带离这里。
+[Decision(options="你的野心到此为止了。;做你的美梦！;你也太小看罗德岛了吧。",values="1;2;3")]
+[Predicate(references="1;2;3")]
+[name="克洛宁"]   ......罗，德，岛。
+[Character(name="avg_npc_024")]
+[name="赫尔曼"]   我对你实在太失望了，克洛宁。
+[Character(name="avg_npc_024",name2="avg_npc_023_2#2",focus=2)]
+[name="克洛宁"]   失望？你说失望？失望的是我！
+[name="克洛宁"]   我永远也不会忘记失去了家而不得不睡在垃圾桶中躲避风雨的日子！
+[name="克洛宁"]   财富才是新生活的钥匙，我自那时就明白了这个道理！而你呢？却用我们辛苦得到的钱，去救助那些感染者垃圾！？
+[name="克洛宁"]   你要把汐斯塔无上的价值葬送在你的伪善之中吗！？
+[Character(name="avg_npc_024",name2="avg_npc_023_2#2",focus=1)]
+[name="赫尔曼"]   你好好看看你自己，克洛宁。
+[name="赫尔曼"]   然后，去监狱中思考自己看到了什么吧！
+[Dialog]
+[Character]
+[CameraShake(duration=2, xstrength=8, ystrength=8, vibrato=30, randomness=90, fadeout=true, block=false)]
+[playsound(key="$fireworks", volume=0.8)]
+[Delay(time=0.6)]
+[Dialog]
+[Blocker(fadetime=3,block=true)]
+[Image]
+
+---
+
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 第六关（后）
+[PlayMusic(intro="$fesmetal_intro", key="$fesmetal_loop", volume=0.8, crossfade=1.5)]
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=0.7, block=true)]
+[Character]
+[Background(image="bg_Festival_2",screenadapt="coverall")]
+[Blocker(a=0, fadetime=0.7, block=true)]
+[Character(name="avg_npc_024",name2="avg_npc_023_2#2",focus=1)]
+[name="赫尔曼"]   你跟在我身边十五年，什么都没有学会。
+[name="赫尔曼"]   只学到了一些上不了台面的手段，真是个蠢材。
+[Character(name="avg_npc_024",name2="avg_npc_023_2",focus=2)]
+[name="克洛宁"]   蠢材......呵呵，呵哈哈哈哈哈哈！
+[name="克洛宁"]   老东西，你该不会以为这就是我的最后一步棋了吧？
+[stopmusic(fadetime=2)]
+[playsound(key="$smallearthquake", volume=0.6)]
+[CameraShake(duration=2, xstrength=4, ystrength=4, vibrato=20, randomness=30, fadeout=true)]
+[Character(name="char_188_helage_1")]
+[name="赫拉格"]   怎么回事？
+[Character(name="char_348_ceylon_4#8")]
+[name="锡兰"]   这......难道是火山爆发前引起的轻型地震？！
+[PlayMusic(intro="$volcano_intro", key="$volcano_loop", volume=0.8, crossfade=1.5)]
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[Background]
+[Character(fadetime=0)]
+[Image(image="ac3_volcano",x=0, y=0, xScale=1, yScale=1, fadetime=0, screenadapt="coverall")]
+[Blocker(a=0, fadetime=1, block=true)]
+[name="克洛宁"]   来了，呵呵，终于来了。
+[name="克洛宁"]   跟这座城市一起化为尘埃吧！
+[Image(image="ac3_volcano2",x=0, y=0, xScale=1, yScale=1, fadetime=2, screenadapt="coverall")]
+[name="克洛宁"]   即使现在你们想去控制广播塔也晚了！市民只会陷入恐慌！
+[name="克洛宁"]   火山的活动日期近在眼前，你们以为有了那些简单的样本资料就能搞清楚什么？
+[name="克洛宁"]   快速的逃生渠道都在我手里！你们谁都逃不走！
+[name="克洛宁"]   假装清高的家伙们，你们谁都救不了！
+[name="克洛宁"]   一切都会随着城市的毁灭被消灭！
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_Festival_2",screenadapt="coverall")]
+[Character(fadetime=0)]
+[Image]
+[Blocker(a=0, fadetime=1, block=true)]
+[Character(name="char_348_ceylon_4#8")]
+[name="锡兰"]   博士，怎么办！
+[Decision(options="赶紧动员大家疏散人群！;至少先让大家离开危险地区！",values="1;2")]
+[Predicate(references="1;2")]
+[Character(name="char_188_helage_1")]
+[name="赫拉格"]   博士，要不要通知罗德岛全体......
+[Character]
+[playsound(key="$d_gen_transmissionget", volume=0.4)]
+[name="艾雅法拉"]   博士，能听到吗！火山的分析研究完成了！
+[name="艾雅法拉"]   如果现在的话，还有机会能争取到更多的时间！
+[name="普罗旺斯"]   博士，我们已经把火山活动的原因找到了，这次的火山活动很有可能是可以被阻止的！
+[name="艾雅法拉"]   现在大家冷静下来听我说，只要按照这个方法来，一定能把火山爆发的时间推迟！
+[Character(name="char_188_helage_1")]
+[name="赫拉格"]   我们可以帮忙，如果真的是人力所及的话。
+[Character(name="char_340_shwaz_2#2")]
+[name="黑"]   ......嗯。
+[Character(name="char_348_ceylon_4#3",name2="char_340_shwaz_2#2",focus=1)]
+[name="锡兰"]   不，这件事就交给我们吧。
+[name="锡兰"]   克洛宁已经蛰伏了这么长的时间，他的残党必然布及整座城市。
+[name="锡兰"]   现在正是最关键的时刻。黑，赫拉格爷爷，你们都有自己的事情要做。
+[Character(name="char_348_ceylon_4#2",name2="char_340_shwaz_2#2",focus=2)]
+[name="黑"]   这些事情交给其他人去做就可以——
+[Character(name="char_348_ceylon_4#3",name2="char_340_shwaz_2#2",focus=1)]
+[name="锡兰"]   但这是我们的任务。
+[Character(name="avg_npc_024")]
+[name="赫尔曼"]   锡兰......
+[Character]
+[name="普罗旺斯"]   同意。
+[name="普罗旺斯"]   天灾信使，火山学家，源石学者，我们之中谁都不能容忍让有所预兆的危机威胁到市民。
+[name="普罗旺斯"]   更何况竟然有人利用自己的知识，蒙蔽他人，中饱私囊。作为天灾信使，我可不能忍受自己在这种人面前还依然袖手旁观！
+[Character(name="char_188_helage_1")]
+[name="赫拉格"]   你竟然也会有这么认真的一面，我明白了。那么市长先生，疏散群众的任务，请容我助你一臂之力。
+[Character(name="char_340_shwaz_2#2",name2="avg_npc_024",focus=2)]
+[name="赫尔曼"]   ......嗯。黑，你也来吧。
+[Character(name="char_340_shwaz_2#3",name2="avg_npc_024",focus=1)]
+[name="黑"]   我——
+[Character(name="char_340_shwaz_2#3",name2="avg_npc_024",focus=2)]
+[name="赫尔曼"]   锡兰说她可以做到。
+[Character(name="char_340_shwaz_2#2")]
+[name="黑"]   ......小姐，请务必小心。
+[Character]
+[name="艾雅法拉"]   讨论好了吗？我们的时间不多了！
+[Character(name="char_348_ceylon_4#3")]
+[name="锡兰"]   嗯！我们赶紧出发吧！
+[Dialog]
+[Character(fadetime=1)]
+[Delay(time=2)]
+[Character(name="char_340_shwaz_2#2")]
+[name="黑"]   ......
+[Character(name="char_340_shwaz_2#2",name2="avg_npc_024",focus=2)]
+[name="赫尔曼"]   我们应该相信她，何况他们说的没错，我们有自己的事情要做。
+[Character(name="avg_npc_023_2#2")]
+[name="克洛宁"]   哼哈哈哈——他们根本就是去送死！就算能拖延一时半会又如何！？
+[name="克洛宁"]   不仅大半座汐斯塔要陪着你的女儿送葬，而你根本就找不到她的尸首——
+[CameraShake(duration=0.4, xstrength=12, ystrength=18, vibrato=30, randomness=30, fadeout=false)]
+[name="克洛宁"]   呃——
+[Character(name="char_188_helage_1")]
+[name="赫拉格"]   抱歉，顺手。
+[Character(name="char_188_helage_1",name2="avg_npc_024",focus=2)]
+[name="赫尔曼"]   无妨，何况他说的没错，不能让市民们继续身处险境了。
+[name="赫尔曼"]   希望你们能助我一臂之力。
+[Delay(time=0.6)]
+[Dialog]
+[Blocker(fadetime=3,block=true)]
+[Image]
