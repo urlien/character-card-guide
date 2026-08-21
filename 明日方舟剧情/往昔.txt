@@ -1,0 +1,313 @@
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 
+[stopmusic]
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_temple_1",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[playMusic(intro="$bat_Imfxingback_intro", key="$bat_Imfxingback_loop", volume=0.4)]
+[PlaySound(key="$d_gen_walk_n")]
+[Character(name="char_187_ccheal_1",fadetime=1,block=true)]
+[delay(time=0.6)]
+[name="嘉维尔"]  博士，我稍微逛了一圈，没有看到其他人的样子。
+[name="嘉维尔"]  看来我们可能要在祭典结束后再去雨林里找她们了。
+[Character(name="avg_npc_070")]
+[CameraShake(duration=1, xstrength=10, ystrength=12, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="佩塔"]  ——！（胜利的战吼）
+[PlaySound(key="$livecrowd", volume=0.2, loop=false, channel="people")]
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1", focus=2)]
+[name="特米米"]  啊，是佩塔赢了。
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1", focus=1)]
+[name="嘉维尔"]  这个叫佩塔的家伙挺能干啊，我都想和他打一架了。
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1", focus=2)]
+[name="特米米"]  嗯，他是我的部族的勇士。
+[name="特米米"]  但是，他肯定没有嘉维尔厉害。
+[Character(name="char_187_ccheal_1#3", name2="char_411_tomimi_1", focus=1)]
+[name="嘉维尔"]  哈哈，那可说不好呢。
+[Character(name="char_187_ccheal_1#3", name2="char_411_tomimi_1#3", focus=2)]
+[name="特米米"]  嘉维尔可是在小时候就差点夺得了大酋长的位置呢！才不会输给佩塔！
+[Decision(options="小时候？",values="1")]
+[Predicate(references="1")]
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1#3", focus=1)]
+[name="嘉维尔"]  嗯？哦，是那一次啊。
+[name="嘉维尔"]  在我很小的时候，因为很有趣，其实有参加过一次祭典。
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1#3", focus=2)]
+[name="特米米"]  嗯，那个时候的嘉维尔就已经非常厉害了！
+[Dialog]
+[stopmusic(fadetime=2)]
+[Blocker(a=1, initr=2, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_temple_1",screenadapt="coverall",block=true)]
+[Character(fadetime=0)]
+[cameraEffect(effect="Grayscale", keep=true, amount=1, fadetime=0)]
+[Blocker(a=0, fadetime=1, block=true)]
+[name="阿达克利斯勇士"]  嘎哈......
+[Character(name="avg_npc_070")]
+[name="阿达克利斯冠军"]  荒野意志部族最强的家伙也不过如此！
+[Character(name="char_411_tomimi_1#2")]
+[name="特米米"]  好、好厉害......
+[Character]
+[name="阿达克利斯人A"]  啧，我们部族的勇士竟然被那么轻易地打败了。
+[name="阿达克利斯人B"]  我们一起上吧！
+[name="阿达克利斯人A"]  不行啊，比人数我们更加比不过......这一次只能放弃了吗......
+[Character(name="avg_npc_070")]
+[name="阿达克利斯冠军"]  还有谁要来挑战！没有的话，就由我来挑战大酋长！
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  我来！
+[Character(name="avg_npc_070")]
+[name="阿达克利斯冠军"]  你是......荒野意志部族的孤儿嘉维尔？
+[name="阿达克利斯冠军"]  我听说你在小辈里很能打，但是小鬼没有资格参加祭典，滚回家去再喝几年奶吧。
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  哼，等你赢了我再说吧！
+[Character(name="avg_npc_070")]
+[name="阿达克利斯冠军"]  哈！不愧是孤儿，不怕死的吗！
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  部族的人就是我的亲人！少说废话，打不打！
+[Character(name="avg_npc_070")]
+[name="阿达克利斯冠军"]  哼，小鬼，找死！
+[Dialog]
+[Character]
+[PlaySound(key="$fightgeneral")] 
+[CameraShake(duration=0.2, xstrength=10, ystrength=12, vibrato=30, randomness=90, fadeout=true, block=true)]
+[PlaySound(key="$fightgeneral")] 
+[CameraShake(duration=0.2, xstrength=10, ystrength=12, vibrato=30, randomness=90, fadeout=true, block=true)]
+[Character]
+[delay(time=1)]
+[name="阿达克利斯冠军"]  不、不可能......只是两拳就......
+[Character(name="char_411_tomimi_1#2")]
+[name="特米米"]  嘉维尔，好厉害......
+[Character(name="char_187_ccheal_1#5")]
+[name="嘉维尔"]  哼，也不过就这样嘛！
+[name="嘉维尔"]  还有谁来挑战！
+[Dialog]
+[Blocker(a=1, initr=2, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_temple_1",screenadapt="coverall",block=true)]
+[Character(fadetime=0)]
+[cameraEffect(effect="Grayscale", keep=true, amount=0, fadetime=0)]
+[Blocker(a=0, fadetime=2, block=true)]
+[Decision(options="嘉维尔是孤儿？",values="1")]
+[Predicate(references="1")]
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1", focus=2)]
+[name="特米米"]  嘉维尔没有说过吗？
+[Character(name="char_187_ccheal_1")]
+[name="嘉维尔"]  我没说过吗？
+[name="嘉维尔"]  哦，我好像真的没有说过，毕竟也不是什么特别重要的事。
+[name="嘉维尔"]  我不知道我的父母是谁，不过这在这里不是什么很少见的事。
+[name="嘉维尔"]  博士，虽然你可能无法想象，在这里，人要死是非常简单的事。
+[name="嘉维尔"]  甚至不用天灾——其实这里的人根本不知道天灾是什么——一场感冒，一次恶劣天气说不定就会死不少人。
+[name="嘉维尔"]  我想我的父母大概也就是这么随便死掉的吧。
+[name="嘉维尔"]  哎，不说这个，反正你只要知道，我从小就是被部族的人一起养大的。
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1#5", focus=2)]
+[name="特米米"]  嘉维尔......
+[Decision(options="辛苦你了。;......;至少你现在比谁都健康。",values="1;2;3")]
+[Predicate(references="1")]
+[Character(name="char_187_ccheal_1")]
+[name="嘉维尔"]  别这样，博士，搞得我好像很可怜一样。
+[name="嘉维尔"]  孤儿也不只是我，在我们这里，几个家庭一起养大几个孤儿是很常见的事。
+[Predicate(references="2")]
+[Character(name="char_187_ccheal_1")]
+[name="嘉维尔"]  博士，别想太多。
+[name="嘉维尔"]  我也是离开之后才知道，这种情况是不正常的。
+[name="嘉维尔"]  这反而坚定了我学医的想法。
+[Predicate(references="3")]
+[Character(name="char_187_ccheal_1")]
+[name="嘉维尔"]  哈哈，没错。
+[Predicate(references="1;2;3")]
+[Decision(options="所以那一次祭典的结果呢？",values="1")]
+[Predicate(references="1")]
+[Character(name="char_187_ccheal_1")]
+[name="嘉维尔"]  那一次啊......
+[playMusic(intro="$bat_Imfxingback_intro", key="$bat_Imfxingback_loop", volume=0.4)]
+[Character]
+[name="？？？"]  找到你了，可恶的赏金猎人！
+[Character(name="avg_npc_070")]
+[name="佩塔"]  什么人？！
+[Character(name="char_187_ccheal_1#2")]
+[name="嘉维尔"]  嗯？这个声音......
+[character]
+[Dialog]
+[PlaySound(key="$rungeneral", volume=1)]
+[Character(name="char_2013_cerber_1",fadetime=1,block=true)]
+[delay(time=0.6)]
+[name="刻俄柏"]  把博士还回来！
+[Character(name="avg_npc_070")]
+[name="佩塔"]  你在说什么？
+[Character(name="char_187_ccheal_1#2")]
+[name="嘉维尔"]  小刻？！
+[name="嘉维尔"]  特米米，不是让你手下绑回部族去了吗？
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1", focus=2)]
+[name="特米米"]  诶，是啊？
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1", focus=1)]
+[name="嘉维尔"]  这孩子力气不小，估计是直接挣脱了......
+[Character(name="char_2013_cerber_1")]
+[name="刻俄柏"]  赏金猎人，把博士交出来！
+[name="刻俄柏"]  不然即使是追到大地的尽头我绝对不会放过你的！
+[Character(name="char_187_ccheal_1")]
+[name="嘉维尔"]  啧，这傻孩子看样子还没清醒过来。
+[character]
+[CameraShake(duration=1, xstrength=10, ystrength=12, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="佩塔"]  咕哈！
+[Character(name="char_411_tomimi_1#2")]
+[name="特米米"]  佩塔被打飞了！
+[character]
+[PlaySound(key="$livecrowd", volume=0.2, loop=false, channel="people")]
+[name="阿达克利斯人A"]  她把佩塔干掉了！
+[name="阿达克利斯人B"]  好像很厉害的样子......
+[name="阿达克利斯人C"]  哪里来的怪胎？！哪个部族来的？！
+[name="阿达克利斯人A"]  不知道，根本听不懂她在说什么！
+[name="阿达克利斯人B"]  不管了，反正只要把她打败就行了吧？
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  啧，这帮人把小刻当成新的挑战者了吗......
+[Character(name="char_187_ccheal_1#3", name2="char_411_tomimi_1", focus=2)]
+[name="特米米"]  嘉维尔，要去帮忙吗？
+[Character(name="char_187_ccheal_1#3", name2="char_411_tomimi_1", focus=1)]
+[name="嘉维尔"]  等一等，这傻孩子战斗能力还是很强的，这种场面她应付得来，现在上去只会被误伤。
+[name="嘉维尔"]  不过，场面恐怕会变得混乱起来，博士，指挥一下特米米的手下把场面控制住吧。
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[Dialog]
+[Character]
+[Image]
+
+---
+
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 
+[stopmusic]
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_temple_1",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[playMusic(intro="$bat_Imfxingback_intro", key="$bat_Imfxingback_loop", volume=0.4)]
+[Character]
+[name="阿达克利斯人A"]  这个怪胎好厉害！已经打退了好几个人了！
+[name="阿达克利斯人B"]  虽然听不懂她在说什么，但是好强啊！
+[name="阿达克利斯人C"]  让她来做大酋长感觉好像也不坏！
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1#2", focus=2)]
+[name="特米米"]  ......嘉维尔，你的同伴好厉害。
+[Character(name="char_187_ccheal_1", name2="char_411_tomimi_1#2", focus=1)]
+[name="嘉维尔"]  虽然这种时候只会让人伤脑筋就是了。
+[name="嘉维尔"]  不过总算稍微消停了，我上去制住她......
+[Character(name="char_2013_cerber_1")]
+[name="刻俄柏"]  什么，整合运动，你们又来了！
+[name="刻俄柏"]  原来是你们抢走了博士吗！
+[name="刻俄柏"]  别跑！
+[Character(name="char_187_ccheal_1#2", name2="char_411_tomimi_1#2", focus=1)]
+[name="嘉维尔"]  糟了，这傻孩子要跑了！
+[name="嘉维尔"]  我去追！特米米，你和博士不要乱动，我会回来找你们。
+[Character(name="char_187_ccheal_1#2", name2="char_411_tomimi_1#2", focus=2)]
+[name="特米米"]  诶，好的！
+[Dialog]
+[Character]
+[PlaySound(key="$rungeneral", volume=1)]
+[delay(time=1)]
+[Character(name="char_411_tomimi_1#5")]
+[name="特米米"]  ......
+[Decision(options="......",values="1")]
+[Predicate(references="1")]
+[name="特米米"]  啊，上面又有新的人打起来了。
+[name="特米米"]  ......博士，可不可以告诉我，嘉维尔在外面是什么样的？
+[Decision(options="告诉她嘉维尔在罗德岛的生活。;......;告诉她嘉维尔当医生的样子。",values="1;2;3")]
+[Predicate(references="1")]
+[name="特米米"]  嘉维尔在外面生活得很好吗。
+[name="特米米"]  ......
+[Predicate(references="2")]
+[name="特米米"]  难道说你和嘉维尔也不是很熟吗？
+[name="特米米"]  太好了！......啊，不，我只是以为你和嘉维尔一起回来的，嘉维尔好像很喜欢你的样子，就以为你和嘉维尔关系很好。
+[name="特米米"]  没关系的，嘉维尔人很好的，你一定可以和她打好关系的！
+[Predicate(references="3")]
+[Character(name="char_411_tomimi_1#3")]
+[name="特米米"]  太好了，果然即使成为了医生，嘉维尔始终是嘉维尔呢！
+[name="特米米"]  是这样啊，嘉维尔没有变呀，太好了......
+[Predicate(references="1;2;3")]
+[Character(name="char_411_tomimi_1")]
+[name="特米米"]  那如果嘉维尔要离开你的话，你会怎么想？
+[Decision(options="会很难过吧。;......;祝贺她找到新的道路吧。",values="1;2;3")]
+[Predicate(references="1")]
+[name="特米米"]  嗯，果然呢，我当时也哭的很伤心呢......
+[Predicate(references="2")]
+[Character(name="char_411_tomimi_1#2")]
+[name="特米米"]  你、你怎么可以这样！嘉维尔那么好，她要离开你你怎么可以觉得无所谓！
+[Predicate(references="3")]
+[name="特米米"]  你真厉害......我做不到。
+[name="特米米"]  我一直希望嘉维尔能够回来。
+[Predicate(references="1;2;3")]
+[Character(name="char_411_tomimi_1#2")]
+[name="特米米"]  博士，那个，在嘉维尔的事情上，我、我是不会输给你的！
+[Decision(options="加油。;（点头）;我也不会输给你的！",values="1;2;3")]
+[Predicate(references="1;2;3")]
+[Decision(options="所以那一次祭典的结果呢？",values="1")]
+[Predicate(references="1")]
+[Character(name="char_411_tomimi_1")]
+[name="特米米"]  那一次......
+[Dialog]
+[Blocker(a=1, initr=2, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_temple_1",screenadapt="coverall",block=true)]
+[Character(fadetime=0)]
+[cameraEffect(effect="Grayscale", keep=true, amount=1, fadetime=0)]
+[Blocker(a=0, fadetime=1, block=true)]
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  什么嘛，你们这帮大人也不过如此嘛。
+[name="嘉维尔"]  还有谁要来挑战我！
+[Character]
+[name="阿达克利斯人A"]  居然把这么多大人给打倒了......
+[name="阿达克利斯人B"]  嘉维尔，了不起啊！
+[name="阿达克利斯人C"]  难道说嘉维尔真的能当上大酋长？
+[Dialog]
+[Character(name="char_416_zumama_1",fadetime=1,block=true)]
+[delay(time=1)]
+[name="？？？"]  我来！
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  什么啊，怎么是你，祖玛玛。
+[name="嘉维尔"]  你不是在造你的机器去了吗？我去找你你都不理我。
+[Character(name="char_416_zumama_1")]
+[name="祖玛玛"]  ......我想最后试一试。
+[Character(name="char_187_ccheal_1",name2="char_416_zumama_1#2",focus=1)]
+[name="嘉维尔"]  试什么？
+[Character(name="char_187_ccheal_1",name2="char_416_zumama_1#2",focus=2)]
+[name="祖玛玛"]  试试我的拳头能不能打败你。
+[Character(name="char_187_ccheal_1",name2="char_416_zumama_1#2",focus=1)]
+[name="嘉维尔"]  你怎么说得好像要死了一样。
+[Character(name="char_187_ccheal_1",name2="char_416_zumama_1#2",focus=2)]
+[name="祖玛玛"]  少废话，今天我可不会输给你，嘉维尔。
+[Character(name="char_187_ccheal_1#3",name2="char_416_zumama_1#2",focus=1)]
+[name="嘉维尔"]  嘿，那要打过才知道了！
+[Dialog]
+[Blocker(a=1, initr=2, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_temple_1",screenadapt="coverall",block=true)]
+[Character(fadetime=0)]
+[cameraEffect(effect="Grayscale", keep=true, amount=0, fadetime=0)]
+[Blocker(a=0, fadetime=1, block=true)]
+[Character(name="char_411_tomimi_1")]
+[name="特米米"]  她们从中午一直打到了晚上都没有分出胜负。
+[name="特米米"]  到最后，她们两个人都没力气了，被其他人给丢了下去。
+[name="特米米"]  这就是嘉维尔第一次参加祭典的情况了。
+[Decision(options="祖玛玛是个什么样的人？",values="1")]
+[Predicate(references="1")]
+[name="特米米"]  祖玛玛是当时离得比较近的另一个部族的人。
+[name="特米米"]  小时候，她和嘉维尔经常在一起打架，嘉维尔比她厉害，但祖玛玛也不是没有赢过。
+[name="特米米"]  但是我听嘉维尔说，她有一天不知道怎么的，就不再喜欢打架了，开始喜欢研究机器。
+[name="特米米"]  我记得那天，是祖玛玛最后一次和嘉维尔打架。
+[name="特米米"]  在那之后，祖玛玛就再也没和嘉维尔打过，甚至很少出现在大家面前，再之后，她的部族就搬走了，我就在也没见过她了。
+[name="特米米"]  就连嘉维尔离开那次的大闹祭典都没有来。
+[Decision(options="......",values="1")]
+[Predicate(references="1")]
+[Character(name="char_187_ccheal_1#2")]
+[name="嘉维尔"]  我回来了。
+[Character(name="char_187_ccheal_1#2", name2="char_411_tomimi_1#2", focus=2)]
+[name="特米米"]  嘉维尔，你没事吧！
+[Character(name="char_187_ccheal_1#3", name2="char_411_tomimi_1#2", focus=1)]
+[name="嘉维尔"]  我没事。啧，小刻这孩子真能跑，一下子就跑没影了。
+[name="嘉维尔"]  不过以她的能力应该不用担心。特米米，祖玛玛来了吗？
+[Character(name="char_187_ccheal_1#3", name2="char_411_tomimi_1#2", focus=2)]
+[name="特米米"]  还没有。
+[Character(name="avg_npc_070")]
+[CameraShake(duration=1, xstrength=10, ystrength=12, vibrato=30, randomness=90, fadeout=true, block=false)]
+[name="阿达克利斯人"]  还有谁要来挑战！
+[Character]
+[name="？？？"]  我来。
+[Character(name="char_187_ccheal_1#3")]
+[name="嘉维尔"]  嗯？看来我回来的正是时候。
+[Blocker(a=1, r=0,g=0, b=0, fadetime=1, block=true)]
+[Dialog]
+[Character]
+[Image]
