@@ -1,0 +1,592 @@
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 卡西米尔 5上
+[stopmusic]
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_arena_2",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=3, block=true)]
+[playMusic(intro="$darkness01_intro", key="$darkness01_loop", volume=0.4)]
+[Character(name="avg_npc_106",fadetime=1,block=true)]
+[delay(time=1)]
+[name="发言人恰尔内"]  您的是这杯。
+[Character(name="avg_npc_109#2", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  谢谢，谢谢。
+[Character(name="avg_npc_109#2", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  呼啸守卫向会员提供的酒水非常丰富，真羡慕那些会员，他们能站在这里，看着骑士们的精彩表现。
+[name="发言人恰尔内"]  您说，您是个好人，对吧？
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  呃......
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  您犯过法吗？
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  ......没有。
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  您做过什么坏事吗？
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  不，当然，也没有......
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  换言之，您勤勤恳恳地工作，为自己和家人赚取酬薪，您难道不是个好人吗？
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  是、是这样，这么说，我的确是个好人，卡西米尔有很多这样的好人......
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  是啊，很多的好人，来，为好人们干杯。
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  啊，干杯。
+[Character(name="avg_npc_109", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  您说，如果有人要剥夺好人的工作，剥夺好人生活的办法，这种人，还能是好人吗？
+[Character(name="avg_npc_109#3", name2="avg_npc_106", focus=1)]
+[name="企业员工"]  您是说......？
+[Character(name="avg_npc_109", name2="avg_npc_106#3", focus=2)]
+[name="发言人恰尔内"]  连乡野农夫在农活结束之后，都会以收看附近城邦的骑士竞技转播为乐。
+[name="发言人恰尔内"]  数十万......甚至是上百万产业相关的卡西米尔人都靠着骑士竞技而活，他们大都是些好人啊，先生。
+[Character(name="avg_npc_109#2", name2="avg_npc_106#3", focus=1)]
+[name="企业员工"]  您说的是......
+[Character(name="avg_npc_109#2", name2="avg_npc_106#3", focus=2)]
+[name="发言人恰尔内"]  假如有一天，骑士竞技消失了......企业一夜之间消失了。
+[name="发言人恰尔内"]  谁来为征战骑士们提供年年增长的军费，谁为卡西米尔争取经济地位以遏制外敌的侵略？
+[name="发言人恰尔内"]  先生，您说，那些反对者，是坏人吗？
+[Character(name="avg_npc_109#3", name2="avg_npc_106#3", focus=1)]
+[name="企业员工"]  ......
+[Character(name="avg_npc_109#3", name2="avg_npc_106#3", focus=2)]
+[name="发言人恰尔内"]  您是个好人，他们要剥夺您的生活，为他们古老的“荣誉”加冕。
+[name="发言人恰尔内"]  同样是靠他人铺设道路，至少我们给了大部分人——甚至是感染者——活下去的机会......
+[name="发言人恰尔内"]  那些“坏人们”，则为了他们微不足道的自我安慰，将国家和国民的利益置之不顾。
+[Character(name="avg_npc_109#3", name2="avg_npc_106", focus=2)]
+[name="发言人恰尔内"]  先生，您是个好人，对吧？
+[Dialog]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=3, block=true)]
+[Character]
+[Background(image="bg_sportsbar",screenadapt="coverall")]
+[playMusic(intro="$bar_intro", key="$bar_loop", volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=3, block=true)]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="游客"]  这就是临光最常光顾的酒吧吗，哇塞，真有卡西米尔的风格！
+[name="游客"]  喂，老板！今天玛莉娅·临光会来这里吗？
+[Character(name="avg_npc_107")]
+[name="光头马丁"]  这就要看你们的运气了。
+[Dialog]
+[Character]
+[PlaySound(key="$d_gen_walk_n", volume=0.6)]
+[Character(name="avg_npc_120",fadetime=1,block=true)]
+[delay(time=1)]
+[name="老骑士"]  最近生意兴隆啊？
+[Character(name="avg_npc_120", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  托玛莉娅的福。
+[Character(name="avg_npc_120", name2="avg_npc_107", focus=1)]
+[name="老骑士"]  上一次这么多人得是什么时候了？佐菲娅那时候吗？
+[Character(name="avg_npc_120", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  这就是“骑士”啊，这其中的大部分人都是慕名而来的，真不知道是哪家媒体报道的......
+[Character(name="avg_npc_120", name2="avg_npc_107", focus=1)]
+[name="老骑士"]  有钱赚你还不乐意？
+[Character(name="avg_npc_120", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  这不是想让她俩有个安安静静放松的地方嘛。
+[Character(name="avg_npc_107", name2="avg_npc_101", focus=2)]
+[name="老工匠"]  喂，马丁，在这张座位上刻个字，“科瓦尔专属”，我可不想下次过来还要等位子。
+[Character(name="avg_npc_107", name2="avg_npc_101", focus=1)]
+[name="光头马丁"]  付一笔冠名费，我就同意。
+[Character(name="avg_npc_107", name2="avg_npc_101", focus=2)]
+[name="老工匠"]  呿。
+[Dialog]
+[Character]
+[name="游客"]  喂，喂，临光真的来了！本人哦！
+[name="游客"]  快，别放过这个机会，去要张合影！
+[Character(name="avg_npc_061#2")]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="玛莉娅"]  呃，谢谢、谢谢......合影？我吗？抱歉，我现在......
+[Character(name="avg_npc_064_weapon_1")]
+[name="佐菲娅"]  好了好了，都让一让——
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[Character]
+[name="游客"]  等等......你是佐菲娅！是“鞭刃”佐菲娅！！
+[name="游客"]  喂，传言是真的！“鞭刃”佐菲娅真的是小临光的教练！
+[name="游客"]  佐菲娅小姐！我看过你的比赛，我深受感动！！
+[Dialog]
+[PlaySound(key="$livecrowd", volume=0.4, loop=false, channel="people")]
+[Character(name="avg_npc_064_weapon_1")]
+[name="佐菲娅"]  （啊，好，完蛋。）
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1", focus=1)]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="玛莉娅"]  （姑、姑母！快想想办法！）
+[Character]
+[name="游客"]  玛莉娅，我爱你啊！
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="游客"]  你说什么！？
+[Character(name="avg_npc_120", name2="avg_npc_101", focus=1)]
+[name="老骑士"]  喂，要打架出去打。
+[Character(name="avg_npc_120", name2="avg_npc_101", focus=2)]
+[name="老工匠"]  就是，在这里打架是老东西的特权。
+[Character(name="avg_npc_061#2")]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="玛莉娅"]  ——科瓦尔师傅！弗格瓦尔德师傅！
+[Dialog]
+[Character(name="avg_npc_107")]
+[CameraShake(duration=1, xstrength=10, ystrength=12, vibrato=30, randomness=60, fadeout=true, block=false)]
+[name="光头马丁"]  请各位客人注意了，为了庆祝本店两位老顾客的优秀表现，今天的消费一律八折起！
+[name="光头马丁"]  请各位立刻回到座位上点单！每种酒水小食限量销售，售罄为止！
+[Character]
+[name="游客"]  打折？还有这种好事？
+[name="游客"]  等等......等等......那个光头大叔，难道是......
+[Character(name="avg_npc_107")]
+[name="光头马丁"]  只是老马丁而已，好了，要点什么？
+[Character]
+[name="游客"]  马丁......？真的是“颤铁”马丁......呜呜呜......今天真的太值了......给我一杯“马丁特调”......
+[Dialog]
+[Character]
+[stopmusic(fadetime=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=2, block=true)]
+[Background(image="bg_sportsbar",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=2, block=true)]
+[playMusic(intro="$sjoyasorrow_intro", key="$sjoyasorrow_loop", volume=0.4)]
+[Character(name="avg_npc_061#2")]
+[name="玛莉娅"]  总、总算......我从没见过这里这么热闹......
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1", focus=2)]
+[name="佐菲娅"]  多谢啦，马丁叔，回头亏损我会帮你补上的。
+[Character(name="avg_npc_107", name2="avg_npc_064_weapon_1", focus=1)]
+[name="光头马丁"]  哈哈哈，“打八折”就想让我的酒吧亏钱，那也太小看老马丁了。
+[Character(name="avg_npc_107", name2="avg_npc_064_weapon_1", focus=2)]
+[name="佐菲娅"]  ......来这手啊。
+[Dialog]
+[Character(name="avg_npc_120#2",fadetime=1,block=true)]
+[delay(time=1)]
+[name="老骑士"]  怎、怎么了，还能不能喝了！？
+[Character(name="avg_npc_120#2", name2="avg_npc_101", focus=2)]
+[name="老工匠"]  人都走光了，你、你还和谁喝？
+[Character(name="avg_npc_120", name2="avg_npc_101", focus=1)]
+[name="老骑士"]  我——呕——
+[Character(name="avg_npc_120", name2="avg_npc_101#2", focus=2)]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="老工匠"]  别在这儿吐——要吐出去吐——欸！你这老东西！
+[Character(name="avg_npc_107", name2="avg_npc_064_weapon_1", focus=1)]
+[name="光头马丁"]  你们聊正事吧，到打烊的时间了。
+[Character(name="avg_npc_107", name2="avg_npc_064_weapon_1", focus=2)]
+[name="佐菲娅"]  打烊之后，就变成我们包场了呢。
+[Character(name="avg_npc_107", name2="avg_npc_064_weapon_1", focus=1)]
+[name="光头马丁"]  哈哈哈，打烊后才是这座小酒吧正式营业的时间啊。
+[Character(name="avg_npc_064_weapon_1")]
+[name="佐菲娅"]  玛莉娅......就结果而言，你现在的积分已经够了。
+[Character(name="avg_npc_107", name2="avg_npc_064_weapon_1", focus=1)]
+[name="光头马丁"]  连战连胜，简直不可思议。
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1", focus=1)]
+[name="玛莉娅"]  有、有侥幸的成分在里面啦......
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  只要保持这样的成绩，就这么固守分数到季后，才是最好的打算......不过我担心的是别的事情。
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1#5", focus=1)]
+[name="玛莉娅"]  姑母？
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  .......玛莉娅，下一场是竞速赛，竞速赛的积分变动比较微小，就当是巩固胜算吧。
+[name="佐菲娅"]  在这之后，不要再参加任何比赛了。
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1#5", focus=1)]
+[name="玛莉娅"]  欸？
+[name="玛莉娅"]  但、但是就这样......
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  已经够了，胜券在握。
+[name="佐菲娅"]  你也看到了......玛莉娅，现在已经有很多人关注你了。
+[name="佐菲娅"]  只要保持这样的步调，等待积分结算，你就可以赢得骑士封号，我们的目的就达到了。
+[name="佐菲娅"]  好吗？听姐姐的，这是最好的结果——
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#5", focus=1)]
+[name="玛莉娅"]  ......
+[name="玛莉娅"]  可这样......这样没有任何变化......如果我不继续前进，这样根本改变不了临光家的现状......
+[name="玛莉娅"]  玛恩纳叔叔也一定不会认可这种行为的......
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  玛恩纳那个顽固的家伙，不管你做什么他都不会认同你的，你不是最清楚了吗？
+[name="佐菲娅"]  别想那么多好吗？玛莉娅......这样就是最好的，见好就收。
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#5", focus=1)]
+[name="玛莉娅"]  姑母......发生什么了？
+[Character(name="avg_npc_107#2")]
+[name="光头马丁"]  ......
+[Character(name="avg_npc_061#2", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  你不知道骑士竞技到底意味着什么......你不知道接下来到底会遇见什么......
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#5", focus=1)]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="玛莉娅"]  姑母！
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#6", focus=2)]
+[name="佐菲娅"]  ......在竞技场里，没有一场胜利是属于骑士的，胜利，只属于卡西米尔，属于......企业。
+[name="佐菲娅"]  如果你真的不想和他们合作，那一开始就不该参加骑士竞赛，如果我们还要走这条路......玛莉娅，要适可而止。
+[Character(name="avg_npc_107#2", name2="avg_npc_064_weapon_1#6", focus=1)]
+[name="光头马丁"]  佐菲娅，你知道了什么？
+[Character(name="avg_npc_107#2", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  ......那个斯沃特的员工告诉我了一些内部传闻。玛莉娅的人气让她比其他选手更早一步进入了骑士协会上层的视野......
+[Character(name="avg_npc_107#2", name2="avg_npc_064_weapon_1#2", focus=2)]
+[name="佐菲娅"]  玛莉娅如果不在合适的地方停下，他们会有动作的，不管是什么手段，都不是我们该去承担的！
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#6", focus=2)]
+[name="佐菲娅"]  所以，玛莉娅，听姐姐的，好吗？
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#6", focus=1)]
+[name="玛莉娅"]  我......我不明白......如果不想被他们操纵就意味着要向他们低头，这又有什么区别？
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  玛莉娅！这可不是开玩笑的——！
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#5", focus=1)]
+[name="玛莉娅"]  我知道——
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#2", focus=2)]
+[name="佐菲娅"]  你会死在赛场上的！
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#2", focus=1)]
+[name="玛莉娅"]  ......“焰尾”也说过，我没有看清骑士竞技到底意味着什么......
+[name="玛莉娅"]  也许我真的不知道她说的那些残酷的部分......但是，我也不是抱着随便的心态参赛的！
+[name="玛莉娅"]  受伤也好，意外也好，甚至是牺牲——
+[stopmusic(fadetime=0.6)]
+[Character(name="avg_npc_064_weapon_1#2")]
+[CameraShake(duration=0.6, xstrength=10, ystrength=12, vibrato=30, randomness=50, fadeout=true, block=false)]
+[name="佐菲娅"]  够了！
+[playMusic(intro="$darkness01_intro", key="$darkness01_loop", volume=0.4)]
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#2", focus=1)]
+[name="玛莉娅"]  啊......抱歉，姑母，我不是......
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#6", focus=2)]
+[name="佐菲娅"]  这根本不是“牺牲”，我也不想看着你因为这种原因有什么意外......
+[name="佐菲娅"]  如果你抱着这样的心态，你更该适可而止！
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#6", focus=1)]
+[name="玛莉娅"]  ......我不觉得我该停下。
+[name="玛莉娅"]  哪怕没有入围特锦赛，哪怕止步在目标之前，自己的事业就应该自己奋斗......我应该一直赢到赢不下去为止！
+[Character(name="avg_npc_061#5", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  ............我明白了。
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#5", focus=1)]
+[name="玛莉娅"]  姑母......!
+[Character(name="avg_npc_061#7", name2="avg_npc_064_weapon_1#5", focus=2)]
+[name="佐菲娅"]  我确信你不该继续参赛。因为你错估了骑士竞技背后的一切，你更不明白......当年玛嘉烈的行为，究竟有多惊世骇俗。
+[name="佐菲娅"]  如果卡西米尔真的是个公平的国度，你说的也许都对。但事与愿违，傻子都看得出来这些规则有多隐晦，打破规则又有多么儿戏。
+[name="佐菲娅"]  你还只是个没有封号也没有所属的独立骑士，玛莉娅，我可以向骑士协会提出申请暂停你的比赛进程。
+[name="佐菲娅"]  就这样。
+[Dialog]
+[Character]
+[PlaySound(key="$d_gen_walk_n", volume=0.6)]
+[delay(time=1)]
+[Character(name="avg_npc_061#7")]
+[name="玛莉娅"]  ......姑母！
+[Character]
+[PlaySound(key="$doorclosequite", volume=0.6)]
+[delay(time=1)]
+[Character(name="avg_npc_107#2", name2="avg_npc_061#7", focus=1)]
+[name="光头马丁"]  冷静点，玛莉娅，也让佐菲娅冷静一下。
+[name="光头马丁"]  她是为了你好。
+[Character(name="avg_npc_107#2", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  ......我知道。
+[Character(name="avg_npc_107#2", name2="avg_npc_061#7", focus=1)]
+[name="光头马丁"]  但佐菲娅说的没错，竞技骑士的胜利从来都是身不由己的。
+[name="光头马丁"]  企业只是给了“临光家的新骑士”一个生根发芽的机会，等到了需要收割的时候，他们自然会拿着镰刀出现。
+[name="光头马丁"]  骑士只有“申请赛事”的权利......除了特锦赛之外，一切赛制和结果都掌握在企业手里，骑士几乎没有选择。
+[name="光头马丁"]  如果真像佐菲娅所说，有企业内部的声音......
+[Character(name="avg_npc_107#2", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  ......
+[Character(name="avg_npc_107#2", name2="avg_npc_061#7", focus=1)]
+[name="光头马丁"]  也许的确有一些信号，我们都该重视起来。
+[Dialog]
+[Character]
+[PlaySound(key="$dooropenquite", volume=0.6)]
+[PlaySound(key="$d_gen_walk_n", volume=0.6)]
+[Character(name="avg_npc_120#3",fadetime=1,block=true)]
+[delay(time=2)]
+[name="老骑士"]  唔......怎么了？刚才好像看见佐菲娅冲出去了。
+[Character(name="avg_npc_120#3", name2="avg_npc_101#4", focus=2)]
+[name="老工匠"]  丫头怎么这幅脸色？不是赢了吗？赢了还要吵架？
+[Character(name="avg_npc_107#2", name2="avg_npc_101#4", focus=1)]
+[name="光头马丁"]  你俩就别掺和了......
+[Character(name="avg_npc_061#7")]
+[name="玛莉娅"]  ......我、我先回去了。
+[name="玛莉娅"]  之后还有一场竞速赛，要做好装备的检修......
+[Dialog]
+[Character]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_kxstreet",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[Character(name="avg_npc_061#7",fadetime=1,block=true)]
+[delay(time=1)]
+[name="玛莉娅"]  ......
+[name="玛莉娅"]  ......唉。
+[Dialog]
+[Character(name="char_204_platnm_1",fadetime=1,block=true)]
+[delay(time=1)]
+[name="白金"]  ......唉。
+[Character(name="avg_npc_061#7", name2="char_204_platnm_1", focus=0)]
+[name="玛莉娅&白金"]  嗯......？
+[Character(name="avg_npc_061#5", name2="char_204_platnm_1", focus=1)]
+[name="玛莉娅"]  ......
+[Character(name="avg_npc_061#5", name2="char_204_platnm_1", focus=2)]
+[name="白金"]  ......
+[Dialog]
+[PlaySound(key="$d_gen_walk_n", volume=0.6)]
+[Character(name="avg_npc_061#5")]
+[name="玛莉娅"]  （好漂亮的人，但是一股血的味道......是骑士吗？）
+[Character(name="char_204_platnm_1")]
+[name="白金"]  （玛莉娅·临光，真年轻......比资料里看上去还要年轻。）
+[Character(name="avg_npc_061#7", name2="char_204_platnm_1", focus=0)]
+[name="玛莉娅&白金"]  （可惜啊。）
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=2, block=true)]
+[Character]
+[Image]
+
+---
+
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 卡西米尔 5下
+[stopmusic]
+[Dialog]
+[Delay(time=1)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_arena_2",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=3, block=true)]
+[playMusic(intro="$darkness01_intro", key="$darkness01_loop", volume=0.4)]
+[Character(name="avg_npc_106",fadetime=1,block=true)]
+[delay(time=1)]
+[name="发言人恰尔内"]  骑士竞赛，到底是什么？
+[name="发言人恰尔内"]  瑟奇亚克先生，您认为呢？
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  ......别胡闹了，恰尔内，我很忙。
+[name="塑料骑士"]  直接说，你要做什么？
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  很遗憾......呼啸骑士团决定换下您的特锦赛首发阵容。那位新加入的援护骑士同样名列前茅，团体赛中，他的法术可以派上用场。
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  ......
+[name="塑料骑士"]  你......这和说好的不一样......
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  当然，允诺的定金还是会交付的。不过骑士团替补的税金是不一样的，你明白，对吧？
+[name="发言人恰尔内"]  哎呀......别冲动，你的孩子马上就要过十岁生日，你没必要因为攻击一个微不足道的我而丢了工作......
+[name="发言人恰尔内"]  呼啸骑士团付给你的钱依旧很多，至少今年，你无需再努力。
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  我需要的是正赛名额！我......
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  这就看你自己的表现了，瑟奇亚克，总有办法活下去的，不是吗？
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  ......
+[name="塑料骑士"]  ......你说得对。
+[name="塑料骑士"]  这种事情随便找个员工联系我就好，为什么要亲自来这里找我？发言人都这么闲的吗？
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  啊......别误会，我也不是专程来找您的，我只是来确认一些赛事安排。
+[name="发言人恰尔内"]  我们似乎有些太松懈了，各个赛区都出现了一些小小的问题，也给一些不法分子可乘之机。
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  ......你是在威胁我？威胁“塑料”骑士瑟奇亚克帮你做脏活？
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  哪里的话。
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  你想要做什么？
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  我有两位在意的骑士需要迅速准备到时刻可以出场的状态......但遗憾的是，他们的积分明显还未够格。
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=2)]
+[name="塑料骑士"]  呸......你们真想让骑士出线，有的是手段......
+[Character(name="avg_npc_106", name2="avg_npc_103", focus=1)]
+[name="发言人恰尔内"]  别这么说，偶尔也需要遵守规则，隐秘一些行事——
+[name="发言人恰尔内"]  ——利用律法和违反律法完全是两回事，而其本质差异在于，当事人是否拥有这个本事。
+[name="发言人恰尔内"]  只要您点头同意，积分转让的额外赛事和手续全部由我们安排。当然，这样一来您在呼啸骑士团内部的问题我也会稍加处理......
+[name="发言人恰尔内"]  您意下如何？
+[Dialog]
+[Character]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_arena_1",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=2, block=true)]
+[PlaySound(key="$livecrowd", volume=0.4, loop=false, channel="people")]
+[Character(name="avg_npc_121")]
+[name="大嘴莫布"]  ——失效！踏步骑士的鞋底加速装置失去了作用！！骤然的减速让他猛然摔在了终点线前——！
+[name="大嘴莫布"]  冲线——！！冠军是来自辉落骑士团的藤萝骑士！！而玛莉娅·临光紧随其后——斩获压线！
+[name="大嘴莫布"]  而失去了鞋底加速的踏步骑士直接从第二位落后到了第七——！！真可惜啊踏步骑士！
+[name="大嘴莫布"]  骑士装备的重要性不言而喻！
+[name="大嘴莫布"]  而艾伦精选公司为各位提供全面的保养、维修、升级与设备安排管理，贴心的会员制度，为骑士们准备了无微不至的套餐！！
+[Dialog]
+[Character]
+[Character(name="avg_npc_061#5",fadetime=1,block=true)]
+[delay(time=1)]
+[name="玛莉娅"]  呼......亚军吗。
+[name="玛莉娅"]  （这样......离特锦赛就更进一步了......）
+[name="玛莉娅"]  （佐菲娅姑母......）
+[Dialog]
+[Character]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[Background(image="bg_sportsbar",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[Character(name="avg_npc_107#2")]
+[name="光头马丁"]  噢，意料之外的客人。
+[name="光头马丁"]  请找个位置随便坐。
+[Dialog]
+[Character]
+[Character(name="avg_npc_103",fadetime=1,block=true)]
+[delay(time=1)]
+[name="塑料骑士"]  马丁......真的是你，过去大红大紫的骑士如今只开着这一家小酒吧？
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  老马丁早已经被剥夺了骑士身份，如今靠着积蓄混口饭吃，如此罢了。
+[name="光头马丁"]  “塑料”瑟奇亚克是怎么找到这儿来的？不瞒你说，我这家酒吧很少迎接现役骑士。
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=1)]
+[name="塑料骑士"]  现在的玛莉娅可是大红人，你的酒吧早就刊登在昨晚的娱乐新闻上了。
+[name="塑料骑士"]  哼......大红人，一杯“红色雪绒花”。
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  这杯我请。
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=1)]
+[name="塑料骑士"]  荣幸。
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  呼啸守卫的训练基地离这里可不算近，不会让你白跑一趟的。
+[name="光头马丁"]  那么，来到之前对手的大本营，是为了来刺探军情，好在特锦赛上报一箭之仇的吗？
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=1)]
+[name="塑料骑士"]  ......我不会在特锦赛登场。
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  嚯......呼啸守卫的决定？我以为你和赞助商的私人关系还不错。
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=1)]
+[name="塑料骑士"]  哈，私人关系，和企业谈关系，就像和天灾谈恋爱。
+[name="塑料骑士"]  当然，做决定的是更上面一层......
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=2)]
+[name="光头马丁"]  骑士协会？
+[Character(name="avg_npc_103", name2="avg_npc_107", focus=1)]
+[name="塑料骑士"]  不止......比如，商业联合会。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=2)]
+[name="光头马丁"]  唔。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=1)]
+[name="塑料骑士"]  我知道你想说什么，老马丁，你在想“一个区区塑料骑士怎么会把事情变这么大条的”。
+[name="塑料骑士"]  我还是有自知之明的，没有人会为了一个懂得听从安排的骑士做到这个地步，所以问题出在别的地方。
+[name="塑料骑士"]  坊间流传着始终一个说法，耀骑士并不是感染者，她被逐出卡西米尔这件事，也没有那么简单......
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=2)]
+[name="光头马丁"]  我毫不知情。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=1)]
+[name="塑料骑士"]  别这么警惕......我没有在打探你的意思，老马丁。
+[name="塑料骑士"]  我只是想让恰尔内知道，戏弄贵族是要付出代价的......而我想玛莉娅·临光应该也在他的视野之内，不是吗？
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=2)]
+[name="光头马丁"]  ......骑士联手起来向协会抗议？这种事情总没有好下场。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=1)]
+[name="塑料骑士"]  我只是不想任人宰割。
+[name="塑料骑士"]  谢谢你的酒......老马丁，多嘴一句......我年轻时候，是看了你的比赛才决定成为骑士的。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=2)]
+[name="光头马丁"]  看来你选错路了。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=1)]
+[name="塑料骑士"]  没有，这不是刚准备自己踩出一条路来吗？
+[name="塑料骑士"]  下次再见，老马丁。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=2)]
+[name="光头马丁"]  瑟奇亚克，最后劝你一句......小心些。
+[Character(name="avg_npc_103", name2="avg_npc_107#2", focus=1)]
+[name="塑料骑士"]  ......哼，骑士从不需要在那些商贩面前低头，呼啸骑士团会同意我的看法的。
+[Dialog]
+[Character]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=2, block=true)]
+[Background(image="bg_kxstreet",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=3, block=true)]
+[Character(name="avg_npc_122")]
+[name="“焰尾”索娜"]  喂，已经跟了我们这么久，差不多该露个面了吧？
+[name="“焰尾”索娜"]  喔，气势汹汹的......我可不喜欢这样的粉丝......
+[Character(name="avg_npc_122")]
+[delay(time=1)]
+[CameraShake(duration=0.3, xstrength=10, ystrength=12, vibrato=30, randomness=90, fadeout=true, block=true)]
+[name="“焰尾”索娜"]  “等等——你们的弓是——你是！？”
+[name="“焰尾”索娜"]  ——你以为我会这么惊讶吗，无胄盟的刺客？
+[name="“焰尾”索娜"]  嗯嗯......原来你们是这个造型啊，一直躲躲藏藏的，从来没有其实见过你们的模样，你们这工作还真阴暗啊......
+[name="“焰尾”索娜"]  机会难得——
+[Dialog]
+[Character]
+[Character(name="avg_npc_123",fadetime=1,block=true)]
+[delay(time=1)]
+[name="灰毫骑士"]  ......嘿。
+[Character(name="avg_npc_122", name2="avg_npc_123", focus=1)]
+[name="“焰尾”索娜"]  ——我们好好打一架呗。
+[Dialog]
+[Character]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=2, block=true)]
+[Background(image="bg_nearllivingroom",screenadapt="coverall")]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=3, block=true)]
+[Character(name="avg_npc_061#7")]
+[name="玛莉娅"]  ......
+[name="玛莉娅"]  ......
+[Dialog]
+[PlaySound(key="$dooropenquite", volume=0.6)]
+[Character(name="avg_npc_061#2")]
+[name="玛莉娅"]  啊——姑母——
+[Dialog]
+[Character]
+[Character(name="avg_npc_108",fadetime=1,block=true)]
+[delay(time=1)]
+[name="玛恩纳"]  ......
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  啊.....叔叔......
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  只是一段时间没有管你，你似乎越来越不知分寸了。
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  ......
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  你打算什么时候停手？
+[name="玛恩纳"]  领导已经三番五次问我关于你的事情了，每天我都要在宣发部门处理关于你的麻烦......光是向领导请示情况就占了我一半的工作时间。
+[name="玛恩纳"]  现在立刻去骑士协会退出骑士竞技，你根本不知道自己在做什么。
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  那样的话......
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  不要自寻死路，玛莉娅。
+[name="玛恩纳"]  你也是临光家的孩子，应当知晓分寸。
+[name="玛恩纳"]  只是在特锦赛之前的小打小闹，也就由着你去了，但现在你引起过多关注了。
+[name="玛恩纳"]  不要以为你真的能闯入特锦赛。也不要你以为你现在面对的敌人就是骑士竞技的极限了。
+[Character(name="avg_npc_108", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  可是我不想坐视临光家被剥夺贵族——
+[Character(name="avg_npc_108", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  ——虚荣。
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  欸......
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  我说过，临光不需要如今下作的骑士协会认可。
+[name="玛恩纳"]  难道他们不认可我们，先祖的功绩就不复存在了？荒唐！这么多年来，临光家从未靠他人来捍卫过自己的地位！
+[name="玛恩纳"]  如果做不到，那就放弃。不懂得放弃的人......死路一条。
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  叔叔......
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  你受玛嘉烈的影响太深了，玛莉娅，她到最后都没有认识到自己的愚昧，你不该如此盲从她。
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  ......！
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  别那么看着我，我有说错吗？想在规则中战胜规则的主人？痴人说梦。
+[name="玛恩纳"]  你知道玛嘉烈的脾气，本来她最看不起的就是商业化的骑士竞技，我还以为她能有点骨气......
+[name="玛恩纳"]  结果呢？她还是走投无路地选择用骑士竞技这条路彰显她的“信念”，是啊，“信念”。
+[name="玛恩纳"]  她能改变任何东西吗？
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  叔叔......不要这样说姐姐......
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  她没有。
+[name="玛恩纳"]  她唯一改变的，就是企业对临光家的态度！唯一做到的，就是让病重的父亲不得不分神处理她捅下的娄子！
+[name="玛恩纳"]  “耀骑士”这个称呼不该授予她，她根本无力支撑这样的光荣！
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  叔叔！
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  ......
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  那你呢......？
+[name="玛莉娅"]  你现在......难道不也是在为企业工作吗？
+[name="玛莉娅"]  你不允许我做竞技骑士，那难道低声下气地为企业工作，坐视临光家失去骑士地位，这就可以了吗！？
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  ......哼。
+[name="玛恩纳"]  你还年轻，所以我不会责备你的无知......但是你应该尊重长辈的意见。
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  又说这种话......
+[Character(name="avg_npc_108", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  卡西米尔人......世世代代建立起的高楼广厦洒下了阴影，你躲在家乡，躲在长辈们的庇护下，你能知道些什么？
+[name="玛恩纳"]  难道你真以为，你一个初出茅庐的年轻骑士能够有什么作为？
+[name="玛恩纳"]  边疆的要塞日出时，属于乌萨斯人的城邦高楼会划过地平线的云端。
+[name="玛恩纳"]  高塔的侍从为了博贵族一笑而在赛场上敷衍地战斗，年轻的蒸汽骑士穿着旧时的甲胄，来此磨练技艺。
+[name="玛恩纳"]  赏金猎人和强盗们碾过一处又一处贫苦的村庄，各大城邦却想着如何建立更多的竞技场。一个村庄的收成和税金比例堪称滑稽。
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  但这一切都比不过父亲在病榻上的最后一声叹息，不是因为玛嘉烈，不是因为你的父母——那是父亲对整个卡西米尔的悲叹。
+[name="玛恩纳"]  你让我如何不失望？
+[Character(name="avg_npc_108#2", name2="avg_npc_061#7", focus=2)]
+[name="玛莉娅"]  ......
+[Character(name="avg_npc_108", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  你说得对，玛莉娅，你说得对，我现在一无是处，不过是企业豢养的驮兽。
+[name="玛恩纳"]  所以，你呢？
+[Dialog]
+[Character(name="avg_npc_108")]
+[PlaySound(key="$phonevibration",volume=0.6)]
+[CameraShake(duration=1, xstrength=5, ystrength=3, vibrato=30, randomness=90, fadeout=true, block=true)]
+[delay(time=1)]
+[PlaySound(key="$d_gen_transmissionget",volume=0.6)]
+[Character(name="avg_npc_108#3")]
+[name="玛恩纳"]  ......经理？不，我只是有一些私事......不，私事当然没有工作重要......
+[name="玛恩纳"]  项目会议？是今天？不，我没有忘记......抱歉，非常抱歉，对不起，是的......
+[name="玛恩纳"]  我很快就会到......什么？不，他没有我了解这个项目的进程......是的，对不起......
+[name="玛恩纳"]  那么......请他代劳为我出席......是的，抱歉......负责人的任务？这......是的，这一定是最后一次了，不会有下次。
+[name="玛恩纳"]  下次请您撤除我的职务。是，一定，我保证。
+[name="玛恩纳"]  真的非常抱歉，经理。
+[PlaySound(key="$transmission",volume=0.6)]
+[delay(time=1.5)]
+[Character(name="avg_npc_108", name2="avg_npc_061#7", focus=1)]
+[name="玛恩纳"]  ......我没有太多时间可以浪费了，玛莉娅，给我一个答复，现在。
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  我是不会改变想法的，叔叔。
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  ......
+[Character(name="avg_npc_108", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  ......
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  你和玛嘉烈一样......让我感到厌恶。
+[name="玛恩纳"]  你们的父母不会以现在的你们为荣。自己冷静冷静，反省一下自己到底是谁。
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=2)]
+[name="玛莉娅"]  ......请不要再说了！
+[Character(name="avg_npc_108#2", name2="avg_npc_061#5", focus=1)]
+[name="玛恩纳"]  不知天高地厚......那就自求多福吧。
+[Dialog]
+[Blocker(a=1, r=0,g=0, b=0, fadetime=2, block=true)]
+[Character]
+[Image]
