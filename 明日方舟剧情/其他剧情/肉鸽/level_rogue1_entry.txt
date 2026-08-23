@@ -1,0 +1,37 @@
+[HEADER(key="title_test", is_skippable=true, fit_mode="BLACK_MASK")] 开幕
+[Blocker(a=1, r=0, g=0, b=0, fadetime=0, block=true)]
+[stopmusic]
+[Dialog]
+[Background(image="24_RL_castlehall", screenadapt="coverall")]
+[Delay(time=1)]
+[PlayMusic(intro="$ponder_intro", key="$ponder_loop", volume=0.4)]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=1, block=true)]
+[delay(time=2)]
+[name=""]古堡矗立于林。
+[name=""]破碎得恰到好处。
+[name=""]剧团在此扎营。
+[name=""]为戏剧搭建舞台。
+[name=""]多年经营已显成效。
+[name=""]只可惜仍有疑惑尚未解答。
+[name=""]主演在哪里？
+[name=""]主角在哪里？
+[name=""]沉默，沉默，无人能够奉上答案。
+[dialog]
+[PlaySound(key="$d_gen_walk_n")]
+[Character(name="avg_npc_293_1#6$1", fadetime=1.5)]
+[delay(time=3.5)]
+[name=""]主演昭然若揭。
+[name=""]主角无需自证。
+[name=""]请登上舞台。
+[name=""]剧团的新星，剧团的血钻。
+[Dialog]
+[Blocker(a=0, r=0, g=0, b=0, fadetime=0, block=true)]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=2, block=true)]
+[delay(time=2)]
+[name=""]万物齐备。
+[name=""]戏剧已然开演。
+[Dialog]
+[Blocker(a=1, r=0, g=0, b=0, fadetime=1, block=true)]
+[stopmusic(fadetime=1)]
+[Character]
+[Image]
