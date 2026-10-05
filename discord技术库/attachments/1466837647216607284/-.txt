@@ -1,0 +1,47 @@
+【旧版AI直出代码状态栏】
+<div style="background:rgba(12,14,18,0.95); border:1px solid rgba(80,227,194,0.15); border-radius:8px; padding:12px; font-family:monospace; box-shadow:0 4px 12px rgba(0,0,0,0.3); color:#5ce1e6;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+        <div style="display:flex; flex-direction:column;">
+            <span style="font-size:10px; color:#6b7d8f; font-weight:700; letter-spacing:0.5px;">TIME</span>
+            <span style="font-size:13px; font-weight:600; text-shadow:0 0 5px rgba(92,225,230,0.2);">23:00</span>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+            <span style="font-size:10px; color:#6b7d8f; font-weight:700; letter-spacing:0.5px;">ROLE</span>
+            <span style="font-size:13px; font-weight:600; text-shadow:0 0 5px rgba(92,225,230,0.2);">李华，代号"007"</span>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+            <span style="font-size:10px; color:#6b7d8f; font-weight:700; letter-spacing:0.5px;">ASSETS</span>
+            <span style="font-size:13px; font-weight:600; text-shadow:0 0 5px rgba(92,225,230,0.2);">5000</span>
+        </div>
+    </div>
+    <div style="border-top:1px dashed rgba(255,255,255,0.1); padding-top:8px; margin-top:2px;">
+        <span style="font-size:10px; color:#6b7d8f; font-weight:700; letter-spacing:0.5px; display:block; margin-bottom:3px;">STATUS</span>
+        <span style="font-size:13px; font-weight:600; text-shadow:0 0 5px rgba(92,225,230,0.2);">hp:100/100</span>
+    </div>
+
+    <div style="border-top:1px dashed rgba(255,255,255,0.1); padding-top:8px; margin-top:2px;">
+        <span style="font-size:10px; color:#6b7d8f; font-weight:700; letter-spacing:0.5px; display:block; margin-bottom:3px;">INVENTORY</span>
+        <span style="font-size:13px; font-weight:600; text-shadow:0 0 5px rgba(92,225,230,0.2);">"屠龙"宝刀|1, 奇怪的"石头"|3</span>
+    </div>
+</div>
+
+
+【雷达扫描式正则状态栏】
+AI原生输出示例： （注：<ztl>可置于开头或结尾，数据需使用 # 号分隔）
+<css> 【正文内容...】 <ztl> <tm#23:00><nm#李华><mn#5000><zy#健康><bag#“屠龙”宝刀|1>
+
+正则替换集：
+1.css
+正则表达式：<css>
+替换为：
+<style>.hud-box{position:relative;margin-top:15px;width:100%;background:rgba(12,14,18,0.95);border:1px solid rgba(80,227,194,0.15);border-radius:8px;padding:12px;box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;box-shadow:0 4px 12px rgba(0,0,0,0.3);overflow:hidden}.hud-item{display:flex;flex-direction:column;min-width:0}.hud-item.full{grid-column:1/-1;border-top:1px dashed rgba(255,255,255,0.1);padding-top:8px;margin-top:2px}.hud-lbl{font-size:10px;color:#6b7d8f;margin-bottom:3px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}.hud-val{font-size:13px;color:#5ce1e6;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 0 5px rgba(92,225,230,0.2)}</style>
+
+2.静态状态栏UI
+正则表达式：<ztl>
+替换为：
+<div class="hud-box ui-bar"><div class="hud-item"><span class="hud-lbl">TIME</span><span class="hud-val ui-tm">--:--</span></div><div class="hud-item"><span class="hud-lbl">ROLE</span><span class="hud-val ui-nm">UNKNOWN</span></div><div class="hud-item"><span class="hud-lbl">ASSETS</span><span class="hud-val ui-mn">0</span></div><div class="hud-item full"><span class="hud-lbl">STATUS</span><span class="hud-val ui-zy">NORMAL</span></div><div class="hud-item full"><span class="hud-lbl">INVENTORY</span><span class="hud-val ui-bag">EMPTY</span></div></div><img src="x" style="display:none" onerror="(function(e){var tick=0;var radar=setInterval(function(){var scope=e.parentNode;if(!scope){clearInterval(radar);return}var map={'tm':'ui-tm','nm':'ui-nm','mn':'ui-mn','zy':'ui-zy','bag':'ui-bag'};for(var key in map){var text='';var local=scope.getElementsByClassName(key);if(local.length>0){text=local[local.length-1].textContent}else{var global=document.getElementsByClassName(key);if(global.length>0){text=global[global.length-1].textContent}}var ui=scope.getElementsByClassName(map[key]);if(ui.length>0&&text!==''){ui[0].textContent=text}}var bars=scope.getElementsByClassName('ui-bar');if(bars.length>0){bars[0].style.display='grid'}tick++;if(tick>30){clearInterval(radar);e.remove()}},500)})(this)">
+<br>
+
+3.转化容器
+正则表达式：/<([^#\s"'>]+)[#＃]([\s\S]*?)>/g
+替换为：<div class="$1" style="display:none">$2</div>

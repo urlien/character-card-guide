@@ -1,0 +1,605 @@
+<style>
+.xiu-live-wrap {
+    max-width: 360px;
+    margin: 15px auto;
+    background: #0d0612;
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'KaiTi', 'STKaiti', 'SimSun', 'Microsoft YaHei', serif;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(200,60,120,0.3), 0 0 0 1px rgba(200,60,120,0.2);
+    aspect-ratio: 9 / 20;
+    display: flex;
+    flex-direction: column;
+}
+
+.xiu-streamer-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: linear-gradient(180deg, rgba(15,6,12,0.85) 0%, rgba(15,6,12,0) 100%);
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+.xiu-streamer-bar .xiu-avatar,
+.xiu-streamer-bar .xiu-streamer-info,
+.xiu-streamer-bar .xiu-follow-btn {
+    pointer-events: auto;
+}
+.xiu-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #d060a0;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #1a0a14;
+    box-shadow: 0 0 8px rgba(208,96,160,0.5);
+}
+.xiu-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.xiu-streamer-info {
+    flex: 1;
+    min-width: 0;
+}
+.xiu-streamer-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.2;
+}
+.xiu-live-tag {
+    background: #ff3b5c;
+    color: #fff;
+    font-size: 9px;
+    padding: 1px 5px 1px 4px;
+    border-radius: 3px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+}
+.xiu-live-tag::before {
+    content: '●';
+    font-size: 7px;
+    margin-right: 2px;
+}
+.xiu-viewers {
+    font-size: 10px;
+    color: #c090b0;
+    margin-top: 1px;
+}
+.xiu-follow-btn {
+    background: linear-gradient(90deg, #d060b0, #ff5c8a);
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(255,92,138,0.4);
+}
+
+.xiu-live-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #1a0a14;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.xiu-live-stage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.xiu-stage-overlay-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 70px;
+    background: linear-gradient(180deg, rgba(13,6,18,0.75) 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+.xiu-stage-overlay-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 90px;
+    background: linear-gradient(0deg, rgba(13,6,18,0.85) 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.xiu-loc-pill {
+    position: absolute;
+    top: 54px;
+    right: 10px;
+    background: rgba(30,15,26,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #e8d0e0;
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 11px;
+    border: 1px solid rgba(208,96,160,0.4);
+    z-index: 3;
+    letter-spacing: 0.3px;
+}
+
+.xiu-action-rail {
+    position: absolute;
+    right: 8px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 5;
+}
+.xiu-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+}
+.xiu-action-item:active {
+    transform: scale(0.8);
+}
+.xiu-action-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(30,15,26,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(208,96,160,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+.xiu-action-count {
+    font-size: 9px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+.xiu-action-icon.heart {
+    color: #ff5c8a;
+    font-size: 34px;
+}
+
+.xiu-info-card {
+    background: linear-gradient(180deg, #1a0a1f 0%, #0d0612 100%);
+    padding: 10px 12px 10px 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+}
+.xiu-barrage-box {
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 8px;
+}
+.xiu-barrage-box::before,
+.xiu-barrage-box::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 16px;
+    z-index: 2;
+    pointer-events: none;
+}
+.xiu-barrage-box::before {
+    top: 0;
+    background: linear-gradient(180deg, #1a0a1f 0%, transparent 100%);
+}
+.xiu-barrage-box::after {
+    bottom: 0;
+    background: linear-gradient(0deg, #0d0612 0%, transparent 100%);
+}
+.xiu-barrage-track {
+    animation: xiu-scroll-up 20s linear infinite;
+}
+@keyframes xiu-scroll-up {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+.xiu-info-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 10px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #e8d0e0;
+    line-height: 1.3;
+    background: rgba(30,15,26,0.55);
+    border-radius: 8px;
+    border: 1px solid rgba(106,37,64,0.35);
+}
+.xiu-info-tag {
+    background: rgba(208,96,160,0.15);
+    color: #d060a0;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(208,96,160,0.35);
+    flex-shrink: 0;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.xiu-input-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 10px 12px;
+    background: rgba(13,6,18,0.95);
+    flex-shrink: 0;
+}
+.xiu-input-fake {
+    flex: 1;
+    background: rgba(40,20,35,0.6);
+    border: 1px solid rgba(106,37,64,0.5);
+    border-radius: 16px;
+    padding: 7px 14px;
+    font-size: 12px;
+    color: #e8d0e0;
+    letter-spacing: 0.5px;
+    outline: none;
+    font-family: inherit;
+    min-width: 0;
+}
+.xiu-input-fake::placeholder { color: #7a5a6a; }
+.xiu-input-fake:focus { border-color: rgba(208,96,160,0.7); }
+.xiu-input-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+.xiu-input-icon {
+    cursor: pointer;
+    transition: transform 0.12s ease;
+    display: inline-flex;
+    line-height: 1;
+}
+.xiu-input-icon:active { transform: scale(0.8); }
+.xiu-emoji-wrap {
+    position: relative;
+}
+.xiu-emoji-panel {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 6px;
+    background: rgba(30,15,26,0.95);
+    border: 1px solid rgba(208,96,160,0.4);
+    border-radius: 10px;
+    padding: 6px;
+    display: none;
+    gap: 4px;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+}
+.xiu-emoji-panel.show { display: flex; }
+.xiu-emoji-panel span {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background 0.12s;
+    line-height: 1;
+}
+.xiu-emoji-panel span:hover { background: rgba(208,96,160,0.25); }
+.xiu-send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d060b0, #ff5c8a);
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(255,92,138,0.4);
+    transition: transform 0.12s ease;
+    padding: 0;
+}
+.xiu-send-btn:active { transform: scale(0.85); }
+.xiu-send-btn svg { display: block; }
+
+.xiu-float-heart {
+    position: absolute;
+    bottom: 90px;
+    font-size: 30px;
+    color: #ff5c8a;
+    text-shadow: 0 0 10px rgba(255,92,138,0.9), 0 0 22px rgba(255,92,138,0.5);
+    z-index: 5;
+    pointer-events: none;
+    --drift: 0px;
+    animation: xiu-heart-fly 1.3s ease-out forwards;
+    will-change: transform, opacity;
+}
+@keyframes xiu-heart-fly {
+    0%   { transform: translate(0, 0) scale(0.4); opacity: 0; }
+    18%  { transform: translate(calc(var(--drift) * 0.25), -28px) scale(1.4); opacity: 1; }
+    60%  { transform: translate(calc(var(--drift) * 0.7), -120px) scale(1.1); opacity: 0.9; }
+    100% { transform: translate(var(--drift), -210px) scale(0.85); opacity: 0; }
+}
+
+.xiu-float-rocket {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    font-size: 42px;
+    z-index: 5;
+    pointer-events: none;
+    text-shadow: 0 0 14px rgba(255,140,60,0.9), 0 0 28px rgba(255,80,40,0.6);
+    animation: xiu-rocket-fly 1.7s cubic-bezier(0.5, 0, 0.8, 0.2) forwards;
+    will-change: transform, opacity;
+}
+.xiu-float-rocket::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(255,180,80,0.9), rgba(255,80,40,0));
+    border-radius: 3px;
+    filter: blur(2px);
+}
+@keyframes xiu-rocket-fly {
+    0%   { transform: translateX(-50%) translateY(40px) scale(0.5) rotate(-8deg); opacity: 0; }
+    15%  { transform: translateX(-50%) translateY(0) scale(1.2) rotate(-8deg); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-380px) scale(1) rotate(-8deg); opacity: 0; }
+}
+</style>
+
+<div class="xiu-live-wrap">
+
+    <div class="xiu-live-stage" id="xiu-stage">
+        <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEUpA9qF6uEmCmw-ZFv7C0ObROqaRih8gACgCEAAqpNuFR3Cdohy5pV3DsE.gif">
+        <div class="xiu-stage-overlay-top"></div>
+        <div class="xiu-stage-overlay-bottom"></div>
+
+        <div class="xiu-streamer-bar">
+            <div class="xiu-avatar">
+                <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEUpA9qF6uEmCmw-ZFv7C0ObROqaRih8gACgCEAAqpNuFR3Cdohy5pV3DsE.gif">
+            </div>
+            <div class="xiu-streamer-info">
+                <div class="xiu-streamer-name">$1 <span class="xiu-live-tag">直播中</span></div>
+                <div class="xiu-viewers">👀 正在直播</div>
+            </div>
+            <div class="xiu-follow-btn">+ 关注</div>
+        </div>
+
+        <div class="xiu-action-rail">
+            <div class="xiu-action-item" id="xiu-like-btn">
+                <div class="xiu-action-icon heart">♥</div>
+                <div class="xiu-action-count">点赞</div>
+            </div>
+            <div class="xiu-action-item" id="xiu-gift-btn">
+                <div class="xiu-action-icon">🎁</div>
+                <div class="xiu-action-count">礼物</div>
+            </div>
+            <div class="xiu-action-item">
+                <div class="xiu-action-icon">💬</div>
+                <div class="xiu-action-count">评论</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="xiu-info-card">
+        <div class="xiu-barrage-box">
+            <div class="xiu-barrage-track">
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$2</span>
+                    <span>$7</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$3</span>
+                    <span>$8</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$4</span>
+                    <span>$9</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$5</span>
+                    <span>$10</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$6</span>
+                    <span>$11</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$2</span>
+                    <span>$7</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$3</span>
+                    <span>$8</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$4</span>
+                    <span>$9</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$5</span>
+                    <span>$10</span>
+                </div>
+                <div class="xiu-info-row">
+                    <span class="xiu-info-tag">$6</span>
+                    <span>$11</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="xiu-input-bar">
+        <input type="text" id="xiu-reply-input" class="xiu-input-fake" placeholder="说点什么...">
+        <div class="xiu-input-icons">
+            <span class="xiu-input-icon" id="xiu-input-gift-btn" title="火箭">🎁</span>
+            <div class="xiu-emoji-wrap">
+                <span class="xiu-input-icon" id="xiu-emoji-btn" title="表情">😊</span>
+                <div class="xiu-emoji-panel" id="xiu-emoji-panel">
+                    <span data-emoji="😊">😊</span>
+                    <span data-emoji="😂">😂</span>
+                    <span data-emoji="❤️">❤️</span>
+                    <span data-emoji="😢">😢</span>
+                    <span data-emoji="👍">👍</span>
+                </div>
+            </div>
+        </div>
+        <button id="xiu-send-btn" class="xiu-send-btn" title="发送到回复栏" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-label="纸飞机">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+    </div>
+
+</div>
+
+<script>
+(function(){
+    var stage = document.getElementById('xiu-stage');
+    var likeBtn = document.getElementById('xiu-like-btn');
+    var giftBtn = document.getElementById('xiu-gift-btn');
+    if (!stage || !likeBtn || !giftBtn) return;
+    if (likeBtn.dataset.xiuBound) return;
+    likeBtn.dataset.xiuBound = '1';
+    giftBtn.dataset.xiuBound = '1';
+
+    likeBtn.addEventListener('click', function(){
+        var heart = document.createElement('div');
+        heart.className = 'xiu-float-heart';
+        heart.textContent = '♥';
+        var x = 45 + Math.random() * 30;
+        heart.style.left = x + '%';
+        var drift = (Math.random() * 60 - 30);
+        heart.style.setProperty('--drift', drift + 'px');
+        heart.style.fontSize = (24 + Math.random() * 14) + 'px';
+        stage.appendChild(heart);
+        setTimeout(function(){ if (heart.parentNode) heart.remove(); }, 1300);
+    });
+
+    giftBtn.addEventListener('click', function(){
+        var rocket = document.createElement('div');
+        rocket.className = 'xiu-float-rocket';
+        rocket.textContent = '🚀';
+        stage.appendChild(rocket);
+        setTimeout(function(){ if (rocket.parentNode) rocket.remove(); }, 1700);
+    });
+
+    var replyInput = document.getElementById('xiu-reply-input');
+    var sendBtn = document.getElementById('xiu-send-btn');
+    if (replyInput && sendBtn && !sendBtn.dataset.xiuBound) {
+        sendBtn.dataset.xiuBound = '1';
+        function xiuFindTarget() {
+            var docs = [document];
+            try { if (window.parent && window.parent !== window) docs.push(window.parent.document); } catch(e) {}
+            try { if (window.top && window.top !== window) docs.push(window.top.document); } catch(e) {}
+            for (var i = 0; i < docs.length; i++) {
+                var ta = docs[i].querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');
+                if (ta) return ta;
+            }
+            for (var j = 0; j < docs.length; j++) {
+                var ta2 = docs[j].querySelector('textarea');
+                if (ta2) return ta2;
+            }
+            for (var m = 0; m < docs.length; m++) {
+                var inputs = docs[m].querySelectorAll('input[type=text]');
+                for (var n = 0; n < inputs.length; n++) {
+                    if (inputs[n].offsetParent !== null) return inputs[n];
+                }
+            }
+            return null;
+        }
+        function xiuSendReply() {
+            var text = replyInput.value.trim();
+            if (!text) return;
+            var st = xiuFindTarget();
+            if (!st) return;
+            try {
+                var proto = (st.tagName === 'TEXTAREA') ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
+                var setter = Object.getOwnPropertyDescriptor(proto, 'value').set;
+                if (setter) setter.call(st, text); else st.value = text;
+            } catch(e) {
+                st.value = text;
+            }
+            try {
+                st.dispatchEvent(new Event('input', { bubbles: true }));
+                st.dispatchEvent(new Event('change', { bubbles: true }));
+            } catch(e) {}
+            try {
+                var jq = window.jQuery || (window.parent && window.parent.jQuery) || (window.top && window.top.jQuery);
+                if (jq) jq(st).val(text).trigger('input').trigger('change');
+            } catch(e) {}
+            try { st.focus(); } catch(e) {}
+            replyInput.value = '';
+        }
+        sendBtn.addEventListener('click', xiuSendReply);
+        replyInput.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') { e.preventDefault(); xiuSendReply(); }
+        });
+    }
+
+    var inputGiftBtn = document.getElementById('xiu-input-gift-btn');
+    if (inputGiftBtn && !inputGiftBtn.dataset.xiuBound) {
+        inputGiftBtn.dataset.xiuBound = '1';
+        inputGiftBtn.addEventListener('click', function(){
+            if (!stage) return;
+            var rocket = document.createElement('div');
+            rocket.className = 'xiu-float-rocket';
+            rocket.textContent = '🚀';
+            stage.appendChild(rocket);
+            setTimeout(function(){ if (rocket.parentNode) rocket.remove(); }, 1700);
+        });
+    }
+
+    var emojiBtn = document.getElementById('xiu-emoji-btn');
+    var emojiPanel = document.getElementById('xiu-emoji-panel');
+    if (emojiBtn && emojiPanel && replyInput && !emojiBtn.dataset.xiuBound) {
+        emojiBtn.dataset.xiuBound = '1';
+        emojiBtn.addEventListener('click', function(e){
+            e.stopPropagation();
+            emojiPanel.classList.toggle('show');
+        });
+        emojiPanel.addEventListener('click', function(e){
+            var t = e.target;
+            if (t && t.tagName === 'SPAN' && t.dataset.emoji) {
+                replyInput.value += t.dataset.emoji;
+                replyInput.focus();
+                emojiPanel.classList.remove('show');
+            }
+        });
+        document.addEventListener('click', function(e){
+            if (!emojiPanel.contains(e.target) && e.target !== emojiBtn) {
+                emojiPanel.classList.remove('show');
+            }
+        });
+    }
+})();
+</script>

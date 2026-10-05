@@ -1,0 +1,773 @@
+<style>
+/* ========== 脑叶公司入职面板 - 全局数据版 ========== */
+:root {
+  --p-light: #070c17;
+  --p-mid: #0c1424;
+  --p-dark: #1e3a6e;
+  --p-border: #2a4a7f;
+  --p-text: #a5b4fc;
+  --p-text-quote: #60a5fa;
+  --p-text-dark: #f1f5f9;
+  --p-bg: #0e1830;
+  --p-accent: #3b82f6;
+  --p-shadow: rgba(59,130,246,0.4);
+}
+
+/* ========== 主卡片容器 ========== */
+.card-wrapper {
+  width: 92%;
+  max-width: 480px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+#hu-container {
+  position: relative;
+  width: 100%;
+  /* 常态发光特效 */
+  border: 1px solid var(--p-accent);
+  box-shadow: 0 0 25px rgba(59,130,246,0.2), 0 0 50px rgba(59,130,246,0.05);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+/* 引言阶段 */
+#hu-container.intro-stage {
+  height: 70vh;
+  max-height: 550px;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-image: url('https://meimoaiimg.com/user/263397/mmexport1783409537280.jpg?i=1183646');
+}
+#hu-container.intro-stage::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(0deg, rgba(0,255,255,0.03) 0px, rgba(0,255,255,0.03) 2px, transparent 2px, transparent 4px);
+  pointer-events: none;
+  z-index: 1;
+}
+/* 登记阶段 */
+#hu-container.register-stage {
+  height: auto;
+  max-height: none;
+  background: #070c17;
+}
+#hu-container.register-stage::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: 
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 系统日志头 */
+.sys-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-family: 'Consolas', monospace;
+  font-size: 10px;
+  color: rgba(165,180,252,0.7);
+  z-index: 2;
+}
+
+/* ========== 引言视图 ========== */
+#hu-intro-view {
+  margin-top: auto;
+  display: flex;               /* 核心1：Flex布局 */
+  flex-direction: column;      
+  justify-content: flex-end;   /* 核心2：强行沉底到最下方 */
+  padding: 0 14px 24px;        /* 核心3：与底部按钮保持 24px 的安全间距 */
+  z-index: 2;
+  position: relative;
+  min-height: 40px;            
+}
+.dialogue-box {
+  display: flex;
+  flex-direction: column;
+}
+.dialogue-name {
+  font-family: 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--p-text-quote);
+  text-shadow: 0 0 8px var(--p-accent);
+  margin-bottom: 2px;
+}
+.dialogue-name::before { content: "—— "; color: var(--p-text); }
+.dialogue-name::after { content: " ——"; color: var(--p-text); }
+
+/* 对话框添加常态发光 */
+.dialogue-text {
+  padding: 12px 14px;
+  background: rgba(7,12,23,0.9);
+  border: 1px solid var(--p-accent);
+  box-shadow: 0 0 20px rgba(59,130,246,0.3), inset 0 0 15px rgba(59,130,246,0.05);
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--p-text-dark);
+  backdrop-filter: blur(2px);
+  min-height: 50px;
+}
+
+/* ====== 录入档案 标识页面 ====== */
+#hu-archive-label {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 180px;
+  text-align: center;
+}
+#hu-archive-label .icon { font-size: 50px; color: #60a5fa; text-shadow: 0 0 20px rgba(59,130,246,0.5); }
+#hu-archive-label .title { font-size: 28px; font-weight: bold; color: #f1f5f9; letter-spacing: 4px; margin-top: 10px; font-family: 'Consolas', monospace; }
+#hu-archive-label .sub { font-size: 14px; color: #a5b4fc; margin-top: 12px; font-family: 'Consolas', monospace; opacity: 0.8; }
+#hu-archive-label .line { width: 120px; height: 2px; background: linear-gradient(90deg, transparent, #3b82f6, transparent); margin-top: 20px; }
+
+/* 引言按钮条 - 同色系发光特效 */
+.intro-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--p-light);
+  border: 1px solid var(--p-border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 10px 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+  gap: 8px;
+}
+.intro-buttons .btn-terminal {
+  flex: 1;                 /* 核心修正：强制平分宽度，消除手机端左右大小不一 */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12,20,36,0.9);
+  border: 1px solid var(--p-accent);
+  box-shadow: 0 0 8px rgba(59,130,246,0.15);
+  color: var(--p-text-dark);
+  padding: 0 8px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Consolas', monospace;
+  border-radius: 6px;
+  transition: 0.2s;
+  text-shadow: 0 0 4px var(--p-accent);
+  white-space: nowrap;
+}
+.intro-buttons .btn-terminal:hover {
+  background: var(--p-accent);
+  color: #fff;
+  box-shadow: 0 0 20px var(--p-shadow);
+}
+.intro-buttons .btn-terminal:disabled { opacity: 0.4; cursor: not-allowed; }
+.intro-buttons .btn-enter {
+  /* 统一了发光特效，不再大亮蓝底 */
+  background: rgba(12,20,36,0.9);
+  border: 1px solid var(--p-accent);
+  box-shadow: 0 0 15px rgba(59,130,246,0.3);
+  color: #fff;
+}
+.intro-buttons .btn-skip {
+  border-color: #555;
+  color: #aaa;
+}
+.intro-buttons .btn-skip:hover {
+  background: #555;
+  color: #fff;
+}
+
+/* ========== 登记面板 ========== */
+.lobotomy-panel {
+  background: transparent;
+  border: none;
+  padding: 12px;
+  color: #e2e8f0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  position: relative;
+  z-index: 2;
+}
+.lobotomy-panel .option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 8px 0;
+  overflow: visible;
+}
+.lobotomy-panel .c {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+}
+/* 词条框常态发光 */
+.lobotomy-panel .d {
+  position: relative;
+  background: #0c1424;
+  color: #60a5fa;
+  padding: 6px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  border: 1px solid #2a4a7f;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  overflow: hidden;
+  margin: 0;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+.lobotomy-panel .d:hover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15), transparent);
+  animation: lobotomy-shine 0.5s ease;
+}
+.lobotomy-panel .d:hover {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  background: #0e1830;
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+.lobotomy-panel .d.selected {
+  background: var(--p-accent) !important;
+  color: #fff !important;
+  border-color: var(--p-accent) !important;
+  box-shadow: 0 0 20px rgba(59,130,246,0.6) !important;
+}
+
+/* ========== 悬浮提示框：左右智能内嵌展开 ========== */
+.lobotomy-panel .t {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 8px;
+  background: #0c1424;
+  color: #e2e8f0;
+  padding: 8px 10px;
+  border-radius: 4px;
+  width: 190px;
+  max-width: 220px;
+  white-space: normal;
+  word-break: break-word;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--p-accent);
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* 【核心定位修复】第1列往右展开，第3列往左展开，第2列居中展开 */
+.lobotomy-panel .c:nth-child(3n+1) .t { left: 0; transform: translateX(0); }
+.lobotomy-panel .c:nth-child(3n+2) .t { left: 50%; transform: translateX(-50%); }
+.lobotomy-panel .c:nth-child(3n) .t   { right: 0; left: auto; transform: translateX(0); }
+
+.lobotomy-panel .d:hover + .t,
+.lobotomy-panel .d:focus + .t {
+  opacity: 1;
+  visibility: visible;
+}
+@keyframes lobotomy-shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* 输入框 */
+.lobotomy-panel .input-box, .lobotomy-panel .textarea-box {
+  padding: 6px; font-size: 12px;
+  border: 1px solid #2a4a7f; border-radius: 4px;
+  width: 100%; background: #0a101f; color: #e2e8f0;
+  font-family: 'Consolas', monospace;
+  box-sizing: border-box; 
+}
+.lobotomy-panel .input-box { height: 32px; }
+.lobotomy-panel .textarea-box { height: 80px; resize: vertical; }
+.lobotomy-panel .input-box::placeholder, .lobotomy-panel .textarea-box::placeholder { color: #64748b; }
+.lobotomy-panel .section-title {
+  text-align: center; font-size: 1.3em; font-weight: bold;
+  margin: 8px 0; color: #60a5fa; letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+}
+.lobotomy-panel .main-title {
+  text-align: center; font-size: 1.8em; font-weight: bold;
+  margin: 10px 0 15px 0; color: #60a5fa;
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+.lobotomy-panel .label {
+  font-size: 1.1em; font-weight: bold; margin-right: 8px;
+  color: #93c5fd; width: 70px; display: inline-block; line-height: 32px;
+}
+.lobotomy-panel .form-row {
+  display: flex; gap: 10px; align-items: center; height: 32px;
+}
+.lobotomy-panel .form-item { flex: 1; display: flex; align-items: center; height: 32px; box-sizing: border-box; }
+.lobotomy-panel .preview-box {
+  background: #0a101f; border: 1px solid var(--p-accent); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+  border-radius: 4px; padding: 10px; margin: 15px 0 10px 0; text-align: center;
+}
+.lobotomy-panel .generate-btn {
+  padding: 10px 30px; font-size: 1.1em; font-weight: bold;
+  background: #0c1424; color: #60a5fa; border: 1px solid var(--p-accent); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+  border-radius: 4px; cursor: pointer; font-family: 'Consolas', monospace;
+  transition: 0.2s; display: block; margin: 0 auto;
+}
+.lobotomy-panel .generate-btn:hover {
+  background: #0e1830; box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+}
+
+/* 步骤导航 */
+.step-nav {
+  display: flex; justify-content: space-between; padding: 10px 0 0;
+  margin-top: 10px; border-top: 1px solid #2a4a7f;
+}
+.step-nav button {
+  flex: 1; /* 同样让预览页导航按钮等宽 */
+  background: #0c1424; border: 1px solid #2a4a7f; color: #93c5fd;
+  padding: 8px 0; border-radius: 4px; cursor: pointer;
+  font-family: 'Consolas', monospace; font-size: 12px; transition: 0.2s;
+  text-align: center;
+  margin: 0 4px; max-width: 140px;
+}
+.step-nav button:first-child { margin-left: 0; }
+.step-nav button:last-child { margin-right: 0; }
+.step-nav button:hover {
+  border-color: #3b82f6; box-shadow: 0 0 15px rgba(59,130,246,0.4);
+}
+.step-nav button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 375px) {
+  .lobotomy-panel .option-grid { gap: 4px; }
+  .lobotomy-panel .d { padding: 4px 0; font-size: 10px; }
+  .lobotomy-panel .form-row { flex-direction: column; gap: 8px; height: auto; margin-bottom: 8px; }
+  .lobotomy-panel .form-item { width: 100%; height: 32px; }
+  .lobotomy-panel .t { width: 160px; max-width: 160px; } /* 小屏手机安全宽度 */
+}
+</style>
+
+<div class="card-wrapper">
+  <div id="hu-container" class="intro-stage">
+    <div class="sys-header" id="sys-header">
+      <span>SYS_LOG</span>
+      <span id="hu_progress">01/08</span>
+    </div>
+
+    <div id="hu-intro-view">
+      <!-- 对话区 -->
+      <div class="dialogue-box" id="hu_dialogue_box">
+        <div class="dialogue-name">安吉拉</div>
+        <div class="dialogue-text" id="hu_display_text">欢迎您的加入，先生或者女士。</div>
+      </div>
+      
+      <!-- 录入档案 标识区 -->
+      <div id="hu-archive-label">
+        <div class="icon"></div>
+        <div class="title">录 入 档 案</div>
+        <div class="sub">准备为您建立员工身份信息...</div>
+        <div class="line"></div>
+      </div>
+    </div>
+
+    <div id="hu-register-view" style="display:none;">
+      <div class="lobotomy-panel" onclick="event.stopPropagation()">
+        <div class="main-title">◆ 员工入职登记 ◆</div>
+        <!-- 第一步 -->
+        <div id="register_step1">
+          <div class="form-row">
+            <div class="form-item">
+              <label class="label">员工姓名：</label>
+              <input type="text" id="hu_name_input" class="input-box" placeholder="请输入姓名"
+                     oninput="brainleaf.set('name', this.value)" onclick="event.stopPropagation()">
+            </div>
+            <div class="form-item">
+              <label class="label">员工性别：</label>
+              <input type="text" id="hu_gender_input" class="input-box" placeholder="请输入性别"
+                     oninput="brainleaf.set('gender', this.value)" onclick="event.stopPropagation()">
+            </div>
+          </div>
+
+          <div class="section-title">■ 身份选择</div>
+          <div class="option-grid" id="grid-identity">
+            <div class="c"><p class="d" data-t="新员工">新员工<div class="t">刚入职的普通员工，对公司一无所知</div></p></div>
+            <div class="c"><p class="d" data-t="资深员工">资深员工<div class="t">在公司工作多年，熟悉各种异常处理流程</div></p></div>
+            <div class="c"><p class="d" data-t="部门部长">部门部长<div class="t">部门的最高管理者，服从主管安排</div></p></div>
+            <div class="c"><p class="d" data-t="公司主管">公司主管<div class="t">脑叶公司的最高权限拥有者，你的安排将会影响到整个局面的决策</div></p></div>
+            <div class="c"><p class="d" data-t="异想体">异想体<div class="t">异想体：很明显你并非人类，也并非已知的会被人类接纳并且享有公民权的物种，人们更愿意称呼你为“异想体”</div></p></div>
+            <div class="c"><p class="d" data-t="收尾人">收尾人<div class="t">来自事务所的收尾人，承接各种委托中</div></p></div>
+            <div class="c"><p class="d" data-t="战神员工">战神员工<div class="t">作为主管精心挑选的员工，在能力上远超其他普通员工，因其卓越的能力而经常被派往与高危险的异想体进行接触</div></p></div>
+            <div class="c"><p class="d" data-t="手指">手指<div class="t">后巷里最知名的五个帮派合称手指，你是他们中的一员</div></p></div>
+            <div class="c"><p class="d" data-t="观察者">观察者<div class="t">你只负责观察时间的变化，你不参与任何事件，与此同时你也拥有进入几乎所有地区的权利，即使是发了狂的清道夫，他们也不会将你列入狩猎名单中</div></p></div>
+            <div class="c"><p class="d" data-t="调律者">调律者<div class="t">在原本的调律者加里翁失去踪迹后，新首脑替代了同僚的职务</div></p></div>
+            <div class="c"><p class="d" data-t="爪牙">爪牙<div class="t">拥有着恐怖力量的同时，你们时常与调律者一同出现，负责消灭那些非人知性体</div></p></div>
+            <div class="c"><p class="d" data-t="拾荒者">拾荒者<div class="t">在各个巢与后巷里游走的拾荒者，请不要小瞧他们，能够在后巷生活得滋润的人，本身就有一定的实力</div></p></div>
+          </div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <input type="text" id="hu_identity_custom" class="input-box" placeholder="自定义身份"
+                   oninput="brainleaf.set('identity', this.value)" onclick="event.stopPropagation()">
+          </div>
+
+          <div class="section-title">■ 所属部门</div>
+          <div class="option-grid" id="grid-dept">
+            <div class="c"><p class="d" data-t="控制部">控制部<div class="t">负责监控员工与异想体，传达对异想体的工作指令并策划综合训练程序的部门</div></p></div>
+            <div class="c"><p class="d" data-t="安保部">安保部<div class="t">负责将新员工训练成安保人员，对潜在事故进行预测并制定作战方案的部门</div></p></div>
+            <div class="c"><p class="d" data-t="情报部">情报部<div class="t">负责对异想体的危险度和特征进行分类，并探寻应对方案的部门</div></p></div>
+            <div class="c"><p class="d" data-t="培训部">培训部<div class="t">负责维持公司纪律，商讨及制定员工训练方针的部门</div></p></div>
+            <div class="c"><p class="d" data-t="中央本部">中央本部<div class="t">整个脑叶公司的中层，中央本部二区控制，监督所有部门。与一区相辅相成，研究各种高效的管理方法</div></p></div>
+            <div class="c"><p class="d" data-t="福利部">福利部<div class="t">负责所有员工福利的部门，通过不同的福利项目改善员工的身体健康和心理健康</div></p></div>
+            <div class="c"><p class="d" data-t="惩戒部">惩戒部<div class="t">负责制定和执行对员工惩罚措施的部门，有着最好的控制与制裁能力，无论对象是员工还是异想体</div></p></div>
+            <div class="c"><p class="d" data-t="研发部">研发部<div class="t">负责管理公司的所有实物材料，从修复破损的设施到E.G.O装备的研发和保养，还负责安置与治疗各种异想体</div></p></div>
+            <div class="c"><p class="d" data-t="记录部">记录部<div class="t">记录下公司自成立以来的点点滴滴，他们的记录和评估将直接决定员工的去留</div></p></div>
+            <div class="c"><p class="d" data-t="构筑部">构筑部<div class="t">最后一个开放的部门，代表主管已经下定决心拥抱过去，并准备创造属于自己的未来</div></p></div>
+            <div class="c"><p class="d" data-t="无所属">无所属<div class="t">不属于任何部门的自由人</div></p></div>
+            <div class="c"><p class="d" data-t="外部人员">外部人员<div class="t">不是公司员工的外来者</div></p></div>
+          </div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <input type="text" id="hu_dept_custom" class="input-box" placeholder="自定义部门"
+                   oninput="brainleaf.set('dept', this.value)" onclick="event.stopPropagation()">
+          </div>
+
+          <div class="section-title">◎ 收容事件</div>
+          <div class="option-grid" id="grid-event">
+            <div class="c"><p class="d" data-t="熔毁危机">熔毁危机<div class="t">公司内发生了大规模熔毁，多个异想体突破收容</div></p></div>
+            <div class="c"><p class="d" data-t="白夜降临">白夜降临<div class="t">异想体『白夜』突破收容，正在将员工转化为使徒</div></p></div>
+            <div class="c"><p class="d" data-t="血雾弥漫">血雾弥漫<div class="t">异想体『沉默乐团』开始演奏，整个公司被血雾笼罩</div></p></div>
+            <div class="c"><p class="d" data-t="终末鸟">终末鸟<div class="t">三只大鸟融合为终末鸟，审判即将降临</div></p></div>
+            <div class="c"><p class="d" data-t="核心抑制">核心抑制<div class="t">部门部长的核心被激活，需要进行核心抑制战斗</div></p></div>
+            <div class="c"><p class="d" data-t="逆卡巴拉能量">逆卡巴拉能量<div class="t">逆卡巴拉能量异常波动，可能引发未知后果</div></p></div>
+            <div class="c"><p class="d" data-t="设施大停电">设施大停电<div class="t">整个设施的供电系统发生故障，现在不仅公司的异想体出逃，员工的视线也受到严重影响</div></p></div>
+            <div class="c"><p class="d" data-t="异想体出逃">异想体出逃<div class="t">多个高危异想体突破收容，在公司内游荡</div></p></div>
+            <div class="c"><p class="d" data-t="认知滤网失效">认知滤网失效<div class="t">认知滤网暂时失效，员工开始看到事物的真实形态</div></p></div>
+            <div class="c"><p class="d" data-t="桃色蔓延">桃色蔓延<div class="t">一种散发着奇怪桃红色气泡的饮料突然在员工之间流行起来，它是从异想体身上获取能源时候的副产物，引用该饮料的员工出现了精神亢奋，性欲旺盛的情况</div></p></div>
+            <div class="c"><p class="d" data-t="爱心巧克力">爱心巧克力<div class="t">Cogito一只外表形似巧克力的异想体突破了收容，由于它只对爱/喜欢这种情感有反应，在不得已的情况下今天变成了特别的“情人节”</div></p></div>
+            <div class="c"><p class="d" data-t="和平的一天">和平的一天<div class="t">什么意外都没有发生，难得平静的生活，也从中窥探了员工们的真实性格与感受</div></p></div>
+          </div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <input type="text" id="hu_event_custom" class="input-box" placeholder="自定义事件（追加）"
+                   oninput="brainleaf.setArray('event', this.value)" onclick="event.stopPropagation()">
+          </div>
+
+          <div class="section-title">♦ 专属特性</div>
+          <div class="option-grid" id="grid-trait">
+            <div class="c"><p class="d" data-t="精神免疫">精神免疫<div class="t">对所有精神攻击完全免疫，精神值不会下降</div></p></div>
+            <div class="c"><p class="d" data-t="E.G.O适配">E.G.O适配<div class="t">能够完美适配任何E.G.O装备，不会发生侵蚀</div></p></div>
+            <div class="c"><p class="d" data-t="异想体之母">异想体之母<div class="t">“汝为众物之母，其子诞于圣躯”，所有的异想体视你为“母亲”（不论个人性别男女），并遵从你的旨意</div></p></div>
+            <div class="c"><p class="d" data-t="超速再生">超速再生<div class="t">身体和精神都能以极快的速度恢复，这意味着你几乎不会因为外力而死亡</div></p></div>
+            <div class="c"><p class="d" data-t="预知眼">预知眼<div class="t">“神将双目赐予给你，令你拥有看见未来之能”，你可以看见自己所处时间一切未来的走向</div></p></div>
+            <div class="c"><p class="d" data-t="崇神锻造">崇神锻造<div class="t">只要有材料，什么装备都打给你看！</div></p></div>
+            <div class="c"><p class="d" data-t="力量吞噬">力量吞噬<div class="t">击败的对象越多，力量就会相应的越强</div></p></div>
+            <div class="c"><p class="d" data-t="幸运硬币">幸运硬币<div class="t">凝结幸运的硬币，在需要选择的时候，好运永远常伴身边</div></p></div>
+            <div class="c"><p class="d" data-t="领导者">领导者<div class="t">你的存在鼓舞了他们的士气，角色存活时其他员工将不会崩溃，同时部长们无需进行核心抑制</div></p></div>
+            <div class="c"><p class="d" data-t="无名">无名<div class="t">你没有名字，这意味着你可以是任何你想要成为的人</div></p></div>
+            <div class="c"><p class="d" data-t="时间锚点">时间锚点<div class="t">死亡后可在时间回溯时保留记忆与过往，即使是时间装置的奇点，也必须以你的存在为最高优先级</div></p></div>
+            <div class="c"><p class="d" data-t="人见人爱">人见人爱<div class="t">亲和力MAX，不管是人类还是异想体，看见你之后都会下意识对你偏爱，不过这种偏爱，究竟是福还是祸呢？</div></p></div>
+          </div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <input type="text" id="hu_trait_custom" class="input-box" placeholder="自定义特性（追加）"
+                   oninput="brainleaf.setArray('trait', this.value)" onclick="event.stopPropagation()">
+          </div>
+
+          <div class="section-title">◆ 过往经历</div>
+          <div class="option-grid" id="grid-past">
+            <div class="c"><p class="d" data-t="孤儿">孤儿<div class="t">从小在孤儿院长大，无依无靠</div></p></div>
+            <div class="c"><p class="d" data-t="清道夫">清道夫<div class="t">在饥肠辘辘中觅食，也在痛苦中觉醒自己的意识</div></p></div>
+            <div class="c"><p class="d" data-t="前收尾人">前收尾人<div class="t">曾经是一名收尾人，金盆洗手后受邀来到公司</div></p></div>
+            <div class="c"><p class="d" data-t="科学家">科学家<div class="t">曾经是一名科学家，受到邀请后来到了公司</div></p></div>
+            <div class="c"><p class="d" data-t="医生">医生<div class="t">大量的病例令你积累了丰富的经验，能够在最小损失限度内完成治疗是你被邀请到L公司的唯一理由</div></p></div>
+            <div class="c"><p class="d" data-t="教师">教师<div class="t">你曾是一名活跃于后巷的教师，但后巷人光是如何活下去都竭尽全力了，找不到其他工作的你只好试着将简历投给了L公司</div></p></div>
+            <div class="c"><p class="d" data-t="罪犯">罪犯<div class="t">在犯下过无数罪恶之后，你被当做消耗品塞进了公司-这意味着脏活你先上，如果死了就喂给异想体当食物</div></p></div>
+            <div class="c"><p class="d" data-t="贵族">贵族<div class="t">出身于巢中豪门世家，凭借你的能力可以轻松入职任何一家世界之翼，但你最终还是选择入职了本公司</div></p></div>
+            <div class="c"><p class="d" data-t="流浪者">流浪者<div class="t">自你有记忆以来便一直在都市中流浪，或许是看中了你身上的哪点潜能，公司收留了你</div></p></div>
+            <div class="c"><p class="d" data-t="继位者">继位者<div class="t">在公司工作的家人因为意外离世后，公司通知你可以继承对方的职务</div></p></div>
+            <div class="c"><p class="d" data-t="实验体">实验体<div class="t">你曾是公司研发新技术时用来做对比的实验体，但不知为何你侥幸存活下来，这之后公司就给了你正式员工的身份</div></p></div>
+            <div class="c"><p class="d" data-t="失忆者">失忆者<div class="t">失去了所有记忆，只记得自己的名字</div></p></div>
+          </div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <input type="text" id="hu_past_custom" class="input-box" placeholder="自定义经历"
+                   oninput="brainleaf.set('past', this.value)" onclick="event.stopPropagation()">
+          </div>
+
+          <div class="section-title">♛ 载入mod</div>
+          <div class="option-grid" id="grid-mod">
+            <div class="c"><p class="d" data-t="全员女性">全员女性<div class="t">所有角色都变成女性的世界</div></p></div>
+            <div class="c"><p class="d" data-t="脑叶大学">脑叶大学<div class="t">脑叶公司变成了一所大学，部长则变为了各系别的主任</div></p></div>
+            <div class="c"><p class="d" data-t="烟霾战争">烟霾战争<div class="t">激动人心的时刻，为了使脑叶公司上台，对前L公司重拳出击吧！</div></p></div>
+            <div class="c"><p class="d" data-t="废墟图书馆">废墟图书馆<div class="t">连接废墟图书馆世界观，已经打破公司循环，原公司员工跟随各部长于图书馆苏醒</div></p></div>
+            <div class="c"><p class="d" data-t="边狱公司">边狱公司<div class="t">连接边狱公司世界观，废墟图书馆被放逐至郊外之后的时间线，罪人和巴士出现，以及他们的经理“但丁”</div></p></div>
+            <div class="c"><p class="d" data-t="反向收容">反向收容<div class="t">异想体收容人类的颠倒世界，员工成为被研究体</div></p></div>
+            <div class="c"><p class="d" data-t="时间循环">时间循环<div class="t">永远重复同一天的世界，只有你察觉异常</div></p></div>
+            <div class="c"><p class="d" data-t="全员存活">全员存活<div class="t">所有部长都存活的完美结局世界，没有人死亡</div></p></div>
+            <div class="c"><p class="d" data-t="异想体化">异想体化<div class="t">员工可以变成异想体进行行动，但如果他们的精神值太低就会触发核心崩溃，如果不进行核心抑制的话，异想体化的员工将会一直处于异想体状态</div></p></div>
+            <div class="c"><p class="d" data-t="平行世界">平行世界<div class="t">这里发生的故事似乎和原定的历史有所不同，尽管依旧在进行循环，但是有些东西变了；私人游玩mod，ooc含量极高，此mod需要与新的部长和部门mod一起使用</div></p></div>
+            <div class="c"><p class="d" data-t="新的部长和部门">新的部长和部门<div class="t">除了已知的部长外，还会增加一个新的部门-执行部与新部长【浮生】；私人游玩mod，ooc含量极高，此mod需要与平行世界mod一起使用</div></p></div>
+            <div class="c"><p class="d" data-t="淫液公司">淫液公司<div class="t">来吧，让我们赞美欲望！以性为情感的链接，来填满那些麻木不仁的灵魂！淫液公司，通过性来高效率转换人们所需求的能量，在这个公司里，性与爱是最值得人研究的内容</div></p></div>
+          </div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <input type="text" id="hu_mod_custom" class="input-box" placeholder="自定义mod（追加）"
+                   oninput="brainleaf.setArray('mod', this.value)" onclick="event.stopPropagation()">
+          </div>
+
+          <div class="section-title">✎ 补充设定</div>
+          <div style="margin:8px 0;" onclick="event.stopPropagation()">
+            <textarea id="hu_setting_input" class="textarea-box" placeholder="在这里输入你的补充设定..."
+                      oninput="brainleaf.set('setting', this.value)" onclick="event.stopPropagation()"></textarea>
+          </div>
+          
+          <div class="step-nav">
+            <button disabled>◀ PREV</button>
+            <button onclick="switchStep(2)">NEXT ▶</button>
+          </div>
+        </div>
+
+        <!-- 第二步：档案预览 -->
+        <div id="register_step2" style="display:none;">
+          <div class="preview-box">
+            <div class="section-title">◆ 员工档案预览 ◆</div>
+            <div style="font-size:12px;line-height:1.6; text-align:center;">
+              <div style="margin:6px 0;"><strong>员工姓名：</strong><span id="prev_name">未填写</span></div>
+              <div style="margin:6px 0;"><strong>员工性别：</strong><span id="prev_gender">未填写</span></div>
+              <div style="margin:6px 0;"><strong>身份：</strong><span id="prev_identity">未选择</span></div>
+              <div style="margin:6px 0;"><strong>所属部门：</strong><span id="prev_dept">未选择</span></div>
+              <div style="margin:6px 0;"><strong>收容事件：</strong><span id="prev_event">未选择</span></div>
+              <div style="margin:6px 0;"><strong>专属特性：</strong><span id="prev_trait">未选择</span></div>
+              <div style="margin:6px 0;"><strong>过往经历：</strong><span id="prev_past">未选择</span></div>
+              <div style="margin:6px 0;"><strong>载入mod：</strong><span id="prev_mod">未选择</span></div>
+              <div style="margin:6px 0;"><strong>补充设定：</strong><span id="prev_setting">未填写</span></div>
+            </div>
+          </div>
+          <button class="generate-btn" onclick="event.stopPropagation();brainleaf.generate()">◆ 生成员工档案 ◆</button>
+          <div class="step-nav">
+            <button onclick="switchStep(1)">◀ PREV</button>
+            <button disabled>NEXT ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引言底部按钮条 -->
+  <div id="intro-buttons-bar" class="intro-buttons">
+    <button id="hu_intro_prev_btn" class="btn-terminal">◀ PREV</button>
+    <button id="hu_intro_skip_btn" class="btn-terminal btn-skip">SKIP</button>
+    <button id="hu_intro_btn" class="btn-terminal">NEXT ▶</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const container = document.getElementById('hu-container');
+  const introView = document.getElementById('hu-intro-view');
+  const dialogueBox = document.getElementById('hu_dialogue_box');
+  const archiveLabel = document.getElementById('hu-archive-label');
+  const registerView = document.getElementById('hu-register-view');
+  const buttonsBar = document.getElementById('intro-buttons-bar');
+  const sysHeader = document.getElementById('sys-header');
+  const displayText = document.getElementById('hu_display_text');
+  const progressSpan = document.getElementById('hu_progress');
+  const prevBtn = document.getElementById('hu_intro_prev_btn');
+  const skipBtn = document.getElementById('hu_intro_skip_btn');
+  const nextBtn = document.getElementById('hu_intro_btn');
+
+  const introTexts = [
+    "欢迎您的加入，先生或者女士。",
+    "我们的公司在世界之翼里被称为“L公司”，但如果您想的话，也能用更加耳熟能详的名字去称呼我们——",
+    "脑叶公司。",
+    "本公司负责生产清洁高效的能源，并为都市提供能源。",
+    "作为已知的二十六家世界之翼中的一员，本公司的薪资待遇绝对是都市顶尖，若您没有异议，便请填写这份档案。",
+    "我们欢迎新员工的到来，也欢迎其他人的到访——毕竟不是所有人都是过来面试的不是吗？",
+    "无论您的想法如何，我们都欢迎您，欢迎您尝试去改变这该死的世界。",
+    " 录入档案"
+  ];
+  let introIndex = 0;
+
+  function updateIntro() {
+    const total = introTexts.length;
+    progressSpan.innerText = String(introIndex + 1).padStart(2, '0') + '/' + String(total).padStart(2, '0');
+
+    if (introIndex === total - 1) {
+      dialogueBox.style.display = 'none';
+      archiveLabel.style.display = 'flex';
+      
+      container.style.backgroundImage = "url('https://meimoaiimg.com/user/263397/mmexport1783409534813.jpg?i=1183647')";
+      
+      prevBtn.style.display = 'none';
+      skipBtn.style.display = 'none';
+      nextBtn.style.display = 'block';
+      
+      nextBtn.innerText = 'NEXT ▶';
+      nextBtn.className = 'btn-terminal btn-enter';
+      prevBtn.disabled = false;
+      nextBtn.disabled = false;
+    } else {
+      dialogueBox.style.display = 'flex';
+      archiveLabel.style.display = 'none';
+      displayText.innerText = introTexts[introIndex];
+      
+      prevBtn.style.display = 'flex';
+      skipBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+
+      if (introIndex === total - 2) {
+        container.style.backgroundImage = "url('https://meimoaiimg.com/user/263397/mmexport1783409534813.jpg?i=1183647')";
+        nextBtn.innerText = 'NEXT ▶';
+        nextBtn.className = 'btn-terminal btn-enter';
+      } else {
+        container.style.backgroundImage = "url('https://meimoaiimg.com/user/263397/mmexport1783409537280.jpg?i=1183646')";
+        nextBtn.innerText = 'NEXT ▶';
+        nextBtn.className = 'btn-terminal';
+      }
+      prevBtn.disabled = (introIndex === 0);
+    }
+  }
+
+  function goToRegister() {
+    introView.style.display = 'none';
+    buttonsBar.style.display = 'none';
+    sysHeader.style.display = 'none';
+    registerView.style.display = 'block';
+    container.classList.remove('intro-stage');
+    container.classList.add('register-stage');
+    container.style.backgroundImage = 'none';
+    brainleaf.updatePreview();
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (introIndex < introTexts.length - 1) {
+      introIndex++;
+      updateIntro();
+    } else {
+      goToRegister();
+    }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (introIndex > 0) {
+      introIndex--;
+      updateIntro();
+    }
+  });
+
+  skipBtn.addEventListener('click', () => {
+    introIndex = introTexts.length - 1;
+    updateIntro();
+  });
+
+  updateIntro();
+
+  window.switchStep = function(step) {
+    document.getElementById('register_step1').style.display = (step === 1) ? 'block' : 'none';
+    document.getElementById('register_step2').style.display = (step === 2) ? 'block' : 'none';
+    if (step === 2) brainleaf.updatePreview();
+  };
+
+  window.brainleaf = {
+    data: {
+      name: '', gender: '', identity: '', dept: '',
+      event: [], trait: [], past: '', mod: [], setting: ''
+    },
+    set: function(key, value) {
+      this.data[key] = value;
+      this.updatePreview();
+    },
+    toggleMulti: function(key, value) {
+      if (!Array.isArray(this.data[key])) this.data[key] = [];
+      const idx = this.data[key].indexOf(value);
+      if (idx > -1) {
+        this.data[key].splice(idx, 1);
+      } else {
+        this.data[key].push(value);
+      }
+      this.updatePreview();
+    },
+    setArray: function(key, value) {
+      if (!value.trim()) return;
+      if (!Array.isArray(this.data[key])) this.data[key] = [];
+      if (!this.data[key].includes(value.trim())) {
+        this.data[key].push(value.trim());
+      }
+      this.updatePreview();
+    },
+    updatePreview: function() {
+      const d = this.data;
+      document.getElementById('prev_name').innerText = d.name || '未填写';
+      document.getElementById('prev_gender').innerText = d.gender || '未填写';
+      document.getElementById('prev_identity').innerText = d.identity || '未选择';
+      document.getElementById('prev_dept').innerText = d.dept || '未选择';
+      document.getElementById('prev_event').innerText = d.event.length ? d.event.join('、') : '未选择';
+      document.getElementById('prev_trait').innerText = d.trait.length ? d.trait.join('、') : '未选择';
+      document.getElementById('prev_past').innerText = d.past || '未选择';
+      document.getElementById('prev_mod').innerText = d.mod.length ? d.mod.join('、') : '未选择';
+      document.getElementById('prev_setting').innerText = d.setting || '未填写';
+    },
+    generate: function() {
+      this.updatePreview();
+      const d = this.data;
+      const output = `【员工档案录入】
+姓名：${d.name || '未填写'}
+性别：${d.gender || '未填写'}
+身份：${d.identity || '未选择'}
+部门：${d.dept || '未选择'}
+收容事件：${d.event.length ? d.event.join('、') : '未选择'}
+专属特性：${d.trait.length ? d.trait.join('、') : '未选择'}
+过往经历：${d.past || '未选择'}
+载入mod：${d.mod.length ? d.mod.join('、') : '未选择'}
+补充设定：${d.setting || '未填写'}`;
+
+      const ta = document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea') ||
+                 document.querySelector('.chatMsgTextarea textarea') ||
+                 document.querySelector('textarea');
+      if (ta) {
+        ta.value = ta.value ? ta.value + '\n' + output : output;
+        ta.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }
+  };
+
+  const multiKeys = ['event', 'trait', 'mod'];
+  document.querySelectorAll('.option-grid').forEach(grid => {
+    grid.addEventListener('click', function(e) {
+      const d = e.target.closest('.d');
+      if (!d) return;
+      const key = grid.id.replace('grid-', '');
+      const val = d.dataset.t;
+      if (multiKeys.includes(key)) {
+        d.classList.toggle('selected');
+        brainleaf.toggleMulti(key, val);
+      } else {
+        grid.querySelectorAll('.d').forEach(el => el.classList.remove('selected'));
+        d.classList.add('selected');
+        brainleaf.set(key, val);
+      }
+    });
+  });
+})();
+</script>
+

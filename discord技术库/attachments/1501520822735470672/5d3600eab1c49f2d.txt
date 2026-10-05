@@ -1,0 +1,274 @@
+<style>
+/* 樱花粉主题 - 玉色文字，白色内衬，CSS樱花飘落动画 */
+.hu-cf-wrapper {
+    width: 100%; max-width: 480px; margin: 20px auto;
+    background: linear-gradient(180deg, #fff0f5 0%, #ffe4ec 50%, #fff0f5 100%);
+    border: 2px solid #ffb7c5; border-radius: 20px;
+    overflow: hidden; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    position: relative; box-shadow: 0 8px 32px rgba(255, 183, 197, 0.4);
+}
+
+/* 樱花飘落动画 - 使用多个花瓣元素 */
+.sakura-petal {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);
+    border-radius: 150% 0 150% 0;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 50;
+    animation: sakura-fall linear infinite;
+}
+.sakura-petal:nth-child(1) { left: 5%; animation-duration: 7s; animation-delay: 0s; transform: scale(0.8); }
+.sakura-petal:nth-child(2) { left: 15%; animation-duration: 9s; animation-delay: 1s; transform: scale(1.1); }
+.sakura-petal:nth-child(3) { left: 25%; animation-duration: 8s; animation-delay: 2s; transform: scale(0.9); }
+.sakura-petal:nth-child(4) { left: 35%; animation-duration: 10s; animation-delay: 0.5s; transform: scale(1.2); }
+.sakura-petal:nth-child(5) { left: 45%; animation-duration: 7.5s; animation-delay: 3s; transform: scale(0.7); }
+.sakura-petal:nth-child(6) { left: 55%; animation-duration: 9s; animation-delay: 1.5s; transform: scale(1.0); }
+.sakura-petal:nth-child(7) { left: 65%; animation-duration: 8.5s; animation-delay: 4s; transform: scale(0.85); }
+.sakura-petal:nth-child(8) { left: 75%; animation-duration: 10s; animation-delay: 2.5s; transform: scale(1.15); }
+.sakura-petal:nth-child(9) { left: 85%; animation-duration: 8s; animation-delay: 5s; transform: scale(0.9); }
+.sakura-petal:nth-child(10) { left: 95%; animation-duration: 9.5s; animation-delay: 3.5s; transform: scale(1.0); }
+.sakura-petal:nth-child(11) { left: 10%; animation-duration: 8s; animation-delay: 6s; transform: scale(1.1); }
+.sakura-petal:nth-child(12) { left: 30%; animation-duration: 10s; animation-delay: 4.5s; transform: scale(0.8); }
+.sakura-petal:nth-child(13) { left: 50%; animation-duration: 7s; animation-delay: 7s; transform: scale(1.2); }
+.sakura-petal:nth-child(14) { left: 70%; animation-duration: 9s; animation-delay: 5.5s; transform: scale(0.75); }
+.sakura-petal:nth-child(15) { left: 90%; animation-duration: 8.5s; animation-delay: 6.5s; transform: scale(1.05); }
+
+@keyframes sakura-fall {
+    0% { top: -20px; transform: translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    100% { top: 100%; transform: translateX(40px) rotate(720deg); opacity: 0; }
+}
+
+/* 顶部标题栏 */
+.cf-header {
+    padding: 20px 20px 5px; display: flex; flex-direction: column; align-items: center;
+    position: relative; z-index: 10;
+}
+.cf-h-title { 
+    font-size: 22px; font-weight: 900; 
+    color: #c2185b; letter-spacing: 4px; margin-bottom: 6px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+.cf-h-sub { 
+    font-size: 13px; color: #d87093; font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* 3D 轮播舞台 */
+.hu-cf-stage { 
+    height: 300px; position: relative; perspective: 1200px; 
+    display: flex; align-items: center; justify-content: center; 
+    margin: 15px 0; overflow: visible;
+}
+
+/* 卡牌基础样式 */
+.hu-cf-card { 
+    width: 160px; height: 240px; position: absolute; 
+    border-radius: 16px; overflow: hidden; 
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    transform-style: preserve-3d; 
+    border: 3px solid transparent;
+    background: #fff; 
+    box-shadow: 0 8px 24px rgba(255, 183, 197, 0.3);
+}
+.hu-cf-card img { 
+    width: 100%; height: 100%; object-fit: cover; display: block; 
+    border-radius: 13px;
+}
+
+/* 卡牌渐变遮罩 */
+.cf-card-overlay {
+    position: absolute; inset: 0; 
+    background: linear-gradient(180deg, transparent 60%, rgba(255, 240, 245, 0.9) 100%);
+    border-radius: 16px;
+}
+
+/* 卡牌各状态的三维坐标 */
+.hu-cf-card.active { 
+    transform: translateX(0) translateZ(0) scale(1.15); 
+    z-index: 10; border-color: #ff69b4; 
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.5); 
+    filter: brightness(1.05); 
+}
+.hu-cf-card.prev { 
+    transform: translateX(-65%) translateZ(-120px) rotateY(25deg); 
+    z-index: 5; filter: brightness(0.6) saturate(0.8); pointer-events: none;
+    opacity: 0.8;
+}
+.hu-cf-card.next { 
+    transform: translateX(65%) translateZ(-120px) rotateY(-25deg); 
+    z-index: 5; filter: brightness(0.6) saturate(0.8); pointer-events: none;
+    opacity: 0.8;
+}
+.hu-cf-card.hidden { 
+    transform: translateX(0) translateZ(-250px); 
+    z-index: 1; opacity: 0; pointer-events: none;
+}
+
+/* 左右切换箭头 */
+.cf-arrow { 
+    position: absolute; top: 50%; transform: translateY(-50%); 
+    width: 40px; height: 40px; background: rgba(255, 255, 255, 0.85); 
+    color: #c2185b; border: 2px solid #ffb7c5; border-radius: 50%; 
+    font-size: 18px; display: flex; align-items: center; justify-content: center; 
+    cursor: pointer; z-index: 20; transition: all 0.3s; 
+    backdrop-filter: blur(8px); box-shadow: 0 4px 12px rgba(255, 183, 197, 0.3);
+    /* 隐藏浏览器自带的蓝色聚焦提示和高亮 */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.cf-arrow:hover { 
+    border-color: #ff69b4; color: #ff1493; 
+    transform: translateY(-50%) scale(1.15); 
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+}
+.cf-arrow:active { background: #ff69b4; color: #fff; transform: translateY(-50%) scale(0.95); }
+.cf-prev-btn { left: 20px; }
+.cf-next-btn { right: 20px; }
+
+/* 下方动态数据区 - 白色内衬 */
+.hu-cf-details { 
+    padding: 20px 25px 30px; 
+    background: rgba(255, 255, 255, 0.7);
+    margin: 0 15px 15px; border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 183, 197, 0.3);
+    position: relative; z-index: 10;
+}
+.cf-title-box { display: flex; align-items: center; gap: 12px; margin-bottom: 10px;}
+.cf-badge { 
+    background: linear-gradient(135deg, #ffb7c5, #ff69b4); 
+    color: #fff; font-size: 10px; font-weight: 900; 
+    padding: 3px 8px; border-radius: 6px; 
+    letter-spacing: 1px; box-shadow: 0 2px 8px rgba(255, 105, 180, 0.3);
+}
+.cf-title { 
+    font-size: 22px; font-weight: 900; 
+    color: #2e8b57; /* 玉色 */
+    text-shadow: 0 1px 2px rgba(46, 139, 87, 0.1);
+}
+.cf-quote { 
+    font-size: 14px; font-weight: 600; 
+    color: #3cb371; /* 浅玉色 */
+    font-style: italic; 
+    border-left: 3px solid #ffb7c5; 
+    padding-left: 12px; margin-bottom: 14px; line-height: 1.5;
+    background: rgba(255, 240, 245, 0.5); padding: 8px 12px; border-radius: 0 8px 8px 0;
+}
+.cf-desc { 
+    font-size: 14px; color: #2e8b57; line-height: 1.7; text-align: justify; 
+    font-weight: 500;
+}
+
+/* 确认降临按钮 - 粉色呼吸灯效果 */
+.cf-confirm-btn { 
+    width: 100%; padding: 16px; 
+    background: linear-gradient(90deg, #ffb7c5, #ff69b4); 
+    color: #fff; font-weight: 900; font-size: 15px; letter-spacing: 2px;
+    text-align: center; border-radius: 12px; cursor: pointer; 
+    margin-top: 24px; transition: all 0.3s; border: none; 
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+    position: relative; overflow: hidden;
+    animation: breathe 2s ease-in-out infinite;
+    /* 隐藏浏览器自带的蓝色聚焦提示和高亮 */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.cf-confirm-btn::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+.cf-confirm-btn:hover::before { left: 100%; }
+.cf-confirm-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+}
+.cf-confirm-btn:active { transform: scale(0.97) translateY(0); }
+
+@keyframes breathe {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.4), 0 0 20px rgba(255, 105, 180, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.8), 0 0 40px rgba(255, 105, 180, 0.4); }
+}
+
+/* 装饰性背景元素 */
+.hu-cf-wrapper::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255, 240, 245, 0.4) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+}
+</style>
+<!-- 3D 卡牌开局身份选择器 -->
+<div class="hu-cf-wrapper" data-idx="0" onclick="event.stopPropagation()">
+
+<!-- 樱花飘落装饰 - 15片花瓣，红粉白三色 -->
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #fff0f5, #ffb7c5);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ff1493, #c2185b);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ffb7c5, #ff69b4);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #fff, #ffd1dc);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ffd1dc, #ffb7c5);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #c2185b, #ff1493);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #fff0f5, #ffd1dc);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ff1493, #ff69b4);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ffb7c5, #ffd1dc);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #fff, #ffb7c5);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ff69b4, #c2185b);"></div>
+<div class="sakura-petal" style="background: radial-gradient(circle at 30% 30%, #ffd1dc, #fff0f5);"></div>
+
+<!-- 顶部标题 -->
+<div class="cf-header">
+    <span class="cf-h-title">自定义开局</span>
+    <span class="cf-h-sub">请滑动选择您的命运轨迹</span>
+</div>
+
+<!-- 3D 轮播舞台 -->
+<div class="hu-cf-stage">
+    <!-- 左切换按钮 -->
+    <div class="cf-arrow cf-prev-btn" onclick="event.stopPropagation(); var w=this.closest('.hu-cf-wrapper'); var idx=parseInt(w.getAttribute('data-idx')); var c=w.querySelectorAll('.hu-cf-card'); var l=c.length; idx=(idx-1+l)%l; w.setAttribute('data-idx',idx); for(var i=0;i<l;i++){c[i].className='hu-cf-card'; if(i===idx)c[i].classList.add('active'); else if(i===(idx-1+l)%l)c[i].classList.add('prev'); else if(i===(idx+1)%l)c[i].classList.add('next'); else c[i].classList.add('hidden'); } w.querySelector('.cf-title').innerText=c[idx].getAttribute('data-title'); w.querySelector('.cf-quote').innerText=c[idx].getAttribute('data-quote'); w.querySelector('.cf-desc').innerText=c[idx].getAttribute('data-desc');">◀</div>
+    
+    <!-- 卡牌数据源  -->
+    <div class="hu-cf-card" data-title="大坏蛋" data-quote="嘿嘿，哥哥好~”" data-desc="超级坏的大坏蛋（｀へ´），其实也没多坏。">
+        <img src="https://meimoaiimg.com/user/219726/file_00000000d6c0720cb8c27012ca9fd1de.png" alt="card">
+        <div class="cf-card-overlay"></div>
+    </div>
+    
+    <div class="hu-cf-card" data-title="白傻子" data-quote="“事不宜迟，先吃薯条吧”" data-desc="溜傻子逗傻子玩傻子操傻子，你们还有点良心吗？">
+        <img src="https://meimoaiimg.com/user/219726/file_000000004494720c9ba1913aa139fa28.png" alt="card">
+        <div class="cf-card-overlay"></div>
+    </div>
+
+    <div class="hu-cf-card" data-title="呆子" data-quote="“嗯，我会这样的”" data-desc="真是个呆逼">
+        <img src="https://meimoaiimg.com/user/219726/file_000000005e5071f5bafd9e337a487170.png" alt="card">
+        <div class="cf-card-overlay"></div>
+    </div>
+
+    <!-- 右切换按钮 -->
+    <div class="cf-arrow cf-next-btn" onclick="event.stopPropagation(); var w=this.closest('.hu-cf-wrapper'); var idx=parseInt(w.getAttribute('data-idx')); var c=w.querySelectorAll('.hu-cf-card'); var l=c.length; idx=(idx+1)%l; w.setAttribute('data-idx',idx); for(var i=0;i<l;i++){c[i].className='hu-cf-card'; if(i===idx)c[i].classList.add('active'); else if(i===(idx-1+l)%l)c[i].classList.add('prev'); else if(i===(idx+1)%l)c[i].classList.add('next'); else c[i].classList.add('hidden'); } w.querySelector('.cf-title').innerText=c[idx].getAttribute('data-title'); w.querySelector('.cf-quote').innerText=c[idx].getAttribute('data-quote'); w.querySelector('.cf-desc').innerText=c[idx].getAttribute('data-desc');">▶</div>
+</div>
+
+<!-- 下方详情展示区 -->
+<div class="hu-cf-details">
+    <div class="cf-title-box">
+        <div class="cf-badge">IDENTITY</div>
+        <div class="cf-title">加载中...</div>
+    </div>
+    <div class="cf-quote">加载中...</div>
+    <div class="cf-desc">正在同步星尘娱乐内网数据...</div>
+    
+    <!-- 确认选择按钮 - 粉色呼吸灯 -->
+    <button class="cf-confirm-btn" onclick="event.stopPropagation(); var t=document.querySelector('.chat-input-scope textarea, .chatMsgTextarea textarea, textarea'); if(t){ var w=this.closest('.hu-cf-wrapper'); var act=w.querySelector('.hu-cf-card.active'); var txt='\n【系统指令】：我决定以此开局。\n目标身份：「'+act.getAttribute('data-title')+'」\n身份背景：'+act.getAttribute('data-desc')+'\n\n请立刻在下一轮回复中，根据此身份的世界观和视角，生成一段符合该身份特质的开局剧情互动。'; var ns=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value'); if(ns&&ns.set)ns.set.call(t,t.value+txt); else t.value+=txt; t.dispatchEvent(new Event('input',{bubbles:true})); }">确认以此身份降临</button>
+</div>
+
+<!-- 自动点火器：页面加载时初始化第一张卡牌 -->
+<img src="x" style="display:none;" onerror="event.stopPropagation(); (function(el){ var w=el.closest('.hu-cf-wrapper'); if(!w)return; var idx=0; var c=w.querySelectorAll('.hu-cf-card'); var l=c.length; for(var i=0;i<l;i++){ c[i].className='hu-cf-card'; if(i===idx)c[i].classList.add('active'); else if(i===(idx-1+l)%l)c[i].classList.add('prev'); else if(i===(idx+1)%l)c[i].classList.add('next'); else c[i].classList.add('hidden'); } w.querySelector('.cf-title').innerText=c[idx].getAttribute('data-title'); w.querySelector('.cf-quote').innerText=c[idx].getAttribute('data-quote'); w.querySelector('.cf-desc').innerText=c[idx].getAttribute('data-desc'); el.remove(); })(this)">
+
+</div>

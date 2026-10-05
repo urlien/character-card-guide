@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能代码分段工具</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Microsoft Yahei', sans-serif;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+      }
+      .input-area,
+      .setting-area,
+      .result-area {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      h3 {
+        margin-bottom: 10px;
+        color: #333;
+      }
+      textarea {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        font-size: 14px;
+      }
+      .setting-area input[type="text"],
+      .setting-area input[type="number"] {
+        width: 100px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      .setting-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      .setting-row + .setting-row {
+        margin-top: 10px;
+      }
+      .setting-area .w-140 {
+        width: 140px;
+      }
+      button {
+        padding: 8px 20px;
+        background-color: #409eff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      button:hover {
+        background-color: #66b1ff;
+      }
+      .result-item {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+      }
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .result-item p {
+        margin: 0;
+        color: #666;
+        font-size: 13px;
+      }
+      .result-item textarea {
+        height: 120px;
+        margin-top: 0;
+        font-family: Consolas, Monaco, monospace; /* 代码等宽字体更易读 */
+      }
+      .tip {
+        color: #999;
+        font-size: 12px;
+        margin-top: 8px;
+      }
+      .result-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .link-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px dashed #ddd;
+        border-radius: 4px;
+        background-color: #fff;
+      }
+      .link-item input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .status {
+        margin-top: 10px;
+        color: #666;
+        font-size: 13px;
+      }
+      
+      .switch-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        user-select: none;
+        margin-right: 15px;
+      }
+      .switch-label input[type="checkbox"] {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="input-area">
+        <h3>1. 输入需要分段的代码/文本</h3>
+        <textarea id="sourceText" placeholder="请粘贴需要分段的代码/文本（如3万字代码）..."></textarea>
+      </div>
+
+      <div class="setting-area">
+        <h3>2. 设置参数</h3>
+        <div class="setting-row">
+          <input type="number" id="maxWordCount" value="9000" min="1" placeholder="单段最大字数" />
+          <label class="switch-label">
+            <input type="checkbox" id="enableLinkMarker" />
+            启用段落尾部链接字符
+          </label>
+          <button id="splitBtn">开始智能分段</button>
+        </div>
+        
+        <div class="setting-row hidden" id="linkSettings">
+          <input class="w-140" type="text" id="linkBase" value="继续" placeholder="链接字符内容" />
+          <input type="text" id="linkPrefix" value="&" placeholder="前缀" />
+          <input type="text" id="linkSuffix" value="&" placeholder="后缀" />
+          <button id="copyBaseBtn">复制当前链接字符</button>
+        </div>
+        <p class="tip">提示：已适配 HTML/CSS/JS 混合智能分段（优先在 }、&gt;、; 及换行处截断，尽最大可能保持代码块完整）。</p>
+      </div>
+
+      <div class="result-area">
+        <h3>3. 分段结果</h3>
+        <div class="result-actions">
+          <button id="copyAllBtn">复制全部结果</button>
+          <button id="copyMarkersBtn" class="hidden">复制全部链接字符</button>
+        </div>
+        <div id="resultContainer"></div>
+        <div class="status" id="statusText"></div>
+      </div>
+    </div>
+
+    <script>
+      const sourceText = document.getElementById('sourceText');
+      const maxWordCount = document.getElementById('maxWordCount');
+      const splitBtn = document.getElementById('splitBtn');
+      const enableLinkMarker = document.getElementById('enableLinkMarker');
+      const linkSettings = document.getElementById('linkSettings');
+      const linkBase = document.getElementById('linkBase');
+      const linkPrefix = document.getElementById('linkPrefix');
+      const linkSuffix = document.getElementById('linkSuffix');
+      const copyBaseBtn = document.getElementById('copyBaseBtn');
+      const resultContainer = document.getElementById('resultContainer');
+      const copyAllBtn = document.getElementById('copyAllBtn');
+      const copyMarkersBtn = document.getElementById('copyMarkersBtn');
+      const statusText = document.getElementById('statusText');
+      let lastCombinedText = '';
+
+      enableLinkMarker.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          linkSettings.classList.remove('hidden');
+          copyMarkersBtn.classList.remove('hidden');
+        } else {
+          linkSettings.classList.add('hidden');
+          copyMarkersBtn.classList.add('hidden');
+        }
+      });
+
+      // 核心：升级版多级适配截断算法
+      function smartSplitText(text, maxCount) {
+        // 不再强制 .trim() 全文，保留可能的格式
+        const result = [];
+        let currentIndex = 0;
+        const totalLength = text.length;
+
+        // 定义截断标记的优先级（从高到低）
+        // offset 决定了切断后该字符属于上一段还是下一段（1表示留在上一段结尾）
+        const markers = [
+          { str: '}\n', offset: 1 },  // CSS/JS 块结束且换行
+          { str: '>\n', offset: 1 },  // HTML 标签结束且换行
+          { str: ';\n', offset: 1 },  // JS/CSS 语句结束且换行
+          { str: '\n', offset: 1 },   // 普通换行符
+          { str: '}', offset: 1 },    // 压缩代码: 块结束
+          { str: '>', offset: 1 },    // 压缩代码: 标签结束
+          { str: ';', offset: 1 },    // 压缩代码: 语句结束
+          { str: ' ', offset: 1 }     // 保底: 空格
+        ];
+
+        while (currentIndex < totalLength) {
+          let endIndex = Math.min(currentIndex + maxCount, totalLength);
+
+          if (endIndex < totalLength) {
+            const chunk = text.substring(currentIndex, endIndex);
+            let bestIndex = -1;
+            
+            // 策略1：优先在分段的后半部分寻找安全锚点，避免切出极短的代码
+            const minAcceptableIndex = Math.floor(chunk.length * 0.5);
+
+            for (const marker of markers) {
+              const idx = chunk.lastIndexOf(marker.str);
+              if (idx >= minAcceptableIndex) {
+                bestIndex = currentIndex + idx + marker.offset;
+                break;
+              }
+            }
+
+            // 策略2：如果后半段实在找不到符合的（比如超长的一行代码），放宽到整段寻找
+            if (bestIndex === -1) {
+              for (const marker of markers) {
+                const idx = chunk.lastIndexOf(marker.str);
+                if (idx !== -1) {
+                  bestIndex = currentIndex + idx + marker.offset;
+                  break;
+                }
+              }
+            }
+
+            // 如果找到了合适的切断点，则更新 endIndex
+            if (bestIndex !== -1) {
+              endIndex = bestIndex;
+            }
+          }
+
+          const segment = text.substring(currentIndex, endIndex);
+          result.push(segment);
+          currentIndex = endIndex;
+        }
+
+        return result;
+      }
+
+      async function copyToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.style.position = 'fixed';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+      }
+
+      function buildMarkerText(base, index) {
+        const b = (base ?? '').trim();
+        const p = linkPrefix.value ?? '';
+        const s = linkSuffix.value ?? '';
+        const suffixNum = index === 0 ? '' : String(index);
+        return `${p}${b}${suffixNum}${s}`;
+      }
+
+      function getMarker(base, index) {
+        return buildMarkerText(base, index);
+      }
+
+      function renderSegments(segments, base, useMarker) {
+        resultContainer.innerHTML = '';
+        segments.forEach((segment, index) => {
+          const segmentItem = document.createElement('div');
+          segmentItem.className = 'result-item';
+          
+          const markerText = (useMarker && index < segments.length - 1) ? getMarker(base, index) : '';
+          const displaySegmentText = markerText ? `${segment.trimEnd()}\n${markerText}` : segment.trimEnd();
+
+          const header = document.createElement('div');
+          header.className = 'result-header';
+
+          const p = document.createElement('p');
+          p.textContent = `第 ${index + 1} 段（实际字数：${segment.length}）`;
+
+          const copyBtn = document.createElement('button');
+          copyBtn.type = 'button';
+          copyBtn.textContent = '复制本段';
+          copyBtn.addEventListener('click', async () => {
+            await copyToClipboard(displaySegmentText);
+            statusText.textContent = `已复制第 ${index + 1} 段`;
+          });
+
+          header.appendChild(p);
+          header.appendChild(copyBtn);
+
+          const textarea = document.createElement('textarea');
+          textarea.readOnly = true;
+          textarea.value = displaySegmentText;
+
+          segmentItem.appendChild(header);
+          segmentItem.appendChild(textarea);
+          
+          if (markerText) {
+            const linkItem = document.createElement('div');
+            linkItem.className = 'link-item';
+
+            const input = document.createElement('input');
+            input.readOnly = true;
+            input.className = 'link-marker-input';
+            input.value = markerText;
+
+            const linkCopyBtn = document.createElement('button');
+            linkCopyBtn.type = 'button';
+            linkCopyBtn.textContent = '复制链接字符';
+            linkCopyBtn.addEventListener('click', async () => {
+              await copyToClipboard(markerText);
+              statusText.textContent = `已复制：${markerText}`;
+            });
+
+            linkItem.appendChild(input);
+            linkItem.appendChild(linkCopyBtn);
+            segmentItem.appendChild(linkItem);
+          }
+
+          resultContainer.appendChild(segmentItem);
+        });
+      }
+
+      function splitAndBuildOutput() {
+        const text = sourceText.value;
+        const count = parseInt(maxWordCount.value);
+        const base = linkBase.value;
+        const useMarker = enableLinkMarker.checked;
+
+        if (!text) {
+          alert('请先输入需要分段的文本/代码！');
+          return;
+        }
+        if (isNaN(count) || count < 1) {
+          alert('请输入有效的单段最大字数（正整数）！');
+          return;
+        }
+        if (useMarker && !String(base ?? '').trim()) {
+          alert('开启了链接字符功能，请输入链接字符内容（例如：继续）！');
+          return;
+        }
+
+        const segments = smartSplitText(text, count);
+        const outputSegments = segments.map((seg, i) => {
+          if (i === segments.length - 1 || !useMarker) return seg.trimEnd();
+          return `${seg.trimEnd()}\n${getMarker(base, i)}`;
+        });
+
+        lastCombinedText = outputSegments.join('\n\n');
+        renderSegments(segments, base, useMarker);
+        
+        let statusMsg = `已分段：${segments.length} 段`;
+        if (useMarker) {
+          statusMsg += `；已生成链接字符：${Math.max(segments.length - 1, 0)} 个`;
+        }
+        statusText.textContent = statusMsg;
+      }
+
+      splitBtn.addEventListener('click', splitAndBuildOutput);
+
+      copyBaseBtn.addEventListener('click', async () => {
+        const base = linkBase.value;
+        if (!String(base ?? '').trim()) {
+          alert('请输入链接字符内容（例如：继续）！');
+          return;
+        }
+        const text = buildMarkerText(base, 0);
+        await copyToClipboard(text);
+        statusText.textContent = `已复制：${text}`;
+      });
+
+      copyAllBtn.addEventListener('click', async () => {
+        if (!lastCombinedText) {
+          alert('暂无可复制结果，请先分段。');
+          return;
+        }
+        await copyToClipboard(lastCombinedText);
+        statusText.textContent = '已复制全部结果';
+      });
+
+      copyMarkersBtn.addEventListener('click', async () => {
+        const base = linkBase.value;
+        if (!String(base ?? '').trim()) {
+          alert('请输入链接字符内容（例如：继续）！');
+          return;
+        }
+        const text = Array.from(resultContainer.querySelectorAll('.link-marker-input'))
+          .map(el => el.value)
+          .filter(Boolean)
+          .join('\n');
+        if (!text) {
+          alert('暂无链接字符，请先分段。');
+          return;
+        }
+        await copyToClipboard(text);
+        statusText.textContent = '已复制全部链接字符';
+      });
+    </script>
+  </body>
+</html>

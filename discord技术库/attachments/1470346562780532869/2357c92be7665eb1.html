@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能代码分段工具 - 优化版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft Yahei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #333;
+            background: #f5f7fb;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .input-area,
+        .setting-area,
+        .result-area,
+        .compress-area {
+            margin-bottom: 20px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+        }
+
+        h3 {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            resize: vertical;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            background: #fbfdff;
+            color: #1f2937;
+            tab-size: 4;
+            overflow: auto;
+        }
+
+        textarea:focus,
+        input:focus {
+            outline: none;
+            border-color: #409eff;
+            box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.12);
+        }
+
+        .setting-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 12px 16px;
+            align-items: end;
+            margin-bottom: 12px;
+        }
+
+        .field label,
+        .checkbox-row label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 10px 0 12px;
+        }
+
+        .checkbox-row label {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 9px 18px;
+            background-color: #409eff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.15s ease;
+        }
+
+        button:hover {
+            background-color: #66b1ff;
+        }
+
+        button.secondary {
+            background: #eef2ff;
+            color: #3151b7;
+        }
+
+        button.secondary:hover {
+            background: #dfe7ff;
+        }
+
+        .result-summary {
+            color: #4b5563;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .result-item {
+            margin: 12px 0;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: #f9fafb;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .result-header p {
+            color: #4b5563;
+            font-size: 13px;
+        }
+
+        .compress-output textarea {
+            min-height: 140px;
+        }
+
+        .result-item textarea {
+            height: 180px;
+            min-height: 150px;
+            margin-top: 5px;
+            background: #fff;
+        }
+
+        .tip {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+
+        .nowrap {
+            white-space: pre;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 12px auto;
+                padding: 12px;
+            }
+
+            .result-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-area">
+            <h3>1. 输入需要分段的代码/文本</h3>
+            <textarea id="sourceText" spellcheck="false" placeholder="请粘贴需要分段的代码/文本（如3万字代码）..."></textarea>
+        </div>
+
+        <div class="setting-area">
+            <h3>2. 设置分段参数</h3>
+            <div class="setting-grid">
+                <div class="field">
+                    <label for="maxWordCount">单段最大字符数</label>
+                    <input type="number" id="maxWordCount" value="9000" min="1" placeholder="单段最大字符数">
+                </div>
+                <div class="field">
+                    <label for="searchWindow">向前寻找安全断点范围</label>
+                    <input type="number" id="searchWindow" value="1200" min="0" placeholder="例如 1200">
+                </div>
+            </div>
+
+            <div class="checkbox-row">
+                <label><input type="checkbox" id="escapeMarkdownImage" checked> 防止 Markdown 图片链接被渲染</label>
+                <label><input type="checkbox" id="wrapLines" checked> 自动换行，避免长行溢出</label>
+                <label><input type="checkbox" id="keepOuterSpace" checked> 保留首尾空白</label>
+                <label><input type="checkbox" id="removeCodeComments" checked> 压缩时移除 JS/CSS 注释</label>
+            </div>
+
+            <div class="button-row">
+                <button id="splitBtn">开始智能分段</button>
+                <button id="compressBtn" type="button">一键压缩为一行</button>
+                <button id="copyAllBtn" class="secondary" type="button">复制全部分段</button>
+                <button id="copyCompressedBtn" class="secondary" type="button">复制压缩结果</button>
+                <button id="clearBtn" class="secondary" type="button">清空结果</button>
+            </div>
+
+            <p class="tip">
+                提示：输出区不再使用 innerHTML 拼接代码，而是使用 textarea.value 写入文本，可避免 <code>&lt;/textarea&gt;</code>、图片链接、HTML 标签等内容被浏览器解析。
+                默认优先在安全断点截断：换行、分号、右花括号、逗号、空格；找不到再按字符数硬切。
+            </p>
+        </div>
+
+        <div class="compress-area">
+            <h3>3. 一行压缩结果</h3>
+            <p id="compressSummary" class="result-summary">还没有生成压缩结果。</p>
+            <div class="compress-output">
+                <textarea id="compressedText" readonly spellcheck="false" wrap="off" placeholder="点击“一键压缩为一行”后，这里会显示压缩结果..."></textarea>
+            </div>
+        </div>
+
+        <div class="result-area">
+            <h3>4. 分段结果</h3>
+            <p id="resultSummary" class="result-summary">还没有生成分段。</p>
+            <div id="resultContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const sourceText = document.getElementById('sourceText');
+        const maxWordCount = document.getElementById('maxWordCount');
+        const searchWindow = document.getElementById('searchWindow');
+        const splitBtn = document.getElementById('splitBtn');
+        const compressBtn = document.getElementById('compressBtn');
+        const copyAllBtn = document.getElementById('copyAllBtn');
+        const copyCompressedBtn = document.getElementById('copyCompressedBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultSummary = document.getElementById('resultSummary');
+        const escapeMarkdownImage = document.getElementById('escapeMarkdownImage');
+        const wrapLines = document.getElementById('wrapLines');
+        const keepOuterSpace = document.getElementById('keepOuterSpace');
+        const removeCodeComments = document.getElementById('removeCodeComments');
+        const compressedText = document.getElementById('compressedText');
+        const compressSummary = document.getElementById('compressSummary');
+
+        let latestSegments = [];
+
+        function normalizeForOutput(text) {
+            if (!escapeMarkdownImage.checked) return text;
+
+            // 把 Markdown 图片语法 ![alt](url) 转成 \![alt](url)，防止粘贴到 Markdown 环境后直接渲染成图片。
+            // 普通链接 [text](url) 不受影响。
+            return text.replace(/(^|[^\\])!\[/g, '$1\\![');
+        }
+
+
+        function isWhitespace(char) {
+            return /\s/.test(char);
+        }
+
+        function isPunctuation(char) {
+            return /[{}()[\];:,.<>]/.test(char);
+        }
+
+        function compressCodeToOneLine(rawText, shouldRemoveComments) {
+            const text = keepOuterSpace.checked ? rawText : rawText.trim();
+            const output = [];
+            let state = 'normal';
+            let pendingSpace = false;
+
+            function append(char) {
+                if (state === 'normal') {
+                    const prev = output[output.length - 1] || '';
+                    if (pendingSpace && prev && !isPunctuation(prev) && !isPunctuation(char)) {
+                        output.push(' ');
+                    }
+                    pendingSpace = false;
+                }
+                output.push(char);
+            }
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const next = text[i + 1] || '';
+                const prev = text[i - 1] || '';
+
+                if (state === 'lineComment') {
+                    if (char === '\n' || char === '\r') {
+                        state = 'normal';
+                        pendingSpace = true;
+                    }
+                    continue;
+                }
+
+                if (state === 'blockComment') {
+                    if (char === '*' && next === '/') {
+                        i++;
+                        state = 'normal';
+                        pendingSpace = true;
+                    }
+                    continue;
+                }
+
+                if (state === 'singleQuote') {
+                    append(char);
+                    if (char === "'" && prev !== '\\') state = 'normal';
+                    continue;
+                }
+
+                if (state === 'doubleQuote') {
+                    append(char);
+                    if (char === '"' && prev !== '\\') state = 'normal';
+                    continue;
+                }
+
+                if (state === 'templateQuote') {
+                    append(char);
+                    if (char === '`' && prev !== '\\') state = 'normal';
+                    continue;
+                }
+
+                if (shouldRemoveComments && char === '/' && next === '/') {
+                    state = 'lineComment';
+                    i++;
+                    continue;
+                }
+
+                if (shouldRemoveComments && char === '/' && next === '*') {
+                    state = 'blockComment';
+                    i++;
+                    continue;
+                }
+
+                if (char === "'") {
+                    state = 'singleQuote';
+                    append(char);
+                    continue;
+                }
+
+                if (char === '"') {
+                    state = 'doubleQuote';
+                    append(char);
+                    continue;
+                }
+
+                if (char === '`') {
+                    state = 'templateQuote';
+                    append(char);
+                    continue;
+                }
+
+                if (isWhitespace(char)) {
+                    pendingSpace = true;
+                    continue;
+                }
+
+                append(char);
+            }
+
+            return output.join('').trim();
+        }
+
+        function renderCompressedResult() {
+            const text = sourceText.value;
+            if (!text) {
+                alert('请先输入需要压缩的文本/代码！');
+                return;
+            }
+
+            const result = normalizeForOutput(compressCodeToOneLine(text, removeCodeComments.checked));
+            compressedText.value = result;
+            const saved = text.length - result.length;
+            const ratio = text.length ? Math.max(0, Math.round((saved / text.length) * 100)) : 0;
+            compressSummary.textContent = `已压缩为一行，原始字符数 ${text.length}，压缩后字符数 ${result.length}，约减少 ${ratio}% 。`;
+        }
+
+        function findBestBreakPoint(text, start, hardEnd, windowSize) {
+            const minIndex = Math.max(start + 1, hardEnd - windowSize);
+            const candidates = ['\n\n', '\n', ';', '}', ',', ' '];
+
+            for (const mark of candidates) {
+                const index = text.lastIndexOf(mark, hardEnd);
+                if (index >= minIndex && index > start) {
+                    return index + mark.length;
+                }
+            }
+
+            return hardEnd;
+        }
+
+        function smartSplitText(rawText, maxCount, windowSize) {
+            const text = keepOuterSpace.checked ? rawText : rawText.trim();
+            const result = [];
+            let currentIndex = 0;
+            const totalLength = text.length;
+
+            while (currentIndex < totalLength) {
+                let endIndex = Math.min(currentIndex + maxCount, totalLength);
+
+                if (endIndex < totalLength) {
+                    endIndex = findBestBreakPoint(text, currentIndex, endIndex, windowSize);
+                }
+
+                // 防止极端情况下 endIndex 没有前进，导致死循环。
+                if (endIndex <= currentIndex) {
+                    endIndex = Math.min(currentIndex + maxCount, totalLength);
+                }
+
+                result.push(text.substring(currentIndex, endIndex));
+                currentIndex = endIndex;
+            }
+
+            return result;
+        }
+
+        function createSegmentItem(segment, index) {
+            const safeSegment = normalizeForOutput(segment);
+
+            const segmentItem = document.createElement('div');
+            segmentItem.className = 'result-item';
+
+            const header = document.createElement('div');
+            header.className = 'result-header';
+
+            const info = document.createElement('p');
+            info.textContent = `第 ${index + 1} 段（原始字符数：${segment.length}，输出字符数：${safeSegment.length}）`;
+
+            const copyBtn = document.createElement('button');
+            copyBtn.type = 'button';
+            copyBtn.className = 'secondary';
+            copyBtn.textContent = '复制本段';
+            copyBtn.addEventListener('click', async () => {
+                await copyText(safeSegment);
+                copyBtn.textContent = '已复制';
+                setTimeout(() => copyBtn.textContent = '复制本段', 1200);
+            });
+
+            const textarea = document.createElement('textarea');
+            textarea.readOnly = true;
+            textarea.spellcheck = false;
+            textarea.wrap = wrapLines.checked ? 'soft' : 'off';
+            textarea.value = safeSegment;
+            if (!wrapLines.checked) {
+                textarea.classList.add('nowrap');
+            }
+
+            header.appendChild(info);
+            header.appendChild(copyBtn);
+            segmentItem.appendChild(header);
+            segmentItem.appendChild(textarea);
+
+            return segmentItem;
+        }
+
+        async function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.left = '-9999px';
+            document.body.appendChild(temp);
+            temp.focus();
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+        }
+
+        function renderSegments(segments) {
+            resultContainer.replaceChildren();
+            latestSegments = segments.map(normalizeForOutput);
+
+            const fragment = document.createDocumentFragment();
+            segments.forEach((segment, index) => {
+                fragment.appendChild(createSegmentItem(segment, index));
+            });
+            resultContainer.appendChild(fragment);
+
+            const totalChars = segments.reduce((sum, item) => sum + item.length, 0);
+            resultSummary.textContent = `已生成 ${segments.length} 段，原始总字符数 ${totalChars}。`;
+        }
+
+        compressBtn.addEventListener('click', renderCompressedResult);
+
+        copyCompressedBtn.addEventListener('click', async function() {
+            if (!compressedText.value) {
+                alert('还没有可复制的压缩结果，请先点击“一键压缩为一行”。');
+                return;
+            }
+
+            await copyText(compressedText.value);
+            copyCompressedBtn.textContent = '已复制压缩结果';
+            setTimeout(() => copyCompressedBtn.textContent = '复制压缩结果', 1200);
+        });
+
+        splitBtn.addEventListener('click', function() {
+            const text = sourceText.value;
+            const count = parseInt(maxWordCount.value, 10);
+            const windowSize = parseInt(searchWindow.value, 10);
+
+            if (!text) {
+                alert('请先输入需要分段的文本/代码！');
+                return;
+            }
+            if (isNaN(count) || count < 1) {
+                alert('请输入有效的单段最大字符数（正整数）！');
+                return;
+            }
+            if (isNaN(windowSize) || windowSize < 0) {
+                alert('请输入有效的安全断点范围（0 或正整数）！');
+                return;
+            }
+
+            const segments = smartSplitText(text, count, windowSize);
+            renderSegments(segments);
+        });
+
+        copyAllBtn.addEventListener('click', async function() {
+            if (!latestSegments.length) {
+                alert('还没有可复制的分段，请先点击“开始智能分段”。');
+                return;
+            }
+
+            const allText = latestSegments
+                .map((segment, index) => `----- 第 ${index + 1} 段 -----\n${segment}`)
+                .join('\n\n');
+            await copyText(allText);
+            copyAllBtn.textContent = '已复制全部';
+            setTimeout(() => copyAllBtn.textContent = '复制全部分段', 1200);
+        });
+
+        clearBtn.addEventListener('click', function() {
+            latestSegments = [];
+            compressedText.value = '';
+            compressSummary.textContent = '还没有生成压缩结果。';
+            resultContainer.replaceChildren();
+            resultSummary.textContent = '还没有生成分段。';
+        });
+    </script>
+</body>
+</html>

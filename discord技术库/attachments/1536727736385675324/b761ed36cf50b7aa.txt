@@ -1,0 +1,218 @@
+GC的小玩具，桀桀桀！ - 使用说明
+========================================
+
+功能
+----
+在 Discord 网页版监听新消息，符合条件时自动给该消息添加一个反应（表情）。
+
+
+安装
+----
+1. 浏览器安装篡改猴（Tampermonkey）扩展。
+2. 篡改猴 -> 添加新脚本，把 .js 文件内容粘贴进去，Ctrl+S 保存。
+3. 刷新 Discord 页面。
+
+改完配置必须刷新页面才生效。
+
+
+第一步：填名字
+--------------
+打开脚本，找到最上面的 GC_NAMES，把要监视的人写进去：
+
+    const GC_NAMES = [
+      '张三',
+      '李四',
+    ];
+
+名字用聊天界面上看到的显示名（有服务器昵称就用昵称）。
+
+匹配方式是「包含」，不是「完全相等」。所以：
+
+    写 '李四'  ->  能匹配  李四(摸鱼中)
+                          李四（吃饭去了）
+                  也会匹配 李四五   <- 注意这种误伤
+
+带状态后缀、会变的名字必须这样写。名字太短容易误伤，一个字的名字风险最高。
+
+
+第二步：填表情
+--------------
+找到 GC_RULES，改 emoji 的值：
+
+    const GC_RULES = [
+      { emoji: '👀', test: (m) => GC_byName(m, GC_NAMES) },
+    ];
+
+表情格式只有两种，写错会报 400：
+
+  系统表情    直接填字符，不带冒号
+              正确： '👍'
+              错误： ':thumbsup:'    <- 短代码不行
+
+  自定义表情  填 名字:数字ID，不带外层冒号
+              正确： 'blobcat:850123456789012345'
+              错误： ':blobcat:'
+              错误： ':blobcat~1:'   <- ~1 是界面显示用的，不是ID
+
+  取自定义表情ID：聊天框输入 \:表情名: 然后发送，
+  消息会显示成 <:blobcat:850123456789012345>，取中间那段。
+
+
+不同人加不同表情
+----------------
+一人一行，名单直接写在规则里，这时 GC_NAMES 就不用了：
+
+    const GC_RULES = [
+      { emoji: '👀', test: (m) => GC_byName(m, ['张三']) },
+      { emoji: '❤️', test: (m) => GC_byName(m, ['李四']) },
+      { emoji: '🎉', test: (m) => GC_byName(m, ['王五', '赵六']) },
+    ];
+
+最后一行是两个人共用一个表情。
+一条消息命中多条规则时，会加多个表情。
+
+
+按用户ID匹配（更稳）
+--------------------
+名字会变，用户ID不会。在意某个人的话用ID：
+
+    const GC_IDS = [
+      '123456789012345678',
+    ];
+
+    const GC_RULES = [
+      { emoji: '👀', test: (m) => GC_byId(m, GC_IDS) },
+    ];
+
+取ID的办法（两种）：
+  1. Discord 设置 -> 高级 -> 打开开发者模式，
+     然后右键对方头像 -> 复制用户ID
+  2. 开着 GC_DEBUG，看控制台 seen 里那个人的 authorId
+
+注意：用默认头像（没上传过头像）的人取不到ID，只能用名字匹配。
+
+
+精确匹配
+--------
+嫌「包含」误伤太多，把 GC_byName 换成 GC_byExactName 即可：
+
+    { emoji: '👀', test: (m) => GC_byExactName(m, ['张三']) },
+
+但对 张三(摸鱼中) 这种带后缀的名字就匹配不上了。
+
+
+其他条件
+--------
+test 里可以用这些字段：
+
+    m.author       显示名（字符串）
+    m.authorId     用户ID（字符串，可能是 null）
+    m.content      消息正文（字符串，表情会显示成 :name: 形式）
+    m.channelId    频道ID
+    m.isReply      是不是回复别人
+    m.mentionsMe   有没有 @ 我
+    m.isBot        是不是机器人
+    m.el           消息的DOM节点
+
+组合示例：
+
+    关键词：
+    { emoji: '👍', test: (m) => /好耶|nice/i.test(m.content) },
+    （注意：这条对所有人生效）
+
+    某人 + 关键词：
+    { emoji: '🎉', test: (m) => GC_byName(m, ['张三']) && m.content.includes('发布') },
+
+    某人的回复：
+    { emoji: '🔁', test: (m) => GC_byName(m, ['张三']) && m.isReply },
+
+    被 @ 时：
+    { emoji: '🫡', test: (m) => m.mentionsMe },
+
+    长消息：
+    { emoji: '📖', test: (m) => m.content.length > 500 },
+
+    指定频道：
+    { emoji: '📌', test: (m) => m.channelId === '频道ID' && m.content.includes('公告') },
+    （频道ID从地址栏拿：discord.com/channels/服务器ID/频道ID，后面那个）
+
+
+开关
+----
+GC_SKIP_SELF   = true    跳过自己发的消息
+                         想拿自己测试就改成 false
+GC_SKIP_BOTS   = false   改 true 可跳过机器人消息
+GC_ONLY_NEW    = true    只处理刷新后的新消息
+                         建议一直开着，关掉后往上翻聊天记录会对着
+                         几百条历史消息批量加反应，几乎必然被限流
+GC_GAP_MS      = 800     两次请求最小间隔（毫秒），别低于 500
+GC_PENDING_MS  = 1500    等服务端确认的时间，网络慢可以调到 2500
+GC_DEBUG       = true    打印每条收到的消息，配置好之后建议关掉
+
+
+检查是否正常
+------------
+Discord 页面按 F12 打开控制台，正常应该看到：
+
+    [GC-react] armed
+    [GC-react] identity resolved, user id = ...
+
+有消息进来时：
+
+    [GC-react] seen {author: '...', authorId: '...', content: '...'}
+
+成功加上反应时：
+
+    [GC-react] ok 👍 1536712944019050607
+
+
+常见问题
+--------
+没有 armed
+    脚本没启用，或者没刷新页面。
+
+有 armed 但没有 seen
+    自己发的消息被 GC_SKIP_SELF 挡掉了（跑规则之前就返回，连
+    seen 都不打）。自测把它改成 false。
+
+有 seen 但不加反应
+    看 seen 里的 author 实际值，跟你填的对不上就照实际值改。
+    名字里可能有全角括号、空格、或者看不见的特殊字符。
+
+no token yet, switch channels once
+    脚本装好时页面已经加载完了。切换一次频道，或者刷新页面。
+
+react failed 400
+    表情格式写错了，见上面「第二步：填表情」。
+    保存后刷新，控制台启动时会直接报出哪条规则写错。
+
+react failed 403
+    看后面跟的错误信息：
+      code 90001  对方屏蔽了你，加不了，没有办法解决
+      code 50013  你在这个频道没有添加反应的权限
+      其他        自定义表情不属于当前服务器，需要 Nitro
+
+react failed 429
+    发太快被限流了，脚本会自动等待重试。频繁出现就把
+    GC_GAP_MS 调大。
+
+message gone or never existed
+    消息在这 1.5 秒里被删了，正常现象，忽略。
+
+dropped optimistic node
+    正常现象。自己发消息时 Discord 会先用临时ID渲染一遍，
+    脚本识别出来并跳过了，不是错误。
+
+
+注意事项
+--------
+* 自动化个人账号（self-bot）违反 Discord 服务条款，有封号风险，
+  自己权衡。给服务器做正规功能应该用 bot。
+
+* 脚本会读取你的 Discord 登录凭证（token）用来发请求。它只在
+  本地内存里，不会发送到任何第三方。但也因为这个，不要随便
+  安装来源不明的同类脚本 —— 同样的手法加一行代码就能把你的
+  账号权限偷走。
+
+* 分享脚本前记得清掉 GC_NAMES 和 GC_IDS 里的真实姓名和ID，
+  并把 GC_DEBUG 改成 false。

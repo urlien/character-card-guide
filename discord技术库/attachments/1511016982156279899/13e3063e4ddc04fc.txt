@@ -1,0 +1,236 @@
+<style>
+.ps-root, .ps-root * { box-sizing: border-box; }
+.ps-root { margin: 0; padding: 30px 15px; background: #080504; background-image: radial-gradient(ellipse at 50% 0%, #140a06 0%, #080504 60%), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px); display: flex; flex-direction: column; align-items: center; font-family: 'Georgia', 'Times New Roman', 'KaiTi', 'Noto Serif', serif; font-size: 16px; color: #c0a080; min-height: 100vh; position: relative; overflow: hidden; }
+.ps-root::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 30%, rgba(180,80,20,0.06), transparent 50%), radial-gradient(circle at 70% 70%, rgba(200,150,60,0.04), transparent 50%); pointer-events: none; animation: candleGlow 4s ease-in-out infinite alternate; }
+@keyframes candleGlow { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+.ps-book-scene { perspective: 1500px; perspective-origin: center center; width: 100%; max-width: 900px; position: relative; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.8)); }
+
+.ps-book { position: relative; width: 100%; aspect-ratio: 1.55 / 1; min-height: 600px; transform-style: preserve-3d; background: linear-gradient(90deg, #1a0e06 0%, #2c1810 5%, transparent 5%, transparent 95%, #2c1810 95%, #1a0e06 100%); border: 3px solid #1a0a04; border-radius: 8px; box-shadow: 0 0 0 1px #3a2010, 0 0 0 4px #1a0a04, 0 0 0 6px #0d0502, 0 0 30px rgba(0,0,0,0.7); }
+.ps-book::before { content: ''; position: absolute; top: -6px; left: -6px; width: 30px; height: 30px; border-top: 3px solid #6b4a2a; border-left: 3px solid #6b4a2a; z-index: 5; pointer-events: none; border-radius: 4px 0 0 0; box-shadow: 0 0 8px rgba(180,120,40,0.3); }
+.ps-book::after { content: ''; position: absolute; top: -6px; right: -6px; width: 30px; height: 30px; border-top: 3px solid #6b4a2a; border-right: 3px solid #6b4a2a; z-index: 5; pointer-events: none; border-radius: 0 4px 0 0; box-shadow: 0 0 8px rgba(180,120,40,0.3); }
+.ps-book-bottom-corners { position: absolute; bottom: -6px; left: 0; right: 0; height: 30px; pointer-events: none; z-index: 5; }
+.ps-book-bottom-corners::before { content: ''; position: absolute; bottom: 0; left: -6px; width: 30px; height: 30px; border-bottom: 3px solid #6b4a2a; border-left: 3px solid #6b4a2a; border-radius: 0 0 0 4px; box-shadow: 0 0 8px rgba(180,120,40,0.3); }
+.ps-book-bottom-corners::after { content: ''; position: absolute; bottom: 0; right: -6px; width: 30px; height: 30px; border-bottom: 3px solid #6b4a2a; border-right: 3px solid #6b4a2a; border-radius: 0 0 4px 0; box-shadow: 0 0 8px rgba(180,120,40,0.3); }
+.ps-spine-rivets { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 4px; background: rgba(0,0,0,0.3); z-index: 2; pointer-events: none; }
+.ps-spine-rivets::before, .ps-spine-rivets::after { content: '◆'; position: absolute; left: 50%; transform: translateX(-50%); color: #6b4a2a; font-size: 10px; text-shadow: 0 0 4px rgba(180,120,40,0.5); }
+.ps-spine-rivets::before { top: 15%; }
+.ps-spine-rivets::after { top: 85%; }
+
+/* ========== 纸张 - 旧羊皮纸风格 ========== */
+.ps-paper-inner { position: absolute; top: 0; width: 50%; height: 100%; left: 50%; transform-origin: left center; transform-style: preserve-3d; transition: transform 0.65s cubic-bezier(0.37, 0.15, 0.32, 0.94); cursor: default; }
+.ps-paper-inner.flipped { transform: rotateY(-180deg); }
+.ps-paper-front, .ps-paper-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow-y: auto; padding: 24px 26px; background: #f7eed8; color: #1a0e06; border-radius: 0 4px 4px 0; background-image: linear-gradient(180deg, rgba(200,170,120,0.15) 0%, transparent 5%, transparent 95%, rgba(180,150,100,0.2) 100%), repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(139,100,60,0.1) 31px, rgba(139,100,60,0.1) 32px), radial-gradient(ellipse at 80% 20%, rgba(160,100,40,0.12) 0%, transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(140,80,30,0.08) 0%, transparent 50%); box-shadow: inset 0 0 40px rgba(0,0,0,0.06), 3px 0 12px rgba(0,0,0,0.2); }
+.ps-paper-back { transform: rotateY(180deg); border-radius: 4px 0 0 4px; box-shadow: inset 0 0 40px rgba(0,0,0,0.06), -3px 0 12px rgba(0,0,0,0.2); }
+.ps-paper-front::before, .ps-paper-back::before { content: ''; position: absolute; top: 18px; left: 14px; right: 14px; bottom: 18px; border: 1px solid rgba(139,100,60,0.18); pointer-events: none; border-radius: 2px; }
+.ps-paper-front::after, .ps-paper-back::after { content: '✠'; position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 10px; color: rgba(139,100,60,0.25); pointer-events: none; }
+
+/* ========== 标题 ========== */
+.ps-page-title { font-size: 1.35em; color: #1a0602; text-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 0 4px rgba(0,0,0,0.2); border-bottom: 2px solid #8b6a4a; padding-bottom: 8px; margin-bottom: 18px; font-weight: bold; letter-spacing: 1.5px; }
+
+.ps-answer-group { margin-bottom: 14px; }
+.ps-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.ps-option { position: relative; padding: 8px 15px; background: linear-gradient(180deg, #4a2a1a 0%, #2a1008 100%); border: 1px solid #5a3a2a; border-radius: 3px; color: #d4c0a0; cursor: pointer; transition: all 0.2s; font-size: 14px; font-family: inherit; box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06); flex: 1 0 auto; min-width: 70px; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
+.ps-option:hover { background: linear-gradient(180deg, #5a3a2a 0%, #3a1810 100%); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); color: #e8d8b8; }
+.ps-option.is-picked { background: linear-gradient(180deg, #7a3a1a 0%, #5a2010 100%); border-color: #c9a050; color: #ffffff; box-shadow: 0 0 0 2px #c9a050, 0 0 12px rgba(200,150,50,0.4), inset 0 0 6px rgba(200,150,50,0.3); font-weight: bold; text-shadow: 0 0 4px rgba(200,150,50,0.5); }
+
+.ps-custom-field { margin-bottom: 14px; }
+.ps-custom-label { display: block; font-size: 14px; color: #1a0602; margin-bottom: 5px; font-weight: bold; text-shadow: 0 1px 0 rgba(255,255,255,0.3); }
+.ps-custom-input { width: 100%; padding: 8px 12px; border: 1px solid #6b4a2a; border-radius: 3px; background: #faf0e0; color: #1a0e06; font-family: inherit; font-size: 14px; transition: border 0.2s; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+.ps-custom-input:focus { outline: none; border-color: #c9a050; box-shadow: 0 0 8px rgba(200,150,50,0.4), inset 0 1px 3px rgba(0,0,0,0.1); }
+textarea.ps-custom-input { min-height: 75px; resize: vertical; }
+
+/* ========== 桌面端翻页导航 ========== */
+.ps-book-nav { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 24px; }
+.ps-nav-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #8b6a4a; background: rgba(20,10,5,0.8); color: #c9a050; font-size: 22px; cursor: pointer; transition: 0.25s; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(200,150,50,0.2); }
+.ps-nav-btn:hover { background: #5a3a1a; border-color: #c9a050; color: #f0d8a0; box-shadow: 0 0 18px rgba(200,150,50,0.5); }
+.ps-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
+.ps-page-indicator { font-size: 16px; color: #c9a050; letter-spacing: 2px; min-width: 110px; text-align: center; text-shadow: 0 0 6px rgba(200,150,50,0.3); }
+
+.ps-outside-area { width: 100%; max-width: 900px; margin-top: 28px; }
+.ps-preview-shell { margin-bottom: 14px; }
+.ps-preview-title { font-weight: bold; color: #c9a050; margin-bottom: 7px; font-size: 15px; text-shadow: 0 0 6px rgba(200,150,50,0.3); }
+.ps-preview { background: #140c04; border: 1px solid #5a3a2a; border-radius: 6px; padding: 14px; font-family: 'Consolas', 'Microsoft YaHei', monospace; font-size: 13px; white-space: pre-wrap; min-height: 80px; max-height: 160px; overflow-y: auto; color: #d4c0a0; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 10px rgba(200,150,50,0.1); }
+
+.ps-action { width: 100%; padding: 14px; background: linear-gradient(180deg, #6b1a1a 0%, #3a0a0a 100%); color: #e0c8a0; border: 1px solid #8b5a3a; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; letter-spacing: 3px; transition: 0.3s; box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 12px rgba(139,0,0,0.3); font-family: inherit; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+.ps-action:hover { background: linear-gradient(180deg, #8b2020 0%, #4a0a0a 100%); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 20px rgba(180,0,0,0.5); }
+.ps-action.is-flash { background: #c9a050; color: #1a0e06; border-color: #e0c080; box-shadow: 0 0 24px rgba(200,150,50,0.7); }
+
+/* ========== 手机端：完全禁用翻页，垂直排列所有纸张 ========== */
+@media (max-width: 720px) {
+  .ps-root { font-size: 14px; padding: 10px 6px; overflow: auto; }
+  .ps-book-scene { perspective: none; max-width: 100%; filter: none; }
+  .ps-book { transform-style: flat; aspect-ratio: auto; min-height: auto; background: none; border: none; box-shadow: none; border-radius: 0; display: flex; flex-direction: column; gap: 16px; }
+  .ps-book::before, .ps-book::after, .ps-book-bottom-corners, .ps-spine-rivets { display: none; }
+  .ps-paper-inner { position: relative; left: 0; width: 100%; height: auto; transform-style: flat; transition: none; display: block; }
+  .ps-paper-inner.flipped { transform: none; }
+  .ps-paper-front, .ps-paper-back { position: relative; width: 100%; height: auto; backface-visibility: visible; -webkit-backface-visibility: visible; transform: none; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); margin-bottom: 16px; min-height: auto; overflow-y: visible; padding: 14px 16px; }
+  .ps-paper-front::after, .ps-paper-back::after { display: none; }
+  .ps-paper-front::before, .ps-paper-back::before { display: none; }
+  .ps-page-title { font-size: 1.15em; }
+  .ps-option { font-size: 12px; padding: 6px 10px; }
+  .ps-custom-input { font-size: 13px; }
+  .ps-outside-area { max-width: 100%; margin-top: 16px; }
+  /* 手机端隐藏翻页按钮 */
+  .ps-book-nav { display: none; }
+  .ps-action { font-size: 16px; padding: 12px; }
+}
+</style>
+<div class="ps-root">
+<div class="ps-book-scene" id="characterBook" data-summary-header="" data-summary-footer="" data-preview-placeholder="请完成各页选项，预览将自动汇总。" onclick="event.stopPropagation();">
+  <div class="ps-book" id="mainBook">
+  <div class="ps-book-bottom-corners"></div>
+  <div class="ps-spine-rivets"></div>
+    <!-- 纸1：开局篇章（正面留空，背面为开局篇章） -->
+    <div class="ps-paper-inner" id="paper1">
+      <div class="ps-paper-front"></div>
+      <div class="ps-paper-back">
+        <div class="ps-page-title">📜 开局篇章</div>
+        <div class="ps-answer-group" data-page-id="plot" data-page-title="开局篇章" data-page-path="开局篇章" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-options" style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+            <button class="ps-option" aria-pressed="false" data-label="神话与骰盘纪元" data-value="myth_era" onclick="event.stopPropagation();window.psPickOption(this,event)">神话与骰盘纪元</button>
+            <button class="ps-option" aria-pressed="false" data-label="前代英雄与魔神王战争" data-value="hero_war" onclick="event.stopPropagation();window.psPickOption(this,event)">前代英雄与魔神王战争</button>
+            <button class="ps-option" aria-pressed="false" data-label="哥布林杀手童年" data-value="gs_childhood" onclick="event.stopPropagation();window.psPickOption(this,event)">哥布林杀手童年</button>
+            <button class="ps-option" aria-pressed="false" data-label="《Year One》" data-value="year_one" onclick="event.stopPropagation();window.psPickOption(this,event)">《Year One》</button>
+            <button class="ps-option" aria-pressed="false" data-label="女神官初次任务篇" data-value="priestess_first" onclick="event.stopPropagation();window.psPickOption(this,event)">女神官初次任务篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="跨种族小队形成篇" data-value="party_formation" onclick="event.stopPropagation();window.psPickOption(this,event)">跨种族小队形成篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="勇者讨伐魔神王" data-value="hero_maou" onclick="event.stopPropagation();window.psPickOption(this,event)">勇者讨伐魔神王</button>
+            <button class="ps-option" aria-pressed="false" data-label="牧场防卫与哥布林领主篇" data-value="farm_defense" onclick="event.stopPropagation();window.psPickOption(this,event)">牧场防卫与哥布林领主篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="水之都地下事件篇" data-value="water_city" onclick="event.stopPropagation();window.psPickOption(this,event)">水之都地下事件篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="收获祭与邪教事件篇" data-value="harvest_festival" onclick="event.stopPropagation();window.psPickOption(this,event)">收获祭与邪教事件篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="雪山与令媛剑士篇" data-value="snow_mountain" onclick="event.stopPropagation();window.psPickOption(this,event)">雪山与令媛剑士篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="训练场与新手教育篇" data-value="training_ground" onclick="event.stopPropagation();window.psPickOption(this,event)">训练场与新手教育篇</button>
+            <button class="ps-option" aria-pressed="false" data-label="森人之森与婚礼远征篇" data-value="elf_forest" onclick="event.stopPropagation();window.psPickOption(this,event)">森人之森与婚礼远征篇</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 纸2：我的信息 + 种族选择 -->
+    <div class="ps-paper-inner" id="paper2">
+      <div class="ps-paper-front">
+        <div class="ps-page-title">📝 我的信息</div>
+        <div class="ps-answer-group" data-page-id="name" data-page-title="姓名/称号" data-page-path="我的信息 / 姓名/称号" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-custom-field"><label class="ps-custom-label">姓名/称号</label><input type="text" class="ps-custom-input" placeholder="例：哥布林杀手" data-custom-type="text" oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></div>
+        </div>
+        <div class="ps-answer-group" data-page-id="gender" data-page-title="性别" data-page-path="我的信息 / 性别" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-options">
+            <button class="ps-option" aria-pressed="false" data-label="男" data-value="male" onclick="event.stopPropagation();window.psPickOption(this,event)">男</button>
+            <button class="ps-option" aria-pressed="false" data-label="女" data-value="female" onclick="event.stopPropagation();window.psPickOption(this,event)">女</button>
+          </div>
+          <div class="ps-custom-field"><input type="text" class="ps-custom-input" placeholder="自定义性别" oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></div>
+        </div>
+        <div class="ps-answer-group" data-page-id="appearance" data-page-title="外貌" data-page-path="我的信息 / 外貌" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-custom-field"><label class="ps-custom-label">外貌描述</label><textarea class="ps-custom-input" placeholder="发型、瞳色、体型、装备风格..." data-custom-type="textarea" oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></textarea></div>
+        </div>
+        <div class="ps-answer-group" data-page-id="personality" data-page-title="性格" data-page-path="我的信息 / 性格" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-custom-field"><label class="ps-custom-label">性格特征</label><input type="text" class="ps-custom-input" placeholder="如：沉着、偏执、保护欲..." oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></div>
+        </div>
+        <div class="ps-answer-group" data-page-id="backstory" data-page-title="背景故事" data-page-path="我的信息 / 背景故事" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-custom-field"><label class="ps-custom-label">背景故事</label><textarea class="ps-custom-input" placeholder="简要过去，如何成为冒险者..." oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></textarea></div>
+        </div>
+      </div>
+      <div class="ps-paper-back">
+        <div class="ps-page-title">🧬 种族</div>
+        <div class="ps-answer-group" data-page-id="race" data-page-title="种族" data-page-path="种族" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-options" style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+            <button class="ps-option" aria-pressed="false" data-label="人类" data-value="human" onclick="event.stopPropagation();window.psPickOption(this,event)">人类</button>
+            <button class="ps-option" aria-pressed="false" data-label="森人" data-value="elf" onclick="event.stopPropagation();window.psPickOption(this,event)">森人</button>
+            <button class="ps-option" aria-pressed="false" data-label="矿人" data-value="dwarf" onclick="event.stopPropagation();window.psPickOption(this,event)">矿人</button>
+            <button class="ps-option" aria-pressed="false" data-label="蜥蜴人" data-value="lizardman" onclick="event.stopPropagation();window.psPickOption(this,event)">蜥蜴人</button>
+            <button class="ps-option" aria-pressed="false" data-label="圃人" data-value="ranch" onclick="event.stopPropagation();window.psPickOption(this,event)">圃人</button>
+            <button class="ps-option" aria-pressed="false" data-label="兽人" data-value="beastman" onclick="event.stopPropagation();window.psPickOption(this,event)">兽人</button>
+            <button class="ps-option" aria-pressed="false" data-label="哥布林" data-value="goblin" onclick="event.stopPropagation();window.psPickOption(this,event)">哥布林</button>
+            <button class="ps-option" aria-pressed="false" data-label="黑暗精灵" data-value="darkelf" onclick="event.stopPropagation();window.psPickOption(this,event)">黑暗精灵</button>
+            <button class="ps-option" aria-pressed="false" data-label="食人魔" data-value="ogre" onclick="event.stopPropagation();window.psPickOption(this,event)">食人魔</button>
+            <button class="ps-option" aria-pressed="false" data-label="巨魔" data-value="troll" onclick="event.stopPropagation();window.psPickOption(this,event)">巨魔</button>
+            <button class="ps-option" aria-pressed="false" data-label="邪教徒" data-value="cultist" onclick="event.stopPropagation();window.psPickOption(this,event)">邪教徒</button>
+            <button class="ps-option" aria-pressed="false" data-label="魔王军" data-value="maougun" onclick="event.stopPropagation();window.psPickOption(this,event)">魔王军</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 纸3：种族特性 + 阵营 -->
+    <div class="ps-paper-inner" id="paper3">
+      <div class="ps-paper-front">
+        <div class="ps-page-title">✨ 种族特性</div>
+        <div class="ps-answer-group" data-page-id="raceTraits" data-page-title="种族特性" data-page-path="种族 / 特性" data-selection-mode="multiple" data-custom-exclusive="0">
+          <div class="ps-options" id="raceTraitOptions"></div>
+        </div>
+      </div>
+      <div class="ps-paper-back">
+        <div class="ps-page-title">⚖️ 阵营</div>
+        <div class="ps-answer-group" data-page-id="faction" data-page-title="阵营" data-page-path="阵营" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-options" id="factionOptions"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 纸4：职业 + 能力 -->
+    <div class="ps-paper-inner" id="paper4">
+      <div class="ps-paper-front">
+        <div class="ps-page-title">🗡️ 职业</div>
+        <div class="ps-answer-group" data-page-id="class" data-page-title="职业" data-page-path="职业" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-options" id="classOptions"></div>
+        </div>
+      </div>
+      <div class="ps-paper-back">
+        <div class="ps-page-title">🛡️ 能力设定</div>
+        <div class="ps-answer-group" data-page-id="abilities" data-page-title="能力" data-page-path="能力" data-selection-mode="multiple" data-custom-exclusive="0">
+          <div class="ps-options" id="abilityOptions"></div>
+          <div class="ps-custom-field"><label class="ps-custom-label">自定义能力</label><input type="text" class="ps-custom-input" placeholder="其他特长..." oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 纸5：初始地点 + 巢穴 -->
+    <div class="ps-paper-inner" id="paper5">
+      <div class="ps-paper-front">
+        <div class="ps-page-title">📍 初始地点</div>
+        <div class="ps-answer-group" data-page-id="location" data-page-title="初始地点" data-page-path="初始地点" data-selection-mode="single" data-custom-exclusive="1">
+          <div class="ps-options">
+            <button class="ps-option" aria-pressed="false" data-label="边陲小镇" data-value="frontier_town" onclick="event.stopPropagation();window.psPickOption(this,event)">边陲小镇</button>
+            <button class="ps-option" aria-pressed="false" data-label="冒险者公会" data-value="guild" onclick="event.stopPropagation();window.psPickOption(this,event)">冒险者公会</button>
+            <button class="ps-option" aria-pressed="false" data-label="水之都" data-value="water_city" onclick="event.stopPropagation();window.psPickOption(this,event)">水之都</button>
+            <button class="ps-option" aria-pressed="false" data-label="边境村庄" data-value="village" onclick="event.stopPropagation();window.psPickOption(this,event)">边境村庄</button>
+            <button class="ps-option" aria-pressed="false" data-label="地下迷宫" data-value="dungeon" onclick="event.stopPropagation();window.psPickOption(this,event)">地下迷宫</button>
+            <button class="ps-option" aria-pressed="false" data-label="精灵之森" data-value="elf_forest" onclick="event.stopPropagation();window.psPickOption(this,event)">精灵之森</button>
+            <button class="ps-option" aria-pressed="false" data-label="矿人洞窟" data-value="dwarf_cave" onclick="event.stopPropagation();window.psPickOption(this,event)">矿人洞窟</button>
+            <button class="ps-option" aria-pressed="false" data-label="魔王城外围" data-value="maou_castle" onclick="event.stopPropagation();window.psPickOption(this,event)">魔王城外围</button>
+          </div>
+        </div>
+      </div>
+      <div class="ps-paper-back">
+        <div class="ps-page-title">🪹 巢穴设定</div>
+        <div id="nestContainer"></div>
+      </div>
+    </div>
+
+    <!-- 纸6：队伍构成 -->
+    <div class="ps-paper-inner" id="paper6">
+      <div class="ps-paper-front">
+        <div class="ps-page-title">👥 队伍构成</div>
+        <div class="ps-answer-group" data-page-id="party" data-page-title="队伍" data-page-path="队伍" data-selection-mode="multiple" data-custom-exclusive="0">
+          <div class="ps-options" id="partyOptions"></div>
+          <div class="ps-custom-field"><label class="ps-custom-label">自定义队友描述</label><textarea class="ps-custom-input" placeholder="详细描述队伍成员..." oninput="window.psInputChange(this,event)" onclick="event.stopPropagation()"></textarea></div>
+        </div>
+      </div>
+      <div class="ps-paper-back"></div>
+    </div>
+   </div>
+  <div class="ps-book-nav">
+    <button class="ps-nav-btn ps-nav-prev" id="btnPrev" disabled onclick="event.stopPropagation();window.psFlipPrev()">◀</button>
+    <span class="ps-page-indicator" id="pageLabel">第 1 / 5 页</span>
+    <button class="ps-nav-btn ps-nav-next" id="btnNext" onclick="event.stopPropagation();window.psFlipNext()">▶</button>
+  </div>
+</div>
+<div class="ps-outside-area" onclick="event.stopPropagation();">
+  <div class="ps-preview-shell">
+    <div class="ps-preview-title">📋 设定预览</div>
+    <div class="ps-preview" id="previewBox">请完成各页选项，预览将自动生成。</div>
+  </div>
+  <button class="ps-action" id="submitBtn" data-idle="⚡ 提交设定" data-done="设定已注入" data-copy="已复制" onclick="event.stopPropagation();window.psSend()">⚡ 提交设定</button>
+</div>
+<img class="ps-boot" src="x" alt="" onerror="window.psRoot=this.parentNode;window.psFlippedCount=1;window.psAllPapers=document.querySelectorAll('#mainBook .ps-paper-inner');window.psTotalPapers=window.psAllPapers.length;window.psTotalSpreads=window.psTotalPapers-1;window.psBtnPrev=document.getElementById('btnPrev');window.psBtnNext=document.getElementById('btnNext');window.psPageLabel=document.getElementById('pageLabel');window.psPreviewBox=document.getElementById('previewBox');window.psSubmitBtn=document.getElementById('submitBtn');window.psUpdatePapers=function(){for(var i=0;i<window.psTotalPapers;i++){var p=window.psAllPapers[i];if(i<window.psFlippedCount){p.classList.add('flipped');p.style.zIndex=500+i}else{p.classList.remove('flipped');p.style.zIndex=1000+(window.psTotalPapers-i)}}};window.psUpdateNavUI=function(){var s=window.psFlippedCount;window.psPageLabel.textContent='第 '+s+' / '+window.psTotalSpreads+' 页';window.psBtnPrev.disabled=(s<=1);window.psBtnNext.disabled=(s>=window.psTotalPapers-1)};window.psFlipNext=function(){if(window.psFlippedCount<window.psTotalPapers-1){window.psFlippedCount++;window.psUpdatePapers();window.psUpdateNavUI();window.psUpdatePreview()}};window.psFlipPrev=function(){if(window.psFlippedCount>1){window.psFlippedCount--;window.psUpdatePapers();window.psUpdateNavUI();window.psUpdatePreview()}};window.psPickOption=function(btn,evt){evt.stopPropagation();var group=btn.closest('.ps-answer-group');if(!group)return;var mode=group.getAttribute('data-selection-mode')==='multiple'?'multiple':'single';var exclusive=group.getAttribute('data-custom-exclusive')==='1';if(mode==='multiple'){btn.classList.toggle('is-picked');btn.setAttribute('aria-pressed',btn.classList.contains('is-picked')?'true':'false')}else{if(btn.classList.contains('is-picked')){if(exclusive){var inp=group.querySelector('.ps-custom-input');if(inp)inp.value=''}return}var picked=group.querySelectorAll('.ps-option.is-picked');for(var i=0;i<picked.length;i++){picked[i].classList.remove('is-picked');picked[i].setAttribute('aria-pressed','false')}btn.classList.add('is-picked');btn.setAttribute('aria-pressed','true')}if(exclusive){var inp=group.querySelector('.ps-custom-input');if(inp)inp.value=''}var pageId=group.getAttribute('data-page-id');if(pageId==='race'){window.psOnRaceChange(btn)}else if(pageId==='faction'){window.psOnFactionChange(btn)}window.psUpdatePreview()};window.psOnRaceChange=function(btn){var race=btn.getAttribute('data-value');window.psUpdateRaceTraits(race);window.psUpdateFactionOptions();window.psUpdateClassOptions(race);window.psUpdateAbilities(race);window.psUpdateNest(race);window.psUpdateParty(race);window.psUpdatePreview()};window.psOnFactionChange=function(btn){window.psUpdatePreview()};window.psMakeBtn=function(label,value,container){var b=document.createElement('button');b.className='ps-option';b.setAttribute('aria-pressed','false');b.setAttribute('data-label',label);b.setAttribute('data-value',value);b.textContent=label;b.onclick=function(ev){ev.stopPropagation();window.psPickOption(this,ev)};container.appendChild(b)};window.psClearContainer=function(id){var el=document.getElementById(id);if(el)while(el.firstChild)el.removeChild(el.firstChild)};window.psUpdateRaceTraits=function(race){var c=document.getElementById('raceTraitOptions');if(!c)return;while(c.firstChild)c.removeChild(c.firstChild);var t={human:['适应力','领导力','学习能力','装备擅长','潜力爆发','语言天赋','交涉能力','意志坚定'],elf:['自然魔法','弓箭专精','锐利感官','森林隐匿','长寿','元素亲和','夜视','风之加护'],dwarf:['锻造大师','采矿能手','坚韧体魄','盾牌精通','火药知识','石工技艺','金属感应','矮人耐力'],lizardman:['恐龙召唤','龙神信仰','鳞甲防御','水性亲和','尾巴攻击','再生能力','古代知识','沼泽适应'],ranch:['精准投石','农业知识','小型体态','敏捷身手','草药辨识','幸运加护','隐匿天赋','烹饪专精'],beastman:['野兽感官','爪牙攻击','夜视能力','强韧毛皮','野性直觉','种族荣耀','嗅觉追踪','咆哮恐吓'],goblin:['狡诈战术','毒药涂抹','繁殖力','陷阱制作','群体围攻','抗毒体质','夜视','小型体态'],darkelf:['暗杀术','黑魔法','诅咒抗性','夜行能力','契约召唤','暗影步伐','毒素免疫','邪神加护'],ogre:['巨力碾压','吞噬恢复','厚皮抗性','野蛮冲锋','武器破坏','咆哮恐吓','巨大体型','钝器专精'],troll:['超速再生','火焰弱点','巨汉体质','钝器精通','毒液分泌','忍耐痛苦','再生核心','夜间强化'],cultist:['混沌仪式','邪神赐福','精神污染','血祭强化','疫病传播','黑暗视觉','狂热信仰','禁忌知识'],maougun:['魔将祝福','魔力亲和','军势指挥','魔物支配','瘴气领域','生命汲取','暗黑加护','恐惧光环']};var list=t[race]||['特性1','特性2','特性3','特性4','特性5','特性6','特性7','特性8'];for(var i=0;i<list.length;i++){window.psMakeBtn(list[i],'trait_'+i,c)}};window.psUpdateFactionOptions=function(){var c=document.getElementById('factionOptions');if(!c)return;while(c.firstChild)c.removeChild(c.firstChild);var list=['冒险者公会','王国军','神殿势力','邪教团','魔王军','佣兵团','独立冒险者','贵族私兵'];for(var i=0;i<list.length;i++){window.psMakeBtn(list[i],list[i].replace(/ /g,'_'),c)}};window.psUpdateClassOptions=function(race){var c=document.getElementById('classOptions');if(!c)return;while(c.firstChild)c.removeChild(c.firstChild);var base=['战士','斥候','神官','魔法师','猎人','骑士'];var extra={human:['间谍','商人','圣骑士'],elf:['游侠','德鲁伊','风行者'],dwarf:['铁匠','符文工匠','矿工战士'],lizardman:['龙骑士','僧侣','沼泽猎人'],ranch:['投石兵','斥候','草药师'],beastman:['狂战士','驯兽师','部落勇士'],goblin:['暗杀者','萨满','驯兽师'],darkelf:['暗黑骑士','咒术师','影舞者'],ogre:['破坏者','蛮兵','食人魔法师'],troll:['巨魔战士','毒素师','再生者'],cultist:['邪术士','献祭者','瘟疫使徒'],maougun:['魔将','指挥官','暗黑骑士']};var arr=base.slice();if(extra[race])arr=arr.concat(extra[race]);for(var i=0;i<arr.length;i++){window.psMakeBtn(arr[i],arr[i],c)}};window.psUpdateAbilities=function(race){var c=document.getElementById('abilityOptions');if(!c)return;while(c.firstChild)c.removeChild(c.firstChild);var base=['剑术','魔法','神术','潜行','生存','陷阱','锻造','骑乘'];var extra={human:['交涉','指挥','急救'],elf:['风之加护','夜视','自然感知'],dwarf:['盾墙','火药','矿石辨识'],lizardman:['水泳','尾扫','龙语'],ranch:['投石','伪装','草药'],beastman:['爪击','咆哮','追踪'],goblin:['毒刃','敲诈','暗算'],darkelf:['暗影步','诅咒','毒刃'],ogre:['碾压','吞噬','威压'],troll:['再生','毒液','钝器'],cultist:['血祭','恐惧','瘟疫'],maougun:['魔爆','支配','瘴气']};var arr=base.slice();if(extra[race])arr=arr.concat(extra[race]);for(var i=0;i<arr.length;i++){window.psMakeBtn(arr[i],arr[i],c)}};window.psUpdateNest=function(race){var c=document.getElementById('nestContainer');if(!c)return;while(c.firstChild)c.removeChild(c.firstChild);if(race==='goblin'){var fields=['巢穴规模','首领类型','巢穴地形','威胁等级','特殊危险','巢穴地位'];var types={0:[{l:'小型(10-30只)',v:'small'},{l:'中型(30-100只)',v:'medium'},{l:'大型(100+只)',v:'large'},{l:'巨型巢穴群',v:'giant'}],1:[{l:'普通哥布林',v:'normal_goblin'},{l:'哥布林萨满',v:'shaman'},{l:'哥布林英雄',v:'hero'},{l:'哥布林王',v:'king'}],2:[{l:'天然洞穴',v:'cave'},{l:'废弃矿坑',v:'mine'},{l:'古代遗迹',v:'ruins'},{l:'森林深处',v:'forest'},{l:'下水道',v:'sewer'}],3:[{l:'瓷级(新手)',v:'porcelain'},{l:'黑曜级(一般)',v:'obsidian'},{l:'钢级(危险)',v:'steel'},{l:'青玉级(致命)',v:'sapphire'},{l:'红玉级(极危)',v:'ruby'}],4:[{l:'陷阱遍布',v:'traps'},{l:'毒气弥漫',v:'poison'},{l:'埋伏圈',v:'ambush'},{l:'挟持人质',v:'hostage'},{l:'瘟疫蔓延',v:'plague'}],5:[{l:'奴隶',v:'slave'},{l:'普通成员',v:'normal_gob'},{l:'精英战士',v:'elite'},{l:'萨满助手',v:'shaman_assistant'},{l:'副首领',v:'vice_chief'},{l:'首领',v:'chief'}]};for(var i=0;i<fields.length;i++){var wrap=document.createElement('div');wrap.className='ps-answer-group';wrap.setAttribute('data-page-id','nest_'+i);wrap.setAttribute('data-page-title',fields[i]);wrap.setAttribute('data-page-path','巢穴 / '+fields[i]);wrap.setAttribute('data-selection-mode','single');wrap.setAttribute('data-custom-exclusive','1');var label=document.createElement('label');label.className='ps-custom-label';label.textContent=fields[i];wrap.appendChild(label);var optsDiv=document.createElement('div');optsDiv.className='ps-options';var opts=types[i]||[];for(var j=0;j<opts.length;j++){window.psMakeBtn(opts[j].l,opts[j].v,optsDiv)}wrap.appendChild(optsDiv);c.appendChild(wrap)}}else{var p=document.createElement('p');p.style.color='#1a0602';p.textContent='仅哥布林种族拥有巢穴设定。';c.appendChild(p)}};window.psUpdateParty=function(race){var c=document.getElementById('partyOptions');if(!c)return;while(c.firstChild)c.removeChild(c.firstChild);var baseList=['人类战士','森人弓手','矿人战士','蜥蜴人僧侣','圃人投石兵','兽人狂战士','黑暗精灵刺客','巨魔战士','食人魔蛮兵','骑士','魔法师','神官'];if(race==='goblin')baseList=['哥布林斥候','哥布林萨满','哥布林战士','哥布林驯兽师','黑暗精灵刺客','邪教徒','食人魔','巨魔'];if(race==='cultist')baseList=['邪教徒','黑暗精灵刺客','哥布林斥候','食人魔','巨魔','人类叛徒','暗黑骑士'];if(race==='maougun')baseList=['魔将','暗黑骑士','食人魔','巨魔','哥布林','邪教徒','黑暗精灵'];if(race==='human'||race==='elf'||race==='dwarf')baseList=['人类战士','人类神官','森人弓手','矿人战士','蜥蜴人僧侣','圃人投石兵','骑士','魔法师','神官','猎人','斥候'];for(var i=0;i<baseList.length;i++){window.psMakeBtn(baseList[i],baseList[i],c)}};window.psInputChange=function(input,evt){var group=input.closest('.ps-answer-group');if(group&&group.getAttribute('data-custom-exclusive')==='1'){var raw=input.value;if(input.getAttribute('data-custom-type')==='textarea'){var parts=raw.split('\n').filter(function(x){return x.trim()});if(parts.length>0){var picked=group.querySelectorAll('.ps-option.is-picked');for(var i=0;i<picked.length;i++){picked[i].classList.remove('is-picked');picked[i].setAttribute('aria-pressed','false')}}}}window.psUpdatePreview()};window.psFormatOption=function(opt){var label=opt.getAttribute('data-label')||opt.textContent||'未命名';return label};window.psUpdatePreview=function(){var groups=document.querySelectorAll('.ps-answer-group[data-page-path]');var lines=['========================'];for(var i=0;i<groups.length;i++){var g=groups[i];var path=g.getAttribute('data-page-path')||g.getAttribute('data-page-title')||'未知';var parts=[];var picked=g.querySelectorAll('.ps-option.is-picked');for(var j=0;j<picked.length;j++){parts.push(window.psFormatOption(picked[j]))}var inp=g.querySelector('.ps-custom-input');if(inp){var raw=inp.value;var custom='';if(inp.getAttribute('data-custom-type')==='textarea'){var arr=raw.split('\n').filter(function(x){return x.trim()});custom=arr.join(' / ')}else{custom=raw.trim()}if(custom)parts.push(custom)}if(parts.length===0)lines.push('- '+path+': [未选]');else lines.push('- '+path+': '+parts.join('；'))}lines.push('========================');var text=lines.join('\n');if(window.psPreviewBox)window.psPreviewBox.textContent=text};window.psSend=function(){window.psUpdatePreview();var text=window.psPreviewBox?window.psPreviewBox.textContent:'';var root=window.psRoot;var target=document.querySelector('#chat-input-scope .uni-textarea-textarea');if(!target){var allTextareas=document.querySelectorAll('textarea');for(var i=0;i<allTextareas.length;i++){if(!root||!root.contains(allTextareas[i])){target=allTextareas[i];break}}}if(target){target.value=text;try{target.dispatchEvent(new Event('input',{bubbles:true}))}catch(e){}try{target.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}if(target.focus)target.focus();window.psFlashBtn(window.psSubmitBtn.getAttribute('data-done')||'设定已注入');return}if(window.navigator&&navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){window.psFlashBtn('已复制')})}else{window.psFlashBtn('已生成')}};window.psFlashBtn=function(msg){var idle=window.psSubmitBtn.getAttribute('data-idle')||window.psSubmitBtn.textContent;window.psSubmitBtn.textContent=msg;window.psSubmitBtn.classList.add('is-flash');setTimeout(function(){window.psSubmitBtn.textContent=idle;window.psSubmitBtn.classList.remove('is-flash')},1500)};window.psUpdatePapers();window.psUpdateNavUI();window.psUpdatePreview();">
+</div>

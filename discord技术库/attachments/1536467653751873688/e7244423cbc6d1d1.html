@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人设创建面板生成器</title>
+<style>
+  :root{
+    --ui-bg:#141210; --ui-panel:#1c1a17; --ui-card:#242119;
+    --ui-line:rgba(200,150,120,0.18); --ui-accent:#c89578; --ui-accent2:#d4a878;
+    --ui-text:#e8ded2; --ui-sub:#8c7a6a; --ui-input:#100f0d;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--ui-bg); color:var(--ui-text); font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif; }
+  header{ padding:20px 24px 14px; border-bottom:1px solid var(--ui-line); }
+  header h1{ font-size:18px; margin:0 0 4px; letter-spacing:1px; color:var(--ui-accent2); }
+  header p{ margin:0; font-size:12px; color:var(--ui-sub); }
+
+  .layout{ display:grid; grid-template-columns: 420px 1fr; }
+  @media (max-width:920px){ .layout{ grid-template-columns:1fr; } }
+  .controls{ padding:18px; border-right:1px solid var(--ui-line); overflow-y:auto; max-height:calc(100vh - 150px); }
+  @media (max-width:920px){ .controls{ border-right:none; border-bottom:1px solid var(--ui-line); max-height:none; } }
+
+  .section{ margin-bottom:20px; }
+  .section-title{ font-size:11.5px; color:var(--ui-accent); letter-spacing:2px; font-weight:bold; margin-bottom:9px; text-transform:uppercase; opacity:.85; }
+  .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .row label{ font-size:12px; color:var(--ui-text); flex-shrink:0; }
+  input[type=color]{ width:32px; height:24px; border:1px solid var(--ui-line); border-radius:6px; background:none; padding:0; cursor:pointer; }
+  input[type=text],input[type=number],textarea{
+    background:var(--ui-input); border:1px solid var(--ui-line); color:var(--ui-text);
+    border-radius:6px; padding:6px 8px; font-size:12px; width:100%; font-family:inherit;
+  }
+  select{ background:var(--ui-input); border:1px solid var(--ui-line); color:var(--ui-text); border-radius:6px; padding:6px 8px; font-size:12px; }
+  .full{ width:100%; margin-bottom:8px; }
+
+  .field-card{ background:var(--ui-input); border:1px solid var(--ui-line); border-radius:10px; padding:10px; margin-bottom:10px; }
+  .field-card-head{ display:flex; gap:6px; margin-bottom:8px; }
+  .field-card-head input[type=text]{ flex:1; }
+  .field-icon-input{ width:44px !important; flex:none !important; text-align:center; }
+  .field-row2{ display:flex; gap:6px; margin-bottom:8px; }
+  .field-row2 select{ flex:1; }
+  .field-row2 input[type=number]{ width:64px; }
+  .field-opts{ font-size:11px; }
+  .field-opts label{ font-size:10.5px; color:var(--ui-sub); display:block; margin-bottom:3px; }
+  .field-toggle-row{ display:flex; align-items:center; gap:6px; margin-top:6px; font-size:11px; color:var(--ui-sub); }
+  .field-toggle-row input{ width:auto; }
+  .field-remove{ background:none; border:1px solid var(--ui-line); color:#c96; border-radius:6px; padding:4px 9px; font-size:11px; cursor:pointer; flex-shrink:0; }
+  .add-field-btn{ width:100%; padding:9px; background:transparent; border:1px dashed var(--ui-line); color:var(--ui-sub); border-radius:8px; cursor:pointer; font-size:12px; }
+  .add-field-btn:hover{ border-color:var(--ui-accent); color:var(--ui-accent2); }
+  .field-type-tabs{ display:flex; gap:4px; margin-bottom:8px; }
+  .field-type-tabs button{ flex:1; padding:5px 2px; font-size:10.5px; background:var(--ui-panel); border:1px solid var(--ui-line); color:var(--ui-sub); border-radius:6px; cursor:pointer; }
+  .field-type-tabs button.active{ background:rgba(200,150,120,.25); color:var(--ui-accent2); border-color:var(--ui-accent); }
+
+  /* ===== 预览区：真实可交互的 jh- 面板 ===== */
+  .preview{ padding:22px; display:flex; justify-content:center; }
+  .preview-inner{ width:100%; max-width:380px; }
+  .jh-panel{ max-width:100%; }
+  .jh-title{ font-size:15px; font-weight:bold; text-align:center; margin-bottom:12px; letter-spacing:1px; }
+  .jh-field{ margin-bottom:10px; }
+  .jh-label{ font-size:10.5px; font-weight:bold; margin-bottom:4px; letter-spacing:1px; }
+  .jh-input{ width:100%; padding:8px 10px; border-radius:8px; font-size:12px; outline:none; box-sizing:border-box; }
+  .jh-tags{ display:flex; flex-wrap:wrap; gap:5px; margin:4px 0; }
+  .jh-tag{ padding:5px 12px; border-radius:14px; font-size:10px; cursor:pointer; transition:all .2s; user-select:none; }
+  .jh-preview{ margin-top:14px; padding:10px 12px; border-radius:8px; max-height:160px; overflow-y:auto; }
+  .jh-preview-title{ font-size:11px; font-weight:bold; margin-bottom:4px; }
+  .jh-preview-content{ font-size:11px; line-height:1.7; white-space:pre-wrap; }
+  .jh-confirm{ width:100%; margin-top:14px; padding:10px 0; border-radius:8px; color:#fff; font-size:13.5px; font-weight:bold; letter-spacing:2px; cursor:pointer; text-align:center; }
+  .jh-confirm:active{ transform:scale(.97); }
+
+  .generate-bar{ padding:16px 24px; border-top:1px solid var(--ui-line); display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; background:var(--ui-panel); }
+  .char-count{ font-size:11.5px; color:var(--ui-sub); }
+  .char-count b{ color:var(--ui-accent2); }
+  .char-count.warn b{ color:#ff6b6b; }
+  button.main{ background:linear-gradient(145deg,#5a4035,#3a2520); color:#e8d8c8; border:1px solid var(--ui-accent); padding:11px 22px; border-radius:8px; font-size:13.5px; font-weight:bold; cursor:pointer; }
+  button.main:hover{ background:linear-gradient(145deg,#6a5040,#4a3530); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧬 人设创建面板生成器</h1>
+  <p>自由增删字段、配色、实时试玩，生成符合三段正则规范（JH_1/JH_2/JH_3）的可导入 JSON</p>
+</header>
+
+<div class="layout">
+  <div class="controls">
+
+    <div class="section">
+      <div class="section-title">面板基础信息</div>
+      <div class="row"><label>面板标题</label><input type="text" id="cfgTitle" value="✨ 角色设定" style="width:180px"></div>
+      <div class="row"><label>确认按钮文字</label><input type="text" id="cfgConfirmText" value="✅ 确定设定" style="width:180px"></div>
+      <div class="row"><label>正则标记前缀</label><input type="text" id="cfgMarker" value="JH" style="width:180px"></div>
+      <div class="row"><label>多选字段默认上限</label><input type="number" id="cfgDefaultMax" value="3" style="width:60px"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">配色 <span style="font-size:10px;color:var(--ui-sub);font-weight:normal">（自动优先跟随卡内已有的全局美化变量，没有则用这里的颜色兜底）</span></div>
+      <div class="row"><label>面板背景</label><input type="color" id="c_panelBg" value="#1e2338"></div>
+      <div class="row"><label>面板边框</label><input type="color" id="c_panelBorder" value="#d4af37"></div>
+      <div class="row"><label>标题/标签文字色</label><input type="color" id="c_accent" value="#d4af37"></div>
+      <div class="row"><label>正文文字色</label><input type="color" id="c_text" value="#e8e2d0"></div>
+      <div class="row"><label>标签背景</label><input type="color" id="c_tagBg" value="#1a1e30"></div>
+      <div class="row"><label>标签选中背景</label><input type="color" id="c_tagSelBg" value="#d4af37"></div>
+      <div class="row"><label>标签选中文字</label><input type="color" id="c_tagSelText" value="#1a1e30"></div>
+      <div class="row"><label>预览区背景</label><input type="color" id="c_previewBg" value="#161a2c"></div>
+      <div class="row"><label>确认按钮背景</label><input type="color" id="c_confirmBg" value="#b8860b"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">字段管理</div>
+      <div id="fieldsList"></div>
+      <button class="add-field-btn" id="addFieldBtn">+ 添加字段</button>
+    </div>
+
+  </div>
+
+  <div class="preview">
+    <div class="preview-inner">
+      <div class="jh-panel" id="pvPanel">
+        <div class="jh-title" id="pvTitle">✨ 角色设定</div>
+        <div id="pvFields"></div>
+        <div class="jh-preview" id="pvPreviewBox">
+          <div class="jh-preview-title" id="pvPreviewTitle">📝 映射预览</div>
+          <div class="jh-preview-content" id="pvPreviewContent">请填写上方信息...</div>
+        </div>
+        <div class="jh-confirm" id="pvConfirm">✅ 确定设定</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="generate-bar">
+  <div class="char-count" id="charCountWrap">正则3(JS)长度约 <b id="charCount">0</b> 字符（上限 20000）</div>
+  <button class="main" id="genBtn">✨ 生成三段正则 JSON</button>
+</div>
+
+<script>
+(function(){
+  var uid = 0;
+  function newId(){ return 'f' + (uid++); }
+
+  // 字段数据模型：{ id, type:'text'|'single'|'multi', icon, label, options:[], hasCustom, max }
+  var fields = [
+    { id:newId(), type:'text', icon:'👤', label:'姓名' },
+    { id:newId(), type:'single', icon:'⚧', label:'性别', options:['男','女'], hasCustom:false },
+    { id:newId(), type:'single', icon:'💼', label:'身份', options:['学生','上班族'], hasCustom:true },
+    { id:newId(), type:'multi', icon:'🎭', label:'性格（可多选）', options:['沉稳','温柔'], hasCustom:true, max:3 }
+  ];
+
+  function $(id){ return document.getElementById(id); }
+
+  // ============ 左侧：字段配置表单 ============
+  function renderFieldsForm(){
+    var list = $('fieldsList');
+    list.innerHTML = '';
+    fields.forEach(function(f, idx){
+      var card = document.createElement('div');
+      card.className = 'field-card';
+
+      var head = document.createElement('div');
+      head.className = 'field-card-head';
+      head.innerHTML =
+        '<input type="text" class="field-icon-input" data-idx="'+idx+'" data-role="icon" value="'+f.icon+'" placeholder="🔥">' +
+        '<input type="text" data-idx="'+idx+'" data-role="label" value="'+f.label+'" placeholder="字段标签">' +
+        '<button class="field-remove" data-idx="'+idx+'">删除</button>';
+      card.appendChild(head);
+
+      var typeTabs = document.createElement('div');
+      typeTabs.className = 'field-type-tabs';
+      var types = [['text','纯文本'],['single','单选标签'],['multi','多选标签']];
+      types.forEach(function(t){
+        var b = document.createElement('button');
+        b.textContent = t[1];
+        b.dataset.idx = idx; b.dataset.type = t[0];
+        if(f.type === t[0]) b.classList.add('active');
+        typeTabs.appendChild(b);
+      });
+      card.appendChild(typeTabs);
+
+      if(f.type === 'single' || f.type === 'multi'){
+        var optsWrap = document.createElement('div');
+        optsWrap.className = 'field-opts';
+        optsWrap.innerHTML = '<label>选项（逗号分隔）</label>';
+        var optsInput = document.createElement('input');
+        optsInput.type = 'text'; optsInput.dataset.idx = idx; optsInput.dataset.role = 'options';
+        optsInput.value = f.options.join(',');
+        optsWrap.appendChild(optsInput);
+        card.appendChild(optsWrap);
+
+        if(f.type === 'multi'){
+          var row2 = document.createElement('div');
+          row2.className = 'field-row2';
+          row2.style.marginTop = '8px';
+          row2.innerHTML =
+            '<label style="font-size:10.5px;color:var(--ui-sub);flex:1;align-self:center;">最多可选几个</label>' +
+            '<input type="number" data-idx="'+idx+'" data-role="max" value="'+(f.max||3)+'">';
+          card.appendChild(row2);
+        }
+
+        var toggleRow = document.createElement('div');
+        toggleRow.className = 'field-toggle-row';
+        toggleRow.innerHTML =
+          '<input type="checkbox" data-idx="'+idx+'" data-role="hasCustom" id="custom-'+f.id+'" '+(f.hasCustom?'checked':'')+'>' +
+          '<label for="custom-'+f.id+'">带"自定义"选项（多选时是逗号分隔的自定义输入）</label>';
+        card.appendChild(toggleRow);
+      }
+
+      list.appendChild(card);
+    });
+
+    // 事件绑定
+    list.querySelectorAll('input[data-role],textarea[data-role]').forEach(function(el){
+      var evt = (el.type === 'checkbox') ? 'change' : 'input';
+      el.addEventListener(evt, function(){
+        var idx = +el.dataset.idx, role = el.dataset.role;
+        if(role === 'icon') fields[idx].icon = el.value;
+        else if(role === 'label') fields[idx].label = el.value;
+        else if(role === 'options') fields[idx].options = el.value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+        else if(role === 'max') fields[idx].max = +el.value || 3;
+        else if(role === 'hasCustom') fields[idx].hasCustom = el.checked;
+        renderPreview();
+        updateCharCount();
+      });
+    });
+    list.querySelectorAll('.field-type-tabs button').forEach(function(b){
+      b.addEventListener('click', function(){
+        var idx = +b.dataset.idx, type = b.dataset.type;
+        var f = fields[idx];
+        f.type = type;
+        if((type === 'single' || type === 'multi') && !f.options) f.options = ['选项一','选项二'];
+        if(type === 'multi' && !f.max) f.max = +($('cfgDefaultMax').value) || 3;
+        renderFieldsForm();
+        renderPreview();
+        updateCharCount();
+      });
+    });
+    list.querySelectorAll('.field-remove').forEach(function(b){
+      b.addEventListener('click', function(){
+        fields.splice(+b.dataset.idx, 1);
+        renderFieldsForm();
+        renderPreview();
+        updateCharCount();
+      });
+    });
+  }
+
+  $('addFieldBtn').addEventListener('click', function(){
+    fields.push({ id:newId(), type:'text', icon:'✨', label:'新字段'+(fields.length+1) });
+    renderFieldsForm();
+    renderPreview();
+    updateCharCount();
+  });
+
+  // ============ 配色变化 → 刷新预览 ============
+  ['cfgTitle','cfgConfirmText','c_panelBg','c_panelBorder','c_accent','c_text','c_tagBg','c_tagSelBg','c_tagSelText','c_previewBg','c_confirmBg']
+    .forEach(function(id){ $(id).addEventListener('input', function(){ applyPreviewColors(); updateCharCount(); }); });
+
+  function applyPreviewColors(){
+    var panelBg=$('c_panelBg').value, panelBorder=$('c_panelBorder').value, accent=$('c_accent').value, text=$('c_text').value;
+    var tagBg=$('c_tagBg').value, tagSelBg=$('c_tagSelBg').value, tagSelText=$('c_tagSelText').value;
+    var previewBg=$('c_previewBg').value, confirmBg=$('c_confirmBg').value;
+
+    var panel=$('pvPanel');
+    panel.style.background = panelBg;
+    panel.style.border = '1px solid ' + panelBorder;
+    panel.style.borderRadius = '12px';
+    panel.style.padding = '16px';
+    panel.style.color = text;
+    panel.style.boxShadow = '0 8px 28px rgba(0,0,0,.4)';
+
+    $('pvTitle').textContent = $('cfgTitle').value || '✨ 角色设定';
+    $('pvTitle').style.color = accent;
+
+    document.querySelectorAll('#pvFields .jh-label').forEach(function(el){ el.style.color = accent; });
+    document.querySelectorAll('#pvFields .jh-input').forEach(function(el){
+      el.style.background = panelBg; el.style.border = '1px solid ' + panelBorder + '55'; el.style.color = text;
+    });
+    document.querySelectorAll('#pvFields .jh-tag').forEach(function(el){
+      if(!el.classList.contains('selected')){
+        el.style.background = tagBg; el.style.border = '1px solid ' + panelBorder + '55'; el.style.color = text;
+      } else {
+        el.style.background = tagSelBg; el.style.borderColor = tagSelBg; el.style.color = tagSelText; el.style.fontWeight='bold';
+      }
+    });
+
+    var pb = $('pvPreviewBox');
+    pb.style.background = previewBg; pb.style.border = '1px solid ' + panelBorder + '40';
+    $('pvPreviewTitle').textContent = '📝 映射预览'; $('pvPreviewTitle').style.color = accent;
+    $('pvPreviewContent').style.color = text;
+
+    var cf = $('pvConfirm');
+    cf.textContent = $('cfgConfirmText').value || '✅ 确定设定';
+    cf.style.background = confirmBg;
+  }
+
+  // ============ 预览：真实交互渲染 ============
+  var pvState = {};
+
+  function renderPreview(){
+    var wrap = $('pvFields');
+    wrap.innerHTML = '';
+    pvState = {};
+
+    fields.forEach(function(f){
+      var box = document.createElement('div');
+      box.className = 'jh-field';
+
+      var label = document.createElement('div');
+      label.className = 'jh-label';
+      label.textContent = f.icon + ' ' + f.label;
+      box.appendChild(label);
+
+      if(f.type === 'text'){
+        var inp = document.createElement('input');
+        inp.className = 'jh-input'; inp.placeholder = '请输入' + f.label;
+        inp.addEventListener('input', updatePvPreviewText);
+        box.appendChild(inp);
+        pvState[f.id] = { el: inp };
+      } else if(f.type === 'single'){
+        var tagWrap = document.createElement('div');
+        tagWrap.className = 'jh-tags';
+        var selected = f.options[0] || '';
+        (f.options||[]).forEach(function(opt, oi){
+          var tag = document.createElement('div');
+          tag.className = 'jh-tag' + (oi===0 ? ' selected' : '');
+          tag.textContent = opt;
+          tag.addEventListener('click', function(){
+            tagWrap.querySelectorAll('.jh-tag').forEach(function(t){ t.classList.remove('selected'); });
+            tag.classList.add('selected');
+            pvState[f.id].value = opt;
+            var ci = pvState[f.id].customInput;
+            if(ci) ci.style.display = (opt === '自定义') ? 'block' : 'none';
+            applyPreviewColors();
+            updatePvPreviewText();
+          });
+          tagWrap.appendChild(tag);
+        });
+        if(f.hasCustom){
+          var cTag = document.createElement('div');
+          cTag.className = 'jh-tag';
+          cTag.textContent = '自定义';
+          cTag.addEventListener('click', function(){
+            tagWrap.querySelectorAll('.jh-tag').forEach(function(t){ t.classList.remove('selected'); });
+            cTag.classList.add('selected');
+            pvState[f.id].value = '自定义';
+            pvState[f.id].customInput.style.display = 'block';
+            applyPreviewColors();
+            updatePvPreviewText();
+          });
+          tagWrap.appendChild(cTag);
+        }
+        box.appendChild(tagWrap);
+        pvState[f.id] = { value: selected };
+        if(f.hasCustom){
+          var custom = document.createElement('input');
+          custom.className = 'jh-input'; custom.placeholder = '自定义' + f.label;
+          custom.style.display = 'none'; custom.style.marginTop = '4px';
+          custom.addEventListener('input', updatePvPreviewText);
+          box.appendChild(custom);
+          pvState[f.id].customInput = custom;
+        }
+      } else if(f.type === 'multi'){
+        var tagWrap2 = document.createElement('div');
+        tagWrap2.className = 'jh-tags';
+        var chosen = [];
+        (f.options||[]).forEach(function(opt){
+          var tag = document.createElement('div');
+          tag.className = 'jh-tag';
+          tag.textContent = opt;
+          tag.addEventListener('click', function(){
+            var i = chosen.indexOf(opt);
+            if(i>=0){ chosen.splice(i,1); tag.classList.remove('selected'); }
+            else if(chosen.length < (f.max||3)){ chosen.push(opt); tag.classList.add('selected'); }
+            applyPreviewColors();
+            updatePvPreviewText();
+          });
+          tagWrap2.appendChild(tag);
+        });
+        box.appendChild(tagWrap2);
+        pvState[f.id] = { chosen: chosen };
+        if(f.hasCustom){
+          var customM = document.createElement('input');
+          customM.className = 'jh-input'; customM.placeholder = '自定义' + f.label + '（逗号分隔）';
+          customM.style.marginTop = '4px';
+          customM.addEventListener('input', updatePvPreviewText);
+          box.appendChild(customM);
+          pvState[f.id].customInput = customM;
+        }
+      }
+
+      wrap.appendChild(box);
+    });
+
+    applyPreviewColors();
+    updatePvPreviewText();
+  }
+
+  function updatePvPreviewText(){
+    var lines = [];
+    fields.forEach(function(f){
+      var s = pvState[f.id]; if(!s) return;
+      var val;
+      if(f.type === 'text'){
+        val = (s.el.value.trim()) || '未填写';
+      } else if(f.type === 'single'){
+        if(s.value === '自定义'){
+          val = (s.customInput && s.customInput.value.trim()) || '未指定';
+        } else {
+          val = s.value || '未选择';
+        }
+      } else if(f.type === 'multi'){
+        var arr = s.chosen.slice();
+        if(s.customInput && s.customInput.value.trim()){
+          s.customInput.value.trim().split(/[,，]/).forEach(function(x){
+            x = x.trim();
+            if(x && arr.indexOf(x) < 0 && arr.length < (f.max||3)) arr.push(x);
+          });
+        }
+        val = arr.length ? arr.join('、') : '未选择';
+      }
+      lines.push(f.label.replace(/（.*?）/,'') + '：' + val);
+    });
+    $('pvPreviewContent').textContent = lines.join('\n');
+  }
+
+  // ============ 生成最终代码 ============
+  function esc(s){ return String(s).replace(/'/g, "\\'"); }
+
+  function buildCode(){
+    var marker = ($('cfgMarker').value.trim() || 'JH');
+    var title = $('cfgTitle').value || '✨ 角色设定';
+    var confirmText = $('cfgConfirmText').value || '✅ 确定设定';
+    var panelBg=$('c_panelBg').value, panelBorder=$('c_panelBorder').value, accent=$('c_accent').value, text=$('c_text').value;
+    var tagBg=$('c_tagBg').value, tagSelBg=$('c_tagSelBg').value, tagSelText=$('c_tagSelText').value;
+    var previewBg=$('c_previewBg').value, confirmBg=$('c_confirmBg').value;
+
+    // ---- 样式（jh- 前缀，优先跟随全局美化变量，没有则用配置色兜底）----
+    var css = ''
+      + '<style>\n'
+      + '.jh-panel{background:var(--gc-card,'+panelBg+') !important;border:1px solid var(--gc-ai-line,'+panelBorder+'55) !important;border-left:4px solid var(--gc-accent,'+panelBorder+') !important;border-radius:12px !important;padding:16px !important;color:var(--gc-text,'+text+') !important;box-shadow:0 4px 20px rgba(0,0,0,.4) !important;font-family:var(--gc-font,sans-serif) !important}\n'
+      + '.jh-title{color:var(--gc-accent,'+accent+') !important;font-size:15px;font-weight:bold;text-align:center;margin-bottom:12px;letter-spacing:1px}\n'
+      + '.jh-field{margin-bottom:10px}\n'
+      + '.jh-label{color:var(--gc-accent,'+accent+') !important;font-size:10.5px;font-weight:bold;margin-bottom:4px;letter-spacing:1px}\n'
+      + '.jh-input{width:100%;padding:8px 10px;border:1px solid var(--gc-ai-line,'+panelBorder+'55) !important;border-radius:8px !important;background:var(--gc-ai-bg,'+panelBg+') !important;color:var(--gc-text,'+text+') !important;font-size:12px;outline:none;box-sizing:border-box;margin-top:4px}\n'
+      + '.jh-tags{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}\n'
+      + '.jh-tag{padding:5px 12px;border:1px solid var(--gc-ai-line,'+panelBorder+'55) !important;border-radius:14px !important;background:var(--gc-ai-bg,'+tagBg+') !important;color:var(--gc-text,'+text+') !important;font-size:10px;cursor:pointer;transition:all .2s;user-select:none}\n'
+      + '.jh-tag:hover{border-color:var(--gc-accent,'+accent+') !important}\n'
+      + '.jh-tag.selected{background:var(--gc-accent,'+tagSelBg+') !important;border-color:var(--gc-accent,'+tagSelBg+') !important;color:'+tagSelText+' !important;font-weight:bold}\n'
+      + '.jh-preview{margin-top:14px;padding:10px 12px;background:var(--gc-ai-bg,'+previewBg+') !important;border:1px solid var(--gc-ai-line,'+panelBorder+'40) !important;border-radius:8px !important;max-height:200px;overflow-y:auto}\n'
+      + '.jh-preview-title{font-size:11px;color:var(--gc-accent,'+accent+') !important;font-weight:bold;margin-bottom:4px}\n'
+      + '.jh-preview-content{font-size:11px;color:var(--gc-text,'+text+') !important;line-height:1.7;white-space:pre-wrap}\n'
+      + '.jh-confirm{width:100%;margin-top:14px;padding:11px 0;background:var(--gc-accent,'+confirmBg+') !important;border:0 !important;border-radius:8px !important;color:#fff !important;font-size:14px;font-weight:bold;letter-spacing:2px;cursor:pointer;text-align:center;transition:all .2s}\n'
+      + '.jh-confirm:active{transform:scale(.97)}\n'
+      + '@media (max-width:480px){.jh-panel{padding:12px !important;border-radius:10px !important}}\n'
+      + '</style>\n';
+
+    // ---- HTML 前半（正则1）----
+    var html1 = '<div class="jh-panel" onclick="event.stopPropagation()">\n'
+      + '  <div class="jh-title">' + title + '</div>\n';
+
+    fields.forEach(function(f){
+      html1 += '  <div class="jh-field">\n';
+      html1 += '    <div class="jh-label">' + f.icon + ' ' + f.label + '</div>\n';
+      if(f.type === 'text'){
+        html1 += '    <input class="jh-input" id="jh-' + f.id + '" placeholder="请输入' + f.label + '" oninput="jhUpdatePreview()">\n';
+      } else if(f.type === 'single'){
+        html1 += '    <div class="jh-tags" id="jh-' + f.id + '-tags">\n';
+        (f.options||[]).forEach(function(opt, oi){
+          html1 += '      <div class="jh-tag' + (oi===0?' selected':'') + '" onclick="jhSetSingle(\'' + f.id + '\',\'' + esc(opt) + '\',event)">' + opt + '</div>\n';
+        });
+        if(f.hasCustom){
+          html1 += '      <div class="jh-tag" onclick="jhSetSingle(\'' + f.id + '\',\'自定义\',event)">自定义</div>\n';
+        }
+        html1 += '    </div>\n';
+        if(f.hasCustom){
+          html1 += '    <input class="jh-input" id="jh-' + f.id + '-custom" placeholder="自定义' + f.label + '" style="display:none;" oninput="jhUpdatePreview()">\n';
+        }
+      } else if(f.type === 'multi'){
+        html1 += '    <div class="jh-tags" id="jh-' + f.id + '-tags">\n';
+        (f.options||[]).forEach(function(opt){
+          html1 += '      <div class="jh-tag" onclick="jhToggleMulti(\'' + f.id + '\',\'' + esc(opt) + '\',event)">' + opt + '</div>\n';
+        });
+        html1 += '    </div>\n';
+        if(f.hasCustom){
+          html1 += '    <input class="jh-input" id="jh-' + f.id + '-custom" placeholder="自定义' + f.label + '（逗号分隔）" oninput="jhUpdatePreview()">\n';
+        }
+      }
+      html1 += '  </div>\n';
+    });
+
+    // ---- HTML 后半（正则2）----
+    var html2 = '  <div class="jh-preview">\n'
+      + '    <div class="jh-preview-title">📝 映射预览</div>\n'
+      + '    <div class="jh-preview-content" id="jh-preview-content">请填写上方信息...</div>\n'
+      + '  </div>\n'
+      + '  <div class="jh-confirm" onclick="event.stopPropagation();jhConfirm()">' + confirmText + '</div>\n'
+      + '</div>\n';
+
+    // ---- JS（正则3）----
+    var fieldMeta = fields.map(function(f){
+      return { id:f.id, type:f.type, label:f.label.replace(/（.*?）/,''), max:f.max||3, hasCustom:!!f.hasCustom, defaultVal:(f.type==='single'?(f.options&&f.options[0]||''):undefined) };
+    });
+
+    var js = ''
+      + '<script>\n'
+      + '(function(){\n'
+      + 'if(window.__jhInstalled) return; window.__jhInstalled=true;\n'
+      + 'var FIELDS=' + JSON.stringify(fieldMeta) + ';\n'
+      + 'var state={};\n'
+      + 'FIELDS.forEach(function(f){\n'
+      + '  if(f.type==="single") state[f.id]=f.defaultVal||"";\n'
+      + '  else if(f.type==="multi") state[f.id]=[];\n'
+      + '});\n'
+      + '\n'
+      + 'window.jhSetSingle=function(fid,val,ev){\n'
+      + '  if(!ev) ev=window.event;\n'
+      + '  state[fid]=val;\n'
+      + '  var tags=document.querySelectorAll("#jh-"+fid+"-tags .jh-tag");\n'
+      + '  for(var i=0;i<tags.length;i++) tags[i].classList.remove("selected");\n'
+      + '  ev.currentTarget.classList.add("selected");\n'
+      + '  var custom=document.getElementById("jh-"+fid+"-custom");\n'
+      + '  if(custom) custom.style.display=(val==="自定义")?"block":"none";\n'
+      + '  jhUpdatePreview();\n'
+      + '};\n'
+      + '\n'
+      + 'window.jhToggleMulti=function(fid,val,ev){\n'
+      + '  if(!ev) ev=window.event;\n'
+      + '  var el=ev.currentTarget;\n'
+      + '  var arr=state[fid];\n'
+      + '  var idx=arr.indexOf(val);\n'
+      + '  var meta=null; for(var i=0;i<FIELDS.length;i++){ if(FIELDS[i].id===fid){ meta=FIELDS[i]; break; } }\n'
+      + '  var max=meta?meta.max:3;\n'
+      + '  if(idx>=0){ arr.splice(idx,1); el.classList.remove("selected"); }\n'
+      + '  else if(arr.length<max){ arr.push(val); el.classList.add("selected"); }\n'
+      + '  jhUpdatePreview();\n'
+      + '};\n'
+      + '\n'
+      + 'function mergeCustom(arr,max,id){\n'
+      + '  var out=arr.slice();\n'
+      + '  var t=document.getElementById(id);\n'
+      + '  if(t){\n'
+      + '    var s=t.value.trim();\n'
+      + '    if(s){\n'
+      + '      var parts=s.split(/[,，]/);\n'
+      + '      for(var i=0;i<parts.length;i++){\n'
+      + '        var x=parts[i].trim();\n'
+      + '        if(x && out.indexOf(x)<0 && out.length<max) out.push(x);\n'
+      + '      }\n'
+      + '    }\n'
+      + '  }\n'
+      + '  return out;\n'
+      + '}\n'
+      + '\n'
+      + 'window.jhUpdatePreview=function(){\n'
+      + '  var p=document.getElementById("jh-preview-content");\n'
+      + '  if(!p) return;\n'
+      + '  var lines=[];\n'
+      + '  FIELDS.forEach(function(f){\n'
+      + '    var val;\n'
+      + '    if(f.type==="text"){\n'
+      + '      var el=document.getElementById("jh-"+f.id);\n'
+      + '      val=(el&&el.value.trim())||"未填写";\n'
+      + '    }else if(f.type==="single"){\n'
+      + '      if(state[f.id]==="自定义"){\n'
+      + '        var c=document.getElementById("jh-"+f.id+"-custom");\n'
+      + '        val=(c&&c.value.trim())||"未指定";\n'
+      + '      }else{\n'
+      + '        val=state[f.id]||"未选择";\n'
+      + '      }\n'
+      + '    }else if(f.type==="multi"){\n'
+      + '      var merged=mergeCustom(state[f.id],f.max,"jh-"+f.id+"-custom");\n'
+      + '      val=merged.length?merged.join("、"):"未选择";\n'
+      + '    }\n'
+      + '    lines.push(f.label+"："+val);\n'
+      + '  });\n'
+      + '  p.textContent=lines.join("\\n");\n'
+      + '};\n'
+      + '\n'
+      + 'window.jhConfirm=function(){\n'
+      + '  var t=document.getElementById("jh-preview-content").textContent.trim();\n'
+      + '  var ta=document.querySelector(".chatMsgTextarea textarea")||document.querySelector(".chat-input-scope textarea")||document.querySelector(".chat-bottom textarea")||document.querySelector("textarea");\n'
+      + '  if(!ta){ alert("未找到输入框，请刷新重试"); return; }\n'
+      + '  ta.value=t;\n'
+      + '  ta.dispatchEvent(new Event("input",{bubbles:true}));\n'
+      + '  ta.focus();\n'
+      + '};\n'
+      + '\n'
+      + 'jhUpdatePreview();\n'
+      + '})();\n'
+      + '<\/script>\n';
+
+    return { css:css, html1:html1, html2:html2, js:js, marker:marker };
+  }
+
+  function updateCharCount(){
+    var r = buildCode();
+    var jsLen = r.js.length;
+    var el = $('charCount');
+    el.textContent = jsLen;
+    $('charCountWrap').classList.toggle('warn', jsLen > 20000);
+  }
+
+  $('genBtn').addEventListener('click', function(){
+    var r = buildCode();
+    var m = r.marker;
+    var payload = {
+      pageDepth: 2,
+      statusbar: "",
+      beginning: "<" + m + "_1>\n<" + m + "_2>\n<" + m + "_3>\n",
+      regex_scripts: [
+        { id:-1, scriptName:"人设创建-"+m+"_1 样式与HTML前半", findRegex:"<"+m+"_1>", replaceString:r.css + r.html1 },
+        { id:-1, scriptName:"人设创建-"+m+"_2 HTML后半", findRegex:"<"+m+"_2>", replaceString:r.html2 },
+        { id:-1, scriptName:"人设创建-"+m+"_3 JS逻辑", findRegex:"<"+m+"_3>", replaceString:r.js }
+      ]
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = '人设创建面板_' + m + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  renderFieldsForm();
+  renderPreview();
+  updateCharCount();
+})();
+</script>
+</body>
+</html>

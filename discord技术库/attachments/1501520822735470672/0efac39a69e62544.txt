@@ -1,0 +1,543 @@
+<style>
+/* 旋转卡牌系统样式 - 250px x 300px 版本 */
+.card-system-container {
+    width: 250px;
+    height: 300px;
+    position: relative;
+    margin: 0 auto;
+    perspective: 800px;
+    font-family: 'Microsoft YaHei', sans-serif;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* 旋转舞台 */
+.carousel-stage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 卡牌基础样式 */
+.card-item {
+    width: 230px;
+    height: 280px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: linear-gradient(145deg, #fff0f5 0%, #ffb6c1 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #ff69b4;
+    backface-visibility: hidden;
+    opacity: 0.3;
+    transition: all 0.5s ease;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+/* 3D旋转位置 */
+.card-item:nth-child(1) { transform: rotateY(0deg) translateZ(180px); }
+.card-item:nth-child(2) { transform: rotateY(120deg) translateZ(180px); }
+.card-item:nth-child(3) { transform: rotateY(240deg) translateZ(180px); }
+
+/* 激活状态 */
+.card-item.active {
+    opacity: 1;
+    box-shadow: 0 12px 30px rgba(255, 20, 147, 0.4);
+    border-color: #ff1493;
+}
+
+/* 卡牌内容样式 */
+.card-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #d63384;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}
+
+.card-subtitle {
+    font-size: 12px;
+    color: #ff1493;
+    margin-top: 3px;
+    font-weight: 600;
+}
+
+.card-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.card-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.card-content::-webkit-scrollbar-thumb {
+    background: #ff69b4;
+    border-radius: 2px;
+}
+
+.card-description {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* 选择按钮 - 去掉点击反馈 */
+.select-btn {
+    background: linear-gradient(145deg, #ff69b4 0%, #ff1493 100%);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(255, 20, 147, 0.3);
+    transition: all 0.3s;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    user-select: none;
+}
+
+.select-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+}
+
+/* 引述 */
+.card-quote {
+    font-style: italic;
+    color: #c71585;
+    text-align: center;
+    font-size: 11px;
+    padding: 8px;
+    border-top: 1px dashed #ff69b4;
+    position: relative;
+}
+
+.card-quote::before {
+    content: '"';
+    font-size: 16px;
+    color: #ff69b4;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+
+.card-quote::after {
+    content: '"';
+    font-size: 16px;
+    color: #ff69b4;
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+}
+
+/* 导航按钮 - 去掉点击反馈 */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #ff69b4;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff1493;
+    z-index: 100;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    user-select: none;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.nav-btn:hover {
+    background: #ff69b4;
+    color: white;
+}
+
+.nav-prev { left: -40px; }
+.nav-next { right: -40px; }
+
+/* 指示器 - 移出卡牌区域，放到最底部 */
+.indicator {
+    position: absolute;
+    /* 改为相对于容器底部定位，完全在卡牌区域外 */
+    bottom: -35px; /* 距离容器底部35px，确保不挡字 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 50; /* 确保在最上层 */
+}
+
+.indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,105,180,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: block;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.indicator-dot:hover {
+    background: rgba(255,105,180,0.6);
+}
+
+.indicator-dot.active {
+    background: #ff1493;
+    transform: scale(1.2);
+}
+
+/* 详情页样式 */
+.detail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    border-radius: 12px;
+    z-index: 200;
+    display: none;
+    flex-direction: column;
+    color: #fff;
+    overflow: hidden;
+    border: 2px solid #ff69b4;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.detail-overlay.active {
+    display: flex;
+}
+
+.detail-header {
+    background: linear-gradient(145deg, #ff69b4 0%, #ff1493 100%);
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 关闭按钮 - 去掉点击反馈 */
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s;
+    text-decoration: none;
+    user-select: none;
+    /* 去掉点击蓝色反馈 */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.detail-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.detail-section {
+    margin-bottom: 15px;
+}
+
+.section-title {
+    color: #ff69b4;
+    font-size: 14px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #ff69b4;
+    padding-bottom: 4px;
+}
+
+.section-text {
+    color: #ddd;
+    line-height: 1.5;
+    font-size: 12px;
+}
+
+.card-list {
+    list-style: none;
+    padding: 0;
+}
+
+.card-item-detail {
+    background: rgba(255,105,180,0.1);
+    border-left: 3px solid #ff69b4;
+    padding: 8px;
+    margin-bottom: 6px;
+    border-radius: 0 4px 4px 0;
+}
+
+.card-name {
+    color: #ff69b4;
+    font-weight: bold;
+    margin-bottom: 3px;
+    font-size: 13px;
+}
+
+.card-effect {
+    color: #aaa;
+    font-size: 11px;
+}
+</style>
+
+<!-- 旋转卡牌选择系统 -->
+<div class="card-system-container" id="cardSystem">
+    <!-- 左导航 -->
+    <div class="nav-btn nav-prev" onclick="var s=document.getElementById('cardSystem');var c=parseInt(s.dataset.curr||0);var n=(c-1+3)%3;s.dataset.curr=n;var stage=s.querySelector('.carousel-stage');stage.style.transform='rotateY('+(-n*120)+'deg)';var cards=s.querySelectorAll('.card-item');cards.forEach(function(e,i){e.classList.toggle('active',i===n)});var dots=s.querySelectorAll('.indicator-dot');dots.forEach(function(e,i){e.classList.toggle('active',i===n)});">&lt;</div>
+
+    <!-- 旋转舞台 -->
+    <div class="carousel-stage" style="transform: rotateY(0deg);">
+        <!-- 卡牌1：无限剑制 -->
+        <div class="card-item active">
+            <div class="card-header">
+                <div class="card-title">无限剑制</div>
+                <div class="card-subtitle">无限、多伤</div>
+            </div>
+            <div class="card-content">
+                <div class="card-description">
+                    利用剑雨进行大范围攻击，每次攻击可叠加剑意层数，达到10层时触发"万剑归宗"效果，对所有敌人造成毁灭性打击。适合持续作战和清理群敌。
+                </div>
+            </div>
+            <div class="select-btn" onclick="var s=document.getElementById('cardSystem');var d=s.querySelector('#detail1');d.classList.add('active');">选择无限剑制</div>
+            <div class="card-quote">无限剑法！</div>
+        </div>
+
+        <!-- 卡牌2：暗影之舞 -->
+        <div class="card-item">
+            <div class="card-header">
+                <div class="card-title">暗影之舞</div>
+                <div class="card-subtitle">爆发、闪避</div>
+            </div>
+            <div class="card-content">
+                <div class="card-description">
+                    化身暗影，获得高额闪避率，每次闪避成功后立即反击并叠加暗影标记。标记满5层时触发"暗影爆发"，造成巨额单体伤害并回复生命。
+                </div>
+            </div>
+            <div class="select-btn" onclick="var s=document.getElementById('cardSystem');var d=s.querySelector('#detail2');d.classList.add('active');">选择暗影之舞</div>
+            <div class="card-quote">于阴影中起舞！</div>
+        </div>
+
+        <!-- 卡牌3：圣光守护 -->
+        <div class="card-item">
+            <div class="card-header">
+                <div class="card-title">圣光守护</div>
+                <div class="card-subtitle">防御、治疗</div>
+            </div>
+            <div class="card-content">
+                <div class="card-description">
+                    召唤圣光护盾，吸收伤害并持续恢复生命。护盾存在期间，受到的伤害会转化为"圣光能量"，能量满时可释放"神圣审判"净化一切负面状态。
+                </div>
+            </div>
+            <div class="select-btn" onclick="var s=document.getElementById('cardSystem');var d=s.querySelector('#detail3');d.classList.add('active');">选择圣光守护</div>
+            <div class="card-quote">圣光啊，赐予我力量！</div>
+        </div>
+    </div>
+
+    <!-- 右导航 -->
+    <div class="nav-btn nav-next" onclick="var s=document.getElementById('cardSystem');var c=parseInt(s.dataset.curr||0);var n=(c+1)%3;s.dataset.curr=n;var stage=s.querySelector('.carousel-stage');stage.style.transform='rotateY('+(-n*120)+'deg)';var cards=s.querySelectorAll('.card-item');cards.forEach(function(e,i){e.classList.toggle('active',i===n)});var dots=s.querySelectorAll('.indicator-dot');dots.forEach(function(e,i){e.classList.toggle('active',i===n)});">&gt;</div>
+
+    <!-- 详情页1：无限剑制 -->
+    <div id="detail1" class="detail-overlay">
+        <div class="detail-header">
+            <div class="detail-title">无限剑制 - 卡组详情</div>
+            <div class="close-btn" onclick="document.getElementById('detail1').classList.remove('active');">×</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-section">
+                <div class="section-title">流派特性</div>
+                <div class="section-text">无限、多伤 | 利用剑雨进行大范围攻击，每次攻击可叠加剑意层数，达到10层时触发"万剑归宗"效果，对所有敌人造成毁灭性打击。</div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">核心卡牌</div>
+                <ul class="card-list">
+                    <li class="card-item-detail">
+                        <div class="card-name">基础剑诀</div>
+                        <div class="card-effect">发射3道剑气，每道造成20点伤害，叠加1层剑意</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">剑雨风暴</div>
+                        <div class="card-effect">召唤剑雨攻击全场，每层剑意额外增加1道剑气</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">万剑归宗</div>
+                        <div class="card-effect">消耗所有剑意，每道剑气造成50点伤害，剑意层数×10</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">剑心通明</div>
+                        <div class="card-effect">被动：每层剑意增加5%暴击率</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">战斗策略</div>
+                <div class="section-text">前期快速叠加剑意，中期利用剑雨清理小怪，后期万剑归宗秒杀BOSS。注意保持安全距离，避免被近身。</div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">流派引述</div>
+                <div class="section-text" style="color: #ff69b4; font-style: italic; text-align: center; font-size: 14px;">
+                    "无限剑法！"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 详情页2：暗影之舞 -->
+    <div id="detail2" class="detail-overlay">
+        <div class="detail-header">
+            <div class="detail-title">暗影之舞 - 卡组详情</div>
+            <div class="close-btn" onclick="document.getElementById('detail2').classList.remove('active');">×</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-section">
+                <div class="section-title">流派特性</div>
+                <div class="section-text">爆发、闪避 | 化身暗影，获得高额闪避率，每次闪避成功后立即反击并叠加暗影标记。标记满5层时触发"暗影爆发"。</div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">核心卡牌</div>
+                <ul class="card-list">
+                    <li class="card-item-detail">
+                        <div class="card-name">暗影步</div>
+                        <div class="card-effect">瞬移至敌人背后，下次攻击必暴击，叠加1层暗影标记</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">影分身</div>
+                        <div class="card-effect">制造2个分身吸引火力，本体闪避率+30%，持续5秒</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">暗影爆发</div>
+                        <div class="card-effect">消耗所有标记，每层造成80点伤害并回复10%生命</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">夜行者</div>
+                        <div class="card-effect">被动：闪避成功后立即反击，造成40点伤害</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">战斗策略</div>
+                <div class="section-text">依靠高闪避生存，通过频繁位移和分身制造输出机会。适合对付单体高攻敌人，需要精准操作时机。</div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">流派引述</div>
+                <div class="section-text" style="color: #ff69b4; font-style: italic; text-align: center; font-size: 14px;">
+                    "于阴影中起舞！"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 详情页3：圣光守护 -->
+    <div id="detail3" class="detail-overlay">
+        <div class="detail-header">
+            <div class="detail-title">圣光守护 - 卡组详情</div>
+            <div class="close-btn" onclick="document.getElementById('detail3').classList.remove('active');">×</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-section">
+                <div class="section-title">流派特性</div>
+                <div class="section-text">防御、治疗 | 召唤圣光护盾，吸收伤害并持续恢复生命。护盾存在期间，受到的伤害会转化为"圣光能量"。</div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">核心卡牌</div>
+                <ul class="card-list">
+                    <li class="card-item-detail">
+                        <div class="card-name">圣光护盾</div>
+                        <div class="card-effect">获得200点护盾，持续10秒，期间每秒回复10点生命</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">神圣之光</div>
+                        <div class="card-effect">立即回复30%最大生命，并清除所有负面状态</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">神圣审判</div>
+                        <div class="card-effect">消耗所有圣光能量，每点能量造成3点伤害并眩晕敌人1秒</div>
+                    </li>
+                    <li class="card-item-detail">
+                        <div class="card-name">信仰之盾</div>
+                        <div class="card-effect">被动：护盾破裂时对周围敌人造成100点伤害并击退</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">战斗策略</div>
+                <div class="section-text">稳扎稳打的防御型流派，通过护盾和回复保持生存，积攒能量后释放审判反击。适合持久战和消耗战。</div>
+            </div>
+            
+            <div class="detail-section">
+                <div class="section-title">流派引述</div>
+                <div class="section-text" style="color: #ff69b4; font-style: italic; text-align: center; font-size: 14px;">
+                    "圣光啊，赐予我力量！"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 指示器 - 移到最后，放在卡牌区域外 -->
+    <div class="indicator">
+        <div class="indicator-dot active" onclick="var s=document.getElementById('cardSystem');s.dataset.curr=0;var stage=s.querySelector('.carousel-stage');stage.style.transform='rotateY(0deg)';var cards=s.querySelectorAll('.card-item');cards.forEach(function(e,i){e.classList.toggle('active',i===0)});var dots=s.querySelectorAll('.indicator-dot');dots.forEach(function(e,i){e.classList.toggle('active',i===0)});"></div>
+        <div class="indicator-dot" onclick="var s=document.getElementById('cardSystem');s.dataset.curr=1;var stage=s.querySelector('.carousel-stage');stage.style.transform='rotateY(-120deg)';var cards=s.querySelectorAll('.card-item');cards.forEach(function(e,i){e.classList.toggle('active',i===1)});var dots=s.querySelectorAll('.indicator-dot');dots.forEach(function(e,i){e.classList.toggle('active',i===1)});"></div>
+        <div class="indicator-dot" onclick="var s=document.getElementById('cardSystem');s.dataset.curr=2;var stage=s.querySelector('.carousel-stage');stage.style.transform='rotateY(-240deg)';var cards=s.querySelectorAll('.card-item');cards.forEach(function(e,i){e.classList.toggle('active',i===2)});var dots=s.querySelectorAll('.indicator-dot');dots.forEach(function(e,i){e.classList.toggle('active',i===2)});"></div>
+    </div>
+</div>
