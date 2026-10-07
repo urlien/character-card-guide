@@ -1,0 +1,1061 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>商城工坊 · MMD 商城侧边栏生成器 v2.0</title>
+<style>*{box-sizing:border-box} :root{--bg:#f5f2eb;--panel:#fffdf8;--ink:#262b24;--muted:#667063;--line:#dedfd4;--accent:#596d45;--accent-deep:#435736;--gold:#a67d3a;--soft:#eaf0e2;--danger:#a83d35;--radius:14px;color-scheme:light}body.dark{--bg:#191d19;--panel:#242a23;--ink:#edf1e8;--muted:#adb7a8;--line:#414c3e;--accent:#b1c695;--accent-deep:#d2dfbe;--soft:#323f2b;--gold:#d2b77e;--danger:#f19988;color-scheme:dark}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 'Segoe UI','Microsoft YaHei',system-ui,sans-serif}button,input,select,textarea{font:inherit}button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:8px 13px;min-height:40px;cursor:pointer;transition:background .15s,box-shadow .15s}button:hover{background:var(--soft);border-color:var(--accent)}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button:disabled{opacity:.45;cursor:default}button.primary{background:var(--accent);border-color:var(--accent);color:#fff}body.dark button.primary{color:#182014}button.primary:hover{background:var(--accent-deep)}button.danger{color:var(--danger)}button.icon-button{width:40px;padding:0}.topbar{position:sticky;top:0;z-index:20;min-height:82px;display:flex;gap:18px;align-items:center;background:var(--panel);border-bottom:1px solid var(--line);padding:14px 28px}.identity{display:flex;align-items:center;gap:12px;flex-shrink:0}.monogram{width:43px;height:43px;display:grid;place-items:center;background:var(--soft);border:1px solid var(--accent);color:var(--accent);border-radius:12px;font:25px 'SimSun',serif}.identity strong{font-size:20px;font-weight:650;letter-spacing:2px}.identity small{font-size:10px;background:var(--soft);color:var(--accent);border-radius:5px;padding:2px 5px;letter-spacing:0;vertical-align:middle}.identity p{font-size:10px;color:var(--muted);margin:0;letter-spacing:1px}.save-status{color:var(--muted);font-size:12px;flex:1}.save-status.bad{color:var(--danger)}.top-actions{display:flex;gap:8px;align-items:center}.layout{display:grid;grid-template-columns:204px minmax(420px,1fr) minmax(340px,440px);max-width:1800px;margin:auto;min-height:calc(100vh - 83px)}.rail{border-right:1px solid var(--line);padding:26px 14px;display:flex;flex-direction:column;position:sticky;top:83px;height:calc(100vh - 83px);height:calc(100dvh - 83px)}.rail-caption{font-size:11px;letter-spacing:1px;color:var(--muted);padding:0 10px 20px}.nav-button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;text-align:left;padding:13px 10px;margin-bottom:4px;font-size:13px}.nav-button span{font:11px ui-monospace,Consolas,monospace;color:var(--gold)}.nav-button.active{background:var(--soft);color:var(--accent);font-weight:650}.nav-button b{margin-left:auto;font:11px ui-monospace,monospace;border:1px solid var(--line);border-radius:4px;padding:0 5px}.rail-bottom{margin-top:auto;padding:24px 10px 0}.rail-bottom button{padding:6px 0;text-align:left;border:0;background:transparent;font-size:12px;color:var(--muted)}.rail-bottom p{font-size:11px;color:var(--muted);line-height:1.8}.workspace{min-width:0;padding:0 36px 56px}.workspace-toolbar{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:30px}.workspace-toolbar button{border:0;background:transparent;font-size:11px;padding:5px 7px;min-height:32px}.section{display:none}.section.active{display:block}.eyebrow{font-size:9px;letter-spacing:2.8px;color:var(--gold);font-weight:600}.section h1{font:34px/1.4 'Songti SC','SimSun',serif;letter-spacing:1px;margin:12px 0 15px}.section h1 em{font-style:normal;color:var(--accent)}.lead{font-size:13px;max-width:540px;color:var(--muted);margin:0 0 24px;line-height:1.9}.steps{display:flex;gap:16px;border-block:1px solid var(--line);padding:18px 0;margin:28px 0}.steps>div{display:flex;gap:10px;align-items:flex-start;flex:1}.steps b{font:24px/1.2 'Georgia',serif;color:var(--gold)}.steps span{font-size:12px;font-weight:600}.steps small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:3px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:18px 0}.card h2{font-size:14px;letter-spacing:.4px;margin:0 0 14px}.card-header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.card-header button{font-size:11px}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field-grid .wide{grid-column:1/-1}label{display:block;font-size:12px;font-weight:550;color:var(--ink)}input:not([type=checkbox]):not([type=radio]):not([type=color]),select,textarea{display:block;width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 11px;color:var(--ink);margin-top:5px;min-height:42px;outline:none}input[type=search]{margin:0!important}textarea{resize:vertical;line-height:1.7}label small,.hint{font-size:11px;font-weight:400;line-height:1.8;color:var(--muted)}label small{display:block;margin-top:5px}.hint{margin:12px 0 0}.platform-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.platform-options label{border:1px solid var(--line);padding:12px;border-radius:9px;display:flex;align-items:flex-start;gap:8px;cursor:pointer}.platform-options label:has(:checked){background:var(--soft);border-color:var(--accent)}input[type=radio],input[type=checkbox]{accent-color:var(--accent)}.platform-options strong{font-size:12px}.platform-options small{font-size:10px}.quick-actions,.button-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0}.catalog-tools{display:flex;gap:10px;align-items:center}.catalog-tools input{flex:1;min-width:80px}.catalog-tools select{width:135px;margin-top:0;flex:none}.catalog-tools button{flex-shrink:0}.catalog-meta{display:flex;align-items:center;gap:6px;margin:14px 0;color:var(--muted);font-size:11px}.catalog-meta span{flex:1}.catalog-meta button{border:0;background:transparent;font-size:11px;padding:5px;min-height:32px}.product-list{display:flex;flex-direction:column;gap:12px}.product-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}.product-heading{display:flex;align-items:center;gap:8px;margin-bottom:10px}.product-number{font:10px ui-monospace,monospace;color:var(--gold);margin-right:auto}.product-heading button{font-size:10px;min-height:32px;padding:3px 8px}.product-fields{display:grid;grid-template-columns:minmax(0,1fr) 95px;gap:12px}.product-fields .wide{grid-column:1/-1}.product-fields input,.product-fields textarea{font-size:13px}.product-bottom{margin-top:12px;display:flex;gap:10px;align-items:center}.product-bottom select{margin:0;width:160px}.product-bottom .hint{margin:0;font-size:10px}.empty{border:1px dashed var(--line);border-radius:var(--radius);padding:40px 20px;text-align:center;color:var(--muted)}.pager{display:flex;justify-content:space-between;align-items:center;margin:20px 0;font-size:11px;color:var(--muted)}.pager button{font-size:11px}.category-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:12px}.category-card header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:11px;color:var(--gold)}.category-card header button{min-height:32px;font-size:11px;padding:4px 9px}.category-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.category-fields .wide{grid-column:1/-1}.rec-row{display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--line);padding:8px 0}.rec-row span{flex:1;font-size:12px}.rec-row button{min-height:32px;padding:4px 10px}.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.preset{overflow:hidden;padding:0;border-radius:11px;text-align:left}.preset .colors{display:flex;height:43px}.preset .colors i{flex:1}.preset .caption{display:block;padding:10px 12px;font-size:11px}.preset.active{outline:2px solid var(--accent);outline-offset:2px}.color-field{display:grid;grid-template-columns:100px 38px minmax(0,1fr);gap:8px;align-items:center;margin-bottom:12px}.color-field label{font-size:11px}.color-field input[type=color]{width:38px;height:38px;background:transparent;border:1px solid var(--line);border-radius:7px;padding:3px}.color-field input[type=text]{font:11px ui-monospace,monospace!important;margin:0!important}details>summary{cursor:pointer;font-size:12px;color:var(--accent);padding:10px 0}details[open]>summary{margin-bottom:10px}.stack{margin-top:14px}.check{display:flex;align-items:flex-start;gap:8px;font-size:12px;margin:12px 0;font-weight:400}.review-list{font-size:12px;line-height:1.9}.review-list .bad,.error{color:var(--danger)}.review-list .warn{color:var(--gold)}.review-list p{margin:7px 0}.sample-table{width:100%;border-collapse:collapse;font-size:11px;margin:14px 0;table-layout:fixed}.sample-table th,.sample-table td{text-align:left;padding:8px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.sample-table th{color:var(--muted);font-weight:500}.preview-area{border-left:1px solid var(--line);padding:30px 26px 20px;background:var(--panel);position:sticky;top:83px;max-height:calc(100vh - 83px);max-height:calc(100dvh - 83px);display:flex;flex-direction:column;min-height:600px}.preview-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.preview-heading h2{font:24px 'SimSun',serif;margin:6px 0}.preview-heading button{width:35px;min-height:35px;font-size:20px;padding:0}.preview-controls{display:flex;gap:12px;margin-bottom:15px;align-items:center}.preview-controls label{font-size:10px;flex:1}.preview-controls input,.preview-controls select{font-size:12px;min-height:35px!important;padding:6px 8px!important}.preview-stage{flex:1;min-height:270px;display:flex;justify-content:center;overflow:auto;background:var(--bg);border:1px solid var(--line);padding:8px;border-radius:23px}.preview-stage iframe{width:375px;max-width:100%;height:100%;min-height:400px;border:0;border-radius:16px;background:#0b0b0d}.preview-stage.narrow iframe{width:320px}.preview-stage.desktop{border-radius:10px;padding:0}.preview-stage.desktop iframe{width:850px;max-width:none;border-radius:0}.preview-footer{padding-top:14px}.preview-footer>span{font-size:11px;color:var(--accent)}.preview-footer p{font-size:10px;color:var(--muted);line-height:1.8;margin:8px 0 12px}.preview-footer button{width:100%;font-size:12px}.mobile-switch{display:none}.notice{display:flex;gap:16px;justify-content:space-between;align-items:center;padding:12px 28px;background:var(--soft);border-bottom:1px solid var(--line);font-size:12px}.notice[hidden]{display:none}.notice p{margin:0}.notice>div{display:flex;gap:8px;flex-shrink:0}.notice button{font-size:11px;min-height:32px;padding:4px 9px}dialog{border:1px solid var(--line);border-radius:18px;background:var(--panel);color:var(--ink);width:min(720px,calc(100vw - 28px));padding:0;max-height:90vh;max-height:90dvh;box-shadow:0 20px 100px #0005}dialog::backdrop{background:#0d180f99;backdrop-filter:blur(4px)}.modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--line)}.modal-top h2{font:22px 'SimSun',serif;margin:0}.modal-top button{width:36px;min-height:36px;font-size:21px;padding:0}.modal-body{padding:22px 24px;overflow:auto;max-height:calc(90dvh - 78px)}.modal-body h3{font-size:14px;margin:22px 0 10px}.modal-body h3:first-child{margin-top:0}.modal-body p,.modal-body li{font-size:12px;line-height:1.9}.modal-body ol{padding-left:20px}.modal-body code{background:var(--soft);padding:2px 5px;border-radius:4px;overflow-wrap:anywhere;font:12px ui-monospace,monospace}.modal-body .marker{font:15px ui-monospace,monospace;padding:15px;border:1px dashed var(--accent);border-radius:9px;white-space:pre-wrap;overflow-wrap:anywhere;user-select:all}.export-stats{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0;font-size:11px;color:var(--muted)}.export-stats b{font:18px ui-monospace,monospace;color:var(--accent)}.code-area{font:11px/1.6 ui-monospace,monospace;white-space:pre;overflow:auto}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);max-width:min(600px,90vw);z-index:100;background:var(--ink);color:var(--panel);padding:12px 18px;border-radius:10px;box-shadow:0 8px 35px #0003;opacity:0;pointer-events:none;transition:opacity .15s;font-size:12px;text-align:center}.toast.on{opacity:1}.sr-only,.skip:not(:focus){position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}.skip:focus{position:fixed;top:0;left:0;z-index:100;padding:10px;background:var(--panel)}[hidden]{display:none!important}
+@media(min-width:1500px){.workspace{padding-inline:56px}.section h1{font-size:40px}.layout{grid-template-columns:220px minmax(520px,1fr) 460px}}
+@media(max-width:1180px){.layout{grid-template-columns:170px minmax(330px,1fr) 340px}.workspace{padding-inline:22px}.rail{padding-inline:8px}.preview-area{padding-inline:16px}.topbar{padding-inline:18px}.save-status{font-size:10px}.section h1{font-size:28px}.steps{gap:10px}.steps small{font-size:9px}}
+@media(max-width:950px){.layout{grid-template-columns:minmax(0,1fr) 350px}.rail{grid-column:1/-1;position:sticky;top:83px;height:auto;display:flex;flex-direction:row;border-right:0;border-bottom:1px solid var(--line);background:var(--panel);padding:8px;overflow-x:auto;z-index:15}.rail-caption,.rail-bottom{display:none}.nav-button{width:auto;white-space:nowrap;margin:0;font-size:11px;flex:none;padding:10px}.nav-button span{display:none}.preview-area{top:141px;max-height:calc(100dvh - 141px)}.workspace-toolbar{margin-bottom:22px}.save-status{display:none}.topbar{justify-content:space-between}}
+@media(max-width:720px){.topbar{min-height:80px;padding:10px 14px;flex-wrap:wrap;gap:8px}.identity strong{font-size:17px}.identity p{font-size:8px}.monogram{width:34px;height:34px;font-size:20px}.top-actions{margin-left:auto;gap:5px}.top-actions button{font-size:11px;padding:6px 8px;min-height:38px}.top-actions .icon-button{width:30px}.layout{display:block;min-height:calc(100dvh - 80px)}.rail{top:80px;position:sticky;padding:6px 8px;gap:2px}.nav-button{min-height:38px;padding:8px 10px}.workspace{padding:0 18px 105px}.workspace-toolbar{height:48px;margin-bottom:22px}.section h1{font-size:31px}.lead{font-size:12px}.card{padding:16px}.field-grid{gap:14px}.steps{gap:8px;padding:16px 0}.steps>div{gap:6px}.steps b{font-size:21px}.steps span{font-size:10px}.steps small{font-size:9px}.platform-options{gap:8px}.platform-options label{padding:10px 8px}.platform-options strong{font-size:11px}.preview-area{display:none;position:relative;top:0;min-height:calc(100dvh - 180px);height:calc(100dvh - 180px);max-height:none;border-left:0;padding:20px 18px 95px}.preview-stage{min-height:250px}.preview-stage iframe{min-height:250px}.preview-heading{margin-bottom:10px}.preview-heading h2{font-size:22px}.preview-footer>button{display:none}.preview-footer p{margin-bottom:0}.mobile-switch{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);padding:10px 16px max(10px,env(safe-area-inset-bottom));gap:8px;z-index:30}.mobile-switch button{flex:1;min-height:43px}.mobile-switch button.active{background:var(--accent);color:#fff;border-color:var(--accent)}body.dark .mobile-switch button.active{color:#182014}body.preview-view .workspace{display:none}body.preview-view .preview-area{display:flex}body.preview-view .rail{display:none}.notice{padding:10px 14px;flex-direction:column;align-items:flex-start;gap:6px}.catalog-tools{flex-wrap:wrap}.catalog-tools input{min-width:140px}.catalog-tools select{width:115px}.catalog-tools button{font-size:12px}.product-heading button{min-height:40px}.product-fields{grid-template-columns:minmax(0,1fr) 85px}.product-fields input,.product-fields select,.product-fields textarea{font-size:16px}.product-bottom select{font-size:14px;width:140px}.color-field{grid-template-columns:76px 32px minmax(0,1fr)}.color-field input[type=color]{width:32px}.category-fields{gap:10px}.rec-row button{min-height:42px}.toast{bottom:82px}.modal-top,.modal-body{padding-inline:18px}input:not([type=checkbox]):not([type=radio]):not([type=color]),select,textarea{font-size:16px}.platform-options small{font-size:10px}.quick-actions button{font-size:12px}}
+@media(max-width:380px){.topbar{padding-inline:10px}.identity p{display:none}.top-actions button{font-size:10px;padding-inline:6px}.identity strong{font-size:16px}.identity{gap:7px}.top-actions .icon-button{display:none}.workspace{padding-inline:12px}.section h1{font-size:27px}.field-grid{grid-template-columns:1fr}.platform-options{grid-template-columns:1fr}.steps small{max-width:74px}.preset-grid{gap:8px}.catalog-tools select{width:100px}.catalog-tools input{min-width:100%}.product-heading{gap:5px}.product-heading button{font-size:10px;padding-inline:6px}.preview-controls input,.preview-controls select{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:950px){.rail{top:var(--topbar-height,83px)}}@media(max-width:720px){.rail{top:var(--topbar-height,80px)}}
+
+/* Scrollbars stay inside the preview; wider frames remain reachable from the left edge. */
+.preview-stage{justify-content:flex-start;scrollbar-width:thin;scrollbar-color:var(--muted) var(--bg);overscroll-behavior:contain}
+.preview-stage iframe{flex:none;margin-inline:auto}
+.preview-stage::-webkit-scrollbar{width:7px;height:7px}
+.preview-stage::-webkit-scrollbar-track{background:var(--bg);border-radius:8px}
+.preview-stage::-webkit-scrollbar-thumb{background:var(--muted);border:2px solid var(--bg);border-radius:8px}
+.preview-stage::-webkit-scrollbar-corner{background:var(--bg)}
+.preview-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.preview-heading .preview-actions button{width:auto;min-height:40px;padding:6px 10px;font-size:12px}
+.preview-actions [hidden]{display:none!important}
+body.preview-expanded{overflow:hidden}body.preview-expanded .toast{z-index:120}
+body.preview-expanded .preview-area{display:flex;position:fixed;inset:12px;top:12px;height:auto;max-height:none;min-height:0;border:1px solid var(--line);border-radius:16px;padding:18px 24px;z-index:100;box-shadow:0 0 0 100vmax rgba(0,0,0,.55)}
+body.preview-expanded .preview-heading{margin-bottom:12px;gap:12px;flex-wrap:wrap}
+body.preview-expanded .preview-controls{flex:none;max-width:540px;width:100%;align-self:center}
+body.preview-expanded .preview-stage{min-height:0;width:100%;max-width:1500px;align-self:center}
+body.preview-expanded .preview-stage iframe{min-height:0}
+body.preview-expanded .preview-footer{padding-top:8px}
+body.preview-expanded .preview-footer p{margin:4px 0;font-size:11px}
+body.preview-expanded .preview-footer>button{display:none}
+.preview-area:fullscreen{inset:0!important;width:100%;height:100dvh!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:16px max(16px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))!important}
+.guide-card{scroll-margin-top:170px}.guide-card h3{font-size:13px;margin:20px 0 6px}.guide-card p,.guide-card li{font-size:12px;line-height:1.9}.guide-card ol{padding-left:22px}.guide-card code{background:var(--soft);padding:2px 4px;border-radius:4px;overflow-wrap:anywhere}
+@media(max-width:720px){body.preview-expanded .preview-area{inset:0;border-radius:0;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}.preview-actions{gap:4px}.preview-heading .preview-actions button{min-height:42px;padding:6px 9px}body.preview-expanded .preview-heading h2{font-size:20px}body.preview-expanded .preview-controls{margin-bottom:8px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#workspace">跳到编辑区</a>
+<header class="topbar">
+  <div class="identity"><span class="monogram" aria-hidden="true">商</span><div><strong>商城工坊 <small>2.0</small></strong><p>MMD 商城侧边栏生成器</p></div></div>
+  <div id="saveStatus" class="save-status" role="status">正在读取草稿…</div>
+  <div class="top-actions"><button data-action="theme-ui" class="icon-button" aria-label="切换编辑器深浅色" title="切换编辑器深浅色">◐</button><button data-action="import-config">导入</button><button data-action="save-config">备份配置</button><button class="primary" data-action="export">导出正则 <span aria-hidden="true">↗</span></button></div>
+</header>
+<div id="notice" class="notice" hidden><p id="noticeText"></p><div><button data-action="raw-backup">备份旧原文</button><button data-action="dismiss-notice" aria-label="关闭提示">×</button></div></div>
+<div class="layout">
+<nav class="rail" aria-label="编辑步骤">
+ <div class="rail-caption">把你的故事，摆上货架</div>
+ <button class="nav-button active" data-section="start"><span>01</span>开始与文字</button>
+ <button class="nav-button" data-section="products"><span>02</span>商品管理 <b id="navCount">0</b></button>
+ <button class="nav-button" data-section="categories"><span>03</span>分类与推荐</button>
+ <button class="nav-button" data-section="appearance"><span>04</span>配色与布局</button>
+ <button class="nav-button" data-section="bulk"><span>05</span>批量与 AI</button>
+ <button class="nav-button" data-section="advanced"><span>06</span>余额与检查</button>
+ <button class="nav-button" data-section="guide"><span>07</span>详细使用说明</button>
+ <div class="rail-bottom"><button data-action="help">使用说明与常见问题</button><p>离线运行 · 无需账号<br>数据保存在此浏览器中</p></div>
+</nav>
+<main id="workspace" class="workspace">
+ <div class="workspace-toolbar"><span id="sectionLabel">开始与文字</span><div><button data-action="undo" id="undoButton" title="撤销 Ctrl+Z" disabled>↶ 撤销</button><button data-action="redo" id="redoButton" title="重做 Ctrl+Shift+Z" disabled>↷ 重做</button></div></div>
+ <section id="section-start" class="section active" aria-label="开始与文字">
+  <div class="eyebrow">YOUR STORY, YOUR STORE</div><h1>让商城成为<br><em>故事的一部分。</em></h1><p class="lead">填商品、挑配色、看预览。完成后导出一份正则，给你的角色卡添一个能搜索、能购物的侧边栏。</p>
+  <div class="steps"><div><b>1</b><span>准备商品<small>一件件填，或批量导入</small></span></div><div><b>2</b><span>试一试<small>预览购物车与结算单</small></span></div><div><b>3</b><span>放进角色卡<small>导入正则，加入入口标记</small></span></div></div>
+  <div class="card"><h2>先选你的聊天页</h2><div class="platform-options"><label><input type="radio" name="platform" value="mmd" data-path="platform"><span><strong>MMD 旧聊天页</strong><small>已有的老卡，沿用旧页</small></span></label><label><input type="radio" name="platform" value="mmdsandbox" data-path="platform"><span><strong>新版聊天页</strong><small>新建卡，首次保存前选“使用新版”</small></span></label></div><p class="hint" id="platformHint"></p></div>
+  <div class="card"><h2>商城叫什么？</h2><div class="field-grid"><label>商城标题<input data-path="brand.title" maxlength="100"></label><label>侧栏按钮文字<input data-path="brand.tab" maxlength="40"></label><label>货币名称<input data-path="brand.pointsLabel" maxlength="40"><small>例如：金币、积分、灵石</small></label><label>货币单位<input data-path="brand.currency" maxlength="20"><small>例如：枚、点、颗</small></label><label>标题英文副标<input data-path="brand.subEN" maxlength="100"></label><label>顶部小标<input data-path="brand.kicker" maxlength="100"></label><label>余额英文副标<input data-path="brand.ptsEN" maxlength="100"></label><label>搜索框提示<input data-path="brand.searchPh" maxlength="100"></label></div></div>
+  <div class="quick-actions"><button class="primary" data-action="goto-products">编辑商品 →</button><button data-action="new-empty">新建空商城</button><button data-action="load-demo">载入示例</button></div>
+ </section>
+ <section id="section-products" class="section" aria-label="商品管理"><div class="eyebrow">THE CATALOG</div><h1>每一件，都有故事。</h1><p class="lead">价格用整数，说明写用途。详细设定可一并导出到世界书。</p><div class="catalog-tools"><label class="sr-only" for="productSearch">搜索商品</label><input id="productSearch" type="search" placeholder="搜商品名称或说明"><label class="sr-only" for="productFilter">筛选分类</label><select id="productFilter"></select><button class="primary" data-action="add-product">＋ 商品</button></div><div class="catalog-meta"><span id="productCount"></span><button data-action="export-csv">导出表格 CSV</button><button data-action="goto-bulk">批量导入</button></div><div id="productList" class="product-list"></div><div class="pager"><button data-action="page-prev" id="pagePrev">← 上一页</button><span id="pageStatus"></span><button data-action="page-next" id="pageNext">下一页 →</button></div></section>
+ <section id="section-categories" class="section" aria-label="分类与推荐"><div class="eyebrow">A PLACE FOR EVERYTHING</div><h1>让玩家找得到。</h1><p class="lead">按用途分组，推荐页会按你设定的顺序选择各类能负担的商品。</p><div id="categoryList"></div><button data-action="add-category">＋ 新分类</button><div class="card"><h2>推荐的分类顺序</h2><p class="hint">这里调整的是推荐顺序。商品的分类不会跟着改变。</p><div id="recList"></div></div></section>
+ <section id="section-appearance" class="section" aria-label="配色与布局"><div class="eyebrow">SET THE MOOD</div><h1>给故事一种气氛。</h1><p class="lead">八套配色可以直接用，也可以微调。编辑器的深浅色与商城配色分别设置。</p><div id="presetGrid" class="preset-grid"></div><div class="card"><h2>常用颜色</h2><div id="themeMain"></div><details><summary>更多颜色与背景</summary><div id="themeAdvanced"></div></details></div><div class="card"><h2>位置与大小</h2><div class="field-grid"><label>侧栏位置<select data-path="layout.edge"><option value="left">左侧</option><option value="right">右侧</option></select></label><label>距顶部（%）<input type="number" min="5" max="90" data-path="layout.topPct" data-type="number"></label><label>桌面最大宽度（px）<input type="number" min="320" max="1400" data-path="layout.maxWidth" data-type="number"></label><label>桌面高度（%）<input type="number" min="45" max="100" data-path="layout.heightVh" data-type="number"></label><label class="wide">正文字体<input data-path="fonts.sans"><small>使用设备上的字体，不依赖外部字体下载。</small></label><label class="wide">标题字体<input data-path="fonts.serif"></label></div></div><div class="card"><h2>请 AI 帮你配色</h2><p class="hint">复制提示词，交给你常用的 AI。回来粘贴它输出的 JSON，再先看效果。</p><button data-action="copy-theme-prompt">复制配色提示词</button><label class="stack">配色 JSON<textarea id="themeImport" rows="5" placeholder='{"blood":"#2f9bb2","brass":"#6fc3d6"}'></textarea></label><button data-action="apply-theme">检查并应用配色</button><p id="themeError" class="error" role="status"></p></div></section>
+ <section id="section-bulk" class="section" aria-label="批量与 AI"><div class="eyebrow">LESS TYPING, MORE CREATING</div><h1>一次摆满货架。</h1><p class="lead">支持 JSON、CSV、Excel 复制的表格、以及“分类|名称|价格|说明”。先检查，确认后再加入商城。</p><div class="card"><h2>让 AI 生成商品</h2><label>故事题材<input id="storyTheme" placeholder="例如：修仙、废土、都市调查"></label><div class="button-row"><button data-action="copy-product-prompt">复制生成提示词</button><button data-action="fill-bulk-example">填入格式示例</button></div><p class="hint">这里不会联网调用 AI。你可以自由选择工具，已有商品也可以直接从表格复制。</p></div><div class="card"><div class="card-header"><h2>粘贴或选择文件</h2><button data-action="pick-products">选择商品文件</button></div><label class="sr-only" for="bulkText">批量商品内容</label><textarea id="bulkText" rows="10" spellcheck="false" placeholder="gear|旅行剑|120|一柄适合旅途的短剑"></textarea><div class="button-row"><button class="primary" data-action="check-bulk">检查数据</button><span id="bulkSummary" role="status"></span></div><div id="bulkReview" hidden><div id="bulkErrors" class="review-list"></div><div id="bulkSample"></div><label class="check" id="bulkUnknownWrap" hidden><input type="checkbox" id="bulkAllowUnknown">同意把未知分类的商品放进显示的默认分类</label><label class="check"><input type="checkbox" id="bulkDedupe" checked>跳过名称、价格、说明都相同的重复商品</label><div class="button-row"><button data-action="append-bulk" id="appendBulk">追加这些商品</button><button class="danger" data-action="replace-bulk" id="replaceBulk">替换全部商品</button></div></div></div></section>
+  <section id="section-advanced" class="section" aria-label="余额与检查"><div class="eyebrow">READY FOR THE REAL THING</div><h1>带着把握导出。</h1><div class="card"><h2>入口标记</h2><label>放进开场白的一小段文字<input data-path="trigger" maxlength="80"></label><p class="hint">标记会被替换成商城入口。导出窗口会给你完整的标记和安装步骤。</p></div><div class="card"><h2>从状态栏读取余额</h2><p class="hint">商城会读 AI 最新回复里的余额。未读到时显示“余额未知”，不会把预览余额当成玩家的钱。真实购买由 AI 确认。</p><button data-action="currency-regex">按货币名称生成匹配式</button><label class="stack">首选匹配式<input data-path="adv.ptsRe" spellcheck="false"><small>例：/金币[^\d]{0,4}(\d+)/。只支持一组数字括号和简短文字间隔，避免复杂表达式拖慢手机；状态栏请用非负整数。</small></label><label class="stack">备用匹配式<input data-path="adv.ptsReFb" spellcheck="false"></label><label class="stack">用一段状态栏文字试一试<textarea id="regexSample" rows="3" placeholder="金币：1200"></textarea></label><button data-action="test-regex">测试读取</button><p id="regexResult" role="status"></p></div><div class="card"><div class="card-header"><h2>导出前检查</h2><button data-action="diagnose">重新检查</button></div><div id="diagnostics" class="review-list"></div></div><div class="card"><h2>草稿与恢复</h2><p class="hint">自动保存只在当前设备、当前浏览器中有效。移动文件、换浏览器或清理数据后可能读不到草稿，请经常下载配置。</p><div class="button-row"><button data-action="save-config">下载配置备份</button><button data-action="recover-backup">恢复上次保存</button><button data-action="import-config">导入配置或 v2 正则</button><button data-action="raw-backup">下载保留的旧原文</button></div><p class="hint">键盘：Ctrl/Cmd + S 下载配置；在非文本框中 Ctrl/Cmd + Z 撤销，Shift + Z 重做。文本框里保留原生撤销。</p></div></section>
+<div id="installSettings" class="card" hidden><h2>安装时携带原卡文字</h2><p class="hint">平台正则 JSON 必须包含这些字段，不能用 null。默认空字符串是否会覆盖原卡，在真实平台上尚未验证。给已有卡安装前，请备份并把原文字填到这里；也可导入后在平台逐项恢复。</p><div class="field-grid"><label>页面深度<input type="number" data-path="install.pageDepth" data-type="number" min="1" max="100"></label><label>状态栏原文（最多 200 字）<textarea data-path="install.statusbar" rows="3"></textarea></label><label class="wide">开场白原文（保守最多 4000 字）<textarea data-path="install.beginning" rows="5"></textarea></label><label class="wide">新版人设原文（最多 10000 字）<textarea data-path="install.personality" rows="5"></textarea><small>仅新版导出会携带此字段。文字格式仍按平台要求填写。</small></label></div></div>
+<section id="section-guide" class="section" aria-label="详细使用说明"><div class="eyebrow">FROM EDITING TO PLAYING</div><h1>一步步装好，用起来。</h1><p class="lead">按顺序完成一次测试，再放进正式角色卡。下方说明可以单独下载，方便交给其他作者和玩家。</p><div id="usageGuide"></div><div class="button-row"><button data-action="download-guide">下载详细安装说明</button><button data-action="download-usage">下载玩家使用说明</button></div></section>
+</main>
+<aside id="previewArea" class="preview-area" aria-label="商城预览"><div class="preview-heading"><div><span class="eyebrow">LIVE PREVIEW</span><h2 id="previewTitle">先逛一逛。</h2></div><div class="preview-actions"><button data-action="preview-reload" aria-label="重载预览" title="重载会清空预览购物车">↻</button><button id="previewExpand" data-action="preview-expand" aria-expanded="false" aria-controls="previewArea">放大</button><button id="previewFullscreen" data-action="preview-fullscreen" hidden>进入全屏</button><button id="previewClose" data-action="preview-close" hidden aria-label="关闭放大预览">× 关闭</button></div></div><div class="preview-controls"><label>模拟余额<input type="number" min="0" max="1000000000" data-path="adv.previewPoints" data-type="number"></label><label>视口<select id="previewSize"><option value="phone">手机 375</option><option value="narrow">窄屏 320</option><option value="desktop">宽屏</option></select></label></div><div class="preview-stage" id="previewStage"><iframe id="previewFrame" title="隔离的商城预览" sandbox="allow-scripts"></iframe></div><div class="preview-footer"><span id="previewStatus" role="status">准备预览…</span><p>点侧栏进入商城，尝试搜索、购物车和填写结算单。这里的余额和输入框只是演示。</p><button class="primary" data-action="export">检查并导出正则 ↗</button></div></aside>
+</div>
+<div class="mobile-switch" role="group" aria-label="手机视图"><button data-action="view-editor" class="active">编辑商城</button><button data-action="view-preview">看预览</button></div>
+<dialog id="modal"><div class="modal-top"><h2 id="modalTitle"></h2><button data-action="close-modal" aria-label="关闭窗口">×</button></div><div id="modalBody" class="modal-body"></div></dialog>
+<input type="file" id="configFile" accept=".json,application/json" hidden><input type="file" id="productFile" accept=".json,.csv,.tsv,.txt" hidden>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>window.ShopLegacy={"defaults":{"trigger":"〖商城〗","theme":{"ink":"#0b0b0d","ink2":"#131218","bone":"#e7e0d4","bone2":"#b8b0a4","stone":"#7a746a","line":"rgba(231,224,212,.1)","blood":"#b22f38","bloodg":"rgba(178,47,56,.5)","brass":"#c9a35a","panelBg":"radial-gradient(130% 70% at 50% -8%,#1c1a22,#101016 40%,#08080a)","ovBg":"rgba(4,4,6,.82)","cardBg":"linear-gradient(160deg,rgba(28,22,26,.5),rgba(14,9,11,.4))","tabBg":"linear-gradient(180deg,#2a0e12,#15080b)","tabBgH":"linear-gradient(180deg,#3a141a,#1d0a0e)","btnGrad":"linear-gradient(180deg,#e0c060,#c49234)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"},"fonts":{"sans":"'PingFang SC','Microsoft YaHei','Helvetica Neue','Segoe UI',sans-serif","serif":"'Songti SC','SimSun','Noto Serif SC','STSong',serif"},"layout":{"edge":"left","topPct":38,"maxWidth":920,"heightVh":86},"brand":{"tab":"商 城","kicker":"系统商城 STORE","title":"商城","subEN":"STORE","pointsLabel":"积分","currency":"点","ptsEN":"POINTS","searchPh":"搜索商品……"},"adv":{"ptsRe":"/积分[^\\d]{0,4}(\\d+)/","ptsReFb":"/(?:积分|点数|金币|余额)[^\\d]{0,4}(\\d+)/","previewPoints":1000},"recOrder":["gear","skill","item","consume"],"categories":[{"code":"rec","name":"推荐","rs":"","special":"rec"},{"code":"gear","name":"装备","rs":"强力装备 · 提升战力"},{"code":"skill","name":"技能","rs":"习得技能 · 一招制敌"},{"code":"item","name":"道具","rs":"实用道具 · 关键时刻"},{"code":"consume","name":"消耗","rs":"消耗补给 · 随用随补"},{"code":"custom","name":"自定义","rs":"你的定制 · 独一无二","special":"custom"}],"products":[{"c":"gear","n":"铁剑","pr":100,"d":"削铁如泥的入门近战武器。"},{"c":"gear","n":"皮甲","pr":120,"d":"轻便耐磨的基础护甲。"},{"c":"gear","n":"圆盾","pr":90,"d":"挡下一次致命攻击。"},{"c":"skill","n":"火球术","pr":200,"d":"凝聚火焰轰击远处之敌。"},{"c":"skill","n":"治疗术","pr":180,"d":"温和的光辉抚平伤口。"},{"c":"skill","n":"疾风步","pr":160,"d":"短暂提升移动速度。"},{"c":"item","n":"治疗药水","pr":50,"d":"一饮回复少量生命。"},{"c":"item","n":"传送卷轴","pr":150,"d":"撕开空间，瞬息归城。"},{"c":"item","n":"解毒剂","pr":40,"d":"中和体内的毒素。"},{"c":"consume","n":"面包","pr":10,"d":"果腹的旅途口粮。"},{"c":"consume","n":"火把","pr":15,"d":"照亮幽深的黑暗。"},{"c":"consume","n":"绳索","pr":20,"d":"攀爬与捆缚的常备绳。"}]},"presets":[{"name":"墨黑赤金","theme":{"ink":"#0b0b0d","ink2":"#131218","bone":"#e7e0d4","bone2":"#b8b0a4","stone":"#7a746a","line":"rgba(231,224,212,.1)","blood":"#b22f38","bloodg":"rgba(178,47,56,.5)","brass":"#c9a35a","panelBg":"radial-gradient(130% 70% at 50% -8%,#1c1a22,#101016 40%,#08080a)","ovBg":"rgba(4,4,6,.82)","cardBg":"linear-gradient(160deg,rgba(28,22,26,.5),rgba(14,9,11,.4))","tabBg":"linear-gradient(180deg,#2a0e12,#15080b)","tabBgH":"linear-gradient(180deg,#3a141a,#1d0a0e)","btnGrad":"linear-gradient(180deg,#e0c060,#c49234)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"午夜青蓝","theme":{"ink":"#060b0e","ink2":"#0d171c","bone":"#dfe9ec","bone2":"#9fb3b8","stone":"#5f7378","line":"rgba(180,220,230,.1)","blood":"#2f9bb2","bloodg":"rgba(47,155,178,.5)","brass":"#6fc3d6","panelBg":"radial-gradient(130% 70% at 50% -8%,#15232b,#0a141a 40%,#05090c)","ovBg":"rgba(3,8,11,.82)","cardBg":"linear-gradient(160deg,rgba(20,34,42,.5),rgba(8,17,23,.4))","tabBg":"linear-gradient(180deg,#0e2c36,#06151b)","tabBgH":"linear-gradient(180deg,#15414f,#0a2129)","btnGrad":"linear-gradient(180deg,#7fd0e4,#2f9bb2)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"森绿古木","theme":{"ink":"#07100a","ink2":"#0e1a12","bone":"#e6ecdf","bone2":"#a9b69e","stone":"#6a7560","line":"rgba(210,224,200,.1)","blood":"#3f8a52","bloodg":"rgba(63,138,82,.5)","brass":"#cdab63","panelBg":"radial-gradient(130% 70% at 50% -8%,#16241a,#0c160f 40%,#060d09)","ovBg":"rgba(4,9,5,.82)","cardBg":"linear-gradient(160deg,rgba(22,36,26,.5),rgba(10,19,12,.4))","tabBg":"linear-gradient(180deg,#163520,#0a1c10)","tabBgH":"linear-gradient(180deg,#214a2c,#0f2918)","btnGrad":"linear-gradient(180deg,#e2c264,#bf9a3a)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"紫晶魔能","theme":{"ink":"#0c0814","ink2":"#150d22","bone":"#e9e2f0","bone2":"#b3a6c4","stone":"#756785","line":"rgba(225,215,240,.1)","blood":"#9a4fd0","bloodg":"rgba(154,79,208,.5)","brass":"#d6a35f","panelBg":"radial-gradient(130% 70% at 50% -8%,#1f1433,#120b1e 40%,#08050e)","ovBg":"rgba(7,4,13,.82)","cardBg":"linear-gradient(160deg,rgba(31,21,50,.5),rgba(15,10,26,.4))","tabBg":"linear-gradient(180deg,#2b1446,#160a28)","tabBgH":"linear-gradient(180deg,#3c1e5c,#1f0f38)","btnGrad":"linear-gradient(180deg,#c68bf0,#9a4fd0)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"烈焰熔金","theme":{"ink":"#0f0805","ink2":"#1c0f08","bone":"#f0e4d6","bone2":"#c4a98e","stone":"#8a6f5a","line":"rgba(240,210,180,.1)","blood":"#d2622f","bloodg":"rgba(210,98,47,.5)","brass":"#e0a850","panelBg":"radial-gradient(130% 70% at 50% -8%,#2a1810,#160c08 40%,#0c0604)","ovBg":"rgba(10,5,3,.82)","cardBg":"linear-gradient(160deg,rgba(40,24,16,.5),rgba(20,11,7,.4))","tabBg":"linear-gradient(180deg,#3a1c0c,#1d0e06)","tabBgH":"linear-gradient(180deg,#52280f,#2a1408)","btnGrad":"linear-gradient(180deg,#f0b85a,#d2882f)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"玫瑰黛紫","theme":{"ink":"#100810","ink2":"#1c0f1a","bone":"#f0e0ea","bone2":"#c8a6bc","stone":"#8a6f80","line":"rgba(240,200,225,.1)","blood":"#c83a74","bloodg":"rgba(200,58,116,.5)","brass":"#d99ec0","panelBg":"radial-gradient(130% 70% at 50% -8%,#2a1426,#160b14 40%,#0c060b)","ovBg":"rgba(10,4,9,.82)","cardBg":"linear-gradient(160deg,rgba(40,20,36,.5),rgba(20,10,18,.4))","tabBg":"linear-gradient(180deg,#3a1430,#1d0a18)","tabBgH":"linear-gradient(180deg,#52204a,#2a1024)","btnGrad":"linear-gradient(180deg,#e88ab8,#c83a74)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"钢蓝霓虹","theme":{"ink":"#05070e","ink2":"#0a0f1c","bone":"#dde6f5","bone2":"#9aa8c4","stone":"#5e6a85","line":"rgba(180,200,240,.1)","blood":"#3a6ee0","bloodg":"rgba(58,110,224,.5)","brass":"#46d0e0","panelBg":"radial-gradient(130% 70% at 50% -8%,#121a2e,#0a1020 40%,#05080f)","ovBg":"rgba(3,5,11,.82)","cardBg":"linear-gradient(160deg,rgba(18,28,48,.5),rgba(8,14,28,.4))","tabBg":"linear-gradient(180deg,#142a52,#0a1530)","tabBgH":"linear-gradient(180deg,#1d3d74,#0f2048)","btnGrad":"linear-gradient(180deg,#5ad0e8,#3a6ee0)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}},{"name":"极简灰白","theme":{"ink":"#0e0e0f","ink2":"#16161a","bone":"#ece9e3","bone2":"#b6b2a9","stone":"#76726a","line":"rgba(230,228,222,.12)","blood":"#b8b2a6","bloodg":"rgba(184,178,166,.4)","brass":"#e6e2d8","panelBg":"radial-gradient(130% 70% at 50% -8%,#1f1f22,#141416 40%,#0b0b0d)","ovBg":"rgba(6,6,7,.82)","cardBg":"linear-gradient(160deg,rgba(34,34,38,.5),rgba(18,18,20,.4))","tabBg":"linear-gradient(180deg,#2a2a2e,#161618)","tabBgH":"linear-gradient(180deg,#3a3a40,#202024)","btnGrad":"linear-gradient(180deg,#e6e2d8,#b6b2a9)","txtShadow":"0 1px 1px rgba(0,0,0,.5)"}}]};</script>
+<script>(function (global) {
+  'use strict';
+  const data = global.ShopLegacy;
+  const clone = value => JSON.parse(JSON.stringify(value));
+  const plainObject = value => value && typeof value === 'object' && !Array.isArray(value);
+  const str = (value, fallback = '') => typeof value === 'string' ? value : fallback;
+  const finite = (value, fallback, min, max) => Number.isFinite(Number(value)) && value !== '' && value !== null ? Math.min(max, Math.max(min, Number(value))) : fallback;
+  const safeCSS = value => typeof value === 'string' && value.length <= 600 && !/[;{}<>\\]|\/\*|url\s*\(|expression\s*\(|@import/i.test(value);
+  const safeFont = value => typeof value === 'string' && value.length <= 350 && !/[;{}<>\\]|\/\*|url\s*\(|@import/i.test(value);
+  const newId = prefix => prefix + Math.random().toString(36).slice(2, 10);
+  const legacyRegexes = ['/积分[^\\d]{0,4}(\\d+)/','/(?:积分|点数|金币|余额)[^\\d]{0,4}(\\d+)/'];
+  function repairLegacyRegex(value) {
+    // Some circulated v1 backups double-escaped exactly these defaults.
+    // Do not rewrite arbitrary author expressions or their literal slashes.
+    for (const expected of legacyRegexes) if (value === expected.replace(/\\/g, '\\\\')) return expected;
+    return value;
+  }
+  function defaults() {
+    const cfg = clone(data.defaults);
+    cfg.schemaVersion = 2;
+    cfg.generator = 'MMD Shop Studio';
+    cfg.shopId = newId('shop_');
+    cfg.platform = 'mmd';
+    cfg.install = {pageDepth:2,statusbar:'',beginning:'',personality:''};
+    cfg.adv.ptsRe = repairLegacyRegex(cfg.adv.ptsRe);
+    cfg.adv.ptsReFb = repairLegacyRegex(cfg.adv.ptsReFb);
+    cfg.products.forEach((p, i) => { p.id = 'p' + (i + 1); });
+    return cfg;
+  }
+  function normalize(input) {
+    if (!plainObject(input)) throw new Error('配置应是一份 JSON 对象。');
+    const cfg = defaults(), notes = [];
+    for (const key of ['theme', 'brand', 'layout', 'fonts', 'adv']) {
+      if (!plainObject(input[key])) notes.push('已补齐「' + ({theme:'配色',brand:'商城文字',layout:'布局',fonts:'字体',adv:'高级设置'}[key]) + '」');
+    }
+    cfg.shopId = /^[a-zA-Z][a-zA-Z0-9_]{0,31}$/.test(input.shopId || '') ? input.shopId : cfg.shopId;
+    cfg.platform = input.platform === 'mmdsandbox' ? 'mmdsandbox' : 'mmd';
+    if(plainObject(input.install)) {cfg.install.pageDepth=finite(input.install.pageDepth,2,1,100);for(const key of ['statusbar','beginning','personality'])cfg.install[key]=str(input.install[key]);}
+    cfg.trigger = str(input.trigger, cfg.trigger).trim() || cfg.trigger;
+    Object.keys(cfg.theme).forEach(key => {
+      const v = input.theme && input.theme[key];
+      if (v === undefined) return;
+      if (safeCSS(v)) cfg.theme[key] = v;
+      else notes.push('配色「' + key + '」包含无效内容，已用默认值');
+    });
+    Object.keys(cfg.fonts).forEach(key => {
+      const v = input.fonts && input.fonts[key];
+      if (v === undefined) return;
+      if (safeFont(v)) cfg.fonts[key] = v;
+      else notes.push('字体格式无效，已用默认字体');
+    });
+    Object.keys(cfg.brand).forEach(key => { cfg.brand[key] = str(input.brand && input.brand[key], cfg.brand[key]); });
+    if (/<[^>]*>/.test(cfg.brand.tab)) {
+      cfg.brand.tab = cfg.brand.tab.replace(/<[^>]*>/g, '');
+      notes.push('旧侧栏标签中的 HTML 已转换成普通文字');
+    }
+    const layout = plainObject(input.layout) ? input.layout : {};
+    cfg.layout.edge = layout.edge === 'right' ? 'right' : 'left';
+    cfg.layout.topPct = finite(layout.topPct, cfg.layout.topPct, 5, 90);
+    cfg.layout.maxWidth = finite(layout.maxWidth, cfg.layout.maxWidth, 320, 1400);
+    cfg.layout.heightVh = finite(layout.heightVh, cfg.layout.heightVh, 45, 100);
+    const adv = plainObject(input.adv) ? input.adv : {};
+    for (const key of ['ptsRe','ptsReFb']) {
+      const original = str(adv[key], cfg.adv[key]);
+      cfg.adv[key] = repairLegacyRegex(original);
+      if (cfg.adv[key] !== original) notes.push('已修复旧默认余额匹配式中的重复反斜杠');
+    }
+    cfg.adv.previewPoints = Math.round(finite(adv.previewPoints, cfg.adv.previewPoints, 0, 1000000000));
+    const categoryAliases = new Map();
+    if (Array.isArray(input.categories)) {
+      const seen = new Set();
+      const categories = [];
+      input.categories.forEach((cat, i) => {
+        if (!plainObject(cat)) { notes.push('跳过第 ' + (i + 1) + ' 个无效分类'); return; }
+        const originalCode = str(cat.code);
+        let code = originalCode;
+        if (!/^[a-zA-Z][a-zA-Z0-9_]{0,23}$/.test(code) || seen.has(code)) {
+          code = 'cat_' + (i + 1);
+          while (seen.has(code)) code += '_';
+          notes.push('分类编号无效或重复，已生成「' + code + '」');
+        }
+        seen.add(code);
+        // Keep the first meaning of a duplicate code, and preserve references
+        // when migrating category codes accepted by the old generator.
+        if (originalCode && !categoryAliases.has(originalCode)) categoryAliases.set(originalCode, code);
+        categories.push({code, name:str(cat.name, code), rs:str(cat.rs)});
+      });
+      if (!seen.has('rec')) categories.unshift({code:'rec',name:'推荐',rs:''});
+      if (!seen.has('custom')) categories.push({code:'custom',name:'自定义',rs:'为自己的故事定制商品'});
+      if (!categories.some(c => c.code !== 'rec' && c.code !== 'custom')) categories.splice(1, 0, {code:'item',name:'道具',rs:''});
+      cfg.categories = categories;
+    } else if ('categories' in input) notes.push('分类列表损坏，已恢复默认分类');
+    const codes = new Set(cfg.categories.filter(c => c.code !== 'rec').map(c => c.code));
+    const fallback = cfg.categories.find(c => c.code !== 'rec' && c.code !== 'custom').code;
+    if (Array.isArray(input.products)) {
+      if (input.products.length > 5000) throw new Error('最多支持 5000 件商品，请先拆成多个商城。原配置未被覆盖。');
+      const seen = new Set();
+      cfg.products = input.products.filter(plainObject).map((p, i) => {
+        const rawPrice = p.pr === undefined ? p.price : p.pr;
+        const originalCat = str(p.c, str(p.cat));
+        const rawCat = categoryAliases.get(originalCat) || originalCat;
+        if (!codes.has(rawCat)) notes.push('商品「' + str(p.n, str(p.name, String(i + 1))) + '」已归入「' + fallback + '」');
+        const priceType = typeof rawPrice === 'number' || (typeof rawPrice === 'string' && rawPrice.trim() !== '');
+        const parsedPrice = priceType ? Number(rawPrice) : null;
+        const price = Number.isFinite(parsedPrice) ? parsedPrice : null;
+        if (!Number.isSafeInteger(price) || price < 0 || price > 1000000000) notes.push('第 ' + (i + 1) + ' 件商品价格待修正，已保留为无效草稿，不会当作免费商品导出');
+        let id = /^[a-zA-Z0-9_]{1,40}$/.test(p.id || '') ? p.id : 'p' + (i + 1);
+        while (seen.has(id)) id += '_';
+        seen.add(id);
+        return {id,c:codes.has(rawCat) ? rawCat : fallback,n:str(p.n, str(p.name)),pr:price,d:str(p.d, str(p.desc, str(p.description)))};
+      });
+      if (cfg.products.length !== input.products.length) notes.push('已跳过格式损坏的商品记录');
+    } else if ('products' in input) notes.push('商品列表不是数组，已恢复示例商品；旧原文仍可备份');
+    const rec = cfg.categories.filter(c => c.code !== 'rec' && c.code !== 'custom').map(c => c.code);
+    cfg.recOrder = [...new Set((Array.isArray(input.recOrder) ? input.recOrder : []).filter(c => rec.includes(c)).concat(rec))];
+    return {cfg,notes:[...new Set(notes)]};
+  }
+  function parseRegex(value) {
+    if (!value) return null;
+    if (typeof value !== 'string') throw new Error('余额匹配式应是文字。');
+    if (value.length > 240) throw new Error('余额匹配式请控制在 240 个字符以内。');
+    const m = value.match(/^\/([\s\S]*)\/([gimsuy]*)$/);
+    if (!m) throw new Error('余额匹配式应写成 /余额：(\\d+)/，数字放在第一对括号里。');
+    const help = '余额匹配式只支持简单提数字格式，如 /积分[^\\d]{0,4}(\\d+)/；保留一组数字括号，最多两处短间隔、合计不超过 40 个字符，不使用嵌套括号或重复分组。';
+    if (/[gy]/.test(m[2])) throw new Error('余额只提取一个数字，请移除 g / y 标记。');
+    // This is a deliberately small format, not a general regular-expression
+    // parser: literal labels, literal alternatives, short gaps, one digit group.
+    const body = m[1]; let capture = 0, canRepeat = false, gapRepeats = 0, gapBudget = 0;
+    for (let i = 0; i < body.length;) {
+      const ch = body[i];
+      if (ch === '(') {
+        const numeric = body.slice(i).match(/^\((?:\\d|\[0-9\])(?:\+|\{1,([1-9]\d?)\})\)/);
+        if (numeric) {
+          if (++capture > 1 || (numeric[1] && Number(numeric[1]) > 20)) throw new Error(help);
+          i += numeric[0].length; canRepeat = false; continue;
+        }
+        if (body.slice(i, i + 3) !== '(?:') throw new Error(help);
+        const end = body.indexOf(')', i + 3);
+        if (end < 0) throw new Error(help);
+        const alternatives = body.slice(i + 3, end).split('|');
+        if (alternatives.length < 2 || alternatives.some(part => !part || /[\\()[\]{}*+?^$]/.test(part))) throw new Error(help);
+        i = end + 1; canRepeat = false; continue;
+      }
+      if (ch === '\\') {
+        const next = body[i + 1];
+        if (!next || !/[sD\/[\](){}.*+?^$|\\-]/.test(next)) throw new Error(help);
+        i += 2; canRepeat = true; continue;
+      }
+      if (ch === '[') {
+        const end = body.indexOf(']', i + 1), token = body.slice(i, end + 1);
+        if (end < 0 || !/^\[(?:\^\\d|\^0-9|[ :：=＝，,、\\s-]+)\]$/.test(token)) throw new Error(help);
+        i = end + 1; canRepeat = true; continue;
+      }
+      if (ch === '{') {
+        const quantifier = body.slice(i).match(/^\{(\d{1,2})(?:,(\d{1,2}))?\}/);
+        if (!canRepeat || !quantifier) throw new Error(help);
+        const min = Number(quantifier[1]), max = Number(quantifier[2] ?? quantifier[1]);
+        gapRepeats++; gapBudget += max;
+        if (min > max || max > 40 || gapRepeats > 2 || gapBudget > 40) throw new Error(help);
+        i += quantifier[0].length; canRepeat = false; continue;
+      }
+      if (ch === '?') {
+        if (!canRepeat) throw new Error(help);
+        gapRepeats++; gapBudget++;
+        if (gapRepeats > 2 || gapBudget > 40) throw new Error(help);
+        i++; canRepeat = false; continue;
+      }
+      if (ch === '^' || ch === '$') { i++; canRepeat = false; continue; }
+      if (/[)\]}|*+]/.test(ch)) throw new Error(help);
+      i++; canRepeat = true;
+    }
+    if (capture !== 1) throw new Error(help);
+    return new RegExp(m[1], m[2]);
+  }
+  const stripFence = text => String(text).replace(/^\uFEFF/, '').trim().replace(/^```(?:json|csv|tsv|text)?\s*\n?/i, '').replace(/\n?```\s*$/, '').trim();
+  function parseDelimited(text, delimiter) {
+    const rows = [], row = []; let cell = '', quote = false;
+    for (let i = 0; i <= text.length; i++) {
+      const char = text[i];
+      if (char === '"') {
+        if (quote && text[i+1] === '"') { cell += '"'; i++; }
+        else if (quote || !cell) quote = !quote;
+        else cell += char;
+      } else if (!quote && (char === delimiter || char === '\n' || char === undefined)) {
+        row.push(cell.replace(/\r$/, '')); cell = '';
+        if (char !== delimiter) { if (row.some(c => c.trim())) rows.push(row.splice(0)); else row.splice(0); }
+      } else if (char !== undefined) cell += char;
+    }
+    if (quote) throw new Error('表格里有未闭合的双引号，请检查最后一条商品。');
+    return rows;
+  }
+  function parseProducts(raw, cfg) {
+    const text = stripFence(raw); if (!text) throw new Error('先粘贴商品数据或选择文件。');
+    const errors = [], rows = [], unknown = new Map();
+    let source;
+    if (/^[\[{]/.test(text)) {
+      let obj; try { obj = JSON.parse(text); } catch (err) { throw new Error('JSON 格式有误：' + err.message); }
+      source = Array.isArray(obj) ? obj : Array.isArray(obj.products) ? obj.products : [obj];
+      source.forEach((r, i) => {
+        if (!plainObject(r)) errors.push('第 ' + (i+1) + ' 行不是商品对象');
+        else rows.push({line:i+1,c:r.c ?? r.cat ?? r.category ?? '',n:r.n ?? r.name ?? '',pr:r.pr ?? r.price,d:r.d ?? r.desc ?? r.description ?? ''});
+      });
+    } else {
+      // Count only separators outside quoted cells in the first record. A
+      // pipe in a quoted CSV product name must not turn CSV into pipe format.
+      const counts = new Map([['\t',0],['|',0],['｜',0],[',',0]]); let quote = false;
+      for (let i=0;i<text.length;i++) {
+        const ch = text[i];
+        if (ch === '"') { if (quote && text[i+1] === '"') i++; else quote = !quote; }
+        else if (!quote && (ch === '\n' || ch === '\r')) break;
+        else if (!quote && counts.has(ch)) counts.set(ch, counts.get(ch)+1);
+      }
+      const delimiter = [...counts.keys()].find(key=>counts.get(key)>=2) || ',';
+      source = parseDelimited(text, delimiter);
+      const header = source[0] && source[0].map(v => v.trim().toLowerCase());
+      if (header && /分类|category|cat|^c$/.test(header[0]) && /名称|商品|name|^n$/.test(header[1])) source.shift();
+      source.forEach((r, i) => {
+        if (r.length < 3) errors.push('第 ' + (i+1) + ' 行不足三列，需要「分类、名称、价格、说明」');
+        else rows.push({line:i+1,c:r[0],n:r[1],pr:r[2],d:r.slice(3).join(delimiter)});
+      });
+    }
+    const codes = new Set(cfg.categories.filter(c => c.code !== 'rec').map(c => c.code));
+    const byName = new Map(cfg.categories.map(c => [c.name,c.code]));
+    const fallback = cfg.categories.find(c => c.code !== 'rec' && c.code !== 'custom').code;
+    const products = [];
+    rows.forEach(r => {
+      if (typeof r.n !== 'string' || typeof r.c !== 'string' || typeof r.d !== 'string') { errors.push('第 ' + r.line + ' 行分类、名称和说明需要是文字，不能是对象或数组'); return; }
+      if (typeof r.pr !== 'string' && typeof r.pr !== 'number') { errors.push('第 ' + r.line + ' 行价格需要是数字'); return; }
+      const name = r.n.trim();
+      let priceText = String(r.pr ?? '').trim();
+      if (!name) { errors.push('第 ' + r.line + ' 行商品名称为空'); return; }
+      if (priceText.includes(',')) {
+        if (!/^[1-9]\d{0,2}(?:,\d{3})+(?:\.0+)?$/.test(priceText)) { errors.push('第 ' + r.line + ' 行千分位格式有误，应写 1,000；不能写 1,2'); return; }
+        priceText = priceText.replace(/,/g, '');
+      }
+      if (!/^\d+(?:\.0+)?$/.test(priceText) || !Number.isSafeInteger(Number(priceText)) || Number(priceText) > 1000000000) { errors.push('第 ' + r.line + ' 行价格应为 0～1000000000 的整数'); return; }
+      const rawCat = String(r.c).trim(); const code = codes.has(rawCat) ? rawCat : byName.get(rawCat);
+      if (!code || code === 'rec') unknown.set(rawCat || '未填写', (unknown.get(rawCat || '未填写') || 0) + 1);
+      products.push({id:newId('p'),c:code && code !== 'rec' ? code : fallback,n:name,pr:Number(priceText),d:String(r.d)});
+    });
+    if (!products.length && !errors.length) errors.push('没有找到商品。');
+    return {products,errors,unknown:[...unknown.entries()],fallback};
+  }
+  function b64encode(text) { const bytes = new TextEncoder().encode(text); let binary = ''; for (let i=0;i<bytes.length;i+=8192) binary += String.fromCharCode(...bytes.subarray(i,i+8192)); return btoa(binary); }
+  function b64decode(text) { return new TextDecoder().decode(Uint8Array.from(atob(text), c=>c.charCodeAt(0))); }
+  function importConfig(text) {
+    const obj = JSON.parse(stripFence(text));
+    if (!plainObject(obj)) throw new Error('这份文件应是商城配置 JSON 对象，不能是空值、数字或文字。');
+    if (obj.regex_scripts) {
+      if (!Array.isArray(obj.regex_scripts)) throw new Error('正则列表格式有误。');
+      const parts = new Map(); let total = 0;
+      obj.regex_scripts.forEach(rule => {
+        const m = String(rule.replaceString || '').match(/SHOPGEN_CONFIG_V2:(\d+)\/(\d+):([A-Za-z0-9+/=]+)/);
+        if (m) { total = Number(m[2]); parts.set(Number(m[1]),m[3]); }
+      });
+      if (!total || parts.size !== total) throw new Error('这是不含完整编辑资料的正则文件。请导入「商城配置.json」；v2 正则导出可恢复编辑，v1.1 正则无法可靠反推。');
+      if (total > 130) throw new Error('配置资料块过多。');
+      let raw = ''; for(let i=0;i<total;i++) { if(!parts.has(i)) throw new Error('缺少配置资料块 ' + (i+1)); raw += parts.get(i); }
+      return normalize(JSON.parse(b64decode(raw)));
+    }
+    if (!('products' in obj) && !('categories' in obj)) throw new Error('这份文件不是商城配置。仅有商品时请用「批量与 AI」。');
+    return normalize(obj);
+  }
+  function validate(cfg) {
+    const errors = [], warnings = [];
+    if(cfg.install) {
+      if(!Number.isInteger(cfg.install.pageDepth)||cfg.install.pageDepth<1||cfg.install.pageDepth>100)errors.push('页面深度需要 1～100 的整数。');
+      for(const [key,limit] of [['statusbar',200],['beginning',4000],['personality',10000]])if(cfg.install[key].length>limit)errors.push('安装字段「'+({statusbar:'状态栏',beginning:'开场白',personality:'人设'}[key])+'」超过 '+limit+' 字，请缩短或在平台上单独保留。');
+      if(cfg.platform==='mmdsandbox' && cfg.install.personality.trim()) {
+        if(!/<([^<>/\s]+)>[\s\S]*?<\/\1>/.test(cfg.install.personality))errors.push('新版人设原文需含成对章节标签，例如 <人物设定>正文</人物设定>。');
+        if(/\$#(?:char|user)#\$|\{\{char\}\}/.test(cfg.install.personality))errors.push('新版人设原文包含平台不支持的角色宏，请先改写再导出。');
+      }
+    }
+    for(const [key,min,max] of [['topPct',5,90],['maxWidth',320,1400],['heightVh',45,100]]) if(typeof cfg.layout[key]!=='number' || !Number.isFinite(cfg.layout[key]) || cfg.layout[key]<min || cfg.layout[key]>max) errors.push('布局「'+({topPct:'距顶部',maxWidth:'最大宽度',heightVh:'桌面高度'}[key])+'」应在 '+min+'～'+max+' 之间。');
+    if (!cfg.products.length) warnings.push('商城目前没有商品，可以继续编辑或导出空商城。');
+    if (!cfg.trigger.trim() || cfg.trigger.length > 80 || /[<>\r\n]/.test(cfg.trigger)) errors.push('入口标记需要 1～80 个字符，不能包含换行或尖括号。');
+    for (const key of ['ptsRe','ptsReFb']) try { parseRegex(cfg.adv[key]); } catch(e) { errors.push(e.message); }
+    Object.entries(cfg.theme).forEach(([key,v])=>{if(!safeCSS(v)) errors.push('配色「'+key+'」格式有误。');});
+    Object.values(cfg.fonts).forEach(v=>{if(!safeFont(v)) errors.push('字体格式有误。');});
+    const seen = new Set(); const codes = new Set(cfg.categories.filter(c=>c.code!=='rec').map(c=>c.code));
+    cfg.categories.forEach(c=>{if(!/^[a-zA-Z][a-zA-Z0-9_]{0,23}$/.test(c.code)) errors.push('分类编号「'+c.code+'」需要英文字母开头，只用字母、数字、下划线。');if(!c.name.trim()) errors.push('有分类名称为空。');});
+    cfg.products.forEach((p,i)=>{
+      if(!p.n.trim()) errors.push('第 '+(i+1)+' 件商品还没有名称。');
+      if(!Number.isSafeInteger(p.pr) || p.pr<0 || p.pr>1000000000) errors.push('「'+p.n+'」价格应为 0～1000000000 的整数。');
+      if(!codes.has(p.c)) errors.push('「'+p.n+'」所属分类已不存在。');
+      if(seen.has(p.n)) warnings.push('有重名商品「'+p.n+'」，请确认 AI 能分辨。'); seen.add(p.n);
+      if(p.n.length>200 || p.d.length>10000) errors.push('「'+p.n.slice(0,30)+'」内容过长，请把详细设定放入世界书。');
+    });
+    if(!cfg.adv.ptsRe && !cfg.adv.ptsReFb) warnings.push('余额读取已关闭。玩家将看到余额未知，AI 根据结算单判断能否购买。');
+    if(cfg.platform==='mmdsandbox') warnings.push('新页需新建角色卡，并在首次保存前选「使用新版」；导入无法升级旧卡。');
+    return {errors:[...new Set(errors)],warnings:[...new Set(warnings)]};
+  }
+  function build(cfg) {
+    const checks = validate(cfg); if(checks.errors.length) throw new Error(checks.errors.join('\n'));
+    const output = global.ShopRuntime.buildRules(cfg);
+    const rules = Array.isArray(output) ? output : output.scripts || output.rules;
+    if(!Array.isArray(rules)) throw new Error('商城运行模块没有返回有效规则。');
+    const encoded = b64encode(JSON.stringify(cfg)); const size = 15500; const count = Math.ceil(encoded.length/size);
+    const metadata = Array.from({length:count},(_,i)=>({id:-1,scriptName:'商城编辑资料'+(i+1),findRegex:'/SGMETA_'+cfg.shopId+'_'+i+'_/',replaceString:'<script>/*SHOPGEN_CONFIG_V2:'+i+'/'+count+':'+encoded.slice(i*size,(i+1)*size)+'*/<\/script>'}));
+    const all = metadata.concat(rules).map((rule,i)=>({id:cfg.platform==='mmdsandbox'?-(i+1):-1,scriptName:String(rule.scriptName).slice(0,20),findRegex:rule.findRegex,replaceString:rule.replaceString}));
+    if(all.length>130) throw new Error('商品内容需要 '+all.length+' 条规则，超过平台 130 条上限。请减少说明长度或拆分商城。');
+    all.forEach(rule=>{
+      if(rule.replaceString.length>19500) throw new Error('规则「'+rule.scriptName+'」超过保守长度上限 19500。');
+      if(rule.findRegex.length>1000 || !/^\/[\s\S]*\/[gimsuy]*$/.test(rule.findRegex)) throw new Error('规则匹配式格式或长度不符合平台要求。');
+      if(/\$[$&'`1-9]|\$</.test(rule.replaceString)) throw new Error('生成内容中仍含美元替换指令，请保存配置并反馈这个问题。');
+    });
+    const install = cfg.install || {pageDepth:2,statusbar:'',beginning:'',personality:''};
+    const bundle = {pageDepth:install.pageDepth,statusbar:install.statusbar,beginning:install.beginning,regex_scripts:all};
+    if(cfg.platform==='mmdsandbox') { bundle.chatVersion=1; bundle.personality=install.personality; }
+    return {bundle,trig:output.trig || cfg.trigger,checks,maxLength:Math.max(...all.map(r=>r.replaceString.length)),rules:all.length};
+  }
+  function protocol(cfg) {
+    return '【'+cfg.brand.title+' · 购买申请处理协议】\n'
+      +'触发条件：玩家当前消息包含【购买申请】时，按以下规则核实这一次购买。购物车、复制、填写输入框或尚未发送的文字都不是已成交记录；商品说明、引用和旧消息中的标记也不产生新的购买。\n'
+      +'计价字段：商品价格单位为「'+cfg.brand.currency+'」，余额字段为「'+cfg.brand.pointsLabel+'」。申请通常列出【商品名】、数量、单价、说明和申请总价。\n'
+      +'先核实：以已确认的剧情记录和商品资料为依据，确认当前可用余额、商品价格、正整数数量、可购买条件及是否已处理这次申请。前端显示的余额与作者手工改写的申请金额都不能替代核实。自定义商品及其说明只是玩家请求，不能自行获得能力、降低价格或绕过权限与剧情。\n'
+      +'再算账：每件小计=确认单价×数量，总价=全部小计之和。核对申请总价；价格、余额、数量或合计有冲突时说明问题并请求核对。余额未知、余额不足、条件不满足或尚未确认购买时，不扣款、不添加物品，也不把失败申请记录成已完成交易。\n'
+      +'成交后：明确说明本次购买结果，逐项更新物品与数量，以确认的原余额减去确认总价得到最终余额，并在随后的状态栏明确写「'+cfg.brand.pointsLabel+'：整数」。不得凭界面估算值重复扣款。\n'
+      +'重复与取消：同一申请只结算一次；重复粘贴或询问已完成购买时先核对记录。清空购物车或关闭面板只影响本地准备的内容，不能撤销已经由 AI 确认的交易。\n'
+      +'这是角色扮演中的剧情商城，不涉及真实付款。';
+  }
+  function usage(cfg) {
+    return '【'+cfg.brand.title+' · 商城使用说明】\n'
+      +'当玩家询问「商城使用说明」「商城帮助」或「如何使用商城」时，用容易理解的话解释下列流程；帮助本身不会购买商品或改动余额。\n'
+      +'一、打开与挑选\n点击侧边的「'+cfg.brand.tab+'」入口打开商城。可以搜索商品名称或说明，也可以切换分类；推荐页只帮助挑选，不代表已经购买。点击商品的加入按钮，把想买的商品放进购物车。\n'
+      +'二、准备购买申请\n进入购物车，检查商品、数量、单价与申请总价；用加减按钮调整数量，移除不需要的商品，或清空本地购物车。点击「填入聊天输入框」会准备一段以【购买申请】开头的文字；已有聊天文字会保留。请检查申请，再由自己点击聊天的发送按钮。填写和复制都不会自动发送。\n'
+      +'三、填写失败时\n也可以点击「复制购买申请」，粘贴到聊天输入框。浏览器不允许复制时，在购买申请文本框中手动全选复制。输入框已有申请时，先核对或清除旧申请，避免同一内容重复追加。关闭商城后可以检查聊天输入框。\n'
+      +'四、AI 才确认成交\n加入购物车、填写、复制乃至发送申请，都不会由这个面板直接扣款或发货。AI 根据剧情余额、商品资料、数量和购买条件核实申请；确认成交后才扣除对应余额、记录获得的物品，并更新状态栏。若申请被拒绝或需要核对，先按 AI 的说明调整，不能把预估剩余余额当作成交结果。\n'
+      +'五、余额和自定义商品\n商城尝试读取 AI 最近回复中的「'+cfg.brand.pointsLabel+'」；单位为「'+cfg.brand.currency+'」。读不到时显示余额未知，这不等于余额为零，也不等于可以免费购买，仍需 AI 核实。显示余额不足时先调整购物车。自定义商品同样只是待核实的请求，需符合作者设定；本地保存的自定义内容与购物车不是 AI 已确认的背包。\n'
+      +'六、入口与余额问题\n入口不出现时，作者应检查是否导入了商城正则、是否把导出窗口给出的完整入口标记放进开场白，以及聊天页版本是否选对。'+(cfg.platform==='mmdsandbox'?'新版聊天页必须新建角色卡，并在首次保存前选择「使用新版」；给旧卡导入正则不能升级聊天页。':'旧页商城正则应安装在旧聊天页；新版聊天页须使用对应的新页导出。')+'\n'
+      +'余额不对时，先查看 AI 最新状态栏是否写了正确的余额，再让作者在生成器「余额与检查」中测试匹配式；预览中的模拟余额不会成为玩家真实剧情余额。作者应在测试卡试用入口、购物车、填写或复制、发送后的 AI 结算，并在刷新和离开重进后再检查。\n'
+      +'七、作者安装与关键词触发\n配置 JSON 用于继续编辑，正则 JSON 用于显示商城；商品世界书从角色卡的世界书入口独立导入，不要把配置当正则，也不要把世界书塞进正则 JSON。\n'
+      +'本世界书的结算协议在消息出现【购买申请】时触发；使用说明在玩家询问「商城使用说明」「商城帮助」或「如何使用商城」时触发，商品资料则由各自的【商品名】触发。这些条目都按关键词调用，不需设为每轮常驻。作者应保留条目的关键词、启用状态和递归控制，避免又添加一份常驻结算规则造成重复或冲突。玩家需要帮助时，可以直接发送「商城帮助」。\n'
+      +'已发送且已确认的购买不会因清空购物车或重新打开面板自动撤销。需要修改结果时，请在剧情中向 AI 明确提出核对或调整请求。';
+  }
+  function worldbook(cfg) {
+    const entries = {}; let uid = 0;
+    function add(title, text, key, constant, tag) {
+      if (cfg.platform === 'mmdsandbox' && /\$#(?:char|user)#\$|\{\{char\}\}/.test(text)) throw new Error('新页世界书「'+title.slice(0,20)+'」含禁用角色宏，请先在原配置中改写；原文没有被自动修改。');
+      const open = '<'+tag+'>\n', close = '\n</'+tag+'>', room = 3000-open.length-close.length;
+      const chunks = [];
+      while (text.length) {
+        let cut = Math.min(room, text.length);
+        if (cut < text.length && /[\uD800-\uDBFF]/.test(text[cut-1])) cut--;
+        chunks.push(text.slice(0,cut)); text = text.slice(cut);
+      }
+      if (!chunks.length) chunks.push('');
+      chunks.forEach((part,i) => {
+        const suffix = chunks.length>1 ? '·'+(i+1) : '';
+        const entry = {
+          uid, key, keysecondary:[], comment:title.slice(0,20-suffix.length)+suffix,
+          content:open+part+close, constant, vectorized:false, selective:!constant,
+          selectiveLogic:0, addMemo:true, order:100, position:0, disable:false,
+          ignoreBudget:false, excludeRecursion:true, preventRecursion:true,
+          matchPersonaDescription:false, matchCharacterDescription:false,
+          matchCharacterPersonality:false, matchCharacterDepthPrompt:false,
+          matchScenario:false, matchCreatorNotes:false, delayUntilRecursion:false,
+          probability:100, useProbability:true, depth:1, outletName:'', group:'',
+          groupOverride:false, groupWeight:100, scanDepth:null, caseSensitive:null,
+          matchWholeWords:null, useGroupScoring:false, automationId:'', role:0,
+          sticky:0, cooldown:0, delay:0, triggers:[], displayIndex:uid,
+          extensions:{}, characterFilter:{isExclude:false,names:[],tags:[]},
+        };
+        entries[String(uid)] = entry; uid++;
+      });
+    }
+    add('商城结算协议',protocol(cfg),['【购买申请】'],false,'商城协议');
+    add('商城使用说明',usage(cfg),['商城使用说明','商城帮助','如何使用商城'],false,'商城使用说明');
+    cfg.products.forEach(p=>add(p.n,'商品：'+p.n+'\n价格：'+p.pr+cfg.brand.currency+'\n说明：'+p.d,['【'+p.n+'】'],false,'商品资料'));
+    return {entries};
+  }
+  function csv(cfg) { const cell = v=>'"'+String(v).replace(/"/g,'""')+'"'; return '\uFEFF'+[['分类','名称','价格','说明'],...cfg.products.map(p=>[p.c,p.n,p.pr,p.d])].map(r=>r.map(cell).join(',')).join('\r\n'); }
+  global.ShopCore={clone,defaults,normalize,parseRegex,parseProducts,importConfig,validate,build,protocol,usage,worldbook,csv,newId,safeCSS};
+})(window);
+</script>
+<script>/* Shop Sidebar Studio v2. Runtime builder. No external scripts or network calls. */
+(function (global) {
+  'use strict';
+  var LIMIT = 19500;
+  var RUNTIME_REVISION = '2.0.2-host-isolation';
+  var defaults = {
+    ink: '#0e1118', ink2: '#151b27', bone: '#f2f0eb', bone2: '#bac4d5', stone: '#8e9bb0',
+    line: 'rgba(185,201,227,.22)', blood: '#6e91dc', bloodg: 'rgba(110,145,220,.3)', brass: '#ebc17d',
+    panelBg: 'linear-gradient(145deg,#192233,#0d121c)', ovBg: 'rgba(3,6,12,.78)',
+    cardBg: 'rgba(255,255,255,.04)', tabBg: '#192233', tabBgH: '#253852',
+    btnGrad: 'linear-gradient(135deg,#f0d09a,#d7a75e)', txtShadow: 'none'
+  };
+  function number(v, fallback, min, max) {
+    var n = Number(v); return Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : fallback;
+  }
+  function css(v, fallback) {
+    v = String(v == null ? '' : v).trim();
+    return v && v.length <= 500 && !/[;{}<>\\@]|url\s*\(|expression\s*\(|\/\*/i.test(v) && /^[\w\s#.,()%+\-'"/:]+$/.test(v) ? v : fallback;
+  }
+  function text(v, fallback) { return String(v == null ? (fallback || '') : v); }
+  function normalize(input) {
+    input = input || {}; var c = {}, seen = Object.create(null);
+    c.shopId = /^[a-zA-Z][a-zA-Z0-9_]{0,31}$/.test(input.shopId || '') ? input.shopId : 'shop';
+    c.bootName = 'ShopGen2_boot_'+hash(c.shopId);
+    c.platform = input.platform === 'mmdsandbox' ? 'mmdsandbox' : 'mmd';
+    c.trigger = text(input.trigger, '〖商城〗').trim() || '〖商城〗';
+    c.brand = {}; var b = input.brand || {}, names = {tab:'商城',title:'旅行者商城',subEN:'TRAVELER SHOP',kicker:'SUPPLY & DISCOVER',pointsLabel:'积分',currency:'点',ptsEN:'BALANCE',searchPh:'搜索商品名称或说明'};
+    Object.keys(names).forEach(function(k){c.brand[k] = text(b[k], names[k]);});
+    c.theme = {}; Object.keys(defaults).forEach(function(k){c.theme[k] = css((input.theme || {})[k], defaults[k]);});
+    var f = input.fonts || {}; c.fonts = {sans:css(f.sans, "'PingFang SC','Microsoft YaHei',sans-serif"),serif:css(f.serif, "'Songti SC','Noto Serif SC',serif")};
+    var l = input.layout || {}; c.layout = {edge:l.edge === 'right' ? 'right':'left',topPct:number(l.topPct,38,12,85),maxWidth:number(l.maxWidth,920,280,1400),heightVh:number(l.heightVh,86,50,100)};
+    c.categories = (input.categories || []).map(function(v){return {code:text(v.code),name:text(v.name),rs:text(v.rs)};});
+    if (!c.categories.some(function(v){return v.code === 'rec';})) c.categories.unshift({code:'rec',name:'推荐',rs:''});
+    if (!c.categories.some(function(v){return v.code === 'custom';})) c.categories.push({code:'custom',name:'自定义',rs:''});
+    c.recOrder = (input.recOrder || []).map(String);
+    c.products = (input.products || []).map(function(p,i){var id = text(p.id, 'p'+i); if(seen[id]) id += '_'+i;seen[id]=true;return {id:id,c:text(p.c),n:text(p.n),d:text(p.d),pr:Math.round(number(p.pr,0,0,1000000000))};});
+    var a=input.adv || {}; c.adv={ptsRe:text(a.ptsRe,'/积分[^\\d]{0,8}(\\d+)/'),ptsReFb:text(a.ptsReFb,''),previewPoints:number(a.previewPoints,1200,0,1000000000000)};
+    return c;
+  }
+  // Data always enters generated JavaScript as a quoted JSON value. These escapes also
+  // prevent script closing, Markdown HTML parsing, and String.replace dollar expansion.
+  function js(v) { return JSON.stringify(v).replace(/[<>&$\u2028\u2029\u27e6\u27e7]/g,function(ch){return '\\u'+ch.charCodeAt(0).toString(16).padStart(4,'0');}); }
+  function hash(s) { var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36); }
+  function regexp(s) { return '/'+String(s).replace(/[.*+?^${}()|[\]\\/]/g,'\\$&').replace(/\r/g,'\\r').replace(/\n/g,'\\n')+'/g'; }
+  var STYLE = '.sg2{color-scheme:dark;color:var(--sg-bone);font-family:var(--sg-sans);font-size:14px;line-height:1.5;white-space:normal;text-shadow:var(--sg-txtShadow)}.sg2 *{box-sizing:border-box}.sg2 .sg2-body,.sg2 textarea{scrollbar-width:thin;scrollbar-color:var(--sg-blood) var(--sg-ink2)}.sg2 .sg2-body::-webkit-scrollbar,.sg2 textarea::-webkit-scrollbar{width:7px;height:7px}.sg2 .sg2-body::-webkit-scrollbar-track,.sg2 textarea::-webkit-scrollbar-track{background:var(--sg-ink2);border-radius:8px}.sg2 .sg2-body::-webkit-scrollbar-thumb,.sg2 textarea::-webkit-scrollbar-thumb{background:var(--sg-blood);border:2px solid var(--sg-ink2);border-radius:8px}.sg2 .sg2-body::-webkit-scrollbar-thumb:hover,.sg2 textarea::-webkit-scrollbar-thumb:hover{background:var(--sg-brass)}.sg2 .sg2-body::-webkit-scrollbar-corner,.sg2 textarea::-webkit-scrollbar-corner{background:var(--sg-ink2)}.sg2 button,.sg2 input,.sg2 textarea,.sg2 select{font:inherit}.sg2 button{cursor:pointer;touch-action:manipulation}.sg2 button:disabled{opacity:.55;cursor:not-allowed}.sg2 button:focus-visible,.sg2 input:focus-visible,.sg2 textarea:focus-visible,.sg2 select:focus-visible{outline:2px solid var(--sg-brass);outline-offset:2px}.sg2 button{border:1px solid var(--sg-line);border-radius:10px;background:var(--sg-cardBg);color:var(--sg-bone);min-height:42px;padding:8px 12px}.sg2 button:hover{border-color:var(--sg-brass)}.sg2 [hidden]{display:none!important}.sg2 .sg2-tab{position:fixed;z-index:9999;top:var(--sg-top);left:0;max-width:45px;min-height:100px;padding:14px 10px;writing-mode:vertical-rl;letter-spacing:2px;transform:translateY(-50%);background:var(--sg-tabBg);color:var(--sg-brass);border-radius:0 12px 12px 0;box-shadow:0 4px 18px #0006}.sg2[data-edge="right"] .sg2-tab{left:auto;right:0;border-radius:12px 0 0 12px}.sg2 .sg2-tab:hover{background:var(--sg-tabBgH)}.sg2 .sg2-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--sg-ovBg)}.sg2 .sg2-panel{display:flex;flex-direction:column;position:relative;max-width:var(--sg-width);width:100%;height:var(--sg-height);max-height:calc(100dvh - 40px);background:var(--sg-panelBg);border:1px solid var(--sg-line);border-radius:18px;box-shadow:0 20px 80px #0009;overflow:hidden}.sg2 .sg2-head{padding:18px 20px 14px;border-bottom:1px solid var(--sg-line);flex-shrink:0}.sg2 .sg2-titlebar{display:flex;align-items:center;gap:10px}.sg2 .sg2-title{flex:1;min-width:0}.sg2 .sg2-title h2{margin:3px 0;color:var(--sg-bone);font:600 22px/1.35 var(--sg-serif);overflow-wrap:anywhere}.sg2 .sg2-kicker,.sg2 .sg2-en{font-size:10px;letter-spacing:2px;color:var(--sg-stone);overflow-wrap:anywhere}.sg2 .sg2-balance{font-size:12px;color:var(--sg-bone2);text-align:right;max-width:40%}.sg2 .sg2-balance strong{display:block;font-size:20px;color:var(--sg-brass);overflow-wrap:anywhere}.sg2 .sg2-close{flex-shrink:0;width:42px;font-size:20px}.sg2 .sg2-search{margin-top:14px}.sg2 input,.sg2 textarea,.sg2 select{width:100%;border:1px solid var(--sg-line);background:var(--sg-ink);color:var(--sg-bone);border-radius:9px;padding:11px 12px;min-height:44px}.sg2 input::placeholder,.sg2 textarea::placeholder{color:var(--sg-stone)}.sg2 .sg2-cats{display:flex;min-width:0;overflow-x:auto;overflow-y:hidden;gap:8px;padding:12px 20px 6px;flex-shrink:0;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}.sg2 .sg2-cats::-webkit-scrollbar{display:none;width:0;height:0}.sg2 .sg2-cats button{white-space:nowrap;flex-shrink:0;min-height:36px;padding:6px 12px}.sg2 button[aria-selected="true"],.sg2 .sg2-primary{background:var(--sg-btnGrad);color:#11171f;font-weight:600;border-color:transparent}.sg2 .sg2-body{flex:1;min-width:0;min-height:0;max-width:100%;overflow-y:auto;overflow-x:hidden;padding:14px 20px 22px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.sg2 .sg2-tip{border-left:3px solid var(--sg-blood);padding:8px 12px;margin:0 0 14px;font-size:12px;color:var(--sg-bone2);background:var(--sg-cardBg);border-radius:0 8px 8px 0}.sg2 .sg2-grid{display:grid;min-width:0;max-width:100%;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:12px}.sg2 .sg2-card{border:1px solid var(--sg-line);border-radius:12px;padding:15px;background:var(--sg-cardBg);display:flex;flex-direction:column;min-width:0}.sg2 .sg2-card h3{margin:3px 0 8px;font:600 17px/1.4 var(--sg-serif);overflow-wrap:anywhere;color:var(--sg-bone)}.sg2 .sg2-muted{font-size:12px;color:var(--sg-bone2);overflow-wrap:anywhere}.sg2 .sg2-card .sg2-desc{flex:1;margin:0 0 14px;color:var(--sg-bone2);font-size:13px;overflow-wrap:anywhere;white-space:pre-wrap}.sg2 .sg2-price{color:var(--sg-brass);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.sg2 .sg2-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.sg2 .sg2-row>span{min-width:0}.sg2 .sg2-foot{display:flex;gap:6px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));border-top:1px solid var(--sg-line);background:var(--sg-ink2);flex-shrink:0}.sg2 .sg2-foot button{flex:1;min-width:0;font-size:13px}.sg2 .sg2-cartrow{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--sg-line);padding:12px 0}.sg2 .sg2-cartmain{flex:1;min-width:0;overflow-wrap:anywhere}.sg2 .sg2-qty{display:flex;align-items:center;gap:8px;flex-shrink:0}.sg2 .sg2-qty button{width:38px;min-height:40px;padding:4px}.sg2 .sg2-qty span{min-width:22px;text-align:center}.sg2 .sg2-summary{padding:16px;margin-top:16px;border:1px solid var(--sg-line);border-radius:12px;background:var(--sg-cardBg)}.sg2 .sg2-summary p{margin:8px 0;color:var(--sg-bone2);font-size:12px}.sg2 .sg2-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.sg2 .sg2-actions button{flex:1;min-width:120px}.sg2 .sg2-order{margin-top:16px}.sg2 .sg2-order textarea{min-height:125px;resize:vertical;font-size:12px}.sg2 label{display:block;font-size:12px;color:var(--sg-bone2);margin:12px 0 6px}.sg2 .sg2-form{border:1px solid var(--sg-line);border-radius:12px;padding:16px}.sg2 .sg2-status{min-height:25px;color:var(--sg-brass);font-size:12px;padding:5px 20px 8px;flex-shrink:0;overflow-wrap:anywhere}.sg2 .sg2-empty{text-align:center;padding:32px 12px;color:var(--sg-bone2)}.sg2 .sg2-count{font-size:12px;color:var(--sg-stone);margin-bottom:12px}@media(max-width:600px){.sg2 .sg2-overlay{padding:8px}.sg2 .sg2-panel{height:calc(100dvh - 16px);max-height:calc(100dvh - 16px);border-radius:14px}.sg2 .sg2-head{padding:14px}.sg2 .sg2-body{padding:12px 14px 18px}.sg2 .sg2-cats{padding:10px 14px 4px}.sg2 .sg2-title h2{font-size:19px}.sg2 .sg2-titlebar{gap:7px}.sg2 .sg2-balance strong{font-size:17px}.sg2 .sg2-cartrow{flex-wrap:wrap}.sg2 .sg2-status{padding-left:14px;padding-right:14px}}@media(prefers-reduced-motion:reduce){.sg2 *{scroll-behavior:auto!important}}';
+
+  // The wrapper owns styles/state, but must not add a box to the host page layout.
+  // Even broad rules from another card (body > div, div min-height) cannot resize it.
+  STYLE += '.sg2{display:contents!important}.sg2>style{display:none!important}';
+
+  function helpers(x) {
+    x.eh=function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});};
+    x.money=function(n){return n==null?'未读取到':Number(n).toLocaleString('zh-CN');};
+    x.el=function(k){var selector='[data-el="'+k+'"]';return (x.root&&x.root.querySelector(selector))||(x.stageRoot&&x.stageRoot.querySelector(selector));};
+    x.note=function(s){x.status=s;var n=x.el('status');if(n)n.textContent=s;};
+    x.all=function(){return x.cfg.products.concat(x.custom);};
+    x.product=function(id){return x.all().find(function(p){return p.id===id;});};
+    x.total=function(){return Object.keys(x.cart).reduce(function(sum,id){var p=x.product(id);return sum+(p?p.pr*x.cart[id]:0);},0);};
+    x.count=function(){return Object.keys(x.cart).reduce(function(n,id){return n+x.cart[id];},0);};
+    x.categoryName=function(code){var c=x.cfg.categories.find(function(t){return t.code===code;});return c?c.name:code;};
+    x.parseRegex=function(value) {try {
+    if (!value) return null;
+    if (typeof value !== 'string') throw new Error('余额匹配式应是文字。');
+    if (value.length > 240) throw new Error('余额匹配式请控制在 240 个字符以内。');
+    const m = value.match(/^\/([\s\S]*)\/([gimsuy]*)$/);
+    if (!m) throw new Error('余额匹配式应写成 /余额：(\\d+)/，数字放在第一对括号里。');
+    const help = '余额匹配式只支持简单提数字格式，如 /积分[^\\d]{0,4}(\\d+)/；保留一组数字括号，最多两处短间隔、合计不超过 40 个字符，不使用嵌套括号或重复分组。';
+    if (/[gy]/.test(m[2])) throw new Error('余额只提取一个数字，请移除 g / y 标记。');
+    // This is a deliberately small format, not a general regular-expression
+    // parser: literal labels, literal alternatives, short gaps, one digit group.
+    const body = m[1]; let capture = 0, canRepeat = false, gapRepeats = 0, gapBudget = 0;
+    for (let i = 0; i < body.length;) {
+      const ch = body[i];
+      if (ch === '(') {
+        const numeric = body.slice(i).match(/^\((?:\\d|\[0-9\])(?:\+|\{1,([1-9]\d?)\})\)/);
+        if (numeric) {
+          if (++capture > 1 || (numeric[1] && Number(numeric[1]) > 20)) throw new Error(help);
+          i += numeric[0].length; canRepeat = false; continue;
+        }
+        if (body.slice(i, i + 3) !== '(?:') throw new Error(help);
+        const end = body.indexOf(')', i + 3);
+        if (end < 0) throw new Error(help);
+        const alternatives = body.slice(i + 3, end).split('|');
+        if (alternatives.length < 2 || alternatives.some(part => !part || /[\\()[\]{}*+?^$]/.test(part))) throw new Error(help);
+        i = end + 1; canRepeat = false; continue;
+      }
+      if (ch === '\\') {
+        const next = body[i + 1];
+        if (!next || !/[sD\/[\](){}.*+?^$|\\-]/.test(next)) throw new Error(help);
+        i += 2; canRepeat = true; continue;
+      }
+      if (ch === '[') {
+        const end = body.indexOf(']', i + 1), token = body.slice(i, end + 1);
+        if (end < 0 || !/^\[(?:\^\\d|\^0-9|[ :：=＝，,、\\s-]+)\]$/.test(token)) throw new Error(help);
+        i = end + 1; canRepeat = true; continue;
+      }
+      if (ch === '{') {
+        const quantifier = body.slice(i).match(/^\{(\d{1,2})(?:,(\d{1,2}))?\}/);
+        if (!canRepeat || !quantifier) throw new Error(help);
+        const min = Number(quantifier[1]), max = Number(quantifier[2] ?? quantifier[1]);
+        gapRepeats++; gapBudget += max;
+        if (min > max || max > 40 || gapRepeats > 2 || gapBudget > 40) throw new Error(help);
+        i += quantifier[0].length; canRepeat = false; continue;
+      }
+      if (ch === '?') {
+        if (!canRepeat) throw new Error(help);
+        gapRepeats++; gapBudget++;
+        if (gapRepeats > 2 || gapBudget > 40) throw new Error(help);
+        i++; canRepeat = false; continue;
+      }
+      if (ch === '^' || ch.charCodeAt(0) === 36) { i++; canRepeat = false; continue; }
+      if (/[)\]}|*+]/.test(ch)) throw new Error(help);
+      i++; canRepeat = true;
+    }
+    if (capture !== 1) throw new Error(help);
+    return new RegExp(m[1], m[2]);
+  } catch (e) { return null; }};
+    x.budgetFrom=function(s){
+      x.budgetInvalid=false;
+      if(typeof s!=='string'||!s.trim()||/^消息生成|^\.{2,}|^…+$/.test(s.trim()))return null;
+      s=s.slice(-60000);var latest=null;
+      [x.cfg.adv.ptsRe,x.cfg.adv.ptsReFb].forEach(function(pattern){
+        if(latest)return; // Fallback is only used when the primary currency has no match.
+        var original=x.parseRegex(pattern);if(!original)return;
+        var re=new RegExp(original.source,original.flags+'g'),m,count=0;
+        while((m=re.exec(s))&&count++<1000){
+          if(m[1]==null)continue;
+          var start=m.index+m[0].lastIndexOf(m[1]),end=start+m[1].length;
+          var prefix=s.slice(Math.max(0,start-30),start),suffix=s.slice(end,end+3);
+          var invalid=/[-−+]\s*$/.test(prefix)||/[.,，]\d/.test(suffix)||/\d[.,，]$/.test(prefix);
+          var raw=String(m[1]),n=Number(raw);
+          if(!/^\d+$/.test(raw)||!Number.isSafeInteger(n)||n>1000000000000)invalid=true;
+          if(!latest||start>=latest.index)latest={index:start,value:invalid?null:n};
+        }
+      });
+      if(!latest)return null;x.budgetInvalid=latest.value==null;return latest.value;
+    };
+    x.setBudget=function(n){if(n==null&&!x.budgetInvalid)return;if(n===x.points)return;x.points=n;x.budgetSource='最近一条明确报出余额的 AI 回复';if(x.root&&x.root.isConnected)x.render();};
+    x.readOldBudget=function(){var rows=document.querySelectorAll('.item.Ai .content.left');for(var i=rows.length-1;i>=Math.max(0,rows.length-40);i--){var n=x.budgetFrom(rows[i].textContent||'');if(n!=null||x.budgetInvalid){x.setBudget(n);break;}}};
+    x.inputNode=function(){var selectors=['.chat .chat-bottom .chat-input-scope textarea','.chat-input-scope textarea','.chatMsgTextarea textarea','#send_textarea','[data-shopgen-preview-input]'];for(var i=0;i<selectors.length;i++){var n=document.querySelector(selectors[i]);if(n&&!n.closest('.sg2')&&!n.disabled&&!n.readOnly)return n;}return null;};
+    x.order=function(){if(!Number.isSafeInteger(x.total()))return '合计超过安全整数范围，请减少购物车数量后再生成购买申请。';var lines=['【购买申请】'];Object.keys(x.cart).forEach(function(id){var p=x.product(id);if(p)lines.push('【'+p.n+'】 ×'+x.cart[id]+'，单价 '+p.pr+x.cfg.brand.currency+'；'+p.d);});lines.push('申请总价：'+x.total()+x.cfg.brand.currency);lines.push('请按当前剧情核实余额、商品可用性与购买结果，并更新余额和背包。');lines.push('这是购买申请，尚未扣款或获得商品。');return lines.join('\n');};
+    x.fill=function(){
+      if(!Number.isSafeInteger(x.total()))return x.note('合计过大，无法准确计价；请减少购物车数量。');
+      var s=x.order();if(!x.count())return x.note('请先加入商品。');
+      if(x.points!=null&&x.total()>x.points)return x.note('总价超过最近读取到的余额，请先调整购物车。');
+      try{
+        var api,n,current;
+        if(x.cfg.platform==='mmdsandbox'){
+          api=window.sdk&&window.sdk.input;
+          if(!api||typeof api.get!=='function'||typeof api.add!=='function')throw new Error('输入接口不可用');
+          current=String(api.get()||'');
+        }else{
+          n=x.inputNode();if(!n)throw new Error('没找到聊天输入框');current=n.value;
+        }
+        if(current.indexOf(s)!==-1)return x.note('这份购买申请已在输入框里，请检查后自行发送。');
+        var at=x.unsent?current.indexOf(x.unsent):-1,value;
+        if(at>=0)value=current.slice(0,at)+s+current.slice(at+x.unsent.length);
+        else{
+          if(current.indexOf('【购买申请】')!==-1)return x.note('输入框已有购买申请，可能经过手工修改；请先检查或清除旧申请，避免重复购买。');
+          value=current+(current.trim()?'\n\n':'')+s;
+        }
+        if(api){
+          if(at>=0){if(typeof api.set!=='function')throw new Error('当前环境不支持更新输入框');api.set(value);}
+          else api.add((current.trim()?'\n\n':'')+s);
+          if(String(api.get()||'').indexOf(s)===-1)throw new Error('当前预览不支持填写');
+        }else{
+          var setter=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value').set;
+          setter.call(n,value);n.dispatchEvent(new Event('input',{bubbles:true}));
+        }
+        x.unsent=s;x.note('已填入聊天输入框；商城没有发送或扣款，请自行检查后发送。');
+      }catch(e){x.note('填写未完成：'+e.message+'。下方可手动复制购买申请。');}
+    };
+    x.copy=function(){if(!Number.isSafeInteger(x.total()))return x.note('合计过大，无法准确计价；请减少购物车数量。');var s=x.order();if(!x.count())return x.note('请先加入商品。');function done(){x.note('购买申请已复制；请粘贴到聊天输入框，检查后自行发送。');}function fail(){x.note('浏览器没有允许复制，请在购买申请框里全选并手动复制。');var t=x.el('order');if(t){t.focus();t.select();}}function fallback(){try{var t=x.el('order');if(!t)throw new Error();t.focus();t.select();if(!document.execCommand('copy'))throw new Error();done();}catch(e){fail();}}if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(done,fallback);else fallback();};
+    x.reset=function(){x.dropDraft=true;x.customDraft={n:'',pr:'0',d:''};x.cart=Object.create(null);x.custom=[];x.points=null;x.unsent='';x.page='shop';x.cat='rec';x.q='';x.open=false;x.status='会话已切换，购物车与未发送申请已清空。';};
+    x.close=function(){x.open=false;if(x.cfg.platform==='mmdsandbox'){try{if(window.sdk.stage.visible())window.sdk.stage.close();}catch(e){x.note('舞台关闭接口暂不可用。');}}x.render();var tab=x.el('tab');if(tab)tab.focus();};
+    x.show=function(){if(x.cfg.platform==='mmdsandbox'){try{var stage=window.sdk&&window.sdk.stage;if(!stage||typeof stage.visible!=='function')throw new Error('舞台接口不可用');if(!stage.visible())stage.open('full');if(!x.stageRoot||!x.stageRoot.isConnected)throw new Error('商城还没有挂载到舞台，请等待消息挂载完成');}catch(e){return x.note('无法展开商城：'+e.message+'。');}}x.open=true;if(x.cfg.platform==='mmd')x.readOldBudget();x.render();var close=x.el('close');if(close)close.focus();};
+  }
+
+  function renderer(x) {
+    x.renderCats=function(){var box=x.el('cats');if(!box)return;box.innerHTML=x.cfg.categories.map(function(c){return '<button type="button" role="tab" aria-selected="'+(x.cat===c.code)+'" data-action="cat" data-code="'+x.eh(c.code)+'">'+x.eh(c.name)+'</button>';}).join('');box.hidden=x.page!=='shop';};
+    x.renderShop=function(){var all=x.all(),list=all.filter(function(p){return x.cat==='rec'||p.c===x.cat;});var tip='';if(x.cat==='rec'&&!x.q){if(x.points==null){list=all;tip='还没有读取到余额，先展示全部商品。加入购物车不等于已经购买。';}else{var order=x.cfg.recOrder.slice();x.cfg.categories.forEach(function(c){if(c.code!=='rec'&&c.code!=='custom'&&order.indexOf(c.code)<0)order.push(c.code);});list=[];var rest=Math.max(0,x.points-x.total());order.forEach(function(code){var candidates=all.filter(function(p){return p.c===code&&p.pr<=rest;}).sort(function(a,b){return b.pr-a.pr;});if(candidates[0])list.push(candidates[0]);});tip='推荐每个分类里在剩余预算内单件买得起、价格最高的商品；多件合计仍需检查。';}}if(x.q){var query=x.q.toLocaleLowerCase();list=list.filter(function(p){return (p.n+' '+p.d+' '+x.categoryName(p.c)).toLocaleLowerCase().indexOf(query)!==-1;});}var shown=list.slice(0,x.limit),html=(tip?'<p class="sg2-tip">'+x.eh(tip)+'</p>':'')+'<div class="sg2-count">'+list.length+' 件商品'+(list.length>x.limit?' · 先显示 '+x.limit+' 件':'')+'</div><div class="sg2-grid">';html+=shown.map(function(p){var qty=x.cart[p.id]||0,tooMuch=x.points!=null&&x.total()+p.pr>x.points;return '<article class="sg2-card"><span class="sg2-muted">'+x.eh(x.categoryName(p.c))+'</span><h3>'+x.eh(p.n)+'</h3><p class="sg2-desc">'+x.eh(p.d)+'</p><div class="sg2-row"><span class="sg2-price">'+x.money(p.pr)+' '+x.eh(x.cfg.brand.currency)+'</span><button type="button" data-action="add" data-id="'+x.eh(p.id)+'" '+(tooMuch?'disabled':'')+'>'+ (tooMuch?'预算不足':qty?'再加一件 · '+qty:'加入购物车')+'</button></div></article>';}).join('');html+='</div>';if(!list.length)html+='<p class="sg2-empty">'+(x.q?'没有搜到商品，试试换个关键词。':'这里还没有商品。')+'</p>';if(list.length>x.limit)html+='<div class="sg2-actions"><button type="button" data-action="more">再显示 100 件</button></div>';x.el('content').innerHTML=html;};
+    x.renderCart=function(){var ids=Object.keys(x.cart),sum=x.total(),over=x.points!=null&&sum>x.points,html='';if(!ids.length){x.el('content').innerHTML='<p class="sg2-empty">购物车还是空的。到商城选几件商品，再生成购买申请。</p>';return;}html+=ids.map(function(id){var p=x.product(id);if(!p)return '';return '<div class="sg2-cartrow"><div class="sg2-cartmain"><strong>'+x.eh(p.n)+'</strong><div class="sg2-muted">单价 '+x.money(p.pr)+' '+x.eh(x.cfg.brand.currency)+' · 小计 '+x.money(p.pr*x.cart[id])+'</div></div><div class="sg2-qty"><button type="button" aria-label="减少 '+x.eh(p.n)+' 数量" data-action="minus" data-id="'+x.eh(id)+'">−</button><span>'+x.cart[id]+'</span><button type="button" aria-label="增加 '+x.eh(p.n)+' 数量" data-action="add" data-id="'+x.eh(id)+'">+</button><button type="button" aria-label="移除 '+x.eh(p.n)+'" data-action="remove" data-id="'+x.eh(id)+'">×</button></div></div>';}).join('');html+='<section class="sg2-summary"><div class="sg2-row"><span>申请总价</span><strong class="sg2-price">'+x.money(sum)+' '+x.eh(x.cfg.brand.currency)+'</strong></div><p>'+ (x.points==null?'余额未知：仍可生成申请，但需由剧情核实。':over?'合计超过最近读取到的余额，请先减少商品。':'按最近读取到的余额估算，购买后可能剩余 '+x.money(x.points-sum)+' '+x.eh(x.cfg.brand.currency)+'；尚未扣款。')+'</p><p>购物车只准备文字。填写、复制和发送购买申请，都不会直接确认扣款或发货。</p><div class="sg2-actions"><button type="button" class="sg2-primary" data-action="fill" '+(over?'disabled':'')+'>填入聊天输入框</button><button type="button" data-action="copy">复制购买申请</button><button type="button" data-action="clear">清空购物车</button></div></section><div class="sg2-order"><label>购买申请（可以手动复制）</label><textarea data-el="order" readonly spellcheck="false"></textarea></div>';x.el('content').innerHTML=html;x.el('order').value=x.order();};
+    x.renderCustom=function(){var html='<p class="sg2-tip">临时商品由玩家填写，名称和价格需由剧情核实；不会自动成为官方商品或扣款。切换会话后会清空。</p><div class="sg2-form"><label for="'+x.cfg.shopId+'-name">商品名称</label><input id="'+x.cfg.shopId+'-name" data-el="customName" maxlength="120" placeholder="例如：修理护甲"><label for="'+x.cfg.shopId+'-price">申请价格（非负整数）</label><input id="'+x.cfg.shopId+'-price" data-el="customPrice" type="number" min="0" max="1000000000" step="1" value="0" inputmode="numeric"><label for="'+x.cfg.shopId+'-desc">用途与说明</label><textarea id="'+x.cfg.shopId+'-desc" data-el="customDesc" maxlength="2000" rows="3" placeholder="写清用途，便于剧情判断是否可以买到。"></textarea><div class="sg2-actions"><button type="button" class="sg2-primary" data-action="custom">加入自定义商品</button></div></div>';x.el('content').innerHTML=html;var draft=x.customDraft||{n:'',pr:'0',d:''};x.el('customName').value=draft.n;x.el('customPrice').value=draft.pr;x.el('customDesc').value=draft.d;};
+    x.render=function(){if(!x.root||!x.root.isConnected)return;if(!x.dropDraft&&x.el('customName'))x.customDraft={n:x.el('customName').value,pr:x.el('customPrice').value,d:x.el('customDesc').value};x.dropDraft=false;x.el('overlay').hidden=!x.open;x.el('tab').setAttribute('aria-expanded',String(x.open));x.el('points').textContent=x.money(x.points);x.el('balanceLabel').textContent=x.cfg.brand.pointsLabel+(x.points==null?' · 未知':' · 最近读取');x.el('status').textContent=x.status||'';x.el('search').hidden=x.page!=='shop';(x.stageRoot||x.root).querySelectorAll('[data-action="page"]').forEach(function(n){n.setAttribute('aria-selected',String(n.dataset.page===x.page));});x.el('badge').textContent=x.count()? ' · '+x.count():'';x.renderCats();if(x.page==='cart')x.renderCart();else if(x.page==='custom')x.renderCustom();else x.renderShop();};
+    x.changeQty=function(id,delta){var p=x.product(id);if(!p)return;var n=(x.cart[id]||0)+delta;if(n>999)return x.note('单件商品最多加入 999 件。');if(delta>0&&x.points!=null&&x.total()+p.pr>x.points)return x.note('合计会超过最近读取到的余额，不能再加。');if(n<=0)delete x.cart[id];else x.cart[id]=n;x.render();x.note(delta>0?'已加入购物车；还没有购买或扣款。':'已减少数量。');};
+    x.handle=function(event){var b=event.target.closest('[data-action]');if(!b||(!x.root.contains(b)&&!(x.stageRoot&&x.stageRoot.contains(b)))||b.disabled)return;var a=b.dataset.action,id=b.dataset.id;if(a==='open'){x.show();}else if(a==='close'){x.close();}else if(a==='page'){x.page=b.dataset.page;x.render();}else if(a==='cat'){x.cat=b.dataset.code;x.limit=100;x.render();}else if(a==='add')x.changeQty(id,1);else if(a==='minus')x.changeQty(id,-1);else if(a==='remove'){delete x.cart[id];x.render();}else if(a==='more'){x.limit+=100;x.render();}else if(a==='fill')x.fill();else if(a==='copy')x.copy();else if(a==='clear'){x.cart=Object.create(null);x.unsent='';x.render();x.note('购物车已清空。已填进聊天输入框的文字请在那里自行修改。');}else if(a==='custom'){var name=x.el('customName').value.trim(),value=x.el('customPrice').value.trim(),d=x.el('customDesc').value.trim();if(!name)return x.note('请填写商品名称。');if(!/^\d+$/.test(value)||!Number.isSafeInteger(Number(value))||Number(value)>1000000000)return x.note('申请价格请填 0 至 1,000,000,000 的整数。');x.custom.push({id:'u_'+Date.now()+'_'+x.custom.length,c:'custom',n:name,pr:Number(value),d:d});x.page='shop';x.cat='custom';x.q='';x.el('query').value='';x.render();x.customDraft={n:'',pr:'0',d:''};x.note('已加入本会话的自定义商品，价格仍需剧情核实。');}};
+  }
+
+  function mounting(x) {
+    x.mount=function(){if(!document.body)return;if(x.root&&x.root.isConnected&&x.root.dataset.revision===x.revision){return;}var prev=document.body.querySelectorAll('[data-shopgen="'+x.cfg.shopId+'"]');prev.forEach(function(n){n.remove();});var root=document.createElement('div');root.className='sg2';root.dataset.shopgen=x.cfg.shopId;root.dataset.revision=x.revision;root.dataset.edge=x.cfg.layout.edge;Object.keys(x.cfg.theme).forEach(function(k){root.style.setProperty('--sg-'+k,x.cfg.theme[k]);});root.style.setProperty('--sg-sans',x.cfg.fonts.sans);root.style.setProperty('--sg-serif',x.cfg.fonts.serif);root.style.setProperty('--sg-top',x.cfg.layout.topPct+'%');root.style.setProperty('--sg-width',x.cfg.layout.maxWidth+'px');root.style.setProperty('--sg-height',x.cfg.layout.heightVh+'vh');var style=document.createElement('style');style.textContent=x.css;root.appendChild(style);var wrap=document.createElement('div');wrap.innerHTML='<button type="button" class="sg2-tab" data-el="tab" data-action="open" aria-haspopup="dialog" aria-expanded="false"></button><div class="sg2-overlay" data-el="overlay" hidden><section class="sg2-panel" role="dialog" aria-modal="true" aria-label="商城"><header class="sg2-head"><div class="sg2-titlebar"><div class="sg2-title"><div class="sg2-kicker" data-el="kicker"></div><h2 data-el="title"></h2><div class="sg2-en" data-el="subEN"></div></div><div class="sg2-balance"><strong data-el="points"></strong><span data-el="balanceLabel"></span></div><button type="button" class="sg2-close" data-el="close" data-action="close" aria-label="关闭商城">×</button></div><div class="sg2-search" data-el="search"><input data-el="query" type="search" aria-label="搜索商品"></div></header><div class="sg2-cats" role="tablist" aria-label="商品分类" data-el="cats"></div><main class="sg2-body" data-el="content"></main><div class="sg2-status" data-el="status" role="status" aria-live="polite"></div><nav class="sg2-foot" role="tablist" aria-label="商城页面"><button type="button" role="tab" data-action="page" data-page="shop">商城</button><button type="button" role="tab" data-action="page" data-page="cart">购物车<span data-el="badge"></span></button><button type="button" role="tab" data-action="page" data-page="custom">自定义商品</button></nav></section></div>';while(wrap.firstChild)root.appendChild(wrap.firstChild);x.root=root;document.body.appendChild(root);['tab','title','subEN','kicker'].forEach(function(k){x.el(k).textContent=x.cfg.brand[k];});x.el('query').placeholder=x.cfg.brand.searchPh;x.el('query').value=x.q;root.addEventListener('click',x.handle);x.el('overlay').addEventListener('click',function(e){if(e.target===x.el('overlay'))x.close();});x.el('query').addEventListener('input',function(e){x.q=e.target.value;x.limit=100;x.renderShop();});root.addEventListener('keydown',function(e){if(e.key==='Escape'&&x.open){e.stopPropagation();x.open=false;x.render();x.el('tab').focus();}if(e.key==='Tab'&&x.open){var nodes=Array.from(x.el('overlay').querySelectorAll('button:not([disabled]),input,textarea,select')).filter(function(n){return n.getClientRects().length;});if(nodes.length&&e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus();}else if(nodes.length&&!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus();}}});x.render();};
+    var standardMount=x.mount;
+    x.mount=function(){
+      standardMount();
+      if(x.cfg.platform!=='mmdsandbox'||!x.root)return;
+      var overlay=x.root.querySelector('[data-el="overlay"]');
+      if(!overlay)return;
+      try{
+        var stage=window.sdk&&window.sdk.stage,host=stage&&stage.el();
+        if(!host){x.note('没有找到舞台节点；请在新版聊天页使用这套正则。');return;}
+        var shell=document.createElement('div');
+        shell.className='sg2 sg2-stage';shell.dataset.shopgen=x.cfg.shopId;
+        shell.dataset.revision=x.revision;shell.style.cssText=x.root.style.cssText;
+        shell.appendChild(overlay);host.appendChild(shell);x.stageRoot=shell;
+        shell.addEventListener('click',x.handle);
+        shell.addEventListener('keydown',function(e){
+          if(e.key==='Escape'){e.stopPropagation();x.close();}
+          if(e.key==='Tab'&&x.open){var nodes=Array.from(shell.querySelectorAll('button:not([disabled]),input,textarea,select')).filter(function(n){return n.getClientRects().length;});if(nodes.length&&e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes[nodes.length-1].focus();}else if(nodes.length&&!e.shiftKey&&document.activeElement===nodes[nodes.length-1]){e.preventDefault();nodes[0].focus();}}
+        });
+        x.render();
+      }catch(e){x.note('舞台挂载失败：'+e.message);}
+    };
+
+  }
+
+  function oldLifecycle(x) {
+    function hasChat(){if(/^#\/pages\//.test(location.hash)&&!/^#\/pages\/chat\/chat(?:[?/#]|$)/.test(location.hash))return false;if(document.querySelector('[data-shopgen-preview-input]'))return true;return Array.from(document.querySelectorAll('.chat,.chat-bottom')).some(function(n){return n.getClientRects().length>0;});}
+    var id=x.cfg.shopId,reg=window.__ShopGen2;window[x.cfg.bootName]=function(){var n=reg[id];if(n&&n.mount&&hasChat()){n.mount();n.readOldBudget();}};
+    if(!reg.__oldBound){reg.__oldBound=true;reg.__oldRoute=location.href;var check=function(){var changed=location.href!==reg.__oldRoute;reg.__oldRoute=location.href;Object.keys(reg).forEach(function(k){var n=reg[k];if(!n||!n.cfg||n.cfg.platform!=='mmd')return;if(!hasChat()){n.reset();if(n.root)n.root.remove();n.root=null;return;}if(changed){n.reset();if(n.root)n.render();}if(n.mount)n.mount();if(n.open)n.readOldBudget();});};window.addEventListener('hashchange',check);window.addEventListener('popstate',check);window.addEventListener('pageshow',check);document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});reg.__oldTimer=setInterval(check,1500);}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){window[x.cfg.bootName]();},{once:true});else window[x.cfg.bootName]();
+  }
+
+  function sandboxLifecycle(x) {
+    var reg=window.__ShopGen2,id=x.cfg.shopId,api=window.sdk;
+    if(!api||typeof api.on!=='function'){x.status='没有找到新页 SDK；请在新建角色卡时选择新版聊天页。';return;}
+    if(reg.__sdkBound&&reg.__sdkObject===api)return;reg.__sdkBound=true;reg.__sdkObject=api;
+    function each(fn){Object.keys(reg).forEach(function(k){var n=reg[k];if(reg.__sdkObject===api&&n&&n.active!==false&&n.cfg&&n.cfg.platform==='mmdsandbox')fn(n);});}
+    api.on('message:mount',function(){each(function(n){if(n.mount)n.mount();});});
+    api.on('message:done',function(msg){each(function(n){if(msg&&msg.role==='ai')n.setBudget(n.budgetFrom(msg.content));if(n.mount)n.mount();});});
+    api.on('conversation:switch',function(){each(function(n){n.reset();});});
+    api.on('back',function(){each(function(n){n.open=false;n.render();});});
+    api.on('stage:close',function(){each(function(n){n.open=false;n.render();});});
+    api.on('dispose',function(){each(function(n){try{if(n.open&&api.stage.visible())api.stage.close();}catch(e){}n.reset();n.active=false;if(n.root)n.root.remove();if(n.stageRoot)n.stageRoot.remove();n.root=null;n.stageRoot=null;});});
+  }
+
+  function buildRules(input) {
+    var c=normalize(input),revision=hash(RUNTIME_REVISION+'|'+JSON.stringify(c)),products=c.products;c.products=[];
+    var scripts=[],slices=[],idSeed=parseInt(hash(c.shopId),36)%1000000+1000;
+    function rule(name,find,value){if(value.length>LIMIT)throw new Error(name+' 超过 '+LIMIT+' 字，不能导出；请缩短该块的商品/分类/文案。');if(/\$[$&'`]/.test(value))throw new Error(name+' 含危险美元替换串，已阻止导出。');scripts.push({id:c.platform==='mmd'?-1:-(idSeed+scripts.length),scriptName:('商城·'+name).slice(0,20),findRegex:find,replaceString:value,});slices.push(value);}
+    var triggerHTML='<span class="sg2-marker-'+c.shopId+'" hidden style="display:none!important"></span>';
+    if(c.platform==='mmd')triggerHTML+='<img src="shopgen-invalid:" alt="" hidden style="display:none!important" onerror="window.'+c.bootName+'&&'+c.bootName+'();this.remove()">';
+    rule('入口',regexp(c.trigger),triggerHTML);
+    function code(name,body){rule(name,'/__SHOPGEN_'+c.shopId+'_'+scripts.length+'__\\b\\B/', '<script>'+body+'<\/script>');}
+    code('配置','(function(){var r=window.__ShopGen2||(window.__ShopGen2=Object.create(null));var c='+js(c)+';var old=r[c.shopId];if(old&&old.revision==='+js(revision)+'){old.active=true;return;}r[c.shopId]={cfg:c,revision:'+js(revision)+',root:old&&old.root,active:true,cart:Object.create(null),custom:[],points:null,unsent:"",page:"shop",cat:"rec",q:"",limit:100,open:false,status:"加入购物车只是准备购买申请，不会自动发送或扣款。"};})();');
+    var prefix='(function(){var x=window.__ShopGen2['+js(c.shopId)+'];';
+    var chunks=[],part=[];
+    products.forEach(function(p){var tentative=prefix+'if(!x.data999){x.data999=true;x.cfg.products.push.apply(x.cfg.products,'+js(part.concat([p]))+');}})();';if(tentative.length+145>LIMIT){if(!part.length)throw new Error('单件商品文字过长，不能装入完整数据块。');chunks.push(part);part=[p];}else part.push(p);});if(part.length)chunks.push(part);
+    // Revision-specific chunk flags keep repeated script execution from duplicating products.
+    chunks.forEach(function(arr,i){code('商品'+(i+1),prefix+'if(!x.data'+i+'){x.data'+i+'=true;x.cfg.products.push.apply(x.cfg.products,'+js(arr)+');}})();');});
+    code('样式',prefix+'x.css='+js(STYLE.replace(/\.sg2(?=[\s{\[.*:#>])/g,'[data-shopgen="'+c.shopId+'"]'))+';})();');
+    code('基础逻辑',prefix+'('+helpers.toString()+')(x);})();');
+    code('页面逻辑',prefix+'('+renderer.toString()+')(x);})();');
+    code('挂载逻辑',prefix+'('+mounting.toString()+')(x);})();');
+    code(c.platform==='mmd'?'旧页启动':'新页启动',prefix+'('+(c.platform==='mmd'?oldLifecycle:sandboxLifecycle).toString()+')(x);})();');
+    if(c.platform==='mmd'){
+      var markers=scripts.map(function(_,i){return '⟦SG2_'+hash(c.shopId)+'_'+revision+'_'+i+'⟧';});
+      scripts[0].replaceString+=markers[1];
+      for(var i=1;i<scripts.length;i++){
+        scripts[i].findRegex=regexp(markers[i]);
+        if(i+1<scripts.length)scripts[i].replaceString+=markers[i+1];
+      }
+      slices=scripts.map(function(r){if(r.replaceString.length>LIMIT)throw new Error('部署标记加入后规则超过安全长度，请缩短商品内容。');return r.replaceString;});
+    }
+    if(scripts.length>129)throw new Error('商城需要 '+scripts.length+' 条规则，超过平台 130 条总上限；请减少商品或长文案，并为配置恢复信息保留一条。');
+    return {scripts:scripts,trig:c.trigger,slices:slices};
+  }
+
+  function preview(input) {
+    var c=normalize(input),result=buildRules(c),rendered=result.trig,n=c.adv.previewPoints;result.scripts.forEach(function(r){var m=r.findRegex.match(/^\/([\s\S]*)\/([a-z]*)$/);rendered=rendered.replace(new RegExp(m[1],m[2]),r.replaceString);});if(/⟦SG2_[^⟧]+⟧/.test(rendered))throw new Error('部署接力标记没有全部消失。');var scriptOnly=c.platform==='mmd'?rendered:result.slices.slice(1).join('')+rendered;
+    var sim='(function(){var handlers=Object.create(null);window.ShopPreview={emit:function(name,payload){(handlers[name]||[]).forEach(function(fn){fn(payload);});}};window.sdk={on:function(name,fn){(handlers[name]||(handlers[name]=[])).push(fn);},stage:{el:function(){return document.querySelector("[data-preview-stage]");},visible:function(){var n=this.el();return !!n&&!n.hidden;},open:function(){this.el().hidden=false;},close:function(){this.el().hidden=true;}},input:{set:function(v){var n=document.querySelector("[data-shopgen-preview-input]");n.value=v;n.dispatchEvent(new Event("input",{bubbles:true}));},get:function(){return document.querySelector("[data-shopgen-preview-input]").value;},add:function(v){var n=document.querySelector("[data-shopgen-preview-input]");n.value+=v;n.dispatchEvent(new Event("input",{bubbles:true}));}}};})();';
+    var init='(function(){window.addEventListener("keydown",function(e){if(e.key==="Escape")window.parent.postMessage({type:"shop-preview-escape"},"*");},true);var sid='+js(c.shopId)+';var r=window.__ShopGen2[sid];function set(){var n=document.querySelector("[data-preview-budget]");r.points=n.value.trim()===""?null:Number(n.value);r.budgetSource="仅供预览的模拟余额";if(r.root&&r.root.isConnected)r.render();}document.querySelector("[data-preview-budget]").addEventListener("input",set);document.querySelector("[data-preview-switch]").addEventListener("click",function(){if(r.cfg.platform==="mmdsandbox")window.ShopPreview.emit("conversation:switch");else r.reset();if(r.cfg.platform==="mmdsandbox")window.sdk.stage.close();r.mount();r.render();});document.querySelector("[data-preview-remount]").addEventListener("click",function(){if(r.root)r.root.remove();if(r.cfg.platform==="mmdsandbox")window.ShopPreview.emit("message:mount",{content:"",id:"demo",role:"ai",serverId:null});else window[r.cfg.bootName]();});if(r.cfg.platform==="mmdsandbox")window.ShopPreview.emit("message:mount",{content:"",id:"demo",role:"ai",serverId:null});else r.mount();set();r.show();})();';
+    return '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>商城交互预览</title><style>html,body{margin:0;min-height:100%;max-width:100%;box-sizing:border-box;overflow-x:hidden;color-scheme:dark;font:14px/1.6 system-ui,sans-serif;background:#171c27;color:#e8edf6}html,textarea[data-shopgen-preview-input]{scrollbar-width:thin;scrollbar-color:#55657e #171c27}html::-webkit-scrollbar,textarea[data-shopgen-preview-input]::-webkit-scrollbar{width:7px;height:7px}html::-webkit-scrollbar-track,textarea[data-shopgen-preview-input]::-webkit-scrollbar-track{background:#171c27}html::-webkit-scrollbar-thumb,textarea[data-shopgen-preview-input]::-webkit-scrollbar-thumb{background:#55657e;border:2px solid #171c27;border-radius:8px}body{padding:16px}main[data-preview-host]{max-width:720px;margin:auto}header[data-preview-toolbar]{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}header[data-preview-toolbar] input{width:85px}header[data-preview-toolbar] button{padding:7px 9px;border:1px solid #546078;border-radius:6px;background:#273248;color:#eef2fa}textarea[data-shopgen-preview-input]{display:block;box-sizing:border-box;width:100%;min-height:130px;background:#202b3d;border:1px solid #56647b;color:#fff;padding:10px;border-radius:9px}p[data-preview-note]{font-size:12px;color:#b5c0d5}</style><script>'+sim+'<\/script></head><body><main data-preview-host><header data-preview-toolbar><label>模拟余额 <input data-preview-budget type="number" min="0" value="'+n+'" aria-label="模拟余额，清空代表未知"></label><button type="button" data-preview-remount>模拟重挂载</button><button type="button" data-preview-switch>模拟切会话</button></header><p data-preview-note>此处使用导出时的同一套商城代码。模拟余额仅用于检查界面；填写申请后，收起商城可看到下方文字。没有发送功能。</p><section class="item Ai"><div class="content left">这是本地预览的聊天消息。</div></section><label for="shopgen-preview-input">模拟聊天输入框</label><textarea id="shopgen-preview-input" data-shopgen-preview-input placeholder="购买申请会填到这里；原有文字会保留。"></textarea></main><div data-preview-stage hidden style="position:fixed;inset:0;z-index:3000"></div>'+scriptOnly+'<script>'+init+'<\/script></body></html>';
+  }
+  function readBudget(input, content) { var x={cfg:normalize(input)};helpers(x);return x.budgetFrom(content); }
+  global.ShopRuntime={buildRules:buildRules,preview:preview,readBudget:readBudget};
+})(window);
+</script>
+<script>(function () {
+  'use strict';
+  const C = window.ShopCore, KEY = 'mmdShopStudio.v2', BACKUP = KEY + '.previous';
+  const $ = selector => document.querySelector(selector);
+  let cfg, startupNotes = [], rawStored = '', history = [], redo = [], editKey = '', editTime = 0;
+  let saveTimer, previewTimer, toastTimer, page = 0, bulkResult = null, imported = null, exported = null, dirty = false, storageConflict = false;
+  const PAGE_SIZE = 16;
+  let previewReturnFocus = null, previewInertNodes = [], wasNativeFullscreen = false;
+  const titles = {start:'开始与文字',products:'商品管理',categories:'分类与推荐',appearance:'配色与布局',bulk:'批量与 AI',advanced:'余额与检查',guide:'详细使用说明'};
+  const mainColors = {blood:'主强调色',brass:'价格与高亮',bone:'正文字色'};
+  const otherColors = {panelBg:'面板背景',cardBg:'商品背景',tabBg:'入口背景',btnGrad:'按钮背景',ovBg:'遮罩',bone2:'次要文字',stone:'弱提示文字',line:'边框',bloodg:'强调辉光',ink:'屏幕底色',ink2:'次底色',tabBgH:'入口悬停',txtShadow:'文字阴影'};
+  const el = (tag, text, className) => { const node = document.createElement(tag); if(text !== undefined) node.textContent = text; if(className) node.className = className; return node; };
+  const button = (text, action, attrs = {}) => { const node = el('button',text); node.type='button';node.dataset.action=action;Object.entries(attrs).forEach(([k,v])=>{node.dataset[k]=v;});return node; };
+  function getPath(path) { return path.split('.').reduce((obj,key)=>obj[key],cfg); }
+  function setPath(path,value) { const parts=path.split('.'),last=parts.pop();parts.reduce((obj,key)=>obj[key],cfg)[last]=value; }
+  function notice(message) { $('#noticeText').textContent=message;$('#notice').hidden=false;$('#notice [data-action="raw-backup"]').hidden=!rawStored; }
+  function toast(message) { $('#toast').textContent=message;$('#toast').classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('on'),4500); }
+  function readDraft(raw) { const obj=JSON.parse(raw);return C.normalize(obj.cfg || obj); }
+  function load() {
+    cfg=C.defaults();
+    try {
+      const recovery=localStorage.getItem(KEY+'.recovery');
+      if(recovery)rawStored=recovery;
+      if(localStorage.getItem(KEY)) {
+        rawStored=localStorage.getItem(KEY);
+        try { const loaded=readDraft(rawStored);cfg=loaded.cfg;startupNotes=loaded.notes; }
+        catch(err) {
+          const prev=localStorage.getItem(BACKUP);
+          if(prev) try { cfg=readDraft(prev).cfg;startupNotes=['当前草稿损坏，已载入上次保存。损坏原文仍可备份。']; } catch(_) {startupNotes=['草稿和上次保存都无法读取，已载入示例。损坏原文仍可备份。'];}
+          else startupNotes=['草稿无法读取，已载入示例。可先备份旧原文，再导入配置。'];
+        }
+      } else {
+        const legacy=localStorage.getItem('shopGenV2');
+        if(legacy) {rawStored=legacy;try {const loaded=C.normalize(JSON.parse(legacy));cfg=loaded.cfg;startupNotes=['已读取 v1.1 草稿，旧草稿没有覆盖。'].concat(loaded.notes);} catch(err) {startupNotes=['旧版草稿无法读取，已载入示例。旧原文可备份。'];}}
+      }
+      if(localStorage.getItem(KEY+'.dark')==='1') document.body.classList.add('dark');
+    } catch(err) { startupNotes=['这个浏览器不允许本地保存。可以继续编辑，请下载配置备份。']; }
+  }
+  function checkpoint(key='') {
+    const now=Date.now();
+    if(!key || key!==editKey || now-editTime>1200) {history.push(C.clone(cfg));if(history.length>25)history.shift();}
+    editKey=key;editTime=now;redo=[];renderHistory();
+  }
+  function renderHistory() {$('#undoButton').disabled=!history.length;$('#redoButton').disabled=!redo.length;}
+  function save() {
+    clearTimeout(saveTimer);
+    if(storageConflict) {$('#saveStatus').textContent='另一窗口已改动 · 先备份';$('#saveStatus').classList.add('bad');return;}
+    try {
+      if(rawStored && startupNotes.length) localStorage.setItem(KEY+'.recovery',rawStored);
+      const before=localStorage.getItem(KEY);
+      if(before) try {readDraft(before);localStorage.setItem(BACKUP,before);} catch(_) {}
+      localStorage.setItem(KEY,JSON.stringify({schemaVersion:2,savedAt:new Date().toISOString(),cfg}));
+      dirty=false;
+      $('#saveStatus').textContent='已保存到此浏览器 · '+new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit'}).format(new Date());
+      $('#saveStatus').classList.remove('bad');
+    } catch(err) {$('#saveStatus').textContent='尚未保存，请下载配置';$('#saveStatus').classList.add('bad');notice('浏览器拒绝或没有空间保存草稿。编辑仍可继续，请用「备份配置」下载到设备。');}
+  }
+  function changed() {
+    dirty=true;
+    $('#saveStatus').textContent='有改动，准备保存…';clearTimeout(saveTimer);saveTimer=setTimeout(save,500);
+    clearTimeout(previewTimer);previewTimer=setTimeout(renderPreview,650);$('#navCount').textContent=cfg.products.length;renderHistory();
+  }
+  function download(name,text,mime='application/json') {
+    const url=URL.createObjectURL(new Blob([text],{type:mime+';charset=utf-8'}));const a=el('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('已发起下载：'+name+'。请检查浏览器下载记录。');
+  }
+  async function copy(text) {
+    try {if(navigator.clipboard && window.isSecureContext) {await navigator.clipboard.writeText(text);toast('已复制');return;}}
+    catch(_) {}
+    const ta=el('textarea');ta.value=text;ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+    const scope=$('#modal').open?$('#modal'):document.body;scope.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(_){}ta.remove();
+    if(ok) toast('已复制');else {showModal('请手动复制',body=>{const p=el('p','浏览器没有允许复制。长按或全选下面的文字：');body.appendChild(p);const field=el('textarea',undefined,'code-area');field.value=text;field.rows=12;body.appendChild(field);field.focus();field.select();});}
+  }
+  function showModal(title,render) {closePreview();$('#modalTitle').textContent=title;$('#modalBody').replaceChildren();render($('#modalBody'));if(!$('#modal').open) $('#modal').showModal();}
+  function errorModal(err) {showModal('这一步还不能完成',body=>{body.appendChild(el('p',err.message || String(err),'error'));body.appendChild(el('p','当前编辑内容保留。根据提示调整后再试，也可以先下载配置。'));body.appendChild(button('下载当前配置','save-config'));});}
+  function ask(title,description,yesLabel,callback) {
+    showModal(title,body=>{body.appendChild(el('p',description));const row=el('div',undefined,'button-row');const yes=el('button',yesLabel,'primary');yes.addEventListener('click',()=>{try{callback();$('#modal').close();}catch(err){errorModal(err);}});row.append(yes,button('取消','close-modal'));body.appendChild(row);});
+  }
+  function navigate(section) {
+    document.querySelectorAll('.section').forEach(node=>node.classList.toggle('active',node.id==='section-'+section));
+    document.querySelectorAll('[data-section]').forEach(node=>{node.classList.toggle('active',node.dataset.section===section);if(node.dataset.section===section)node.setAttribute('aria-current','step');else node.removeAttribute('aria-current');});
+    $('#sectionLabel').textContent=titles[section];
+    $('#installSettings').hidden=section!=='advanced';
+    if(section==='products')renderProducts();if(section==='categories')renderCategories();if(section==='appearance')renderAppearance();if(section==='advanced')diagnose();
+    if(section==='guide')renderGuide();
+    document.body.classList.remove('preview-view');renderMobileSwitch();
+  }
+  function renderFields() {
+    document.querySelectorAll('[data-path]').forEach(node=>{const v=getPath(node.dataset.path);if(node.type==='radio')node.checked=node.value===v;else if(document.activeElement!==node)node.value=v;});
+    $('#platformHint').textContent=cfg.platform==='mmdsandbox'?'导出新版专用六字段正则。旧角色卡无法靠导入升级，请新建卡并先确认聊天页选项。':'导出旧页专用四字段正则。新版聊天页请切换选项再导出。';
+  }
+  function categorySelect(selected, includeAll=false) {
+    const select=el('select');if(includeAll){const all=el('option','全部分类');all.value='all';select.appendChild(all);}
+    cfg.categories.filter(c=>c.code!=='rec').forEach(c=>{const o=el('option',c.name);o.value=c.code;select.appendChild(o);});select.value=selected;return select;
+  }
+  function renderProducts() {
+    const prior=$('#productFilter').value || 'all';const options=categorySelect(prior,true);$('#productFilter').replaceChildren(...options.children);$('#productFilter').value=cfg.categories.some(c=>c.code===prior)?prior:'all';
+    const query=$('#productSearch').value.trim().toLocaleLowerCase(),filter=$('#productFilter').value;
+    const visible=cfg.products.map((p,index)=>({p,index})).filter(({p})=>(filter==='all'||p.c===filter)&&(!query||(p.n+' '+p.d).toLocaleLowerCase().includes(query)));
+    const pages=Math.max(1,Math.ceil(visible.length/PAGE_SIZE));page=Math.min(page,pages-1);
+    $('#productList').replaceChildren();$('#productCount').textContent='共 '+cfg.products.length+' 件 · 显示 '+visible.length+' 件';$('#navCount').textContent=cfg.products.length;
+    if(!visible.length){const empty=el('div',undefined,'empty');empty.append(el('p',cfg.products.length?'没有找到匹配商品，试着清空搜索。':'货架还是空的，添加第一件商品。'),button('＋ 添加商品','add-product'));$('#productList').appendChild(empty);}
+    visible.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE).forEach(({p,index})=>{
+      const card=el('article',undefined,'product-card');card.dataset.pid=p.id;
+      const header=el('div',undefined,'product-heading');header.append(el('span',String(index+1).padStart(2,'0'),'product-number'),button('↑','move-product',{id:p.id,delta:-1}),button('↓','move-product',{id:p.id,delta:1}),button('复制','duplicate-product',{id:p.id}),button('删除','delete-product',{id:p.id}));
+      header.children[1].setAttribute('aria-label','上移商品 '+p.n);header.children[2].setAttribute('aria-label','下移商品 '+p.n);card.appendChild(header);
+      const fields=el('div',undefined,'product-fields');
+      [['n','商品名称','input'],['pr','价格','input'],['d','商品说明','textarea']].forEach(([key,title,tag])=>{
+        const label=el('label',title,key==='d'?'wide':'');const field=el(tag);field.value=p[key];field.dataset.productField=key;field.dataset.id=p.id;
+        if(key==='pr'){field.type='number';field.min='0';field.max='1000000000';field.step='1';}if(key==='d')field.rows=2;
+        label.appendChild(field);fields.appendChild(label);
+      });card.appendChild(fields);const bottom=el('div',undefined,'product-bottom');const catLabel=el('label',undefined,'sr-only');catLabel.textContent='商品分类';const select=categorySelect(p.c);select.dataset.productField='c';select.dataset.id=p.id;select.setAttribute('aria-label','商品 '+p.n+' 的分类');bottom.append(catLabel,select,el('span','价格为 0 时可免费领取','hint'));card.appendChild(bottom);$('#productList').appendChild(card);
+    });
+    $('#pageStatus').textContent=(page+1)+' / '+pages;$('#pagePrev').disabled=page===0;$('#pageNext').disabled=page>=pages-1;
+  }
+  function renderCategories() {
+    $('#categoryList').replaceChildren();
+    cfg.categories.forEach((c,i)=>{
+      const card=el('div',undefined,'category-card');const pinned=c.code==='rec'||c.code==='custom';
+      const header=el('header');header.append(el('span',pinned?'固定分类 · '+c.code:'分类 '+(i+1)+' · '+cfg.products.filter(p=>p.c===c.code).length+' 件商品'));
+      if(!pinned)header.appendChild(button('删除分类','delete-category',{code:c.code}));card.appendChild(header);const fields=el('div',undefined,'category-fields');
+      [['name','显示名称'],['code','分类编号'],['rs','推荐说明']].forEach(([key,title])=>{const label=el('label',title,key==='rs'?'wide':'');const input=el('input');input.value=c[key];input.dataset.categoryField=key;input.dataset.index=i;if(key==='code')input.disabled=true;label.appendChild(input);if(key==='code')label.appendChild(el('small','自动生成并保持稳定，导入旧编号会修复对应关系。'));fields.appendChild(label);});card.appendChild(fields);$('#categoryList').appendChild(card);
+    });
+    $('#recList').replaceChildren();cfg.recOrder.forEach((code,i)=>{const cat=cfg.categories.find(c=>c.code===code);if(!cat)return;const row=el('div',undefined,'rec-row');row.append(el('span',(i+1)+' · '+cat.name),button('↑','move-rec',{index:i,delta:-1}),button('↓','move-rec',{index:i,delta:1}));row.children[1].setAttribute('aria-label','优先推荐 '+cat.name);row.children[2].setAttribute('aria-label','延后推荐 '+cat.name);$('#recList').appendChild(row);});
+  }
+  function colorFields(parent,colors) {
+    parent.replaceChildren();Object.entries(colors).forEach(([key,title])=>{const row=el('div',undefined,'color-field');const label=el('label',title);const id='theme-'+key;label.htmlFor=id;row.appendChild(label);if(/^#[\da-f]{6}$/i.test(cfg.theme[key])){const picker=el('input');picker.type='color';picker.value=cfg.theme[key];picker.dataset.path='theme.'+key;picker.setAttribute('aria-label',title+'取色');row.appendChild(picker);}else row.appendChild(el('span',''));const value=el('input');value.type='text';value.id=id;value.value=cfg.theme[key];value.dataset.path='theme.'+key;row.appendChild(value);parent.appendChild(row);});
+  }
+  function renderAppearance() {
+    $('#presetGrid').replaceChildren();window.ShopLegacy.presets.forEach((p,i)=>{const b=el('button',undefined,'preset'+(JSON.stringify(p.theme)===JSON.stringify(cfg.theme)?' active':''));b.dataset.action='preset';b.dataset.index=i;b.setAttribute('aria-label','应用 '+p.name+' 配色');const strip=el('span',undefined,'colors');['ink','ink2','blood','brass','bone'].forEach(key=>{const swatch=el('i');swatch.style.background=p.theme[key];strip.appendChild(swatch);});b.append(strip,el('span',p.name,'caption'));$('#presetGrid').appendChild(b);});colorFields($('#themeMain'),mainColors);colorFields($('#themeAdvanced'),otherColors);renderFields();
+  }
+  function renderPreview() {
+    clearTimeout(previewTimer);
+    try {
+      const checks=C.validate(cfg);
+      if(checks.errors.length){$('#previewStatus').textContent='预览保留上次结果 · '+checks.errors[0];return;}
+      $('#previewFrame').srcdoc=window.ShopRuntime.preview(cfg);$('#previewStatus').textContent=(cfg.platform==='mmdsandbox'?'新页':'旧页')+' · '+cfg.products.length+' 件商品 · 本地模拟';
+    } catch(err) {$('#previewStatus').textContent='预览暂不可用：'+err.message;}
+  }
+  function openPreview() {
+    if(document.body.classList.contains('preview-expanded'))return;
+    previewReturnFocus=document.activeElement;
+    previewInertNodes=Array.from(document.querySelectorAll('.topbar,#notice,.rail,#workspace,.mobile-switch,.skip')).map(node=>({node,inert:node.inert}));
+    previewInertNodes.forEach(({node})=>node.inert=true);
+    document.body.classList.add('preview-expanded');
+    const area=$('#previewArea');area.setAttribute('role','dialog');area.setAttribute('aria-modal','true');area.setAttribute('aria-labelledby','previewTitle');
+    $('#previewExpand').setAttribute('aria-expanded','true');$('#previewExpand').hidden=true;
+    $('#previewFullscreen').hidden=false;$('#previewClose').hidden=false;$('#previewClose').focus();
+  }
+  function closePreview() {
+    if(!document.body.classList.contains('preview-expanded'))return;
+    wasNativeFullscreen=false;
+    if(document.fullscreenElement=== $('#previewArea')&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+    document.body.classList.remove('preview-expanded');
+    previewInertNodes.forEach(({node,inert})=>node.inert=inert);previewInertNodes=[];
+    const area=$('#previewArea');area.removeAttribute('role');area.removeAttribute('aria-modal');area.removeAttribute('aria-labelledby');
+    $('#previewExpand').setAttribute('aria-expanded','false');$('#previewExpand').hidden=false;
+    $('#previewFullscreen').hidden=true;$('#previewFullscreen').textContent='进入全屏';$('#previewClose').hidden=true;
+    if(previewReturnFocus?.isConnected)previewReturnFocus.focus();previewReturnFocus=null;
+  }
+  async function fullscreenPreview() {
+    openPreview();
+    if(document.fullscreenElement=== $('#previewArea')){closePreview();return;}
+    try {if(!$('#previewArea').requestFullscreen)throw new Error('Fullscreen unavailable');await $('#previewArea').requestFullscreen();}
+    catch(_) {$('#previewStatus').textContent='当前浏览器未开放系统全屏，已使用放大预览。';}
+  }
+  function renderAll() {renderFields();renderProducts();renderCategories();renderAppearance();renderHistory();renderPreview();}
+  function diagnose() {
+    const box=$('#diagnostics');box.replaceChildren();
+    try {const result=C.build(cfg);box.appendChild(el('p','✓ 配置和规则格式检查通过'));box.appendChild(el('p','共 '+result.rules+' 条规则，最长 '+result.maxLength+' / 19500 个字符。'));result.checks.warnings.forEach(w=>box.appendChild(el('p','提示：'+w,'warn')));box.appendChild(el('p','真实 MMD 页面的导入、余额读取和输入框填写仍需要试用。'));}
+    catch(err){box.appendChild(el('p',err.message,'bad'));}
+  }
+  function importModal() {
+    imported=null;showModal('导入配置，继续创作',body=>{body.appendChild(el('p','支持 v1.1 配置、v2 配置，以及带编辑资料的 v2 正则。先预览，确认后替换当前商城。'));body.appendChild(button('选择 JSON 文件','pick-config'));const label=el('label','或者粘贴 JSON','stack');const ta=el('textarea');ta.id='configText';ta.rows=8;ta.spellcheck=false;label.appendChild(ta);body.appendChild(label);const row=el('div',undefined,'button-row');row.append(button('检查这份配置','check-config'),button('取消','close-modal'));body.appendChild(row);const review=el('div');review.id='configReview';body.appendChild(review);});
+  }
+  function checkConfig() {
+    imported=null;const box=$('#configReview');box.replaceChildren();
+    try {imported=C.importConfig($('#configText').value);box.appendChild(el('p','找到 '+imported.cfg.products.length+' 件商品、'+imported.cfg.categories.length+' 个分类。商城名：'+imported.cfg.brand.title));imported.notes.forEach(n=>box.appendChild(el('p',n,'hint')));const checks=C.validate(imported.cfg);checks.errors.slice(0,15).forEach(error=>box.appendChild(el('p','导入后仍需修改：'+error,'error')));const apply=button(checks.errors.length?'导入为待完善草稿':'确认导入并替换当前商城','apply-config');apply.className='primary';box.appendChild(apply);}
+    catch(err) {box.appendChild(el('p',err.message,'error'));}
+  }
+  function checkBulk() {
+    bulkResult=null;$('#bulkReview').hidden=false;$('#bulkErrors').replaceChildren();$('#bulkSample').replaceChildren();
+    try {
+      bulkResult=C.parseProducts($('#bulkText').value,cfg);$('#bulkSummary').textContent='识别到 '+bulkResult.products.length+' 件 · '+bulkResult.errors.length+' 个错误';
+      bulkResult.errors.slice(0,20).forEach(err=>$('#bulkErrors').appendChild(el('p',err,'bad')));
+      if(bulkResult.errors.length>20)$('#bulkErrors').appendChild(el('p','另有 '+(bulkResult.errors.length-20)+' 个错误。请先修复源数据。','bad'));
+      bulkResult.unknown.forEach(([name,count])=>$('#bulkErrors').appendChild(el('p','未知分类「'+name+'」共 '+count+' 件；确认后放入「'+cfg.categories.find(c=>c.code===bulkResult.fallback).name+'」。','warn')));
+      $('#bulkUnknownWrap').hidden=!bulkResult.unknown.length;$('#bulkAllowUnknown').checked=false;
+      const table=el('table',undefined,'sample-table');const head=el('tr');['分类','名称','价格','说明'].forEach(v=>head.appendChild(el('th',v)));table.appendChild(head);
+      bulkResult.products.slice(0,5).forEach(p=>{const row=el('tr');[p.c,p.n,p.pr,p.d].forEach(v=>row.appendChild(el('td',String(v))));table.appendChild(row);});$('#bulkSample').appendChild(table);
+      if(bulkResult.products.length>5)$('#bulkSample').appendChild(el('p','这里只显示前 5 件，确认后导入全部有效商品。','hint'));
+      const blocked=!!bulkResult.errors.length||!bulkResult.products.length;$('#appendBulk').disabled=blocked;$('#replaceBulk').disabled=blocked;
+    } catch(err) {$('#bulkSummary').textContent='数据未通过检查';$('#bulkErrors').appendChild(el('p',err.message,'bad'));$('#appendBulk').disabled=true;$('#replaceBulk').disabled=true;}
+  }
+  function applyBulk(replace) {
+    if(!bulkResult || bulkResult.errors.length)throw new Error('先检查并修复商品数据。');
+    const latest=C.parseProducts($('#bulkText').value,cfg);
+    if(JSON.stringify(latest.unknown)!==JSON.stringify(bulkResult.unknown)||latest.products.some((p,i)=>p.c!==bulkResult.products[i]?.c)) {checkBulk();throw new Error('分类已改变，请重新查看检查结果，再确认导入。');}
+    bulkResult=latest;
+    if(bulkResult.unknown.length&&!$('#bulkAllowUnknown').checked)throw new Error('有未知分类。请改成已存在的分类，或勾选同意归入默认分类。');
+    let products=bulkResult.products.map(p=>({...p,id:C.newId('p')}));
+    if($('#bulkDedupe').checked){const existing=new Set((replace?[]:cfg.products).map(p=>JSON.stringify([p.c,p.n,p.pr,p.d])));products=products.filter(p=>{const key=JSON.stringify([p.c,p.n,p.pr,p.d]);if(existing.has(key))return false;existing.add(key);return true;});}
+    if((replace?0:cfg.products.length)+products.length>5000)throw new Error('总商品数超过 5000，请拆成多个商城。');
+    checkpoint();cfg.products=replace?products:cfg.products.concat(products);page=0;changed();renderProducts();navigate('products');toast('已'+(replace?'替换为':'追加')+' '+products.length+' 件商品。可以撤销。');bulkResult=null;
+  }
+  function exportModal() {
+    exported=C.build(cfg);save();showModal('把商城放进角色卡',body=>{
+      const stats=el('div',undefined,'export-stats');stats.append(el('span',exported.rules+' 条规则'),el('span','最长 '+exported.maxLength+' / 19500'),el('span',cfg.platform==='mmdsandbox'?'新版聊天页':'旧聊天页'));body.appendChild(stats);
+      body.appendChild(el('h3','1. 下载并导入正则'));body.appendChild(el('p','在 MMD 创卡/编辑卡页面，找到正则规则的导入入口，导入下面下载的 JSON。先备份原卡设置，导入后检查开场白和状态栏。'));
+      if(!cfg.install.beginning||!cfg.install.statusbar||(cfg.platform==='mmdsandbox'&&!cfg.install.personality))body.appendChild(el('p','本次部分安装字段为空。空字符串是否会覆盖原卡尚未真机核实；给已有卡安装前，请在“余额与检查 → 安装时携带原卡文字”粘贴原文再导出，或导入后逐项恢复。','error'));
+      if(cfg.platform==='mmdsandbox')body.appendChild(el('p','新版必须新建角色卡，并在第一次保存前选「使用新版」聊天页。给老卡导入这份正则不会把老卡升级。','error'));
+      const row=el('div',undefined,'button-row');const dl=button('下载正则 JSON','download-regex');dl.className='primary';row.append(dl,button('复制 JSON','copy-regex'),button('备份可编辑配置','save-config'));body.appendChild(row);
+      body.appendChild(el('h3','2. 把入口标记放进开场白'));body.appendChild(el('p','单独放一行。若正则中有多个安装片段，保持完整标记和顺序。'));body.appendChild(el('div',exported.trig,'marker'));body.appendChild(button('复制完整入口标记','copy-marker'));
+      body.appendChild(el('h3','3. 单独导入商城世界书'));body.appendChild(el('p','世界书包含结算协议、详细使用说明和商品资料，全部按关键词触发。结算协议只在消息出现「【购买申请】」时触发，不是常驻条目。使用说明由「商城使用说明」「商城帮助」「如何使用商城」触发；商品资料由申请中的【商品名】触发。请从世界书入口导入并绑定到角色卡，避免把它混进正则 JSON。'));
+      const docs=el('div',undefined,'button-row');docs.append(button('下载商城世界书（协议＋说明＋商品）','download-worldbook'),button('下载结算协议文字','download-protocol'),button('下载独立使用说明','download-usage'),button('下载详细安装说明','download-guide'));body.appendChild(docs);
+      body.appendChild(el('p','单独的协议 TXT 只供阅读或手动整理。若手动建条目，请关闭常驻，关键词填【购买申请】，并按条件条目设置；直接导入世界书 JSON 已包含这些设置。','hint'));
+      const details=el('details');details.appendChild(el('summary','查看完整 JSON / 手动复制'));const ta=el('textarea',undefined,'code-area');ta.rows=8;ta.value=JSON.stringify(exported.bundle,null,2);ta.readOnly=true;ta.setAttribute('aria-label','导出正则 JSON');details.appendChild(ta);body.appendChild(details);
+      body.appendChild(el('h3','第一次试用检查'));body.appendChild(el('p','先用一张测试卡确认：入口能打开、分类能切换、余额能读到、结算能填入输入框；刷新和切换聊天后再试一次。旧页输入框选择器若已变化，仍可手动复制结算单。'));
+      exported.checks.warnings.forEach(w=>body.appendChild(el('p',w,'hint')));
+    });
+  }
+  function guideSections() {return [
+    ['1. 打开、选页与备份',['用浏览器打开 HTML 文件；手机请选择“在浏览器打开”，聊天软件的静态预览可能不能执行按钮。单文件可以离线编辑，无需账号。','在“开始与文字”选旧聊天页或新版聊天页。已有老卡沿用旧页；新版必须新建角色卡，并在第一次保存前选择“使用新版”。导入正则不能把老卡升级。','“备份配置”下载可继续编辑的 JSON。自动保存只在当前设备、当前浏览器中有效；文件移动、换浏览器和清理数据后可能读不到。给已有卡安装前另备份原卡。']],
+    ['2. 填商品、分类与外观',['填写商城标题、货币名、单位；商品价格用非负整数，0 表示免费，空价格不会自动当作免费。','商品可以添加、复制、上移、下移、搜索和按分类筛选；删除或替换后可撤销。分类编号用于稳定对应关系，显示名称可以修改。','推荐页按设定的分类顺序，在剩余预算内挑选各类一件能买得起、价格最高的商品；多件合计仍请看购物车。','配色与布局支持八套配色、左右入口、位置、尺寸和字体。编辑器的深浅色与商城配色分别设置。']],
+    ['3. 批量导入与 AI 辅助',['可粘贴 JSON、CSV、Excel 复制的表格，或“分类|名称|价格|说明”。例如 gear|旅行剑|120|适合旅途的短剑。分类编号以当前分类页为准。','先点“检查数据”，查看错误、前五件样例和未知分类；有错行先修复，再追加或替换全部商品。未知分类需你确认归类；跳过重复商品的选项可以关闭。','生成商品和配色的 AI 提示词供复制到你自己选择的工具，此文件不会联网调用 AI。粘贴 AI 结果后同样先检查。']],
+    ['4. 用预览走一遍购买',['手机点底部“看预览”，桌面直接看右侧。模拟余额只用于演示，可以切换手机 375、窄屏 320 和宽屏。','点“放大”查看大预览，再点“进入全屏”；浏览器不支持系统全屏时仍保留放大视图。关闭或按 Esc 返回。分类栏可横向滑动；商品区可以上下滚动。','搜索商品、选择分类，加入购物车、调整数量；自定义商品也会列入购买申请，实际名称、价格和可购买性仍由 AI 检查。','“填写”只把申请放进演示输入框，“复制”得到申请文字，不会自动发送或扣款。放大、切换尺寸、退出全屏保留购物车；重载预览和修改配置会重置演示。']],
+    ['5. 导出正则与完整入口',['打开“余额与检查”运行导出前检查。若给已有卡安装，在“安装时携带原卡文字”填原开场白、状态栏及新页人设；空字段是否会覆盖原卡尚未真机核实。','点“导出正则”，下载对应平台 JSON，并从 MMD 的正则规则入口导入；按导出窗口复制完整入口标记，单独放一行到开场白。大商城会有多个片段，请勿删减或打乱。','配置 JSON 用来续编；正则 JSON 用来安装。v1.1 配置可以迁移；旧版正则没有完整编辑资料，不能可靠还原。v2 正则携带恢复资料，可重新导入生成器。']],
+    ['6. 导入触发式世界书',['下载“商城世界书（协议＋说明＋商品）”，从 MMD 的世界书入口单独导入，并绑定角色卡。世界书是提供给 AI 的规则与资料，不要放进正则 JSON。','结算协议是条件条目：constant=false、selective=true，关键词为【购买申请】。常驻表示每轮都读；本版关闭常驻，仅购买申请触发。','详细使用说明是独立条件条目，玩家可发送“商城使用说明”“商城帮助”或“如何使用商城”调用。每件商品资料以【商品名】触发，申请会带上这个格式。','协议和说明 TXT 是阅读用原文，不包含开关设置。推荐直接导入世界书 JSON；已有同类结算条目时检查并避免重复或冲突。']],
+    ['7. 玩家结算与余额更新',['在真实聊天页选好商品后填写或复制申请，先检查商品、数量、合计，再由玩家手动发送。AI 检查是否可买和余额是否充足；明确确认后更新物品与余额，拒绝时不扣款。','状态栏建议保持“货币名：非负整数”，例如“金币：1200”；在“余额与检查”用实际状态栏文字测试。当前不读取负数、小数或带千分位的金额，避免截成错误数值。','余额未知表示没有读到可靠金额，不能视为 0、免费或足够；预览金额也不会代替玩家的钱。余额或价格有疑问时让 AI 确认，不自行认定购买成功。']],
+    ['8. 常见问题与第一次验收',['按钮不动：用完整浏览器打开文件；备份旧原文后尝试恢复上次保存或导入下载配置。保存受限时仍可编辑，但要手动下载备份。','入口没出现：确认选对聊天页、正则已启用、完整入口标记已写入开场白。新版必须首次保存前选对页面；创卡预览与真实聊天页的能力可能不同。','填写失败：先复制申请，手动粘贴到输入框；不要连续发送重复申请。协议没触发时，检查世界书是否绑定、条件开关与关键词是否保留。','先用测试卡确认入口、分类、余额、购物车、填写与复制，再刷新、退出重进、切聊天重复试用，并检查原卡文字和其他美化。生成器浏览器预览与本地模拟已检查，真实 MMD 和具体手机仍待验收。']]
+  ];}
+  function renderGuide() {const box=$('#usageGuide');box.replaceChildren();guideSections().forEach(([title,steps])=>{const card=el('article',undefined,'card guide-card');card.appendChild(el('h2',title));const list=el('ol');steps.forEach(step=>list.appendChild(el('li',step)));card.appendChild(list);box.appendChild(card);});}
+  function guide() {const built=C.build(cfg);return '# '+cfg.brand.title+' · 详细安装与使用说明\n\n生成器：商城工坊 v2.0\n目标：'+(cfg.platform==='mmdsandbox'?'MMD 新版聊天页':'MMD 旧聊天页')+'\n\n'+guideSections().map(([title,steps])=>'## '+title+'\n\n'+steps.map((step,i)=>(i+1)+'. '+step).join('\n')).join('\n\n')+'\n\n## 本商城完整入口标记\n\n'+built.trig+'\n\n## 结算协议原文（条件条目，关键词：【购买申请】）\n\n'+C.protocol(cfg)+'\n\n## 玩家使用说明原文（独立条件条目）\n\n'+C.usage(cfg)+'\n';}
+  function help() {showModal('从编辑到第一次成功试用',body=>{
+    body.appendChild(button('打开独立的详细使用说明','goto-guide'));
+    body.append(el('h3','世界书怎样触发？'),el('p','结算协议由【购买申请】触发，不常驻。独立使用说明由“商城使用说明”“商城帮助”“如何使用商城”触发。商品说明由【商品名】触发；直接导入商城世界书 JSON 即带这些开关。'));
+    [['从哪里开始？','在“开始与文字”选聊天页，填标题与货币；商品页添加或复制商品，分类页整理分组，配色页挑样式。预览里侧栏按钮能打开商城。'],['配置、正则、世界书分别是什么？','配置是你的可编辑工程；正则把入口标记换成商城界面；世界书把商品设定和结算规则告诉 AI。导出窗口按安装顺序提供三者。'],['以前的配置还能用吗？','v1.1 配置可以导入，缺少字段会补齐并报告。旧版正则没有完整编辑资料，无法可靠还原成配置。v2 正则包含编辑资料，可反向恢复。'],['退出后又点不动怎么办？','新版不会因为缺字段配置阻止全部按钮绑定。若浏览器拒绝保存，会提示下载配置。请用浏览器打开 HTML 文件，避免只显示静态内容的聊天软件文件预览。遇到损坏草稿，先备份旧原文，再恢复上次保存或导入备份。'],['付款会自动发送吗？','不会。点击结算仅填写购买请求或复制文字，由玩家自己发送；商城不做真实支付。余额读不到时会明确显示未知，预览的钱不是玩家余额。AI 最终确认购买和余额。'],['新聊天页为什么没生效？','新旧页运行方式不同，请选对再导出。新版须新建卡并在首次保存前选择“使用新版”。创卡预览可能不支持填写输入框，要在聊天页试。'],['可以让 AI 批量写商品吗？','可以。在“批量与 AI”填题材、复制提示词，再粘贴 AI 的 JSON。先检查错误和未知分类，再追加或替换；不会悄悄跳过错行。'],['文件怎样分享给其他作者？','把单文件 HTML 发给对方，用浏览器打开即可离线编辑。共享商城时一并提供配置、正则和安装说明；这些文件包含商品资料，分享前自行检查内容。']].forEach(([h,p])=>body.append(el('h3',h),el('p',p)));
+    body.appendChild(el('p','此版已本地核对规则与模拟交互，真实 MMD 导入及具体手机兼容以试用结果为准。','hint'));
+  });}
+  function renderMobileSwitch(){const prev=document.body.classList.contains('preview-view');document.querySelectorAll('.mobile-switch button').forEach(b=>b.classList.toggle('active',(b.dataset.action==='view-preview')===prev));}
+  const actions={
+    'theme-ui':()=>{document.body.classList.toggle('dark');try{localStorage.setItem(KEY+'.dark',document.body.classList.contains('dark')?'1':'0');}catch(_){}},
+    'goto-products':()=>navigate('products'),'goto-bulk':()=>navigate('bulk'),'goto-guide':()=>{$('#modal').close();navigate('guide');},help,
+    'view-editor':()=>{document.body.classList.remove('preview-view');renderMobileSwitch();},'view-preview':()=>{document.body.classList.add('preview-view');renderMobileSwitch();},
+    'save-config':()=>{save();download('商城配置-v2.json',JSON.stringify(cfg,null,2));},'export':exportModal,
+    'close-modal':()=>$('#modal').close(),'dismiss-notice':()=>$('#notice').hidden=true,
+    'raw-backup':()=>{let raw=rawStored;try{raw=localStorage.getItem(KEY+'.recovery')||raw;}catch(_){}if(!raw)throw new Error('当前没有需要恢复的旧草稿原文。可下载普通配置备份。');download('旧草稿原文-备份.txt',raw,'text/plain');},
+    'preview-reload':renderPreview,'preview-expand':openPreview,'preview-close':closePreview,'preview-fullscreen':fullscreenPreview,'diagnose':diagnose,
+    'undo':()=>{if(!history.length)return;redo.push(C.clone(cfg));cfg=history.pop();editKey='';renderAll();changed();toast('已撤销');},
+    'redo':()=>{if(!redo.length)return;history.push(C.clone(cfg));cfg=redo.pop();editKey='';renderAll();changed();toast('已重做');},
+    'new-empty':()=>ask('新建空商城','会清空商品并重新生成独立商城编号，保留当前文字和配色；可以撤销。','新建',()=>{checkpoint();cfg.products=[];cfg.shopId=C.newId('shop_');page=0;renderAll();changed();navigate('products');}),
+    'load-demo':()=>ask('载入示例商城','会替换当前商城，请先下载配置备份；可以撤销。','载入示例',()=>{checkpoint();const platform=cfg.platform;cfg=C.defaults();cfg.platform=platform;page=0;renderAll();changed();}),
+    'add-product':()=>{if(cfg.products.length>=5000)throw new Error('最多支持 5000 件，请拆分商城。');checkpoint();const p={id:C.newId('p'),c:$('#productFilter').value!=='all'?$('#productFilter').value:cfg.categories.find(c=>c.code!=='rec'&&c.code!=='custom').code,n:'新商品',pr:0,d:''};cfg.products.unshift(p);page=0;$('#productSearch').value='';renderProducts();changed();const first=$('[data-product-field="n"]');if(first){first.focus();first.select();}},
+    'delete-product':b=>{const i=cfg.products.findIndex(p=>p.id===b.dataset.id);if(i<0)return;checkpoint();cfg.products.splice(i,1);renderProducts();changed();toast('商品已删除，可以撤销。');},
+    'duplicate-product':b=>{if(cfg.products.length>=5000)throw new Error('最多支持 5000 件。');const i=cfg.products.findIndex(p=>p.id===b.dataset.id);if(i<0)return;checkpoint();cfg.products.splice(i+1,0,{...cfg.products[i],id:C.newId('p'),n:cfg.products[i].n+'（副本）'});renderProducts();changed();},
+    'move-product':b=>{const i=cfg.products.findIndex(p=>p.id===b.dataset.id),j=i+Number(b.dataset.delta);if(i<0||j<0||j>=cfg.products.length)return;checkpoint();[cfg.products[i],cfg.products[j]]=[cfg.products[j],cfg.products[i]];renderProducts();changed();},
+    'page-prev':()=>{page=Math.max(0,page-1);renderProducts();},'page-next':()=>{page++;renderProducts();},
+    'add-category':()=>{checkpoint();const code=C.newId('cat_');cfg.categories.splice(cfg.categories.length-1,0,{code,name:'新分类',rs:''});cfg.recOrder.push(code);renderCategories();changed();},
+    'delete-category':b=>{const code=b.dataset.code;const real=cfg.categories.filter(c=>c.code!=='rec'&&c.code!=='custom');if(real.length<=1)throw new Error('至少保留一个普通分类。');const target=real.find(c=>c.code!==code),count=cfg.products.filter(p=>p.c===code).length;ask('删除分类','这个分类的 '+count+' 件商品将移到「'+target.name+'」。商品不会删除，可以撤销。','删除并移动商品',()=>{checkpoint();cfg.products.forEach(p=>{if(p.c===code)p.c=target.code;});cfg.categories=cfg.categories.filter(c=>c.code!==code);cfg.recOrder=cfg.recOrder.filter(c=>c!==code);renderCategories();changed();});},
+    'move-rec':b=>{const i=Number(b.dataset.index),j=i+Number(b.dataset.delta);if(j<0||j>=cfg.recOrder.length)return;checkpoint();[cfg.recOrder[i],cfg.recOrder[j]]=[cfg.recOrder[j],cfg.recOrder[i]];renderCategories();changed();},
+    preset:b=>{checkpoint();cfg.theme=C.clone(window.ShopLegacy.presets[Number(b.dataset.index)].theme);renderAppearance();changed();},
+    'import-config':importModal,'pick-config':()=>$('#configFile').click(),'check-config':checkConfig,
+    'apply-config':()=>{if(!imported)return;checkpoint();cfg=imported.cfg;const notes=imported.notes;imported=null;page=0;renderAll();changed();$('#modal').close();toast('配置已导入，可以撤销。');if(notes.length)notice(notes.join('；'));},
+    'recover-backup':()=>{let previous;try{previous=localStorage.getItem(BACKUP);}catch(_){throw new Error('浏览器不允许读取保存。请导入下载的配置备份。');}if(!previous)throw new Error('还没有上次保存可恢复。');const old=readDraft(previous);ask('恢复上次保存','将恢复 '+old.cfg.products.length+' 件商品，可以撤销。','恢复',()=>{checkpoint();cfg=old.cfg;page=0;renderAll();changed();});},
+    'pick-products':()=>$('#productFile').click(),'check-bulk':checkBulk,
+    'append-bulk':()=>applyBulk(false),'replace-bulk':()=>ask('替换全部商品','将用检查通过的数据替换当前商品。此操作可以撤销。','替换',()=>applyBulk(true)),
+    'fill-bulk-example':()=>{$('#bulkText').value=JSON.stringify([{c:cfg.categories.find(c=>c.code!=='rec'&&c.code!=='custom').code,n:'旅行短剑',pr:120,d:'便于携带，适合长途旅行。'}],null,2);bulkResult=null;$('#bulkReview').hidden=true;},
+    'export-csv':()=>download('商城商品.csv',C.csv(cfg),'text/csv'),
+    'copy-product-prompt':()=>{const cats=cfg.categories.filter(c=>c.code!=='rec'&&c.code!=='custom').map(c=>c.code+'='+c.name).join('；');copy('请为「'+($('#storyTheme').value||'在这里填写题材')+'」设计一组剧情商城商品。分类编号：'+cats+'。只输出 JSON 数组，不加解释。每件包含 c(上面分类编号)、n(名称)、pr(0至1000000000整数)、d(用途说明)。不要重复商品，不要输出 HTML 或可执行代码。例：'+JSON.stringify([{c:cfg.categories.find(c=>c.code!=='rec'&&c.code!=='custom').code,n:'旅行短剑',pr:120,d:'便于携带，适合长途旅行。'}]));},
+    'copy-theme-prompt':()=>copy('请给「'+cfg.brand.title+'」剧情商城设计深色配色，只输出 JSON 对象。键可用 blood(强调色)、brass(价格高亮)、bone(正文浅色)、bone2(次正文)、stone(提示)、panelBg(背景)、cardBg(商品背景)、tabBg(侧栏背景)、btnGrad(按钮背景)。颜色使用十六进制或rgba，背景可用 CSS linear-gradient / radial-gradient；不要包含 URL、分号、标签或代码。正文字色与背景应容易区分。'),
+    'apply-theme':()=>{try{const obj=JSON.parse($('#themeImport').value.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,''));if(!obj||Array.isArray(obj)||typeof obj!=='object')throw new Error('需要一份 JSON 对象。');const merged=C.clone(cfg);const unsupported=[];let count=0;Object.entries(obj).forEach(([key,value])=>{if(key==='fontSans'||key==='fontSerif'){merged.fonts[key==='fontSans'?'sans':'serif']=value;count++;}else if(key in merged.theme){if(!C.safeCSS(value))throw new Error('「'+key+'」不是安全的颜色或背景格式。');merged.theme[key]=value;count++;}else unsupported.push(key);});if(!count)throw new Error('没有找到可用配色字段。');const normalized=C.normalize(merged);if(normalized.notes.length)throw new Error(normalized.notes.join('；'));checkpoint();cfg=normalized.cfg;renderAppearance();changed();$('#themeError').textContent=unsupported.length?'已应用；忽略未支持的字段：'+unsupported.join('、'):'';toast('配色已应用，可以撤销。');}catch(err){$('#themeError').textContent=err.message;}},
+    'currency-regex':()=>{checkpoint();const name=cfg.brand.pointsLabel.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&');cfg.adv.ptsRe='/'+name+'[^\\d]{0,8}(\\d+)/';renderFields();changed();},
+    'test-regex':()=>{const text=$('#regexSample').value;for(const key of ['ptsRe','ptsReFb'])C.parseRegex(cfg.adv[key]);const number=window.ShopRuntime.readBudget(cfg,text);$('#regexResult').textContent=number===null?'没有读到完整、明确的余额。请确认货币名和数字括号；负数、小数、千分位暂不读取，请用非负整数。':'读取到最后一个明确余额：'+number+' '+cfg.brand.currency;},
+    'download-regex':()=>download('商城正则-'+(cfg.platform==='mmdsandbox'?'新版':'旧页')+'.json',JSON.stringify(exported.bundle,null,2)),
+    'copy-regex':()=>copy(JSON.stringify(exported.bundle,null,2)),'copy-marker':()=>copy(exported.trig),
+    'download-worldbook':()=>download('商城商品世界书.json',JSON.stringify(C.worldbook(cfg),null,2)),
+    'download-protocol':()=>download('商城结算协议.txt',C.protocol(cfg),'text/plain'),'download-usage':()=>download('商城使用说明.txt',C.usage(cfg),'text/plain'),'download-guide':()=>download('商城安装说明.md',guide(),'text/markdown')
+  };
+  function bind() {
+    const updateHeader=()=>document.documentElement.style.setProperty('--topbar-height',$('.topbar').getBoundingClientRect().height+'px');
+    updateHeader();if(window.ResizeObserver)new ResizeObserver(updateHeader).observe($('.topbar'));
+    document.addEventListener('click',event=>{
+      const section=event.target.closest('[data-section]');if(section){navigate(section.dataset.section);return;}
+      const b=event.target.closest('[data-action]');if(!b||b.disabled)return;const handler=actions[b.dataset.action];if(handler)try{handler(b);}catch(err){errorModal(err);}
+    });
+    document.addEventListener('input',event=>{
+      const node=event.target;
+      if(node.dataset.path){if(node.type==='radio'&&!node.checked)return;checkpoint(node.dataset.path);
+        if(node.dataset.path==='brand.pointsLabel') {
+          const escape=name=>name.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&');const previous=escape(cfg.brand.pointsLabel);
+          if([4,8].some(n=>cfg.adv.ptsRe==='/'+previous+'[^\\d]{0,'+n+'}(\\d+)/'))cfg.adv.ptsRe='/'+escape(node.value)+'[^\\d]{0,8}(\\d+)/';
+        }
+        setPath(node.dataset.path,node.dataset.type==='number'?(node.value===''?'':Number(node.value)):node.value);renderFields();changed();}
+      if(node.dataset.productField){const p=cfg.products.find(p=>p.id===node.dataset.id);if(!p)return;checkpoint('product.'+p.id+'.'+node.dataset.productField);p[node.dataset.productField]=node.dataset.productField==='pr'?(node.value===''?'':Number(node.value)):node.value;changed();}
+      if(node.dataset.categoryField){const c=cfg.categories[Number(node.dataset.index)];if(!c)return;checkpoint('cat.'+c.code+'.'+node.dataset.categoryField);c[node.dataset.categoryField]=node.value;changed();}
+      if(node.id==='productSearch'){page=0;renderProducts();}
+      if(node.id==='bulkText'){bulkResult=null;$('#bulkReview').hidden=true;$('#bulkSummary').textContent='内容已改动，请重新检查';}
+      if(node.id==='configText'){imported=null;$('#configReview').replaceChildren();}
+    });
+    $('#productFilter').addEventListener('change',()=>{page=0;renderProducts();});
+    $('#previewSize').addEventListener('change',()=>{$('#previewStage').classList.toggle('narrow',$('#previewSize').value==='narrow');$('#previewStage').classList.toggle('desktop',$('#previewSize').value==='desktop');});
+    document.addEventListener('fullscreenchange',()=>{const active=document.fullscreenElement=== $('#previewArea');$('#previewFullscreen').textContent=active?'退出全屏':'进入全屏';if(wasNativeFullscreen&&!active)closePreview();wasNativeFullscreen=active;});
+    window.addEventListener('message',event=>{if(event.source=== $('#previewFrame').contentWindow&&event.data?.type==='shop-preview-escape')closePreview();});
+    document.addEventListener('keydown',event=>{
+      if(!document.body.classList.contains('preview-expanded'))return;
+      if(event.key==='Escape'){event.preventDefault();closePreview();return;}
+      if(event.key==='Tab'){
+        const nodes=Array.from($('#previewArea').querySelectorAll('button,input,select,iframe')).filter(node=>!node.disabled&&!node.hidden&&node.getClientRects().length);
+        const first=nodes[0],last=nodes[nodes.length-1];
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+      }
+    });
+    async function readFile(input,mode) {const file=input.files[0];input.value='';if(!file)return;try{if(file.size>8*1024*1024)throw new Error('文件超过 8 MB，请拆分或缩小后再导入。');const text=await file.text();if(mode==='config'){if(!$('#configText'))importModal();$('#configText').value=text;checkConfig();}else{$('#bulkText').value=text;checkBulk();}}catch(err){errorModal(err);}}
+    $('#configFile').addEventListener('change',()=>readFile($('#configFile'),'config'));$('#productFile').addEventListener('change',()=>readFile($('#productFile'),'products'));
+    document.addEventListener('keydown',event=>{if(!(event.ctrlKey||event.metaKey)||event.altKey)return;const editing=event.target.matches('input,textarea,[contenteditable=true]');if(event.key.toLowerCase()==='s'){event.preventDefault();actions['save-config']();}else if(!editing&&event.key.toLowerCase()==='z'){event.preventDefault();actions[event.shiftKey?'redo':'undo']();}});
+    window.addEventListener('pagehide',()=>{if(dirty)save();});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty)save();});
+    window.addEventListener('storage',event=>{if(event.key===KEY){storageConflict=true;clearTimeout(saveTimer);notice('另一窗口改了这份草稿，已暂停本页自动保存。请先下载本页配置，关闭其他窗口后重新打开并导入备份。');$('#saveStatus').textContent='另一窗口已改动 · 先备份';$('#saveStatus').classList.add('bad');}});
+  }
+  load();bind();
+  try {renderAll();$('#saveStatus').textContent='草稿已载入 · 记得下载配置备份';if(startupNotes.length)notice(startupNotes.join('；'));}
+  catch(err) {notice('显示部分内容时遇到问题：'+err.message+'。导入、备份与帮助仍可使用。');$('#saveStatus').textContent='显示待恢复';}
+  window.ShopApp={getConfig:()=>C.clone(cfg),build:()=>C.build(cfg)};
+})();
+</script>
+</body>
+</html>

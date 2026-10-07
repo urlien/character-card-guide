@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>道具面板 · HTML 生成器</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0f0e0c;--bg2:#16140f;--panel:#1a1712;--card:#211d16;--card2:#2a251c;--input:#0c0b08;
+--line:#332e24;--line2:#4a4234;--text:#efe7d6;--dim:#a99e88;--faint:#6e6555;
+--brass:#dcb662;--brass-d:#bb9647;--acc:#c8704a;--good:#8bb46e;--info:#6f9bba;--bad:#d4635a;
+--rad:10px;--rad-l:15px;--sh:0 18px 44px rgba(0,0,0,.5)}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font:13.5px/1.55 'PingFang SC','HarmonyOS Sans SC','Microsoft YaHei','Segoe UI',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;
+background:radial-gradient(120% 80% at 82% -12%,rgba(220,182,98,.09),transparent 55%),radial-gradient(90% 70% at 8% 108%,rgba(200,112,74,.08),transparent 58%)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.022;mix-blend-mode:overlay;
+background-image:repeating-radial-gradient(rgba(255,255,255,.6) 0,rgba(255,255,255,0) 1px,transparent 1px,transparent 2px)}
+.app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+.topbar{flex:none;display:flex;align-items:center;gap:10px;padding:9px 16px;background:linear-gradient(180deg,rgba(30,26,20,.96),rgba(20,18,13,.96));border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.15;margin-right:4px}
+.brand .b1{font-family:'Songti SC','Noto Serif SC','STSong',serif;font-size:18px;font-weight:600;letter-spacing:2px}
+.brand .b1 i{font-style:normal;color:var(--brass)}
+.brand .b2{font-size:9px;letter-spacing:4px;color:var(--faint);text-transform:uppercase;margin-top:2px}
+.sp{flex:1}
+.tbtn{flex:none;font-size:12.5px;letter-spacing:.5px;color:var(--dim);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer;transition:.16s;white-space:nowrap;-webkit-user-select:none;user-select:none}
+.tbtn:hover{border-color:var(--line2);color:var(--text);transform:translateY(-1px)}
+.tbtn:active{transform:none}
+.tbtn.ghost{background:transparent}
+.tbtn.help{color:var(--brass);border-color:rgba(220,182,98,.34)}
+.tbtn.pri{color:#1c1508;background:linear-gradient(180deg,#eecb72,#cca44b);border-color:var(--brass);font-weight:600}
+.tbtn.pri:hover{filter:brightness(1.07)}
+.tbtn.dng:hover{border-color:var(--bad);color:#f1a49d}
+.tbtn.mini{font-size:12px;padding:6px 10px}
+.main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);min-height:0}
+.viewtab{display:none;flex:none;border-bottom:1px solid var(--line);background:var(--panel)}
+.viewtab div{flex:1;text-align:center;padding:11px;font-size:13.5px;letter-spacing:2px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent}
+.viewtab div.on{color:var(--brass);border-bottom-color:var(--brass);background:linear-gradient(180deg,rgba(220,182,98,.09),transparent)}
+.edit{overflow-y:auto;border-right:1px solid var(--line);min-height:0;scrollbar-width:thin}
+.edit::-webkit-scrollbar{width:9px}
+.edit::-webkit-scrollbar-thumb{background:#332d23;border-radius:5px;border:2px solid var(--bg)}
+.welcome{margin:14px 14px 0;padding:14px 16px;position:relative;border:1px solid rgba(220,182,98,.2);border-radius:var(--rad);background:linear-gradient(150deg,rgba(220,182,98,.09),rgba(200,112,74,.05))}
+.welcome h3{font-family:'Songti SC','Noto Serif SC',serif;font-size:15px;letter-spacing:1px;color:#f6efdf;margin-bottom:7px}
+.welcome ol{margin:0 0 2px 18px;font-size:12.5px;line-height:1.95;color:var(--dim)}
+.welcome ol b{color:var(--brass);font-weight:600}
+.welcome .wx{position:absolute;top:9px;right:11px;cursor:pointer;color:var(--faint);font-size:15px;width:24px;height:24px;line-height:22px;text-align:center;border-radius:6px}
+.welcome .wx:hover{background:rgba(0,0,0,.3);color:var(--text)}
+.tabs{display:flex;gap:2px;position:sticky;top:0;z-index:6;background:rgba(15,14,12,.97);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:62px;text-align:center;padding:12px 4px;font-size:12.5px;letter-spacing:1px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--brass);border-bottom-color:var(--brass);background:linear-gradient(180deg,rgba(220,182,98,.09),transparent)}
+.pane{display:none;padding:16px}
+.pane.on{display:block;animation:rise .24s ease}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.sec{display:flex;align-items:baseline;gap:9px;font-family:'Songti SC','Noto Serif SC',serif;font-size:13.5px;font-weight:600;letter-spacing:2px;color:var(--text);margin-bottom:11px}
+.sec:not(:first-child){margin-top:24px}
+.sec span{flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
+.sec em{font-style:normal;font-size:9px;letter-spacing:2px;color:var(--faint);text-transform:uppercase}
+.fld{margin-bottom:13px}
+.fld>label{display:block;font-size:10.5px;letter-spacing:1px;color:var(--faint);text-transform:uppercase;margin-bottom:5px}
+.fld>label em{font-style:normal;color:var(--dim);text-transform:none;letter-spacing:0;margin-left:7px}
+input[type=text],input[type=number],textarea,select{width:100%;background:var(--input);border:1px solid var(--line);border-radius:8px;color:var(--text);font:13px/1.5 'PingFang SC','Microsoft YaHei',system-ui,sans-serif;padding:9px 11px;outline:none;transition:.15s}
+input:focus,textarea:focus,select:focus{border-color:var(--brass);box-shadow:0 0 0 3px rgba(220,182,98,.11)}
+textarea{resize:vertical;min-height:44px}
+select{cursor:pointer;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);background-position:calc(100% - 17px) 17px,calc(100% - 12px) 17px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:30px}
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.tools .grow{flex:1;min-width:130px}
+.count{font-size:11.5px;color:var(--faint)}
+.hint{font-size:12px;line-height:1.8;color:var(--faint);background:var(--card);border-left:2px solid var(--brass);border-radius:0 8px 8px 0;padding:10px 12px;margin-bottom:13px}
+.hint b{color:var(--dim)}
+.hint code{font-family:'SF Mono','Consolas',monospace;color:var(--brass);background:rgba(220,182,98,.09);padding:1px 5px;border-radius:4px}
+.plist{display:flex;flex-direction:column;gap:9px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:11px 12px;transition:.15s}
+.pcard:hover{border-color:var(--line2)}
+.pcard .pr1{display:flex;gap:8px;align-items:center}
+.pcard .pr1 .pn{flex:1;min-width:0;font-weight:500}
+.pcard .pr2{display:flex;gap:8px;align-items:center;margin-top:8px}
+.pcard .pr2 .pc{flex:1;min-width:0}
+.pcard .pd{width:100%;margin-top:8px;min-height:52px;font-size:12.5px;color:var(--dim)}
+.pact{display:flex;gap:5px;flex:none}
+.iico{width:27px;height:27px;line-height:25px;text-align:center;font-size:13px;color:var(--dim);border:1px solid var(--line);border-radius:7px;cursor:pointer;background:var(--input);transition:.14s;-webkit-user-select:none;user-select:none}
+.iico:hover{border-color:var(--line2);color:var(--text)}
+.iico.del:hover{border-color:var(--bad);color:#f1a49d;background:rgba(212,99,90,.12)}
+.addbtn{text-align:center;font-size:13px;letter-spacing:1px;color:var(--brass);border:1px dashed var(--line2);border-radius:var(--rad);padding:11px;margin-top:11px;cursor:pointer;transition:.15s}
+.addbtn:hover{border-color:var(--brass);background:rgba(220,182,98,.08)}
+.ccard{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:11px 12px;margin-bottom:9px}
+.ccard .pact{position:absolute;top:9px;right:10px}
+.cc-code{display:inline-block;font:11px/1 'SF Mono','Consolas',monospace;color:var(--brass);background:rgba(220,182,98,.1);border-radius:5px;padding:4px 7px;margin-bottom:8px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:9px}
+.pcell{border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;cursor:pointer;background:var(--card);transition:.15s}
+.pcell:hover{border-color:var(--line2);transform:translateY(-2px)}
+.pcell.on{border-color:var(--brass);box-shadow:0 0 0 1px var(--brass)}
+.pcell .swp{height:38px;display:flex}
+.pcell .swp i{flex:1}
+.pcell .pcap{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 9px;font-size:12px}
+.pcell .pcap b{font-weight:500;color:var(--text);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcell.on .pcap b{color:var(--brass)}
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:9px}
+.ocell{border:1px solid var(--line);border-radius:var(--rad);padding:10px 11px;cursor:pointer;background:var(--card);transition:.15s}
+.ocell:hover{border-color:var(--line2);transform:translateY(-2px)}
+.ocell.on{border-color:var(--brass);background:rgba(220,182,98,.07);box-shadow:0 0 0 1px var(--brass)}
+.ocell b{display:block;font-size:13px;font-weight:600;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.ocell.on b{color:var(--brass)}
+.ocell i{font-style:normal;font-size:11px;line-height:1.6;color:var(--faint);display:block}
+.lrow{display:flex;gap:10px;align-items:center;margin-bottom:11px}
+.lrow label{width:92px;flex:none;font-size:12.5px;color:var(--dim)}
+.lrow input[type=range]{flex:1;min-width:0;accent-color:var(--brass)}
+.lrow .val{width:56px;flex:none;text-align:right;font-family:'SF Mono','Consolas',monospace;font-size:11.5px;color:var(--brass)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:1}
+.seg div{flex:1;text-align:center;padding:8px 0;font-size:12.5px;color:var(--dim);cursor:pointer;transition:.12s}
+.seg div.on{background:linear-gradient(180deg,#eecb72,#cca44b);color:#1c1508;font-weight:600}
+.trigbox{background:var(--input);border:1px solid var(--line);border-radius:var(--rad);padding:12px;font:13.5px/1.9 'PingFang SC','Microsoft YaHei',sans-serif;color:var(--brass);word-break:break-all;-webkit-user-select:all;user-select:all}
+.swatch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.swatch label{flex:1;font-size:12.5px;color:var(--dim)}
+.swatch input[type=color]{width:46px;height:32px;flex:none;padding:2px;border:1px solid var(--line);border-radius:8px;background:var(--input);cursor:pointer}
+.swatch input[type=text]{flex:1.4;min-width:0;font:11.5px/1.4 'SF Mono','Consolas',monospace}
+.sw{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:12.5px;color:var(--dim);margin-bottom:11px}
+.swbox{width:38px;height:21px;flex:none;border-radius:11px;background:var(--input);border:1px solid var(--line);position:relative;transition:.16s}
+.swbox::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--faint);transition:.16s}
+.swbox.on{background:linear-gradient(180deg,#eecb72,#cca44b);border-color:var(--brass)}
+.swbox.on::after{left:19px;background:#1c1508}
+.codebox{background:var(--input);border:1px solid var(--line);border-radius:var(--rad);padding:12px;font:12px/1.75 'SF Mono','Consolas',monospace;color:var(--dim);white-space:pre-wrap;word-break:break-word;max-height:250px;overflow:auto}
+.preview{display:flex;flex-direction:column;background:linear-gradient(180deg,#0d0c09,#151109);min-height:0}
+.pvbar{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap;flex:none}
+.pvbar .t{font-family:'Songti SC','Noto Serif SC',serif;font-size:12px;letter-spacing:3px;color:var(--dim)}
+.pvwrap{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;padding:16px;min-height:0}
+.phone{width:392px;max-width:100%;height:100%;max-height:800px;background:#000;border:1px solid #2c2620;border-radius:22px;padding:7px;box-shadow:var(--sh)}
+.phone iframe{width:100%;height:100%;border:0;border-radius:16px;background:#0a0a0c;display:block}
+.stat{display:flex;gap:14px;flex-wrap:wrap;padding:9px 14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--dim);flex:none}
+.stat b{color:var(--text);font-family:'SF Mono','Consolas',monospace}
+.stat .ov b{color:var(--bad)}
+.stat .okk b{color:var(--good)}
+.chk{padding:0 14px 10px;font-size:11.5px;line-height:1.75;max-height:150px;overflow:auto;flex:none}
+.chk .e{color:#f1a49d}
+.chk .w{color:#e0c07a}
+.chk .g{color:var(--good)}
+.modal{position:fixed;inset:0;z-index:200;background:rgba(6,5,3,.76);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.modal.on{display:flex;animation:rise .2s ease}
+.mbox{width:680px;max-width:100%;max-height:88vh;background:var(--panel);border:1px solid var(--line2);border-radius:var(--rad-l);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh)}
+.mhd{display:flex;align-items:center;padding:14px 17px;border-bottom:1px solid var(--line);flex:none}
+.mhd .mt{font-family:'Songti SC','Noto Serif SC',serif;font-size:16px;letter-spacing:2px;color:#f6efdf}
+.mhd .x{cursor:pointer;color:var(--dim);font-size:18px;width:30px;height:30px;line-height:28px;text-align:center;border-radius:8px}
+.mhd .x:hover{background:var(--card);color:var(--text)}
+.mbd{padding:17px;overflow-y:auto}
+.mbd h4{font-family:'Songti SC','Noto Serif SC',serif;font-size:13.5px;letter-spacing:1px;color:var(--brass);margin:18px 0 8px}
+.mbd h4:first-child{margin-top:0}
+.mbd p,.mbd li{font-size:13px;line-height:1.85;color:var(--dim)}
+.mbd ol,.mbd ul{margin-left:20px}
+.mbd b{color:var(--text)}
+.mbd code{font-family:'SF Mono','Consolas',monospace;color:var(--brass);background:rgba(220,182,98,.08);padding:1px 5px;border-radius:4px}
+.mstat{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;font-size:12.5px;color:var(--dim)}
+.mstat b{color:var(--text);font-family:'SF Mono','Consolas',monospace}
+.mft{padding:13px 17px;border-top:1px solid var(--line);display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;flex:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:300;background:linear-gradient(180deg,#2b2519,#1b1710);border:1px solid var(--brass);color:var(--text);border-radius:10px;padding:11px 20px;font-size:13px;box-shadow:var(--sh);opacity:0;pointer-events:none;transition:.28s}
+.toast.on{opacity:1;bottom:34px}
+@media(max-width:900px){
+  .brand .b2{display:none}
+  .main{display:block;position:relative}
+  .viewtab{display:flex}
+  .edit,.preview{position:absolute;inset:0;display:none}
+  .edit{border-right:none}
+  .main.v-edit .edit{display:block}
+  .main.v-prev .preview{display:flex}
+  .pane{padding:14px}
+  .pvwrap{padding:10px}
+  .phone{width:100%;max-width:100%;height:100%;max-height:none;border-radius:16px;padding:5px}
+  .modal{padding:0;align-items:stretch}
+  .mbox{width:100%;max-width:100%;max-height:100vh;border-radius:0}
+  .topbar .tbtn:not(.pri):not(.help){display:none}
+}
+@media(max-width:480px){
+  .tab{padding:11px 3px;font-size:12px;letter-spacing:0;min-width:54px}
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="topbar">
+  <div class="brand"><div class="b1">道具面板 · <i>HTML 生成器</i></div><div class="b2">Cheat Panel HTML Studio</div></div>
+  <div class="sp"></div>
+  <div class="tbtn help" onclick="openModal('helpModal')">使用说明</div>
+  <div class="tbtn ghost" onclick="importCfg()">导入配置</div>
+  <div class="tbtn ghost" onclick="exportCfg()">备份配置</div>
+  <div class="tbtn dng ghost" onclick="resetDefault()">恢复默认</div>
+  <div class="tbtn pri" onclick="openExport()">导出正则 JSON →</div>
+</div>
+<div class="viewtab" id="viewtab"><div data-view="edit" class="on" onclick="setView('edit')">✎ 编辑</div><div data-view="prev" onclick="setView('prev')">▢ 预览</div></div>
+<div class="main v-edit" id="main">
+  <div class="edit">
+    <div class="welcome" id="welcome">
+      <div class="wx" onclick="this.parentElement.style.display='none'">✕</div>
+      <h3>四步做出你自己的道具面板</h3>
+      <ol>
+        <li><b>道具</b>：增删改卡片。提示词里用 <b>{target}</b> 代表目标姓名。</li>
+        <li><b>分类 / 外观 / 品牌</b>：改分类按钮、配色、标题与警告文案。</li>
+        <li>右侧 <b>实时预览</b> 就是真机模样；底部会报字符数与自检。</li>
+        <li>点 <b>导出正则 JSON</b>，导入角色卡「正则」，并把弹窗里的<b>触发词整串</b>加进开场白。</li>
+      </ol>
+    </div>
+    <div class="tabs">
+      <div class="tab on" data-tab="item">道具</div>
+      <div class="tab" data-tab="cat">分类</div>
+      <div class="tab" data-tab="look">外观</div>
+      <div class="tab" data-tab="lay">版式</div>
+      <div class="tab" data-tab="brand">品牌</div>
+      <div class="tab" data-tab="adv">高级</div>
+    </div>
+
+    <div class="pane on" data-pane="item">
+      <div class="tools">
+        <select id="pFilter" style="flex:none;width:128px" onchange="renderItems()"></select>
+        <input type="text" id="pSearch" class="grow" placeholder="搜索名称 / 简介 / 提示词……" oninput="renderItems()">
+        <span class="count" id="itemCount"></span>
+      </div>
+      <div class="plist" id="itemList"></div>
+      <div class="addbtn" onclick="addItem()">＋ 添加道具</div>
+    </div>
+
+    <div class="pane" data-pane="cat">
+      <div class="hint">第一项建议是「全部」（id 填 <code>all</code>）。自定义道具页的 id 请填 <code>custom</code>。删分类不会自动删道具，记得自己改道具的分类 id。</div>
+      <div id="catList"></div>
+      <div class="addbtn" onclick="addCat()">＋ 添加分类</div>
+    </div>
+
+    <div class="pane" data-pane="look">
+      <div class="sec">配色预设 <em>Palettes</em><span></span></div>
+      <div class="hint">36 套。只改<strong>导出面板</strong>配色，不影响这台编辑器自己的黄铜皮肤。点色卡立刻预览。</div>
+      <div class="tools">
+        <div class="seg" id="palFilter" style="max-width:280px"><div data-pf="all" class="on" onclick="setPalFilter('all')">全部</div><div data-pf="dark" onclick="setPalFilter('dark')">暗色</div><div data-pf="light" onclick="setPalFilter('light')">亮色</div></div>
+        <div class="tbtn mini" onclick="randomPalette()">随机一套</div>
+      </div>
+      <div class="pgrid" id="presetGrid"></div>
+      <div class="sec">基色 <em>Base Colors</em><span></span></div>
+      <div class="hint">点预设会覆盖这 6 个颜色；也可以自己微调。</div>
+      <div id="swatches"></div>
+    </div>
+
+    <div class="pane" data-pane="lay">
+      <div class="sec">视觉风格 <em>Skin</em><span></span></div>
+      <div class="hint">风格只改<strong>质感</strong>（圆角 / 描边 / 阴影 / 模糊），不改配色。换风格会重置下面的细调。</div>
+      <div class="ogrid" id="skinGrid"></div>
+      <div class="sec">列表版式 <em>Layout</em><span></span></div>
+      <div class="hint">道具多用「紧凑列表」，少而精用「单列大卡」，想好看用「便当瓷砖」。</div>
+      <div class="ogrid" id="layGrid"></div>
+      <div class="sec">面板形态 <em>Shell</em><span></span></div>
+      <div class="ogrid" id="shellGrid"></div>
+      <div class="sec">唤出标签 <em>Launcher</em><span></span></div>
+      <div class="ogrid" id="tabGrid"></div>
+      <div class="sec">背景纹理 <em>Pattern</em><span></span></div>
+      <div class="ogrid" id="patGrid"></div>
+      <div class="sec">细调 <em>Fine Tune</em><span></span></div>
+      <div class="lrow"><label>圆角</label><input type="range" id="kRad" min="0" max="26" step="1" oninput="tune('rad',this.value)"><span class="val" id="kRadV"></span></div>
+      <div class="lrow"><label>描边粗细</label><input type="range" id="kBw" min="0" max="4" step="1" oninput="tune('bw',this.value)"><span class="val" id="kBwV"></span></div>
+      <div class="lrow"><label>间距</label><input type="range" id="kGap" min="6" max="20" step="1" oninput="tune('gap',this.value)"><span class="val" id="kGapV"></span></div>
+      <div class="lrow"><label>卡片内距</label><input type="range" id="kPad" min="7" max="24" step="1" oninput="tune('pad',this.value)"><span class="val" id="kPadV"></span></div>
+      <div class="lrow"><label>基础字号</label><input type="range" id="kFs" min="11" max="17" step="0.5" oninput="tune('fs',this.value)"><span class="val" id="kFsV"></span></div>
+      <div class="lrow"><label>玻璃模糊</label><input type="range" id="kBlur" min="0" max="30" step="1" oninput="tune('blur',this.value)"><span class="val" id="kBlurV"></span></div>
+      <div class="sec">侧栏位置与尺寸 <em>Position</em><span></span></div>
+      <div class="lrow"><label>贴靠边</label><div class="seg" id="segEdge"><div data-edge="left" onclick="setEdge('left')">左缘</div><div data-edge="right" onclick="setEdge('right')">右缘</div></div></div>
+      <div class="lrow"><label>纵向位置</label><input type="range" id="loTop" min="8" max="80" step="1" oninput="tune('topPct',this.value)"><span class="val" id="loTopV"></span></div>
+      <div class="lrow"><label>面板最大宽</label><input type="range" id="loW" min="280" max="520" step="10" oninput="tune('maxW',this.value)"><span class="val" id="loWV"></span></div>
+    </div>
+
+    <div class="pane" data-pane="brand">
+      <div class="sec">品牌文案 <em>Branding</em><span></span></div>
+      <div class="hint">侧边标签、标题、警告都是纯文本。改完右侧预览立刻跟着变。</div>
+      <div class="fld"><label>侧边标签</label><input type="text" id="tabText" oninput="refresh()"></div>
+      <div class="fld"><label>面板标题</label><input type="text" id="titleText" oninput="refresh()"></div>
+      <div class="fld"><label>警告文案</label><input type="text" id="warnText" oninput="refresh()"></div>
+    </div>
+
+    <div class="pane" data-pane="adv">
+      <div class="sec">触发词 <em>Trigger</em><span></span></div>
+      <div class="hint">导出正则后，把弹窗里的<strong>触发词整串</strong>加进开场白。超长会自动切成 〖道具〗〖道具2〗……</div>
+      <div class="fld"><label>触发词 <em>放进开场白；分成几片就会自动派生 〖…2〗</em></label><input type="text" id="aTrig" oninput="state.trigger=this.value;refresh()"></div>
+      <div class="sec">注入 <em>Inject</em><span></span></div>
+      <div class="hint">点「使用」时，提示词会写入这个选择器对应的输入框。找不到就复制到剪贴板。</div>
+      <div class="fld"><label>聊天输入框选择器</label><input type="text" id="selector" oninput="refresh()"></div>
+      <div class="sw" onclick="toggleFlag('enableCustom')"><span class="swbox" id="swCustom"></span><span>启用「添加自定义道具」</span></div>
+      <div class="sw" onclick="toggleFlag('enableProb')"><span class="swbox" id="swProb"></span><span>启用「概率调整仪」</span></div>
+      <div class="sec">分片 <em>Slicing</em><span></span></div>
+      <div class="hint">平台单条正则硬限 <b>20000</b> 字。这里设的是每片目标上限。</div>
+      <div class="lrow"><label>每片上限</label><input type="range" id="aLimit" min="12000" max="19800" step="100" oninput="state.limit=+this.value;$('aLimitV').textContent=this.value;refresh()"><span class="val" id="aLimitV"></span></div>
+      <div class="sec">导出平台 <em>Platform</em><span></span></div>
+      <div class="lrow"><label>格式</label><div class="seg" id="segPlat"><div data-plat="mmd" onclick="setPlat('mmd')">当前MMD</div><div data-plat="sandbox" onclick="setPlat('sandbox')">沙盒新页</div><div data-plat="st" onclick="setPlat('st')">本地酒馆</div></div></div>
+      <div class="sec">导入旧面板 <em>Import HTML</em><span></span></div>
+      <div class="hint">把上一版生成的成品 HTML 粘进来，尽量解析道具卡片。</div>
+      <textarea id="importHtmlBox" style="height:110px;font-family:'SF Mono',Consolas,monospace" placeholder="粘贴 <style>…</style><div class=&quot;hu-cheat-wrap&quot;>…"></textarea>
+      <div style="margin-top:9px"><div class="tbtn mini" onclick="importHtml()">解析并覆盖道具</div></div>
+    </div>
+  </div>
+
+  <div class="preview">
+    <div class="pvbar">
+      <div class="t">实时预览</div>
+      <div class="sp"></div>
+      <div class="tbtn mini" onclick="refresh()">刷新</div>
+    </div>
+    <div class="pvwrap"><div class="phone"><iframe id="preview" title="预览" sandbox="allow-scripts allow-modals"></iframe></div></div>
+    <div class="stat" id="statBar"></div>
+    <div class="chk" id="chkBar"></div>
+  </div>
+</div>
+</div>
+
+<div class="modal" id="exModal">
+  <div class="mbox">
+    <div class="mhd"><div class="mt">导出正则 JSON</div><div class="sp"></div><div class="x" onclick="closeModals()">✕</div></div>
+    <div class="mbd">
+      <h4>① 正则内容 —— 导入角色卡的「正则」</h4>
+      <div class="hint">看你的平台是哪种导入方式，<b>二选一</b>：<br>· 让你<b>粘贴文本</b> → 点「复制完整 JSON」，粘进去。<br>· 让你<b>选文件</b> → 点「下载 JSON 文件」，再选这个文件。<br><b>务必一次性把整份导入</b>，几条正则的先后顺序不能乱。</div>
+      <textarea id="exJson" readonly style="height:140px;font-family:'SF Mono',Consolas,monospace;font-size:11px;color:var(--dim)"></textarea>
+      <div class="mstat" id="exStat"></div>
+      <h4>② 开场白触发词 —— 必须整串加进「开场白」</h4>
+      <div class="hint">少一个触发词，对应那一片就会在正文里裸露成字样。复制下面整串，原样贴进开场白末尾。</div>
+      <div class="trigbox" id="exTrig"></div>
+      <div style="margin-top:8px"><div class="tbtn mini" onclick="copyTrig()">复制触发词</div></div>
+      <h4>③ 备用：纯 HTML</h4>
+      <div class="hint">如果你不走正则导入，也可以把这段 HTML 直接贴进全局美化 / 消息。</div>
+      <textarea id="out" readonly style="height:90px;font-family:'SF Mono',Consolas,monospace;font-size:11px;color:var(--dim)"></textarea>
+      <div id="exChk"></div>
+    </div>
+    <div class="mft">
+      <div class="tbtn ghost" onclick="closeModals()">关闭</div>
+      <div class="tbtn" onclick="copyOut()">复制 HTML</div>
+      <div class="tbtn" onclick="downloadJson()">下载 JSON 文件</div>
+      <div class="tbtn pri" onclick="copyJson()">复制完整 JSON</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="helpModal">
+  <div class="mbox">
+    <div class="mhd"><div class="mt">使用说明</div><div class="sp"></div><div class="x" onclick="closeModals()">✕</div></div>
+    <div class="mbd">
+      <h4>这是什么</h4>
+      <p>把「莉莉丝的魔法道具」这类侧边道具面板做成可视化生成器。左边改道具 / 外观 / 版式，右边实时预览，最后导出一份<b>正则 JSON</b> 导入角色卡。玩家聊天里会看到贴边标签，点开就是道具面板。</p>
+      <h4>五步走</h4>
+      <ol>
+        <li><b>道具 / 分类</b>：名称 + 简介 + 使用提示词。提示词里用 <code>{target}</code> 代表目标姓名。</li>
+        <li><b>外观</b>：36 套配色一键换，或自己调 6 个基色。</li>
+        <li><b>版式</b>：12 视觉风格 × 5 列表版式 × 4 面板形态 × 4 唤出标签，再加细调滑杆。</li>
+        <li><b>品牌</b>：侧边标签、标题、警告文案。</li>
+        <li><b>导出</b>：下载 JSON 导入角色卡「正则」，并把弹窗里的<b>触发词整串</b>加进开场白。</li>
+      </ol>
+      <h4>配置备份</h4>
+      <p>「备份配置」是本工具的编辑状态，方便以后接着改。<b>不是</b>给角色卡用的。给角色卡的是「导出正则 JSON」。</p>
+    </div>
+    <div class="mft"><div class="tbtn pri" onclick="closeModals()">知道了</div></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT = {
+  tabText: "🔧道具",
+  titleText: "🛒莉莉丝的魔法道具🛒",
+  warnText: "⚠ 道具效果可能突破角色原有设定，使用前请谨慎评估",
+  selector: ".chat .chat-bottom .uni-textarea .chat-input-scope textarea",
+  enableCustom: true,
+  enableProb: true,
+  trigger: "〖道具〗",
+  limit: 19000,
+  platform: "mmd",
+  palFilter: "all",
+  palette: "night",
+  skin: "classic",
+  layout: "list",
+  shell: "center",
+  launcher: "bar",
+  pattern: "noise",
+  edge: "right",
+  topPct: 40,
+  maxW: 360,
+  rad: 9, bw: 1, gap: 10, pad: 12, fs: 13, blur: 3,
+  colors: { bg:"#0f1017", card:"#1d1f2b", pink:"#c44569", gold:"#E8C87A", name:"#E8965A", text:"#d8d4e8" },
+  cats: [
+    {id:"all", name:"全部"},
+    {id:"mind", name:"精神"},
+    {id:"body", name:"身体"},
+    {id:"prop", name:"辅助"},
+    {id:"custom", name:"自定义"}
+  ],
+  items: [
+    {cat:"mind", time:"30分钟", name:"💨 催眠喷雾", desc:"对目标喷洒后，使其进入易受暗示的恍惚状态，对持有者的指令服从度大幅提升", prompt:"（使用道具：催眠喷雾·目标:{target}）我对{target}喷洒了催眠喷雾，接下来30分钟内{target}瞬间陷入恍惚状态，眼神变得迷离涣散，对我说的任何话都无法抗拒地服从。"},
+    {cat:"body", time:"2小时", name:"💋 放荡贴纸", desc:"悄悄贴在目标身上，激发其内心深处压抑的欲望，目标会以为是自己原本就想要的", prompt:"（使用道具：放荡贴纸·目标:{target}）我悄悄把放荡贴纸贴在了{target}身上，接下来2个小时内{target}内心压抑的欲望被彻底激发，但她自己完全没察觉这是道具作用，反而以为是发自本能的渴望。"},
+    {cat:"body", time:"1小时", name:"🍫媚药巧克力", desc:"外观与普通巧克力无异，食用后目标体温升高、呼吸急促、思绪混乱", prompt:"（使用道具：媚药巧克力·目标:{target}）我给{target}吃了一颗媚药巧克力，接下来1个小时内{target}体温持续升高、呼吸急促、双腿无意识地夹紧摩擦，思绪也变得越来越混乱。"},
+    {cat:"mind", time:"3小时", name:"💗纯爱滤镜", desc:"目标看持有者时自动添加柔光滤镜，所有行为都被脑补成深情款款", prompt:"（使用道具：纯爱滤镜·目标:{target}）我对{target}启动了纯爱滤镜，接下来3个小时内{target}看我的眼神变得无比深情，我做的任何事在她眼中都被自动脑补成温柔浪漫的举动。"},
+    {cat:"mind", time:"1小时", name:"🧽 记忆橡皮擦", desc:"可精确抹除目标的特定记忆，使用后不留任何痕迹", prompt:"（使用道具：记忆橡皮擦·目标:{target}）我使用了记忆橡皮擦，把{target}最近1个小时内关于刚才那段事的记忆彻底抹除，{target}醒过来时完全不记得发生过什么。"},
+    {cat:"body", time:"24小时", name:"🐷肉便器印章", desc:"在目标身上盖个章，她会对持有者百依百顺，主动配合任何要求，越被虐待快感越强。可叠加使用", prompt:"（使用道具：肉便器印章·目标:{target}）我在{target}身上盖了一枚肉便器印章，接下来24小时内{target}彻底变成对我百依百顺的肉便器，身体自动进入配合状态，主动迎合我的任何要求，被对待越粗暴反而越兴奋。可叠加，盖得越多效果越猛烈。"},
+    {cat:"body", time:"2小时", name:"🎯敏感度转盘", desc:"像游戏转盘一样调整目标身体各部位的敏感度，可随机或指定具体倍率", prompt:"（使用道具：敏感度转盘·目标:{target}）我转动了敏感度转盘，接下来2个小时内{target}的【请补充具体部位】敏感度被调到了【请补充具体倍率】，轻轻一碰就会让她剧烈反应到失控。"},
+    {cat:"mind", time:"1小时", name:"📊羞耻心仪表", desc:"实时显示目标的羞耻心数值，可手动调节旋钮。清纯瞬间毫无廉耻，痴女变得超级害羞", prompt:"（使用道具：羞耻心量化仪表·目标:{target}）我读取了{target}的羞耻心数值，接下来1个小时内把旋钮调到了【请补充目标数值，0为毫无廉耻，100为极度害羞】，{target}的反应立刻随之发生剧烈变化。"},
+    {cat:"mind", time:"3小时", name:"🎭 人格分裂药水", desc:"饮用后分裂出2-5个不同性格的人格，每个人格独立意识和性癖", prompt:"（使用道具：多人格分裂药水·目标:{target}）我让{target}喝下了人格分裂药水，接下来3个小时内{target}分裂出了几个完全不同性格的人格，每一个都有独立的意识和性癖，她们开始为了争夺我的宠爱而互相竞争讨好。"},
+    {cat:"prop", time:"一整晚", name:"🌙 淫梦入侵装置", desc:"睡前给目标戴上，可进入她的春梦自由控制剧本，梦中身体反应是真实的", prompt:"（使用道具：淫梦入侵装置·目标:{target}）我趁{target}睡着给她戴上了淫梦入侵装置，进入了{target}的梦境，接下来一整晚我可以自由编写梦里的剧本，{target}在梦中的身体反应却是真实的，已经开始急促喘息，下身不受控制地变得湿润。"},
+    {cat:"body", time:"30分钟", name:"🔄 部位交换贴", desc:"贴在两人对应部位上，交换那个部位的感觉，体验对方视角的快感", prompt:"（使用道具：身体部位交换贴·目标:{target}）我把交换贴分别贴在了我和{target}的【请补充具体部位】上，接下来30分钟内我们两人的这个部位的感觉被彻底交换，{target}开始体验到我的视角的快感，我也感受到了{target}那边的感觉。"},
+    {cat:"prop", time:"半天", name:"🌀 日常化力场", desc:"启动后周围所有人都会认为当前发生的一切完全正常，无论多离谱的事情都不会有人质疑或阻止", prompt:"（使用道具：日常化力场·目标:{target}）我启动了日常化力场，接下来半天内无论我对{target}做什么，周围所有人都会认为这是再正常不过的日常行为，没有任何人会质疑、阻止或产生异样的反应，{target}自己也会觉得一切都很正常。"},
+    {cat:"prop", time:"一整天", name:"👁透视眼镜", desc:"戴上后可直接透视目标衣物看到身体全貌，只对佩戴者可见，外人看是普通眼镜", prompt:"（使用道具：透视眼镜·目标:{target}）我戴上了透视眼镜，接下来一整天内我能清晰透视{target}身上所有衣物，她的身体曲线、肌肤纹理、隐私部位全部一览无余，而{target}和周围的人完全不知道我能看到这些。"}
+  ]
+};
+
+const PAL = [
+['night','紫夜原版','暗','#0f1017','#1d1f2b','#c44569','#E8C87A','#E8965A','#d8d4e8'],
+['inkgold','墨黑赤金','暗','#0b0b0d','#1c1a22','#b22f38','#c9a35a','#e7e0d4','#e7e0d4'],
+['midblue','午夜青蓝','暗','#060b0e','#15232b','#2f9bb2','#6fc3d6','#dfe9ec','#dfe9ec'],
+['forest','森绿古木','暗','#07100a','#16241a','#3f8a52','#cdab63','#e6ecdf','#e6ecdf'],
+['amethyst','紫晶魔能','暗','#0a0713','#1e1233','#7b4fd1','#c9a6ff','#e9e2f5','#e9e2f5'],
+['ember','烈焰熔金','暗','#120a06','#2a170b','#e0621f','#ffb02e','#f3e6d6','#f3e6d6'],
+['rosedusk','玫瑰黛紫','暗','#130a11','#2a1628','#c2436f','#e0a3c0','#f2e4ee','#f2e4ee'],
+['steelneon','钢蓝霓虹','暗','#05080f','#131c33','#2f6df0','#4fd1ff','#dde6f7','#dde6f7'],
+['paperlight','极简灰白','亮','#f6f5f2','#ffffff','#3a6ea5','#a8761f','#23211d','#23211d'],
+['nord','北欧极夜','暗','#2e3440','#434c5e','#88c0d0','#ebcb8b','#eceff4','#eceff4'],
+['dracula','德古拉','暗','#282a36','#44475a','#bd93f9','#f1fa8c','#f8f8f2','#f8f8f2'],
+['gruvbox','复古沟壑','暗','#282828','#3c3836','#fe8019','#fabd2f','#ebdbb2','#ebdbb2'],
+['mocha','摩卡拿铁','暗','#1e1e2e','#313244','#cba6f7','#f9e2af','#cdd6f4','#cdd6f4'],
+['latte','拿铁日光','亮','#eff1f5','#ffffff','#8839ef','#df8e1d','#4c4f69','#4c4f69'],
+['tokyo','东京夜色','暗','#1a1b26','#24283b','#7aa2f7','#e0af68','#c0caf5','#c0caf5'],
+['rosepine','玫瑰松林','暗','#191724','#26233a','#c4a7e7','#f6c177','#e0def4','#e0def4'],
+['everforest','常青森','暗','#2d353b','#343f44','#a7c080','#dbbc7f','#d3c6aa','#d3c6aa'],
+['kanagawa','神奈川浪','暗','#1f1f28','#2a2a37','#7e9cd8','#e6c384','#dcd7ba','#dcd7ba'],
+['solardark','日光暗','暗','#002b36','#073642','#268bd2','#b58900','#eee8d5','#eee8d5'],
+['solarlight','日光亮','亮','#fdf6e3','#ffffff','#268bd2','#b58900','#073642','#073642'],
+['onedark','原子暗','暗','#282c34','#323842','#61afef','#e5c07b','#abb2bf','#abb2bf'],
+['monokai','莫奈凯','暗','#272822','#3e3d32','#fd971f','#e6db74','#f8f8f2','#f8f8f2'],
+['ayu','蜃景琥珀','暗','#1f2430','#232834','#ffcc66','#ffd580','#cbccc6','#cbccc6'],
+['cyberpunk','赛博朋克','暗','#07020d','#1c0838','#ff2e97','#00f0ff','#f2e9ff','#f2e9ff'],
+['vapor','蒸汽波','暗','#130b26','#281550','#ff6ad5','#8be9fd','#ffe9fb','#ffe9fb'],
+['wasteland','末日废土','暗','#141210','#262019','#9a6b2f','#c8a951','#e2d9c8','#e2d9c8'],
+['abyss','深海','暗','#03121a','#0a2a3a','#00a5c4','#58e0e8','#d8eef7','#d8eef7'],
+['starship','星舰','暗','#070a12','#131b2e','#4c7dff','#9fb6ff','#e6ecff','#e6ecff'],
+['onsen','温泉旅馆','暗','#141010','#2a2020','#b5563f','#d9a441','#f3e8dd','#f3e8dd'],
+['bloodmoon','血月','暗','#0d0507','#240c0e','#d02b3a','#e5a24a','#f2dede','#f2dede'],
+['desert','沙漠黄昏','暗','#1a1108','#32220e','#d97b29','#f0c05a','#f5e6cd','#f5e6cd'],
+['aurora','极光','暗','#05121a','#0d2e3a','#3fd6a3','#7ce8ff','#e2f5f0','#e2f5f0'],
+['parchment','羊皮古卷','亮','#f2e7cf','#fbf5e6','#8b3a2f','#9c6b1f','#3a2c17','#3a2c17'],
+['candy','糖果软萌','亮','#fff5fa','#ffffff','#ff5fa2','#d98600','#4a2c3d','#4a2c3d'],
+['pixelgreen','像素绿屏','暗','#040a04','#0c1c0c','#2fdc2f','#c8ff5a','#b8ffb8','#b8ffb8'],
+['snow','雪原白瓷','亮','#f4f7fa','#ffffff','#2f6fd0','#b07d17','#1d2733','#1d2733'],
+['sakura','樱色春宵','亮','#fdf3f5','#ffffff','#c2547a','#b0802a','#3a2630','#3a2630']
+];
+const PALETTES = PAL.map(a=>({id:a[0],name:a[1],dark:a[2]==='暗',colors:{bg:a[3],card:a[4],pink:a[5],gold:a[6],name:a[7],text:a[8]}}));
+
+const SKINS = {
+  classic:{n:'典雅',t:'细描边＋柔和渐变，原版气质',v:{rad:9,bw:1,gap:10,pad:12,blur:3,pattern:'noise'}},
+  glass:{n:'毛玻璃',t:'半透明面板＋背景模糊',v:{rad:16,bw:1,gap:11,pad:14,blur:18,pattern:'noise'}},
+  neu:{n:'新拟态',t:'无边框、双向柔影',v:{rad:16,bw:0,gap:14,pad:16,blur:0,pattern:'none'}},
+  brutal:{n:'新粗野',t:'粗黑边＋硬实心投影',v:{rad:2,bw:3,gap:12,pad:13,blur:0,pattern:'none'}},
+  flat:{n:'极简扁平',t:'零阴影、细线、方正',v:{rad:6,bw:1,gap:9,pad:11,blur:0,pattern:'none'}},
+  term:{n:'终端',t:'等宽字＋扫描线＋方角',v:{rad:0,bw:1,gap:8,pad:10,blur:0,pattern:'scan'}},
+  paper:{n:'纸感',t:'纸纹底＋细边＋轻投影',v:{rad:4,bw:1,gap:11,pad:13,blur:0,pattern:'paper'}},
+  neon:{n:'霓虹',t:'描边发光＋字辉光',v:{rad:10,bw:1,gap:11,pad:13,blur:0,pattern:'glow'}},
+  bento:{n:'便当',t:'大圆角、厚留白、块面分明',v:{rad:18,bw:0,gap:12,pad:16,blur:0,pattern:'none'}},
+  skeuo:{n:'拟物',t:'厚立体、高光切面',v:{rad:12,bw:1,gap:11,pad:14,blur:0,pattern:'noise'}},
+  pixel:{n:'像素',t:'直角、硬边、复古屏',v:{rad:0,bw:2,gap:8,pad:10,blur:0,pattern:'grid'}},
+  soft:{n:'柔和圆润',t:'大圆角、轻阴影、舒服',v:{rad:20,bw:0,gap:12,pad:16,blur:8,pattern:'none'}}
+};
+const LAYS = {
+  list:{n:'紧凑列表',t:'一行一条，道具多时最好翻'},
+  one:{n:'单列大卡',t:'一行一张，信息最完整'},
+  grid:{n:'双列网格',t:'两列并排，一眼扫完'},
+  bento:{n:'便当瓷砖',t:'首张大、其余小'},
+  mag:{n:'杂志条目',t:'左名右文的双栏读感'}
+};
+const SHELLS = {
+  center:{n:'居中窗',t:'四周留边的悬浮窗'},
+  full:{n:'全屏',t:'铺满，沉浸感最强'},
+  sheet:{n:'底部抽屉',t:'从下方升起，贴近手机原生'},
+  side:{n:'侧边抽屉',t:'从贴靠那一侧滑出'}
+};
+const TABS = {
+  bar:{n:'竖排长条',t:'贴边的竖向书签，经典款'},
+  pill:{n:'横排药丸',t:'贴边小药丸，字横着写'},
+  dot:{n:'圆形按钮',t:'只留一个图标圆钮'},
+  mini:{n:'迷你方块',t:'极小贴边方块'}
+};
+const PATS = {
+  none:{n:'无纹理',t:'干净底面'},
+  noise:{n:'细噪点',t:'老纸／胶片颗粒'},
+  lines:{n:'横格线',t:'稿纸横线'},
+  grid:{n:'方格',t:'工程纸／像素底'},
+  diag:{n:'斜纹',t:'45 度细斜线'},
+  dots:{n:'点阵',t:'均匀圆点'},
+  scan:{n:'扫描线',t:'CRT 横扫线'},
+  paper:{n:'纸纤维',t:'细密交织纸纹'},
+  glow:{n:'角落辉光',t:'两角泛出的强调色'}
+};
+const SLICE_HARD = 20000;
+const CLOSERS = '〗】》]）)';
+
+const COLOR_LABELS = [
+  ["bg","底板"],["card","卡片"],["pink","强调"],["gold","标题金"],["name","道具名"],["text","正文"]
+];
+
+let state = JSON.parse(JSON.stringify(DEFAULT));
+const LS = "hu-cheat-gen-v2";
+
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function escAttr(s){return esc(s).replace(/'/g,"&#39;")}
+function jsStr(s){
+  return String(s??"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\r/g,"").replace(/\n/g,"\\n").replace(/</g,"\\x3c").replace(/>/g,"\\x3e");
+}
+function tplToJs(tpl){ return String(tpl??"").split("{target}").map(jsStr).join("'+n+'"); }
+function toast(msg){
+  const t=$("toast"); t.textContent=msg; t.classList.add("on");
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("on"),1800);
+}
+
+document.querySelectorAll(".tab").forEach(el=>{
+  el.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+    document.querySelectorAll(".pane").forEach(x=>x.classList.remove("on"));
+    el.classList.add("on");
+    document.querySelector('.pane[data-pane="'+el.dataset.tab+'"]').classList.add("on");
+  };
+});
+function setView(v){
+  $("main").className = "main v-"+v;
+  document.querySelectorAll("#viewtab div").forEach(d=>d.classList.toggle("on", d.dataset.view===v));
+  if(v==="prev") refresh();
+}
+
+function bindForm(){
+  $("tabText").value = state.tabText;
+  $("titleText").value = state.titleText;
+  $("warnText").value = state.warnText;
+  $("selector").value = state.selector;
+  $("aTrig").value = state.trigger || "〖道具〗";
+  $("aLimit").value = state.limit || 19000;
+  $("aLimitV").textContent = state.limit || 19000;
+  syncSwitches();
+  syncTune();
+  renderFilter();
+  renderCats();
+  renderItems();
+  renderPalettes();
+  renderSwatches();
+  renderLookGrids();
+}
+function readForm(){
+  state.tabText = $("tabText").value;
+  state.titleText = $("titleText").value;
+  state.warnText = $("warnText").value;
+  state.selector = $("selector").value;
+  state.trigger = $("aTrig").value;
+}
+function syncSwitches(){
+  $("swCustom").classList.toggle("on", !!state.enableCustom);
+  $("swProb").classList.toggle("on", !!state.enableProb);
+  document.querySelectorAll("#segEdge div").forEach(d=>d.classList.toggle("on", d.dataset.edge===state.edge));
+  document.querySelectorAll("#segPlat div").forEach(d=>d.classList.toggle("on", d.dataset.plat===state.platform));
+  document.querySelectorAll("#palFilter div").forEach(d=>d.classList.toggle("on", d.dataset.pf===(state.palFilter||"all")));
+}
+function toggleFlag(k){ state[k]=!state[k]; syncSwitches(); refresh(); }
+
+function renderFilter(){
+  const cur=$("pFilter").value;
+  $("pFilter").innerHTML = '<option value="">全部分类</option>'+state.cats.filter(c=>c.id!=="all").map(c=>'<option value="'+escAttr(c.id)+'">'+esc(c.name)+'</option>').join("");
+  if([...$("pFilter").options].some(o=>o.value===cur)) $("pFilter").value=cur;
+}
+function renderCats(){
+  $("catList").innerHTML = state.cats.map((c,i)=>`
+    <div class="ccard">
+      <div class="pact">
+        <div class="iico" onclick="moveCat(${i},-1)">↑</div>
+        <div class="iico" onclick="moveCat(${i},1)">↓</div>
+        <div class="iico del" onclick="delCat(${i})">✕</div>
+      </div>
+      <div class="cc-code">${esc(c.id||"id")}</div>
+      <div class="fld" style="margin:0 0 8px"><label>分类 id</label><input type="text" value="${escAttr(c.id)}" onchange="state.cats[${i}].id=this.value;renderFilter();renderItems();refresh()"></div>
+      <div class="fld" style="margin:0"><label>显示名</label><input type="text" value="${escAttr(c.name)}" onchange="state.cats[${i}].name=this.value;renderFilter();refresh()"></div>
+    </div>`).join("");
+}
+function addCat(){state.cats.push({id:"new", name:"新分类"}); renderCats(); renderFilter(); refresh()}
+function delCat(i){state.cats.splice(i,1); renderCats(); renderFilter(); refresh()}
+function moveCat(i,d){const j=i+d; if(j<0||j>=state.cats.length)return; const t=state.cats[i]; state.cats[i]=state.cats[j]; state.cats[j]=t; renderCats(); refresh()}
+
+function catOptions(sel){
+  return state.cats.filter(c=>c.id!=="all").map(c=>`<option value="${escAttr(c.id)}" ${c.id===sel?"selected":""}>${esc(c.name)}</option>`).join("");
+}
+function renderItems(){
+  const q=($("pSearch").value||"").toLowerCase();
+  const f=$("pFilter").value;
+  const vis=state.items.map((it,i)=>({it,i})).filter(({it})=>{
+    if(f && it.cat!==f) return false;
+    if(!q) return true;
+    return (it.name+" "+it.desc+" "+it.prompt+" "+it.time).toLowerCase().indexOf(q)>=0;
+  });
+  $("itemCount").textContent = vis.length+" / "+state.items.length+" 件";
+  $("itemList").innerHTML = vis.map(({it,i})=>`
+    <div class="pcard">
+      <div class="pr1">
+        <input class="pn" type="text" value="${escAttr(it.name)}" oninput="state.items[${i}].name=this.value;refresh()" placeholder="道具名称">
+        <div class="pact">
+          <div class="iico" onclick="moveItem(${i},-1)">↑</div>
+          <div class="iico" onclick="moveItem(${i},1)">↓</div>
+          <div class="iico" onclick="dupItem(${i})">⧉</div>
+          <div class="iico del" onclick="delItem(${i})">✕</div>
+        </div>
+      </div>
+      <div class="pr2">
+        <select class="pc" onchange="state.items[${i}].cat=this.value;refresh()">${catOptions(it.cat)}</select>
+        <input type="text" style="width:110px;flex:none" value="${escAttr(it.time||"")}" placeholder="时效" oninput="state.items[${i}].time=this.value;refresh()">
+      </div>
+      <textarea class="pd" placeholder="简介" oninput="state.items[${i}].desc=this.value;refresh()">${esc(it.desc)}</textarea>
+      <textarea class="pd" style="min-height:78px;color:var(--brass)" placeholder="使用提示词，用 {target} 代表姓名" oninput="state.items[${i}].prompt=this.value;refresh()">${esc(it.prompt)}</textarea>
+    </div>`).join("") || '<div class="hint">没有匹配的道具。</div>';
+}
+function addItem(){
+  const cat=(state.cats.find(c=>c.id!=="all"&&c.id!=="custom")||{id:"mind"}).id;
+  state.items.push({cat, time:"1小时", name:"🆕 新道具", desc:"效果说明", prompt:"（使用道具：新道具·目标:{target}）我对{target}使用了新道具。"});
+  renderItems(); refresh();
+}
+function delItem(i){state.items.splice(i,1); renderItems(); refresh()}
+function dupItem(i){state.items.splice(i+1,0, JSON.parse(JSON.stringify(state.items[i]))); renderItems(); refresh()}
+function moveItem(i,d){const j=i+d; if(j<0||j>=state.items.length)return; const t=state.items[i]; state.items[i]=state.items[j]; state.items[j]=t; renderItems(); refresh()}
+
+function palList(){
+  const f=state.palFilter||"all";
+  return PALETTES.filter(p=>f==="all"||(f==="dark"?p.dark:!p.dark));
+}
+function renderPalettes(){
+  $("presetGrid").innerHTML = palList().map(p=>{
+    const on = state.palette===p.id ? " on" : "";
+    const c=p.colors;
+    return `<div class="pcell${on}" onclick="applyPalette('${p.id}')"><div class="swp"><i style="background:${c.bg}"></i><i style="background:${c.card}"></i><i style="background:${c.pink}"></i><i style="background:${c.gold}"></i><i style="background:${c.name}"></i></div><div class="pcap"><b>${esc(p.name)}</b></div></div>`;
+  }).join("");
+}
+function applyPalette(id){
+  const p=PALETTES.find(x=>x.id===id); if(!p) return;
+  state.palette=id; state.colors=Object.assign({}, p.colors);
+  renderPalettes(); renderSwatches(); refresh();
+}
+function setPalFilter(f){ state.palFilter=f; syncSwitches(); renderPalettes(); }
+function randomPalette(){
+  const arr=palList(); const p=arr[Math.floor(Math.random()*arr.length)];
+  if(p) applyPalette(p.id);
+}
+function renderLookGrids(){
+  const cell=(dict,key,fn)=>Object.keys(dict).map(k=>{
+    const o=dict[k]; const on=state[key]===k?" on":"";
+    return `<div class="ocell${on}" onclick="${fn}('${k}')"><b>${esc(o.n)}</b><i>${esc(o.t)}</i></div>`;
+  }).join("");
+  $("skinGrid").innerHTML = cell(SKINS,"skin","applySkin");
+  $("layGrid").innerHTML = cell(LAYS,"layout","setLay");
+  $("shellGrid").innerHTML = cell(SHELLS,"shell","setShell");
+  $("tabGrid").innerHTML = cell(TABS,"launcher","setLauncher");
+  $("patGrid").innerHTML = cell(PATS,"pattern","setPat");
+}
+function applySkin(k){
+  const v=(SKINS[k]||SKINS.classic).v;
+  state.skin=k; state.rad=v.rad; state.bw=v.bw; state.gap=v.gap; state.pad=v.pad; state.blur=v.blur; state.pattern=v.pattern;
+  syncTune(); renderLookGrids(); refresh();
+}
+function setLay(k){ state.layout=k; renderLookGrids(); refresh(); }
+function setShell(k){ state.shell=k; renderLookGrids(); refresh(); }
+function setLauncher(k){ state.launcher=k; renderLookGrids(); refresh(); }
+function setPat(k){ state.pattern=k; renderLookGrids(); refresh(); }
+function setEdge(e){ state.edge=e; syncSwitches(); refresh(); }
+function setPlat(p){ state.platform=p; syncSwitches(); refresh(); }
+function syncTune(){
+  const map=[["kRad","rad","px"],["kBw","bw","px"],["kGap","gap","px"],["kPad","pad","px"],["kFs","fs","px"],["kBlur","blur","px"],["loTop","topPct","%"],["loW","maxW","px"]];
+  map.forEach(([id,k,u])=>{
+    if(!$(id)) return;
+    $(id).value = state[k];
+    $(id+"V").textContent = state[k]+u;
+  });
+}
+function tune(k,v){ state[k]=+v; syncTune(); refresh(); }
+function renderSwatches(){
+  $("swatches").innerHTML = COLOR_LABELS.map(([k,lab])=>`
+    <div class="swatch">
+      <label>${lab}</label>
+      <input type="color" value="${state.colors[k]}" oninput="state.colors.${k}=this.value;state.palette='custom';this.nextElementSibling.value=this.value;renderPalettes();refresh()">
+      <input type="text" value="${state.colors[k]}" onchange="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){state.colors.${k}=this.value;state.palette='custom';renderSwatches();renderPalettes();refresh()}">
+    </div>`).join("");
+}
+
+function injectCode(closeExpr){
+  const sel = jsStr(state.selector);
+  return "var a=document.querySelector('"+sel+"');if(a){a.value+=txt+'\\n';a.dispatchEvent(new Event('input'));"+closeExpr+"}else{try{navigator.clipboard.writeText(txt);alert('已复制');}catch(e){alert(txt);}}";
+}
+function hexToRgb(hex){
+  const m=/^#?([0-9a-f]{6})$/i.exec(hex||"");
+  if(!m) return {r:15,g:16,b:23};
+  return {r:parseInt(m[1].slice(0,2),16),g:parseInt(m[1].slice(2,4),16),b:parseInt(m[1].slice(4,6),16)};
+}
+function rgbaOf(hex,a){const c=hexToRgb(hex);return `rgba(${c.r},${c.g},${c.b},${a})`;}
+function grainCss(){
+  const k=state.pattern||"noise";
+  if(k==="none") return "";
+  if(k==="noise") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.04;background-image:repeating-radial-gradient(rgba(255,255,255,.7) 0,rgba(255,255,255,0) 1px,transparent 1px,transparent 2px)}`;
+  if(k==="lines") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:repeating-linear-gradient(180deg,${rgbaOf(state.colors.text,.2)} 0,${rgbaOf(state.colors.text,.2)} 1px,transparent 1px,transparent 7px)}`;
+  if(k==="grid") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;background-image:repeating-linear-gradient(180deg,${rgbaOf(state.colors.text,.2)} 0,${rgbaOf(state.colors.text,.2)} 1px,transparent 1px,transparent 10px),repeating-linear-gradient(90deg,${rgbaOf(state.colors.text,.2)} 0,${rgbaOf(state.colors.text,.2)} 1px,transparent 1px,transparent 10px)}`;
+  if(k==="diag") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;background-image:repeating-linear-gradient(45deg,${rgbaOf(state.colors.text,.2)} 0,${rgbaOf(state.colors.text,.2)} 1px,transparent 1px,transparent 8px)}`;
+  if(k==="dots") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.2;background-image:radial-gradient(circle,${rgbaOf(state.colors.text,.35)} 1px,transparent 1px);background-size:12px 12px}`;
+  if(k==="scan") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:repeating-linear-gradient(180deg,rgba(255,255,255,.5) 0,rgba(255,255,255,.5) 1px,transparent 1px,transparent 3px)}`;
+  if(k==="paper") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0,rgba(0,0,0,0) 1px,transparent 1px,transparent 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.16) 0,rgba(0,0,0,0) 1px,transparent 1px,transparent 4px)}`;
+  if(k==="glow") return `.hu-cheat-panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;background-image:radial-gradient(60% 40% at 12% 4%,${rgbaOf(state.colors.pink,.35)},transparent 70%),radial-gradient(50% 36% at 92% 96%,${rgbaOf(state.colors.gold,.28)},transparent 72%)}`;
+  return "";
+}
+function tabCss(){
+  const R=state.edge==="right";
+  const top=(state.topPct||40)+"%";
+  const k=state.launcher||"bar";
+  if(k==="pill") return `.hu-cheat-tab{position:fixed;${R?"right":"left"}:10px;top:${top};transform:translateY(-50%);padding:9px 15px;border-radius:999px;font-size:12.5px;letter-spacing:2px;writing-mode:horizontal-tb;width:auto;height:auto;box-shadow:0 5px 18px rgba(0,0,0,.45)}`;
+  if(k==="dot") return `.hu-cheat-tab{position:fixed;${R?"right":"left"}:12px;top:${top};transform:translateY(-50%);width:46px;height:46px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font-size:15px;letter-spacing:0;writing-mode:horizontal-tb;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.5)}`;
+  if(k==="mini") return `.hu-cheat-tab{position:fixed;${R?"right":"left"}:0;top:${top};transform:translateY(-50%);width:24px;height:48px;padding:4px 0;font-size:11px;letter-spacing:1px;${R?"border-right:none;border-radius:6px 0 0 6px":"border-left:none;border-radius:0 6px 6px 0"}}`;
+  return `.hu-cheat-tab{position:fixed;${R?"right":"left"}:0;top:${top};transform:translateY(-50%);width:22px;padding:18px 2px;writing-mode:vertical-rl;letter-spacing:4px;${R?"border-right:none;border-radius:10px 0 0 10px":"border-left:none;border-radius:0 10px 10px 0"}}`;
+}
+function shellCss(){
+  const w=state.maxW||360;
+  const k=state.shell||"center";
+  const R=state.edge==="right";
+  if(k==="full") return `.hu-cheat-panel{position:fixed;inset:0;left:0;top:0;right:0;transform:none;width:100%;max-width:100%;max-height:100%;height:100%;border-radius:0}`;
+  if(k==="sheet") return `.hu-cheat-panel{position:fixed;left:50%;top:auto;bottom:0;right:auto;transform:translateX(-50%);width:min(100vw,${w}px);max-width:${w}px;max-height:88vh;border-radius:${state.rad+8}px ${state.rad+8}px 0 0}`;
+  if(k==="side") return `.hu-cheat-panel{position:fixed;top:0;bottom:0;${R?"right:0;left:auto":"left:0;right:auto"};transform:none;width:min(92vw,${w}px);max-width:${w}px;max-height:100%;height:100%;border-radius:${R?(state.rad+"px 0 0 "+state.rad+"px"):("0 "+state.rad+"px "+state.rad+"px 0")}}`;
+  return `.hu-cheat-panel{position:fixed;left:50%;top:50%;right:auto;transform:translate(-50%,-50%);width:min(90vw,${w}px);max-width:${w}px;max-height:85vh}`;
+}
+function layCss(){
+  const k=state.layout||"list";
+  if(k==="grid") return `.hu-cheat-item{display:inline-block;vertical-align:top;width:calc(50% - 5px);margin-right:6px}.hu-cheat-item:nth-child(even){margin-right:0}.hu-cheat-item-desc{font-size:11px}`;
+  if(k==="one") return `.hu-cheat-item{padding:${(state.pad||12)+4}px}.hu-cheat-item-name{font-size:${(state.fs||13)+2}px}`;
+  if(k==="bento") return `.hu-cheat-item:first-of-type{padding:${(state.pad||12)+6}px}.hu-cheat-item:first-of-type .hu-cheat-item-name{font-size:${(state.fs||13)+3}px}`;
+  if(k==="mag") return `.hu-cheat-item-head{padding-right:70px}.hu-cheat-item-name{font-size:${(state.fs||13)+1}px}`;
+  return `.hu-cheat-item{margin-bottom:${Math.max(4,(state.gap||10)-4)}px}`;
+}
+function skinExtra(){
+  const k=state.skin||"classic";
+  if(k==="glass") return `.hu-cheat-panel{-webkit-backdrop-filter:blur(${state.blur||18}px) saturate(1.4);backdrop-filter:blur(${state.blur||18}px) saturate(1.4)}.hu-cheat-item{-webkit-backdrop-filter:blur(${Math.round((state.blur||18)/2)}px);backdrop-filter:blur(${Math.round((state.blur||18)/2)}px)}`;
+  if(k==="neu") return `.hu-cheat-item{border:none;box-shadow:6px 6px 14px rgba(0,0,0,.35),-6px -6px 14px rgba(255,255,255,.04)}.hu-cheat-use{border:none;box-shadow:4px 4px 9px rgba(0,0,0,.32)}`;
+  if(k==="brutal") return `.hu-cheat-panel,.hu-cheat-item,.hu-cat-btn,.hu-cheat-use{border-width:2px;border-color:${state.colors.text}}.hu-cheat-use{box-shadow:4px 4px 0 ${state.colors.bg}}.hu-cheat-title{font-weight:800}`;
+  if(k==="flat") return `.hu-cheat-item{background:transparent;box-shadow:none}`;
+  if(k==="term") return `.hu-cheat-wrap,.hu-cheat-panel,.hu-cheat-item-name,.hu-cat-btn,.hu-cheat-use{font-family:ui-monospace,Consolas,monospace}.hu-cheat-item-name::before{content:"$ ";color:${state.colors.pink}}`;
+  if(k==="neon") return `.hu-cheat-title{text-shadow:0 0 10px ${rgbaOf(state.colors.pink,.55)}}.hu-cheat-tab{box-shadow:0 0 16px ${rgbaOf(state.colors.pink,.45)}}.hu-cheat-item{border-color:${rgbaOf(state.colors.pink,.35)}}.hu-cheat-use{box-shadow:0 0 16px ${rgbaOf(state.colors.gold,.42)}}`;
+  if(k==="bento") return `.hu-cheat-item{border:none;background:${rgbaOf(state.colors.card,.85)}}`;
+  if(k==="pixel") return `.hu-cheat-panel,.hu-cheat-item,.hu-cat-btn,.hu-cheat-use,.hu-cheat-tab{border-radius:0!important;image-rendering:pixelated}`;
+  if(k==="soft") return `.hu-cheat-item{border:none;box-shadow:0 8px 22px rgba(0,0,0,.22)}`;
+  if(k==="skeuo") return `.hu-cheat-item{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 18px rgba(0,0,0,.35)}`;
+  if(k==="paper") return `.hu-cheat-title{letter-spacing:4px}`;
+  return "";
+}
+function buildCss(){
+  const c = state.colors;
+  const rad=state.rad??9, bw=state.bw??1, gap=state.gap??10, pad=state.pad??12, fs=state.fs??13, blur=state.blur??3;
+  let css = `.hu-cheat-wrap{position:static;z-index:99999;font-family:sans-serif;font-size:${fs}px}.hu-cheat-wrap *{box-sizing:border-box}`
+  +`.hu-cheat-tab{background:linear-gradient(135deg,${c.card},${c.bg});border:${bw}px solid ${rgbaOf(c.gold,.35)};color:${c.text};cursor:pointer;text-align:center;z-index:99999;box-shadow:-2px 2px 12px rgba(0,0,0,.6)}`
+  +`.hu-cheat-tab:hover{filter:brightness(1.08)}`
+  +`.hu-cheat-panel{display:none;background:linear-gradient(145deg,${rgbaOf(c.text,.05)},${rgbaOf(c.text,.02)}),${c.bg};border:${bw}px solid ${rgbaOf(c.gold,.22)};border-radius:${rad}px;padding:${pad}px;color:${c.text};box-shadow:-8px 0 30px rgba(0,0,0,.7);overflow-y:auto;overflow-x:hidden;-webkit-backdrop-filter:blur(${blur}px);backdrop-filter:blur(${blur}px);z-index:100000;position:relative}`
+  +`.hu-cheat-panel.show{display:block}`
+  +`.hu-cheat-close{position:absolute;right:10px;top:8px;background:none;border:none;color:${rgbaOf(c.text,.7)};font-size:22px;cursor:pointer;width:30px;height:30px;padding:0;z-index:2}`
+  +`.hu-cheat-title{text-align:center;font-size:${fs+4}px;font-weight:bold;color:${c.gold};padding:6px;border-bottom:1px dashed ${rgbaOf(c.gold,.25)};margin-bottom:10px;letter-spacing:3px}`
+  +`.hu-cheat-warn{background:${rgbaOf(c.pink,.15)};border:1px solid ${rgbaOf(c.pink,.4)};color:${c.pink};padding:7px 10px;border-radius:${Math.max(4,rad-4)}px;margin-bottom:10px;font-size:${fs-1}px;line-height:1.5;text-align:center}`
+  +`.hu-cheat-cat{display:flex;gap:${Math.max(3,gap-7)}px;margin-bottom:10px;flex-wrap:wrap}`
+  +`.hu-cat-btn{flex:1;min-width:48px;background:${rgbaOf(c.text,.04)};color:${rgbaOf(c.text,.6)};border:1px solid ${rgbaOf(c.gold,.2)};padding:5px 3px;border-radius:${Math.max(3,rad-6)}px;cursor:pointer;font-size:${fs-2}px}`
+  +`.hu-cat-btn.active{background:${c.pink};color:#fff;border-color:${c.pink}}`
+  +`.hu-cheat-item{background:${c.card};border:1px solid ${rgbaOf(c.gold,.15)};border-radius:${Math.max(4,rad-2)}px;padding:${Math.max(7,pad-3)}px;margin-bottom:${gap-1}px;position:relative}`
+  +`.hu-cheat-item.custom{border-color:${rgbaOf(c.gold,.3)};background:${rgbaOf(c.card,.7)}}`
+  +`.hu-time-tag{position:absolute;right:6px;top:6px;background:${rgbaOf(c.pink,.4)};color:${c.text};font-size:${Math.max(9,fs-3)}px;padding:2px 8px;border-radius:10px;white-space:nowrap;letter-spacing:1px}`
+  +`.hu-del-btn{position:absolute;right:6px;top:6px;background:${rgbaOf(c.pink,.7)};color:#fff;border:none;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;padding:0;z-index:2}`
+  +`.hu-cheat-item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;padding-right:80px}`
+  +`.hu-cheat-item-name{font-weight:bold;color:${c.name};font-size:${fs}px}`
+  +`.hu-cheat-item-desc{font-size:${fs-1}px;color:${rgbaOf(c.text,.72)};line-height:1.5;padding:5px 0;border-top:1px dotted ${rgbaOf(c.gold,.15)};border-bottom:1px dotted ${rgbaOf(c.gold,.15)};margin:5px 0;word-break:break-word}`
+  +`.hu-cheat-item-foot{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:5px}`
+  +`.hu-target-input{flex:1;background:${rgbaOf(c.text,.04)};border:1px solid ${rgbaOf(c.gold,.2)};color:${c.text};padding:4px 6px;border-radius:4px;font-size:${fs-2}px;min-width:0;font-family:sans-serif}`
+  +`.hu-target-input::placeholder{color:${rgbaOf(c.gold,.35)}}`
+  +`.hu-cheat-use{background:linear-gradient(135deg,${c.pink},${c.pink});color:#fff;border:none;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:${fs-1}px;white-space:nowrap;flex-shrink:0}`
+  +`.hu-c-name,.hu-c-desc,.hu-prob-input{background:${rgbaOf(c.text,.04)};border:1px solid ${rgbaOf(c.gold,.2)};color:${c.text};padding:6px;border-radius:4px;font-size:${fs-1}px;width:100%;font-family:sans-serif}`
+  +`.hu-c-desc{resize:vertical;min-height:50px;margin-top:5px}`
+  +`.hu-add-box,.hu-prob-box{background:${rgbaOf(c.text,.03)};border:1px dashed ${rgbaOf(c.gold,.2)};border-radius:${rad-2}px;padding:10px;margin-top:12px}`
+  +`.hu-add-btn-main{width:100%;background:linear-gradient(135deg,#5d9b6c,#3d6b4a);color:#fff;border:none;padding:8px;border-radius:6px;cursor:pointer;font-size:${fs}px;font-weight:bold}`
+  +`.hu-prob-title{color:${c.gold};font-size:${fs}px;font-weight:bold;text-align:center;margin-bottom:8px}`
+  +`.hu-prob-input{margin-bottom:8px;resize:vertical;min-height:50px}`
+  +`.hu-prob-slider-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}`
+  +`.hu-prob-slider{flex:1;accent-color:${c.pink}}`
+  +`.hu-prob-val{color:${c.gold};font-weight:bold;min-width:42px;text-align:right;font-size:${fs-1}px}`
+  +`.hu-prob-btn{width:100%;background:linear-gradient(135deg,${c.pink},${c.pink});color:#fff;border:none;padding:7px;border-radius:4px;cursor:pointer;font-size:${fs-1}px}`
+  + tabCss() + shellCss() + layCss() + grainCss() + skinExtra();
+  return css;
+}
+function catBtnHtml(cat, idx){
+  const active = idx===0 ? " active" : "";
+  let filter;
+  if(cat.id==="all"){
+    filter = "var it=p.parentElement.querySelectorAll('.hu-cheat-item');for(var j=0;j<it.length;j++)it[j].style.display='block';";
+  } else {
+    filter = "var it=p.parentElement.querySelectorAll('.hu-cheat-item');for(var j=0;j<it.length;j++)it[j].style.display=it[j].getAttribute('data-cat')==='"+jsStr(cat.id)+"'?'block':'none';";
+  }
+  const onclick = "var p=this.parentElement;for(var i=0;i<p.children.length;i++)p.children[i].classList.remove('active');this.classList.add('active');"+filter;
+  return `<button class="hu-cat-btn${active}" onclick="${onclick}">${esc(cat.name)}</button>`;
+}
+function itemHtml(it){
+  const time = it.time ? `<span class="hu-time-tag">${esc(it.time)}</span>` : "";
+  const useOn = "var n=this.previousElementSibling.value.trim()||'目标';var txt='"+tplToJs(it.prompt)+"';"+injectCode("this.closest('.hu-cheat-panel').classList.remove('show');");
+  return `<div class="hu-cheat-item" data-cat="${escAttr(it.cat)}">${time}<div class="hu-cheat-item-head"><span class="hu-cheat-item-name">${esc(it.name)}</span></div><div class="hu-cheat-item-desc">${esc(it.desc)}</div><div class="hu-cheat-item-foot"><input class="hu-target-input" placeholder="目标姓名"><button class="hu-cheat-use" onclick="${useOn}">使用</button></div></div>`;
+}
+function customBoxHtml(){
+  const addJs = "var box=this.closest('.hu-cheat-panel').querySelector('#hu_custom_list');var card=document.createElement('div');card.className='hu-cheat-item custom';card.setAttribute('data-cat','custom');var del=document.createElement('button');del.className='hu-del-btn';del.textContent='×';del.onclick=function(){if(confirm('确定删除？'))card.remove();};var head=document.createElement('div');head.className='hu-cheat-item-head';var nameIn=document.createElement('input');nameIn.className='hu-c-name';nameIn.placeholder='道具名称';head.appendChild(nameIn);var desc=document.createElement('textarea');desc.className='hu-c-desc';desc.placeholder='道具效果（用{target}作姓名占位符）';var foot=document.createElement('div');foot.className='hu-cheat-item-foot';var tIn=document.createElement('input');tIn.className='hu-target-input';tIn.placeholder='目标姓名';var useBtn=document.createElement('button');useBtn.className='hu-cheat-use';useBtn.textContent='使用';useBtn.onclick=function(){var nm=nameIn.value.trim()||'自定义道具';var ef=desc.value.trim();if(!ef){alert('请先填写道具效果');return;}var n=tIn.value.trim()||'目标';var txt='（使用道具：'+nm+'·目标:'+n+'）'+ef.replace(/\\{target\\}/g,n);"+injectCode("card.closest('.hu-cheat-panel').classList.remove('show');")+"};foot.appendChild(tIn);foot.appendChild(useBtn);card.appendChild(del);card.appendChild(head);card.appendChild(desc);card.appendChild(foot);box.appendChild(card);";
+  return `<div id="hu_custom_list"></div><div class="hu-add-box"><button class="hu-add-btn-main" onclick="${addJs}">➕ 添加自定义道具</button></div>`;
+}
+function probBoxHtml(){
+  const on = "var box=this.closest('.hu-prob-box');var ev=box.querySelector('.hu-prob-input').value.trim();var p=box.querySelector('.hu-prob-slider').value;if(!ev){alert('请先输入事件内容~');return;}var txt='【概率修改】事件：'+ev+'，该事件发生的概率已被设定为：'+p+'%。请AI以此概率基准推演后续发展。';"+injectCode("this.closest('.hu-cheat-panel').classList.remove('show');");
+  return `<div class="hu-prob-box"><div class="hu-prob-title">🎲 概率调整仪</div><textarea class="hu-prob-input" placeholder="输入需要调整概率的事件，例如：她突然主动吻上来"></textarea><div class="hu-prob-slider-row"><span style="color:#c9b896;font-size:12px;">概率:</span><input type="range" min="0" max="100" value="50" class="hu-prob-slider" oninput="this.nextElementSibling.textContent=this.value+'%'"><span class="hu-prob-val">50%</span></div><button class="hu-prob-btn" onclick="${on}">⚙ 确认修改概率</button></div>`;
+}
+function buildHtml(){
+  readForm();
+  const css = buildCss();
+  const cats = state.cats.map(catBtnHtml).join("");
+  const items = state.items.map(itemHtml).join("");
+  const extra = (state.enableCustom?customBoxHtml():"") + (state.enableProb?probBoxHtml():"");
+  return `<style>${css}</style><div class="hu-cheat-wrap" onclick="event.stopPropagation()"><div class="hu-cheat-tab" onclick="this.parentElement.querySelector('.hu-cheat-panel').classList.toggle('show')">${esc(state.tabText)}</div><div class="hu-cheat-panel"><button class="hu-cheat-close" onclick="this.parentElement.classList.remove('show')">×</button><div class="hu-cheat-title">${esc(state.titleText)}</div><div class="hu-cheat-warn">${esc(state.warnText)}</div><div class="hu-cheat-cat">${cats}</div>${items}${extra}</div></div>`;
+}
+function trigList(prefix,n){
+  const out=[prefix];
+  const last=prefix.charAt(prefix.length-1);
+  let base=prefix, tail="";
+  if(CLOSERS.indexOf(last)!==-1 && prefix.length>1){ base=prefix.slice(0,-1); tail=last; }
+  for(let k=2;k<=n;k++) out.push(base+k+tail);
+  return out;
+}
+function packSlices(html, limit){
+  limit=Math.min(limit||19000, SLICE_HARD-200);
+  const open='<div class="hu-cheat-root">', close='</div>';
+  const styleEnd=html.indexOf("</style>");
+  const blocks=[];
+  if(styleEnd>=0){ blocks.push(html.slice(0, styleEnd+8)); blocks.push(html.slice(styleEnd+8)); }
+  else blocks.push(html);
+  const room=limit-open.length-close.length;
+  const out=[]; let cur="";
+  blocks.forEach(b=>{
+    if(b.length>room){ out.push(cur); cur=b; }
+    else if(cur && cur.length+b.length>room){ out.push(cur); cur=b; }
+    else cur+=b;
+  });
+  if(cur) out.push(cur);
+  return out.map((s,i)=>(i===0?open:"")+s+(i===out.length-1?close:""));
+}
+function slashTrig(t){
+  return "/"+String(t).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"/";
+}
+function buildBundle(){
+  const html=buildHtml();
+  const slices=packSlices(html, state.limit||19000);
+  const trig=trigList(state.trigger||"〖道具〗", slices.length);
+  const name=String(state.trigger||"道具").replace(/[〖〗【】《》\[\]<>]/g,"")||"道具";
+  const plat=state.platform||"mmd";
+  const scripts=slices.map((s,i)=>{
+    const rec={id: plat==="st" ? cryptoRandomId() : -(i+1), scriptName: (name+(i+1)).slice(0,20), findRegex: slashTrig(trig[i]), replaceString: s};
+    if(plat==="st"){
+      rec.trimStrings=[]; rec.placement=[2]; rec.disabled=false; rec.markdownOnly=true; rec.promptOnly=false; rec.runOnEdit=false; rec.substituteRegex=0; rec.minDepth=null; rec.maxDepth=null;
+    } else {
+      rec.id = plat==="sandbox" ? -(i+1) : -1;
+    }
+    if(plat!=="st"){
+      return {id:rec.id, scriptName:rec.scriptName, findRegex:rec.findRegex, replaceString:rec.replaceString};
+    }
+    return rec;
+  });
+  let bundle;
+  if(plat==="st") bundle=scripts;
+  else if(plat==="sandbox") bundle={chatVersion:1,pageDepth:2,statusbar:"",beginning:"",personality:"",regex_scripts:scripts};
+  else bundle={pageDepth:2,statusbar:"",beginning:"",regex_scripts:scripts};
+  return {html, slices, trig, trigStr:trig.join(""), bundle, json: JSON.stringify(bundle)};
+}
+function cryptoRandomId(){
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{
+    const r=Math.random()*16|0, v=c==="x"?r:(r&0x3|0x8); return v.toString(16);
+  });
+}
+function selfCheck(pack){
+  const html=pack.html, lines=[];
+  lines.push('<div class="g">道具 '+state.items.length+' 件 · 分类 '+state.cats.length+' 个</div>');
+  const miss=state.items.filter(it=>!it.prompt || it.prompt.indexOf("{target}")<0);
+  if(miss.length) lines.push('<div class="w">'+miss.length+' 件提示词没有 {target}，使用时不会替换姓名</div>');
+  else lines.push('<div class="g">全部提示词都含 {target}</div>');
+  if(!state.selector.trim()) lines.push('<div class="e">注入选择器是空的</div>');
+  else lines.push('<div class="g">注入选择器已填写</div>');
+  pack.slices.forEach((s,i)=>{
+    if(s.length>SLICE_HARD) lines.push('<div class="e">第 '+(i+1)+' 片 '+s.length+' 字，超过 20000</div>');
+    else if(s.length>18000) lines.push('<div class="w">第 '+(i+1)+' 片 '+s.length+' 字，接近上限</div>');
+  });
+  if(pack.slices.every(s=>s.length<=SLICE_HARD)) lines.push('<div class="g">切片 '+pack.slices.length+' 片，最大 '+Math.max.apply(null,pack.slices.map(s=>s.length))+' 字</div>');
+  if(/\$[$&`']/.test(html)) lines.push('<div class="e">产物含 $& / $$ 这类替换记号，会被平台吃掉</div>');
+  return lines.join("");
+}
+function refresh(){
+  const pack = buildBundle();
+  $("out").value = pack.html;
+  $("exJson").value = pack.json;
+  $("exTrig").textContent = pack.trigStr;
+  const mx=Math.max.apply(null, pack.slices.map(s=>s.length));
+  const ov = mx>SLICE_HARD;
+  $("exStat").innerHTML = '<span>切片 <b>'+pack.slices.length+'</b></span><span class="'+(ov?'ov':'okk')+'">最大片 <b>'+mx+'</b></span><span>JSON <b>'+pack.json.length+'</b></span>';
+  $("statBar").innerHTML = '<span class="'+(ov?'ov':'okk')+'">最大片 <b>'+mx+'</b> / '+SLICE_HARD+'</span><span>切片 <b>'+pack.slices.length+'</b></span><span>道具 <b>'+state.items.length+'</b></span>';
+  $("chkBar").innerHTML = selfCheck(pack);
+  const html = pack.html;
+  const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;height:100%;background:radial-gradient(circle at 70% 20%,#2a2040 0%,#0c0d16 55%);font-family:sans-serif;color:#ccc}.hint{position:absolute;left:16px;bottom:16px;font-size:12px;opacity:.6}</style></head><body><div class="hint">预览舞台 · 点右侧标签可开关</div>${html}<script>var p=document.querySelector('.hu-cheat-panel');if(p)p.classList.add('show');<\/script></body></html>`;
+  $("preview").srcdoc = doc;
+  try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){}
+}
+function openModal(id){ closeModals(); $(id).classList.add("on"); }
+function closeModals(){ document.querySelectorAll(".modal").forEach(m=>m.classList.remove("on")); }
+function openExport(){
+  refresh();
+  const pack=buildBundle();
+  $("exChk").innerHTML = "<h4>自检</h4>"+selfCheck(pack);
+  openModal("exModal");
+}
+function copyText(s,msg){
+  navigator.clipboard.writeText(s).then(()=>toast(msg)).catch(()=>{
+    const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast(msg);
+  });
+}
+function copyJson(){ copyText($("exJson").value, "完整 JSON 已复制"); }
+function copyTrig(){ copyText($("exTrig").textContent, "触发词已复制"); }
+function downloadJson(){
+  const blob=new Blob([$("exJson").value],{type:"application/json;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="道具面板_正则.json"; a.click(); URL.revokeObjectURL(a.href);
+  toast("已下载 道具面板_正则.json");
+}
+function copyOut(){
+  copyText($("out").value, "已复制成品 HTML");
+}
+function downloadOut(){
+  const blob=new Blob([$("out").value],{type:"text/plain;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="道具面板.html.txt"; a.click(); URL.revokeObjectURL(a.href);
+  toast("已开始下载");
+}
+function exportCfg(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="道具面板配置.json"; a.click(); URL.revokeObjectURL(a.href);
+  toast("已下载配置备份");
+}
+function importCfg(){
+  const inp=document.createElement("input"); inp.type="file"; inp.accept=".json,application/json,text/plain";
+  inp.onchange=()=>{
+    const f=inp.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=()=>{
+      try{
+        const parsed=JSON.parse(r.result);
+        if(parsed.regex_scripts) throw new Error("这是导出的正则 JSON，不是配置备份。配置备份请用「备份配置」。");
+        if(!parsed || !parsed.items) throw new Error("不是本工具的配置");
+        state=Object.assign(JSON.parse(JSON.stringify(DEFAULT)), parsed);
+        bindForm(); refresh(); toast("配置已导入");
+      }catch(e){ toast("导入失败："+e.message); }
+    };
+    r.readAsText(f,"utf-8");
+  };
+  inp.click();
+}
+function resetDefault(){
+  if(!confirm("恢复为原版莉莉丝道具面板？未导出的修改会丢。")) return;
+  state=JSON.parse(JSON.stringify(DEFAULT));
+  bindForm(); refresh(); toast("已恢复默认");
+}
+function importHtml(){
+  const raw=$("importHtmlBox").value.trim();
+  if(!raw){ toast("先粘成品 HTML"); return; }
+  parseImported(raw); bindForm(); refresh(); toast("已解析 "+state.items.length+" 件道具");
+}
+function parseImported(raw){
+  const title=raw.match(/hu-cheat-title">([^<]*)/);
+  const warn=raw.match(/hu-cheat-warn">([^<]*)/);
+  const tab=raw.match(/hu-cheat-tab"[^>]*>([^<]*)/);
+  if(title) state.titleText=title[1];
+  if(warn) state.warnText=warn[1];
+  if(tab) state.tabText=tab[1];
+  const items=[];
+  const re=/<div class="hu-cheat-item" data-cat="([^"]*)">([\s\S]*?)<button class="hu-cheat-use"[\s\S]*?<\/button><\/div><\/div>/g;
+  let m;
+  while((m=re.exec(raw))){
+    const cat=m[1], body=m[2];
+    const time=(body.match(/hu-time-tag">([^<]*)/)||[])[1]||"";
+    const name=(body.match(/hu-cheat-item-name">([^<]*)/)||[])[1]||"";
+    const desc=(body.match(/hu-cheat-item-desc">([^<]*)/)||[])[1]||"";
+    let prompt="";
+    const tm=body.match(/var txt='([\s\S]*?)';var a=/);
+    if(tm) prompt=tm[1].replace(/'\s*\+\s*n\s*\+\s*'/g,"{target}");
+    items.push({cat,time,name,desc,prompt});
+  }
+  if(items.length) state.items=items;
+}
+document.querySelectorAll("[data-close]").forEach(el=>el.onclick=closeModals);
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{ if(e.target===m) closeModals(); }));
+
+try{
+  const saved=localStorage.getItem(LS);
+  if(saved){
+    const parsed=JSON.parse(saved);
+    if(parsed && parsed.items) state=Object.assign(JSON.parse(JSON.stringify(DEFAULT)), parsed);
+  }
+}catch(e){}
+bindForm();
+refresh();
+</script>
+</body>
+</html>

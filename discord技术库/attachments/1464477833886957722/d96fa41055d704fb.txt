@@ -1,0 +1,579 @@
+<div class="teapot-status-container" onclick="event.stopPropagation()">
+  <style>
+    .teapot-status-container {
+      background: linear-gradient(135deg, #0f0f18 0%, #151525 100%);
+      border: 1px solid #b84fb8;
+      border-radius: 10px;
+      padding: 12px;
+      font-family: 'JetBrains Mono', system-ui, "Noto Sans SC", monospace;
+      color: #e0e0e0;
+      box-sizing: border-box;
+      max-width: 100%;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 
+        0 0 8px rgba(184, 79, 184, 0.15),
+        inset 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 翻页容器 */
+    .page-container {
+      position: relative;
+      min-height: 420px;
+    }
+
+    .status-page {
+      display: none;
+      animation: slideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .status-page.active {
+      display: block !important; /* 强制覆盖，防止样式冲突 */
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(15px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* 故障动画核心 */
+    @keyframes glitch {
+      0%, 92%, 100% {
+        transform: translate(0);
+        text-shadow: 0 0 6px #e1a7e1, 0 0 12px rgba(225, 167, 225, 0.2);
+      }
+      94% {
+        transform: translate(-2px, 1px);
+        text-shadow: 2px 0 6px #5ad1d1, -2px 0 6px #e1a7e1;
+      }
+      96% {
+        transform: translate(2px, -1px);
+        text-shadow: -2px 0 6px #5ad1d1, 2px 0 6px #e1a7e1;
+      }
+      98% {
+        transform: translate(-1px, 1px);
+        text-shadow: 1px 0 6px #5ad1d1, -1px 0 6px #e1a7e1;
+      }
+    }
+
+    /* 主标题（带故障效果） */
+    .status-title {
+      text-align: center;
+      font-weight: 900;
+      font-size: 17px;
+      color: #e1a7e1;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+      animation: glitch 8s infinite;
+      text-transform: uppercase;
+    }
+
+    /* 模块容器：双列 */
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* 小模块卡片（带发光阴影） */
+    .status-card {
+      background: linear-gradient(135deg, #1a1b26 0%, #161722 100%);
+      border-radius: 8px;
+      padding: 9px 11px;
+      border: 1px solid #2d2f3a;
+      font-size: 12.5px;
+      line-height: 1.45;
+      box-shadow: 
+        0 3px 8px rgba(0, 0, 0, 0.35),
+        inset 0 1px 3px rgba(255, 255, 255, 0.05);
+      transition: all 0.25s ease;
+    }
+
+    .status-card:hover {
+      border-color: #5ad1d1;
+      box-shadow: 
+        0 4px 12px rgba(90, 209, 209, 0.15),
+        inset 0 1px 3px rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .status-card .label {
+      color: #b8a9d4;
+      font-weight: 500;
+      margin-right: 5px;
+      text-shadow: 0 0 3px rgba(184, 169, 212, 0.4);
+    }
+
+    .status-card .value {
+      color: #f0f0f0;
+      text-shadow: 0 0 4px rgba(240, 240, 240, 0.25);
+    }
+
+    /* 长条独占一行 */
+    .status-card-full {
+      grid-column: 1 / -1;
+    }
+
+    /* 快报区域（带左侧发光边框） */
+    .news-section {
+      margin-top: 8px;
+    }
+    .news-title {
+      font-size: 13px;
+      color: #8ce8e8;
+      margin-bottom: 6px;
+      font-weight: 600;
+      text-shadow: 0 0 4px rgba(140, 232, 232, 0.3);
+    }
+    .news-item {
+      background: linear-gradient(90deg, rgba(0, 184, 184, 0.05) 0%, rgba(184, 0, 184, 0.05) 100%);
+      border-left: 3px solid #5ad1d1;
+      padding: 7px 9px;
+      border-radius: 0 4px 4px 0;
+      font-size: 12px;
+      color: #d0d0d0;
+      margin-bottom: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+    .news-item:hover {
+      border-left-color: #b84fb8;
+      box-shadow: 0 2px 8px rgba(184, 79, 184, 0.15);
+    }
+
+    /* 底部轮次+翻页控制 */
+    .status-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #2d2f3a;
+    }
+
+    .round-counter {
+      font-size: 11px;
+      color: #888;
+      text-shadow: 0 0 2px rgba(136, 136, 136, 0.3);
+    }
+
+    .page-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .page-btn {
+      background: #1a1b26;
+      border: 1px solid #a74fa7;
+      color: #e1a7e1;
+      border-radius: 4px;
+      padding: 4px 9px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .page-btn:hover:not(:disabled) {
+      border-color: #5ad1d1;
+      color: #8ce8e8;
+      box-shadow: 0 2px 8px rgba(90, 209, 209, 0.2);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .page-indicator {
+      font-size: 11px;
+      color: #888;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    /* -------------------------- */
+    /* NPC专属页样式（强化故障发光） */
+    .npc-name {
+      text-align: center;
+      font-weight: 900;
+      font-size: 22px;
+      color: #e1a7e1;
+      margin-bottom: 14px;
+      letter-spacing: 3px;
+      animation: glitch 6s infinite;
+      text-shadow: 
+        0 0 8px #e1a7e1,
+        0 0 16px rgba(225, 167, 225, 0.25);
+    }
+
+    .npc-status-hidden {
+      text-align: center;
+    }
+
+    .npc-status-hidden span:first-child {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 3px;
+      filter: drop-shadow(0 0 4px currentColor);
+    }
+
+    .npc-status-hidden .value {
+      display: block;
+      text-shadow: 0 0 5px rgba(240, 240, 240, 0.3);
+    }
+
+    /* 状态符号颜色区分 */
+    .symbol-pink { color: #e1a7e1; }
+    .symbol-cyan { color: #8ce8e8; }
+  </style>
+
+  <div class="page-container">
+    <!-- 第1页：主角状态栏（ID和class严格对应） -->
+    <div class="status-page active" id="page-1">
+      <div class="status-title">角色简介</div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="label symbol-pink">▣</span>
+          <span class="label">时段：</span>
+          <span class="value" id="val-1">$1</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">◆</span>
+          <span class="label">位置：</span>
+          <span class="value" id="val-2">$2</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-pink">■</span>
+          <span class="label">体力：</span>
+          <span class="value" id="val-3">$3</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">✦</span>
+          <span class="label">心绪：</span>
+          <span class="value" id="val-4">$4</span>
+        </div>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card status-card-full">
+          <span class="label symbol-cyan">➤</span>
+          <span class="label">可前往：</span>
+          <span class="value" id="val-5">$5</span>
+        </div>
+        <div class="status-card status-card-full">
+          <span class="label symbol-pink">▶</span>
+          <span class="label">当前动作：</span>
+          <span class="value" id="val-6">$6</span>
+        </div>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="label symbol-pink">▧</span>
+          <span class="label">着装：</span>
+          <span class="value" id="val-7">$7</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">✧</span>
+          <span class="label">变装：</span>
+          <span class="value" id="val-8">$8</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-pink">⚔</span>
+          <span class="label">武器：</span>
+          <span class="value" id="val-9">$9</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">▣</span>
+          <span class="label">物品：</span>
+          <span class="value" id="val-10">$10</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-pink">✦</span>
+          <span class="label">特长：</span>
+          <span class="value" id="val-11">$11</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">➜</span>
+          <span class="label">规划：</span>
+          <span class="value" id="val-12">$12</span>
+        </div>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="label symbol-pink">💰</span>
+          <span class="label">货币：</span>
+          <span class="value" id="val-13">$13</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">💗</span>
+          <span class="label">好感度：</span>
+          <span class="value" id="val-14">$14</span>
+        </div>
+        <div class="status-card status-card-full">
+          <span class="label symbol-pink">💭</span>
+          <span class="label">内心独白：</span>
+          <span class="value" id="val-15">$15</span>
+        </div>
+      </div>
+
+      <div class="news-section">
+        <div class="news-title">📰 城市快报</div>
+        <div class="news-item" id="val-16">快报1：$16</div>
+        <div class="news-item" id="val-17">快报2：$17</div>
+        <div class="news-item" id="val-18">快报3：$18</div>
+      </div>
+    </div>
+
+    <!-- 第2页：NPC专属状态栏 -->
+    <div class="status-page" id="page-2">
+      <div class="npc-name" id="val-20">$20</div>
+
+      <div class="status-grid">
+        <div class="status-card status-card-full">
+          <span class="label symbol-pink">✦</span>
+          <span class="label">外貌：</span>
+          <span class="value" id="val-21">$21</span>
+        </div>
+        <div class="status-card status-card-full">
+          <span class="label symbol-cyan">▧</span>
+          <span class="label">衣装：</span>
+          <span class="value" id="val-22">$22</span>
+        </div>
+        <div class="status-card status-card-full">
+          <span class="label symbol-pink">▶</span>
+          <span class="label">姿势：</span>
+          <span class="value" id="val-23">$23</span>
+        </div>
+      </div>
+
+      <!-- 当前状态：4块隐藏标题 -->
+      <div class="status-grid">
+        <div class="status-card npc-status-hidden">
+          <span class="symbol-pink">✦</span>
+          <span class="value" id="val-24">$24</span>
+        </div>
+        <div class="status-card npc-status-hidden">
+          <span class="symbol-cyan">■</span>
+          <span class="value" id="val-25">$25</span>
+        </div>
+        <div class="status-card npc-status-hidden">
+          <span class="symbol-pink">♡</span>
+          <span class="value" id="val-26">$26</span>
+        </div>
+        <div class="status-card npc-status-hidden">
+          <span class="symbol-cyan">▣</span>
+          <span class="value" id="val-27">$27</span>
+        </div>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="label symbol-pink">💗</span>
+          <span class="label">好感度：</span>
+          <span class="value" id="val-28">$28</span>
+        </div>
+        <div class="status-card">
+          <span class="label symbol-cyan">✧</span>
+          <span class="label">心绪：</span>
+          <span class="value" id="val-29">$29</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第3页：预留扩展页 -->
+    <div class="status-page" id="page-3">
+      <div class="status-title">更多信息</div>
+      <div class="status-card status-card-full">
+        <span class="label symbol-pink">▶</span>
+        <span class="label">当前任务：</span>
+        <span class="value" id="val-30">$30</span>
+      </div>
+      <div class="status-card status-card-full">
+        <span class="label symbol-cyan">▣</span>
+        <span class="label">背包物品：</span>
+        <span class="value" id="val-31">$31</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部：轮次+翻页控制 -->
+  <div class="status-footer">
+    <div class="round-counter" id="val-19">▣ 当前轮次：$19</div>
+    <div class="page-controls">
+      <button class="page-btn" id="prev-btn" disabled>◀</button>
+      <span class="page-indicator" id="page-indicator">1/3</span>
+      <button class="page-btn" id="next-btn">▶</button>
+    </div>
+  </div>
+
+  <!-- 修复版JS：强初始化+防重复+ID绑定 -->
+  <script>
+    (function() {
+      // 全局状态锁，防止重复初始化
+      if (window.statusBarInitialized) return;
+      window.statusBarInitialized = true;
+
+      // ====================== 配置 ======================
+      const CONFIG = {
+        regex: /[#＃]状态栏开始[#＃]\s*(?:.*?\n)?(?:▣\s*剧情节点\/日期\/时段[ :：\s]*(.*?)\s*◆\s*位置[ :：\s]*(.*?)\s*■\s*体力[ :：\s]*(.*?)\s*✦\s*心绪[ :：\s]*(.*?)\s*➤\s*可前往(?:\/当前已解锁地点)?[ :：\s]*(.*?)\s*▶\s*当前动作[ :：\s]*(.*?)\s*▧\s*着装[ :：\s]*(.*?)\s*✧\s*变装[ :：\s]*(.*?)\s*⚔\s*武器[ :：\s]*(.*?)\s*▣\s*物品[ :：\s]*(.*?)\s*✦\s*特长[ :：\s]*(.*?)\s*➜\s*(?:未来)?规划[ :：\s]*(.*?)\s*💰\s*货币[ :：\s]*(.*?)\s*💗\s*好感度[ :：\s]*(.*?)\s*💭\s*内心独白[ :：\s]*(.*?)\s*📰\s*(?:城市)?快报1[ :：\s]*(.*?)\s*📰\s*(?:城市)?快报2[ :：\s]*(.*?)\s*📰\s*(?:城市)?快报3[ :：\s]*(.*?)\s*▣\s*当前轮次[ :：\s]*(.*?)\s*|(.*?)\s*✦\s*外貌[ :：\s]*(.*?)\s*▧\s*衣装[ :：\s]*(.*?)\s*▶\s*姿势[ :：\s]*(.*?)\s*✦\s*(.*?)\s*■\s*(.*?)\s*♡\s*(.*?)\s*▣\s*(.*?)\s*💗\s*好感度[ :：\s]*(.*?)\s*✧\s*心绪[ :：\s]*(.*?)\s*)\s*[#＃]状态栏结束[#＃]/s,
+        totalPages: 3
+      };
+
+      // ====================== DOM元素（ID绑定，绝对可靠） ======================
+      const elements = {
+        pages: [
+          document.getElementById('page-1'),
+          document.getElementById('page-2'),
+          document.getElementById('page-3')
+        ],
+        prevBtn: document.getElementById('prev-btn'),
+        nextBtn: document.getElementById('next-btn'),
+        pageIndicator: document.getElementById('page-indicator')
+      };
+
+      // ====================== 翻页逻辑 ======================
+      let currentPage = 1;
+
+      function updatePage() {
+        // 隐藏所有页面
+        elements.pages.forEach(page => {
+          if (page) page.classList.remove('active');
+        });
+
+        // 显示当前页面
+        const activePage = elements.pages[currentPage - 1];
+        if (activePage) activePage.classList.add('active');
+
+        // 更新指示器和按钮状态
+        elements.pageIndicator.textContent = `${currentPage}/${CONFIG.totalPages}`;
+        elements.prevBtn.disabled = currentPage === 1;
+        elements.nextBtn.disabled = currentPage === CONFIG.totalPages;
+      }
+
+      // 绑定翻页事件
+      elements.prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          updatePage();
+        }
+      });
+
+      elements.nextBtn.addEventListener('click', () => {
+        if (currentPage < CONFIG.totalPages) {
+          currentPage++;
+          updatePage();
+        }
+      });
+
+      // ====================== 解析填充逻辑 ======================
+      function parseStatus(text) {
+        if (!text || typeof text !== 'string') return [];
+        
+        const results = [];
+        let match;
+        const regex = new RegExp(CONFIG.regex.source, 'gs');
+        
+        while ((match = regex.exec(text)) !== null) {
+          if (match[1]) {
+            results.push({
+              type: 'player',
+              data: match.slice(1, 20).map(v => v?.trim() || '')
+            });
+          } else if (match[20]) {
+            results.push({
+              type: 'npc',
+              data: match.slice(20, 30).map(v => v?.trim() || '')
+            });
+          }
+        }
+        
+        return results;
+      }
+
+      function fillStatus(statusList) {
+        if (!Array.isArray(statusList) || statusList.length === 0) return false;
+
+        // 清空所有值，防止残留
+        for (let i = 1; i <= 31; i++) {
+          const el = document.getElementById(`val-${i}`);
+          if (el) el.textContent = '';
+        }
+
+        // 按顺序填充
+        let lastType = 'player';
+        statusList.forEach(status => {
+          if (status.type === 'player') {
+            // 主角：填充1-19
+            for (let i = 0; i < 19; i++) {
+              const el = document.getElementById(`val-${i + 1}`);
+              if (el) el.textContent = status.data[i] || '';
+            }
+            lastType = 'player';
+          } else if (status.type === 'npc') {
+            // NPC：填充20-29
+            for (let i = 0; i < 10; i++) {
+              const el = document.getElementById(`val-${20 + i}`);
+              if (el) el.textContent = status.data[i] || '';
+            }
+            lastType = 'npc';
+          }
+        });
+
+        // 自动跳转到最后一个状态栏的页面
+        currentPage = lastType === 'player' ? 1 : 2;
+        updatePage();
+
+        return true;
+      }
+
+      // ====================== 自动解析当前页面的状态栏 ======================
+      function autoParseCurrentPage() {
+        // 获取当前状态栏所在的整个消息内容
+        const container = document.querySelector('.teapot-status-container');
+        if (!container) return;
+
+        // 查找父消息元素
+        let messageEl = container.closest('.message, .chat-message, .ai-message');
+        if (!messageEl) return;
+
+        // 解析并填充
+        const statusList = parseStatus(messageEl.textContent);
+        if (statusList.length > 0) {
+          fillStatus(statusList);
+          console.log(`自动解析成功：${statusList.length} 个状态栏`);
+        }
+      }
+
+      // ====================== 初始化 ======================
+      // 确保DOM完全加载后执行
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          updatePage();
+          setTimeout(autoParseCurrentPage, 100); // 延迟100ms确保渲染完成
+        });
+      } else {
+        updatePage();
+        setTimeout(autoParseCurrentPage, 100);
+      }
+
+      // 暴露全局方法
+      window.statusParser = {
+        parse: parseStatus,
+        fill: fillStatus,
+        goToPage: (page) => {
+          if (page >= 1 && page <= CONFIG.totalPages) {
+            currentPage = page;
+            updatePage();
+          }
+        }
+      };
+    })();
+  </script>
+</div>

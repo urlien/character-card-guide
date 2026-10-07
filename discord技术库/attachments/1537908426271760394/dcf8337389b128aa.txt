@@ -1,0 +1,385 @@
+<style>
+  /* 精简样式 */
+  .xx-btn{position:fixed;right:0;top:30%;transform:translateY(-50%);width:24px;height:80px;background:linear-gradient(135deg,#2c3e6b,#4a6fa5);border:2px solid #6d8fc6;border-right:none;border-radius:10px 0 0 10px;cursor:pointer;z-index:9998;writing-mode:vertical-rl;font-size:14px;font-weight:bold;letter-spacing:4px;color:#fff;display:flex;align-items:center;justify-content:center;user-select:none;box-shadow:-2px 0 12px rgba(0,0,0,0.3)}.xx-btn:hover{background:linear-gradient(135deg,#3a4e7b,#5a7fb5)}
+  .xx-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);z-index:9999;align-items:flex-start;justify-content:center;padding-top:5vh;backdrop-filter:blur(2px)}.xx-modal.show{display:flex}
+  .xx-box{width:88%;max-width:400px;max-height:88vh;background:#1a1f2a;border-radius:14px;border:1px solid rgba(100,140,200,0.25);overflow:hidden;display:flex;flex-direction:column;color:#e0e8f0;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+  .xx-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(100,140,200,0.15);flex-shrink:0;background:rgba(26,34,48,0.6)}.xx-title{font-size:17px;font-weight:bold;color:#8ab4f8}.xx-title span{margin-right:6px}.xx-close{font-size:26px;cursor:pointer;color:#7a8a9a;line-height:1;padding:0 4px}.xx-close:hover{color:#fff}
+  .xx-body{padding:14px 16px;overflow-y:auto;flex:1}.xx-body::-webkit-scrollbar{width:4px}.xx-body::-webkit-scrollbar-thumb{background:rgba(100,140,200,0.3);border-radius:2px}
+  .xx-section{margin-bottom:14px}.xx-section:last-of-type{margin-bottom:10px}.xx-label{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:bold;color:#8ab4f8;margin-bottom:6px}.xx-label .xx-badge{font-size:12px;color:#6a8aaa;font-weight:normal}
+  .xx-tags{display:flex;flex-wrap:wrap;gap:6px;padding:2px 0}
+  .xx-tag{display:inline-flex;align-items:center;background:rgba(100,140,200,0.13);border:1px solid rgba(100,140,200,0.2);border-radius:14px;padding:2px 8px;font-size:13px;color:#c0d0e0;gap:4px;line-height:1.6;cursor:default;min-height:26px}
+  .xx-tag:hover{background:rgba(100,140,200,0.28)}
+  .xx-tag.selected{background:rgba(100,200,100,0.2);border-color:rgba(100,200,100,0.4);color:#8f8}
+  .xx-tag-text{cursor:pointer}.xx-tag-text:hover{color:#fff}
+  .xx-tag-edit,.xx-tag-del{font-size:12px;opacity:0.5;cursor:pointer;padding:0 2px}
+  .xx-tag-edit:hover,.xx-tag-del:hover{opacity:1}
+  .xx-tag-del:hover{color:#ff6b6b}
+  .xx-tag-edit-input{background:rgba(255,255,255,0.1);border:1px solid rgba(100,140,200,0.5);border-radius:14px;padding:0 8px;color:#fff;font-size:13px;outline:none;width:auto;min-width:40px;font-family:inherit;line-height:1.6;height:26px}
+  .xx-tag-edit-input:focus{border-color:#8ab4f8}
+  .xx-tag-add{display:flex;gap:6px;margin-top:4px;align-items:flex-start}
+  .xx-tag-add textarea{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 10px;color:#e0e8f0;font-size:13px;outline:none;resize:vertical;min-height:36px;font-family:inherit;line-height:1.5;box-sizing:border-box}
+  .xx-tag-add textarea:focus{border-color:rgba(100,140,200,0.5)}
+  .xx-tag-add textarea::placeholder{color:#5a6a7a}
+  .xx-tag-add button{background:rgba(100,140,200,0.2);border:1px solid rgba(100,140,200,0.3);border-radius:8px;padding:4px 14px;color:#c0d0e0;cursor:pointer;font-size:13px;align-self:flex-end;line-height:1.8;white-space:nowrap}
+  .xx-tag-add button:hover{background:rgba(100,140,200,0.4)}
+  .xx-role-list{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;min-height:28px;border-top:1px dashed rgba(100,140,200,0.15);margin-top:6px}
+  .xx-role-item{display:inline-flex;align-items:center;background:rgba(100,200,100,0.15);border:1px solid rgba(100,200,100,0.25);border-radius:14px;padding:2px 8px;font-size:13px;color:#8f8;gap:4px}
+  .xx-role-item .xx-role-remove{cursor:pointer;opacity:0.6;font-size:14px}
+  .xx-role-item .xx-role-remove:hover{opacity:1;color:#ff6b6b}
+  .xx-role-empty{color:#6a7a8a;font-size:13px}
+  .xx-plot-wrap{position:relative}
+  .xx-plot-wrap.fullscreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#1a1f2a;z-index:10000;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;border-radius:0}
+  .xx-plot-wrap.fullscreen .xx-plot{flex:1;height:100%;min-height:unset;font-size:16px;padding:16px;resize:none;overflow-y:auto!important;max-height:100%;box-sizing:border-box}
+  .xx-plot-toggle{cursor:pointer;font-size:16px;color:#8ab4f8;background:rgba(100,140,200,0.15);border-radius:14px;padding:0 10px;line-height:1.8;border:1px solid rgba(100,140,200,0.2)}
+  .xx-plot-toggle:hover{background:rgba(100,140,200,0.3)}
+  .xx-plot-toggle.fullscreen-btn{position:fixed;top:16px;right:16px;background:rgba(200,70,70,0.9);border:none;border-radius:30px;padding:6px 16px;color:#fff;font-size:16px;box-shadow:0 4px 12px rgba(0,0,0,0.5);z-index:10001}
+  .xx-plot-toggle.fullscreen-btn:hover{background:rgba(255,80,80,1)}
+  .xx-plot{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:8px 10px;color:#e0e8f0;font-size:14px;resize:vertical;outline:none;font-family:inherit;box-sizing:border-box;min-height:100px;line-height:1.6;overflow-y:auto}
+  .xx-plot:focus{border-color:rgba(100,140,200,0.5)}
+  .xx-plot::placeholder{color:#5a6a7a}
+  .xx-confirm{width:100%;padding:10px 0;background:linear-gradient(135deg,#4a7ab5,#2c5a8a);border:none;border-radius:6px;color:#fff;font-size:16px;font-weight:bold;cursor:pointer;margin-top:2px;letter-spacing:1px}
+  .xx-confirm:hover{background:linear-gradient(135deg,#5a8ac5,#3a6a9a)}
+</style>
+
+<!-- 触发按钮 -->
+<div class="xx-btn" onclick="document.getElementById('M').classList.add('show')">天马行空</div>
+
+<!-- 弹窗 -->
+<div class="xx-modal" id="M" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="xx-box" onclick="event.stopPropagation()">
+    <div class="xx-header">
+      <span class="xx-title">创作下一章</span>
+      <span class="xx-close" onclick="document.getElementById('M').classList.remove('show')">×</span>
+    </div>
+    <div class="xx-body">
+      <!-- 角色标签 -->
+      <div class="xx-section">
+        <div class="xx-label"><span>角色标签 <span class="xx-badge">点击切换选中</span></span></div>
+        <div class="xx-tags" id="roleTags"></div>
+        <div class="xx-tag-add">
+          <textarea id="roleTagIn" placeholder="此处添加标签，标签之间使用换行分隔" rows="2"></textarea>
+          <button id="roleTagAdd">添加</button>
+        </div>
+        <div class="xx-role-list" id="selectedRoles"></div>
+      </div>
+
+      <!-- 剧情标签 -->
+      <div class="xx-section">
+        <div class="xx-label"><span>剧情标签 <span class="xx-badge">点击填入剧情</span></span></div>
+        <div class="xx-tags" id="plotTags"></div>
+        <div class="xx-tag-add">
+          <textarea id="plotTagIn" placeholder="此处添加标签，标签之间使用换行分隔" rows="2"></textarea>
+          <button id="plotTagAdd">添加</button>
+        </div>
+      </div>
+
+      <!-- 剧情输入 -->
+      <div class="xx-section">
+        <div class="xx-label">
+          <span>本节剧情</span>
+          <span class="xx-plot-toggle" id="pt">⛶</span>
+        </div>
+        <div class="xx-plot-wrap" id="pw">
+          <textarea class="xx-plot" id="pl" placeholder="剧情概要…"></textarea>
+        </div>
+      </div>
+
+      <button class="xx-confirm" onclick="confirmPlot()">确定</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // -------- 工具函数 --------
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // -------- 数据 --------
+  let roleTagList = JSON.parse(localStorage.getItem('roleTags')) || ['主角', '配角', '反派'];
+  let selectedRoles = JSON.parse(localStorage.getItem('selectedRoles')) || [];
+  let plotTagList = JSON.parse(localStorage.getItem('plotTags')) || ['战斗', '对话', '伏笔'];
+
+  const S = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+
+  // -------- 通用：从文本域解析多行标签 --------
+  function parseTagsFromTextarea(textarea) {
+    return textarea.value.split('\n').map(s => s.trim()).filter(s => s !== '');
+  }
+
+  // -------- 渲染 --------
+  function render() {
+    // 渲染角色标签
+    const rt = document.getElementById('roleTags');
+    rt.innerHTML = roleTagList.map((tag, i) => {
+      const sel = selectedRoles.includes(tag) ? 'selected' : '';
+      const safeTag = escapeHtml(tag);
+      return `<span class="xx-tag ${sel}" data-type="role" data-index="${i}" data-tag="${tag}">
+        <span class="xx-tag-text">${safeTag}</span>
+        <span class="xx-tag-edit" data-action="edit">✎</span>
+        <span class="xx-tag-del" data-action="delete">×</span>
+      </span>`;
+    }).join('');
+
+    // 渲染已选角色列表
+    const sl = document.getElementById('selectedRoles');
+    if (selectedRoles.length === 0) {
+      sl.innerHTML = '<span class="xx-role-empty">点击上方角色标签选中</span>';
+    } else {
+      sl.innerHTML = selectedRoles.map(tag =>
+        `<span class="xx-role-item">${escapeHtml(tag)} <span class="xx-role-remove" data-tag="${tag}">✕</span></span>`
+      ).join('');
+    }
+
+    // 渲染剧情标签
+    const pt = document.getElementById('plotTags');
+    pt.innerHTML = plotTagList.map((tag, i) => {
+      const safeTag = escapeHtml(tag);
+      return `<span class="xx-tag" data-type="plot" data-index="${i}" data-tag="${tag}">
+        <span class="xx-tag-text">${safeTag}</span>
+        <span class="xx-tag-edit" data-action="edit">✎</span>
+        <span class="xx-tag-del" data-action="delete">×</span>
+      </span>`;
+    }).join('');
+
+    // 恢复剧情草稿
+    const pl = document.getElementById('pl');
+    if (!pl.dataset.init) {
+      const saved = localStorage.getItem('plotDraft');
+      if (saved) pl.value = saved;
+      pl.dataset.init = 1;
+    }
+    pl.oninput = function() {
+      localStorage.setItem('plotDraft', this.value);
+      if (!document.getElementById('pw').classList.contains('fullscreen')) autoResize(this);
+    };
+    autoResize(pl);
+  }
+
+  // -------- 事件委托（统一处理标签点击） --------
+  document.getElementById('roleTags').addEventListener('click', function(e) {
+    const target = e.target;
+    const tagEl = target.closest('.xx-tag');
+    if (!tagEl) return;
+    const tag = tagEl.dataset.tag;
+    const index = parseInt(tagEl.dataset.index);
+    const type = tagEl.dataset.type;
+
+    if (target.classList.contains('xx-tag-text')) {
+      toggleRole(tag);
+    } else if (target.classList.contains('xx-tag-edit')) {
+      startEdit(type, index);
+    } else if (target.classList.contains('xx-tag-del')) {
+      if (type === 'role') deleteRoleTag(index);
+      else deletePlotTag(index);
+    }
+  });
+
+  document.getElementById('plotTags').addEventListener('click', function(e) {
+    const target = e.target;
+    const tagEl = target.closest('.xx-tag');
+    if (!tagEl) return;
+    const tag = tagEl.dataset.tag;
+    const index = parseInt(tagEl.dataset.index);
+    const type = tagEl.dataset.type;
+
+    if (target.classList.contains('xx-tag-text')) {
+      insertPlotTag(tag);
+    } else if (target.classList.contains('xx-tag-edit')) {
+      startEdit(type, index);
+    } else if (target.classList.contains('xx-tag-del')) {
+      if (type === 'role') deleteRoleTag(index);
+      else deletePlotTag(index);
+    }
+  });
+
+  // 已选角色列表的事件委托
+  document.getElementById('selectedRoles').addEventListener('click', function(e) {
+    const target = e.target;
+    if (target.classList.contains('xx-role-remove')) {
+      const tag = target.dataset.tag;
+      removeSelected(tag);
+    }
+  });
+
+  // -------- 内联编辑（自动聚焦 + 弹出键盘） --------
+  function startEdit(type, index) {
+    const list = type === 'role' ? roleTagList : plotTagList;
+    const old = list[index];
+    if (!old) return;
+
+    const container = document.getElementById(type === 'role' ? 'roleTags' : 'plotTags');
+    const tagEl = container.querySelector(`.xx-tag[data-type="${type}"][data-index="${index}"]`);
+    if (!tagEl) return;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'xx-tag-edit-input';
+    input.value = old;
+    tagEl.innerHTML = '';
+    tagEl.appendChild(input);
+
+    setTimeout(() => {
+      input.focus();
+      input.select();
+    }, 50);
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        finishEdit(type, index, input.value.trim());
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        cancelEdit(type, index);
+      }
+    });
+
+    input.addEventListener('blur', function() {
+      finishEdit(type, index, input.value.trim());
+    }, { once: true });
+  }
+
+  function finishEdit(type, index, newVal) {
+    const list = type === 'role' ? roleTagList : plotTagList;
+    const old = list[index];
+    if (newVal === '') {
+      if (type === 'role') {
+        deleteRoleTag(index);
+      } else {
+        deletePlotTag(index);
+      }
+      return;
+    }
+    if (newVal === old) {
+      render();
+      return;
+    }
+    list[index] = newVal;
+    if (type === 'role') {
+      const idx = selectedRoles.indexOf(old);
+      if (idx > -1) selectedRoles[idx] = newVal;
+      S('selectedRoles', selectedRoles);
+      S('roleTags', roleTagList);
+    } else {
+      S('plotTags', plotTagList);
+    }
+    render();
+  }
+
+  function cancelEdit(type, index) {
+    render();
+  }
+
+  // -------- 角色标签操作 --------
+  window.toggleRole = function(tag) {
+    const idx = selectedRoles.indexOf(tag);
+    if (idx > -1) {
+      selectedRoles.splice(idx, 1);
+    } else {
+      selectedRoles.push(tag);
+    }
+    S('selectedRoles', selectedRoles);
+    render();
+  };
+
+  window.removeSelected = function(tag) {
+    const idx = selectedRoles.indexOf(tag);
+    if (idx > -1) selectedRoles.splice(idx, 1);
+    S('selectedRoles', selectedRoles);
+    render();
+  };
+
+  window.deleteRoleTag = function(i) {
+    const tag = roleTagList[i];
+    roleTagList.splice(i, 1);
+    const idx = selectedRoles.indexOf(tag);
+    if (idx > -1) selectedRoles.splice(idx, 1);
+    S('roleTags', roleTagList);
+    S('selectedRoles', selectedRoles);
+    render();
+  };
+
+  // -------- 剧情标签操作 --------
+  window.insertPlotTag = function(tag) {
+    const pl = document.getElementById('pl');
+    pl.value += tag + ' ';
+    pl.dispatchEvent(new Event('input'));
+    pl.focus();
+  };
+
+  window.deletePlotTag = function(i) {
+    plotTagList.splice(i, 1);
+    S('plotTags', plotTagList);
+    render();
+  };
+
+  // -------- 添加标签（多行） --------
+  document.getElementById('roleTagAdd').onclick = function() {
+    const ta = document.getElementById('roleTagIn');
+    const tags = parseTagsFromTextarea(ta);
+    if (tags.length === 0) return alert('请输入至少一个标签');
+    roleTagList.push(...tags);
+    S('roleTags', roleTagList);
+    render();
+    ta.value = '';
+    ta.focus();
+  };
+
+  document.getElementById('plotTagAdd').onclick = function() {
+    const ta = document.getElementById('plotTagIn');
+    const tags = parseTagsFromTextarea(ta);
+    if (tags.length === 0) return alert('请输入至少一个标签');
+    plotTagList.push(...tags);
+    S('plotTags', plotTagList);
+    render();
+    ta.value = '';
+    ta.focus();
+  };
+
+  // -------- 自动增高 --------
+  function autoResize(el) {
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  // -------- 全屏切换 --------
+  const pw = document.getElementById('pw');
+  const pt = document.getElementById('pt');
+  let fs = false;
+  pt.onclick = function(e) {
+    e.stopPropagation();
+    fs = !fs;
+    pw.classList.toggle('fullscreen', fs);
+    pt.classList.toggle('fullscreen-btn', fs);
+    pt.textContent = fs ? '✕' : '⛶';
+    if (fs) {
+      const pl = document.getElementById('pl');
+      setTimeout(() => { pl.focus(); pl.scrollTop = pl.scrollHeight; }, 200);
+    } else {
+      const pl = document.getElementById('pl');
+      setTimeout(() => autoResize(pl), 50);
+    }
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && fs) pt.click(); });
+  document.getElementById('M').addEventListener('click', function(e) { if (e.target === this && fs) pt.click(); });
+  document.querySelector('.xx-close').addEventListener('click', () => { if (fs) pt.click(); });
+
+  // -------- 确定 --------
+  window.confirmPlot = function() {
+    const roles = selectedRoles.length ? selectedRoles.map((r, i) => `登场角色${i+1}：${r}`).join('\n') : '（无新登场角色）';
+    const plot = document.getElementById('pl').value.trim();
+    let out = '创作剧情\n' + roles + '\n\n本节剧情：' + plot;
+    const ta = document.querySelector('.chat-input-scope textarea') || document.querySelector('.chatMsgTextarea textarea') || document.querySelector('textarea');
+    if (ta) {
+      ta.value = out;
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+      document.getElementById('M').classList.remove('show');
+    }
+  };
+
+  // -------- 启动 --------
+  render();
+</script>

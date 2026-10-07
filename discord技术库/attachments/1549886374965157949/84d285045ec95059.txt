@@ -1,0 +1,168 @@
+<style>
+.hu8-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.06);z-index:99998}.hu8-overlay.active{display:block}
+.hu8-sidebar{position:fixed;left:-100vw;top:50vh;width:100vw;height:50vh;background:#FBFCFE;transition:left .4s cubic-bezier(.4,0,.2,1);z-index:99999;box-shadow:8px 0 40px rgba(15,23,42,.18);border-radius:0 16px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans SC',sans-serif}.hu8-sidebar.active{left:0}
+.hu8-toggle{position:absolute;right:-22px;top:50%;transform:translateY(-50%);width:22px;height:64px;background:#FFFFFF;border:1px solid #CBD5E1;border-right:none;border-radius:0 8px 8px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:upright;font-size:11px;color:#64748B;font-weight:500;letter-spacing:2px;box-shadow:1px 0 4px rgba(15,23,42,.08);transition:all .25s}.hu8-toggle:hover{background:#F8FAFC;color:#334155;box-shadow:2px 0 8px rgba(15,23,42,.12)}
+.hu8-panel{width:100%;height:100%;padding:16px 14px 12px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column}
+.hu8-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid rgba(203,213,225,.55);flex-shrink:0}
+.hu8-title{font-size:16px;font-weight:800;background:linear-gradient(135deg,#FFB8C6 0%,#D95A8C 50%,#A8D8EA 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;display:flex;align-items:center;gap:8px}.hu8-title::before{content:'✦';font-size:14px;background:linear-gradient(135deg,#FFB8C6,#A8D8EA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hu8-close{width:28px;height:28px;border-radius:50%;background:linear-gradient(145deg,#FFFFFF,#EEF2F7);border:1px solid rgba(203,213,225,.8);color:#64748B;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .25s;box-shadow:0 2px 6px rgba(15,23,42,.06)}.hu8-close:hover{background:linear-gradient(145deg,#EF4444,#DC2626);color:#fff;border-color:#EF4444;transform:rotate(90deg) scale(1.08)}
+.hu8-scroll-wrap{flex:1;overflow-y:auto;overflow-x:hidden;padding-right:4px}.hu8-scroll-wrap::-webkit-scrollbar{width:6px}.hu8-scroll-wrap::-webkit-scrollbar-track{background:rgba(226,232,240,.4);border-radius:3px}.hu8-scroll-wrap::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#FFB8C6,#A8D8EA);border-radius:3px}
+.hu8-section{margin-bottom:12px;padding:12px;background:linear-gradient(160deg,rgba(255,255,255,.98) 0%,rgba(248,250,252,.9) 100%);border-radius:14px;border:1px solid rgba(226,232,240,.85);box-sizing:border-box;box-shadow:0 2px 10px rgba(15,23,42,.05),inset 0 1px 0 rgba(255,255,255,.8)}.hu8-section:last-child{margin-bottom:0}
+.hu8-section-title{font-size:13px;font-weight:800;color:#1E293B;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed rgba(203,213,225,.7);display:flex;align-items:center;gap:8px;letter-spacing:.5px}
+.hu8-dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 0 4px rgba(217,90,140,.1),inset 0 1px 2px rgba(255,255,255,.4)}
+.hu8-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}.hu8-row:last-child{margin-bottom:0}
+.hu8-row label{color:#64748B;font-size:11px;min-width:52px;flex-shrink:0;font-weight:600;letter-spacing:.3px}
+.hu8-color-wrap{flex:1;display:flex;align-items:center;gap:6px;min-width:0}
+.hu8-color-input{width:38px;height:28px;border:1.5px solid rgba(203,213,225,.9);border-radius:8px;background:#fff;cursor:pointer;padding:2px;flex-shrink:0;transition:all .2s;box-shadow:0 1px 3px rgba(15,23,42,.06)}.hu8-color-input:hover{border-color:#D95A8C;transform:scale(1.06);box-shadow:0 2px 8px rgba(217,90,140,.25)}
+.hu8-hex{flex:1;height:28px;border:1.5px solid rgba(203,213,225,.9);border-radius:8px;background:#fff;color:#334155;font-size:10px;padding:0 8px;box-sizing:border-box;min-width:0;font-family:'SF Mono',Menlo,Consolas,monospace;transition:all .2s}.hu8-hex:focus{outline:none;border-color:#D95A8C;box-shadow:0 0 0 3px rgba(217,90,140,.12)}
+.hu8-class-input{flex:1;height:28px;border:1.5px solid rgba(203,213,225,.9);border-radius:8px;background:#fff;color:#334155;font-size:10px;padding:0 8px;box-sizing:border-box;min-width:0;font-family:'SF Mono',Menlo,Consolas,monospace;transition:all .2s}.hu8-class-input:focus{outline:none;border-color:#D95A8C;box-shadow:0 0 0 3px rgba(217,90,140,.12)}select.hu8-class-input{font-size:11px;cursor:pointer;font-family:inherit}
+.hu8-slider-wrap{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.hu8-slider{flex:1;height:5px;border-radius:3px;background:linear-gradient(90deg,rgba(255,184,198,.4),rgba(168,216,234,.4));outline:none;-webkit-appearance:none;min-width:0}.hu8-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#FFB8C6,#A8D8EA);cursor:pointer;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(217,90,140,.35);transition:transform .15s}.hu8-slider::-webkit-slider-thumb:hover{transform:scale(1.18)}
+.hu8-sv{min-width:36px;text-align:right;color:#D95A8C;font-size:11px;font-weight:800;font-family:'SF Mono',Menlo,Consolas,monospace}
+.hu8-preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.hu8-preset-btn{padding:12px 10px;background:linear-gradient(155deg,#FFFFFF 0%,#F5F8FC 100%);border:1.5px solid rgba(226,232,240,.9);border-radius:12px;color:#1E293B;font-size:11px;font-weight:700;cursor:pointer;text-align:left;line-height:1.35;transition:all .3s;position:relative;overflow:hidden}.hu8-preset-btn::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#FFB8C6,#D95A8C,#A8D8EA);transform:scaleX(0);transform-origin:left;transition:transform .35s}.hu8-preset-btn:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(217,90,140,.2);border-color:rgba(217,90,140,.5)}.hu8-preset-btn:hover::before{transform:scaleX(1)}
+.hu8-preset-btn .hu8-preset-desc{display:block;font-size:9px;color:#94A3B8;margin-top:4px;font-weight:500;letter-spacing:.2px}
+.hu8-preset-swatch{display:flex;gap:4px;margin-bottom:6px}.hu8-preset-swatch i{width:14px;height:14px;border-radius:50%;display:inline-block;border:1.5px solid rgba(255,255,255,.9);box-shadow:0 2px 5px rgba(15,23,42,.15)}
+.hu8-reset-btn{width:100%;padding:11px;background:linear-gradient(135deg,#FFB8C6 0%,#D95A8C 50%,#A8D8EA 100%);background-size:200% 200%;border:none;border-radius:11px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:8px;transition:all .35s;letter-spacing:1.5px;box-shadow:0 4px 14px rgba(217,90,140,.35)}.hu8-reset-btn:hover{background-position:100% 50%;transform:translateY(-2px);box-shadow:0 8px 22px rgba(168,216,234,.45)}
+.hu8-off-btn{width:100%;padding:11px;background:linear-gradient(135deg,#64748B 0%,#334155 100%);border:none;border-radius:11px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;transition:all .3s;letter-spacing:1.5px;box-shadow:0 4px 12px rgba(51,65,85,.3)}.hu8-off-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(51,65,85,.45)}
+</style>
+
+<div class="hu8-overlay" onclick="hu8Close()"></div>
+<div class="hu8-sidebar">
+<div class="hu8-toggle" onclick="event.stopPropagation();hu8Toggle(this)">美化</div>
+<div class="hu8-panel" onclick="event.stopPropagation()">
+<div class="hu8-header"><span class="hu8-title">全局美化定制</span><span class="hu8-close" onclick="hu8Close()">✕</span></div>
+<div class="hu8-scroll-wrap">
+
+<div class="hu8-section"><div class="hu8-section-title"><span class="hu8-dot" style="background:#FFB8C6"></span>背景区域</div>
+<div class="hu8-row"><label>主色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_bg_color" value="#FFF0F5" oninput="hu8Sync('hu8_bg_color');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_bg_color_hex" value="#FFF0F5" oninput="hu8FromHex('hu8_bg_color',this.value)"></div></div>
+<div class="hu8-row"><label>辅色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_bg_assist" value="#F0F8FF" oninput="hu8Sync('hu8_bg_assist');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_bg_assist_hex" value="#F0F8FF" oninput="hu8FromHex('hu8_bg_assist',this.value)"></div></div>
+<div class="hu8-row"><label>模式</label><select class="hu8-class-input" id="hu8_bg_mode" onchange="hu8Preview()"><option value="solid">纯色</option><option value="gradient" selected>渐变</option></select></div>
+<div class="hu8-row"><label>类名</label><input type="text" class="hu8-class-input" id="hu8_bg_class" value=".chat-scope-box"></div>
+<div class="hu8-row"><label>模糊</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_bg_blur" min="0" max="40" value="0" oninput="hu8SV('hu8_bg_blur_val',this.value)"><span class="hu8-sv" id="hu8_bg_blur_val">0</span></div></div>
+<div class="hu8-row"><label>透明</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_bg_opacity" min="30" max="100" value="100" oninput="hu8SV('hu8_bg_opacity_val',this.value)"><span class="hu8-sv" id="hu8_bg_opacity_val">100</span></div></div>
+<div class="hu8-row"><label>角度</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_bg_gradient" min="0" max="360" value="180" oninput="hu8SV('hu8_bg_gradient_val',this.value)"><span class="hu8-sv" id="hu8_bg_gradient_val">180</span></div></div>
+</div>
+
+<div class="hu8-section"><div class="hu8-section-title"><span class="hu8-dot" style="background:#D95A8C"></span>气泡区域</div>
+<div class="hu8-row"><label>主色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_chat_color" value="#FFE0E6" oninput="hu8Sync('hu8_chat_color');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_chat_color_hex" value="#FFE0E6" oninput="hu8FromHex('hu8_chat_color',this.value)"></div></div>
+<div class="hu8-row"><label>辅色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_chat_assist" value="#E6F3FA" oninput="hu8Sync('hu8_chat_assist');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_chat_assist_hex" value="#E6F3FA" oninput="hu8FromHex('hu8_chat_assist',this.value)"></div></div>
+<div class="hu8-row"><label>模式</label><select class="hu8-class-input" id="hu8_chat_mode" onchange="hu8Preview()"><option value="solid">纯色</option><option value="gradient" selected>渐变</option></select></div>
+<div class="hu8-row"><label>类名</label><input type="text" class="hu8-class-input" id="hu8_chat_class" value=".content.left, .content.right, .prologue-content"></div>
+<div class="hu8-row"><label>模糊</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_chat_blur" min="0" max="30" value="0" oninput="hu8SV('hu8_chat_blur_val',this.value)"><span class="hu8-sv" id="hu8_chat_blur_val">0</span></div></div>
+<div class="hu8-row"><label>透明</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_chat_opacity" min="30" max="100" value="95" oninput="hu8SV('hu8_chat_opacity_val',this.value)"><span class="hu8-sv" id="hu8_chat_opacity_val">95</span></div></div>
+<div class="hu8-row"><label>角度</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_chat_gradient" min="0" max="360" value="115" oninput="hu8SV('hu8_chat_gradient_val',this.value)"><span class="hu8-sv" id="hu8_chat_gradient_val">115</span></div></div>
+<div class="hu8-row"><label>圆角</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_chat_radius" min="0" max="30" value="12" oninput="hu8SV('hu8_chat_radius_val',this.value)"><span class="hu8-sv" id="hu8_chat_radius_val">12</span></div></div>
+</div>
+
+<div class="hu8-section"><div class="hu8-section-title"><span class="hu8-dot" style="background:#A8D8EA"></span>卡片区域</div>
+<div class="hu8-row"><label>主色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_card_color" value="#FFB8C6" oninput="hu8Sync('hu8_card_color');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_card_color_hex" value="#FFB8C6" oninput="hu8FromHex('hu8_card_color',this.value)"></div></div>
+<div class="hu8-row"><label>辅色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_card_assist" value="#A8D8EA" oninput="hu8Sync('hu8_card_assist');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_card_assist_hex" value="#A8D8EA" oninput="hu8FromHex('hu8_card_assist',this.value)"></div></div>
+<div class="hu8-row"><label>模式</label><select class="hu8-class-input" id="hu8_card_mode" onchange="hu8Preview()"><option value="solid">纯色</option><option value="gradient" selected>渐变</option></select></div>
+<div class="hu8-row"><label>类名</label><input type="text" class="hu8-class-input" id="hu8_card_class" value=".topTabbar, .chat-bottom-wapper, .chat-input-scope"></div>
+<div class="hu8-row"><label>模糊</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_card_blur" min="0" max="30" value="0" oninput="hu8SV('hu8_card_blur_val',this.value)"><span class="hu8-sv" id="hu8_card_blur_val">0</span></div></div>
+<div class="hu8-row"><label>透明</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_card_opacity" min="30" max="100" value="100" oninput="hu8SV('hu8_card_opacity_val',this.value)"><span class="hu8-sv" id="hu8_card_opacity_val">100</span></div></div>
+<div class="hu8-row"><label>角度</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_card_gradient" min="0" max="360" value="135" oninput="hu8SV('hu8_card_gradient_val',this.value)"><span class="hu8-sv" id="hu8_card_gradient_val">135</span></div></div>
+<div class="hu8-row"><label>圆角</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_card_radius" min="0" max="30" value="15" oninput="hu8SV('hu8_card_radius_val',this.value)"><span class="hu8-sv" id="hu8_card_radius_val">15</span></div></div>
+</div>
+
+<div class="hu8-section"><div class="hu8-section-title"><span class="hu8-dot" style="background:#FFA8C8"></span>按钮区域</div>
+<div class="hu8-row"><label>主色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_btn_color" value="#FFE0E6" oninput="hu8Sync('hu8_btn_color');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_btn_color_hex" value="#FFE0E6" oninput="hu8FromHex('hu8_btn_color',this.value)"></div></div>
+<div class="hu8-row"><label>辅色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_btn_assist" value="#E6F3FA" oninput="hu8Sync('hu8_btn_assist');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_btn_assist_hex" value="#E6F3FA" oninput="hu8FromHex('hu8_btn_assist',this.value)"></div></div>
+<div class="hu8-row"><label>模式</label><select class="hu8-class-input" id="hu8_btn_mode" onchange="hu8Preview()"><option value="solid">纯色</option><option value="gradient" selected>渐变</option></select></div>
+<div class="hu8-row"><label>类名</label><input type="text" class="hu8-class-input" id="hu8_btn_class" value=".shortcut-btn, .shortcut-button-scope .item"></div>
+<div class="hu8-row"><label>模糊</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_btn_blur" min="0" max="20" value="0" oninput="hu8SV('hu8_btn_blur_val',this.value)"><span class="hu8-sv" id="hu8_btn_blur_val">0</span></div></div>
+<div class="hu8-row"><label>透明</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_btn_opacity" min="30" max="100" value="80" oninput="hu8SV('hu8_btn_opacity_val',this.value)"><span class="hu8-sv" id="hu8_btn_opacity_val">80</span></div></div>
+<div class="hu8-row"><label>角度</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_btn_gradient" min="0" max="360" value="135" oninput="hu8SV('hu8_btn_gradient_val',this.value)"><span class="hu8-sv" id="hu8_btn_gradient_val">135</span></div></div>
+<div class="hu8-row"><label>圆角</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_btn_radius" min="0" max="30" value="12" oninput="hu8SV('hu8_btn_radius_val',this.value)"><span class="hu8-sv" id="hu8_btn_radius_val">12</span></div></div>
+</div>
+
+<div class="hu8-section"><div class="hu8-section-title"><span class="hu8-dot" style="background:#3A7CA8"></span>文字区域</div>
+<div class="hu8-row"><label>颜色</label><div class="hu8-color-wrap"><input type="color" class="hu8-color-input" id="hu8_text_color" value="#3A7CA8" oninput="hu8Sync('hu8_text_color');hu8Preview()"><input type="text" class="hu8-hex" id="hu8_text_color_hex" value="#3A7CA8" oninput="hu8FromHex('hu8_text_color',this.value)"></div></div>
+<div class="hu8-row"><label>字体</label><select class="hu8-class-input" id="hu8_text_font" onchange="hu8Preview()"><option value="'Noto Sans SC',sans-serif">思源黑体</option><option value="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif">系统默认</option><option value="'PingFang SC','Microsoft YaHei',sans-serif">苹方雅黑</option><option value="'Songti SC','SimSun',serif">宋体</option><option value="'KaiTi','STKaiti',serif">楷体</option><option value="'Yuanti SC','Microsoft YaHei',sans-serif">圆体</option></select></div>
+<div class="hu8-row"><label>字号</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_text_size" min="12" max="24" value="14" oninput="hu8SV('hu8_text_size_val',this.value)"><span class="hu8-sv" id="hu8_text_size_val">14</span></div></div>
+<div class="hu8-row"><label>行高</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_text_lineheight" min="100" max="250" value="150" oninput="hu8SV('hu8_text_lineheight_val',(this.value/100).toFixed(2))"><span class="hu8-sv" id="hu8_text_lineheight_val">1.50</span></div></div>
+<div class="hu8-row"><label>字距</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_text_letter" min="0" max="40" value="0" oninput="hu8SV('hu8_text_letter_val',(this.value/10).toFixed(1)+'px')"><span class="hu8-sv" id="hu8_text_letter_val">0px</span></div></div>
+<div class="hu8-row"><label>透明</label><div class="hu8-slider-wrap"><input type="range" class="hu8-slider" id="hu8_text_opacity" min="30" max="100" value="100" oninput="hu8SV('hu8_text_opacity_val',this.value)"><span class="hu8-sv" id="hu8_text_opacity_val">100</span></div></div>
+<div class="hu8-row"><label>类名</label><input type="text" class="hu8-class-input" id="hu8_text_class" value=".content.left, .content.right, .prologue-content, .topTabbar, .sb-text"></div>
+</div>
+
+<div class="hu8-section"><div class="hu8-section-title"><span class="hu8-dot" style="background:#FFB8C6"></span>预设模板</div>
+<div class="hu8-preset-grid">
+<button class="hu8-preset-btn" onclick="hu8Preset('peach')"><span class="hu8-preset-swatch"><i style="background:#FFF0F5"></i><i style="background:#FFE0E6"></i><i style="background:#FFB8C6"></i></span>蜜桃粉<span class="hu8-preset-desc">桃粉温柔 · 甜心气泡</span></button>
+<button class="hu8-preset-btn" onclick="hu8Preset('ice')"><span class="hu8-preset-swatch"><i style="background:#F0FAFD"></i><i style="background:#E0F4F8"></i><i style="background:#7EC8D8"></i></span>冰月蓝<span class="hu8-preset-desc">冰蓝清透 · 静谧月光</span></button>
+<button class="hu8-preset-btn" onclick="hu8Preset('violet')"><span class="hu8-preset-swatch"><i style="background:#1A0A1A"></i><i style="background:#502060"></i><i style="background:#7B2C7B"></i></span>紫罗兰<span class="hu8-preset-desc">深紫魅惑 · 午夜蓝调</span></button>
+<button class="hu8-preset-btn" onclick="hu8Preset('rose')"><span class="hu8-preset-swatch"><i style="background:#FFF8F5"></i><i style="background:#F5E1DA"></i><i style="background:#E8C4B8"></i></span>玫瑰金<span class="hu8-preset-desc">白金偏粉 · 奢华暖调</span></button>
+<button class="hu8-preset-btn" onclick="hu8Preset('mint')"><span class="hu8-preset-swatch"><i style="background:#F0FAF5"></i><i style="background:#D8F0E4"></i><i style="background:#80D8A8"></i></span>薄荷青<span class="hu8-preset-desc">薄荷晨露 · 清新绿意</span></button>
+<button class="hu8-preset-btn" onclick="hu8Preset('night')"><span class="hu8-preset-swatch"><i style="background:#0E1428"></i><i style="background:#2A3050"></i><i style="background:#6858A0"></i></span>星夜蓝<span class="hu8-preset-desc">靛蓝夜航 · 深空静谧</span></button>
+</div>
+<button class="hu8-reset-btn" onclick="hu8Reset()">↺ 恢复默认设置</button>
+<button class="hu8-off-btn" onclick="hu8Off()">✖ 关闭全部美化</button>
+</div>
+
+</div></div></div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+window.hu8Toggle=function(el){var s=el.parentElement,o=document.querySelector('.hu8-overlay');if(s.classList.contains('active')){s.classList.remove('active');o&&o.classList.remove('active');}else{s.classList.add('active');o&&o.classList.add('active');}};
+window.hu8Close=function(){var s=document.querySelector('.hu8-sidebar'),o=document.querySelector('.hu8-overlay');s&&s.classList.remove('active');o&&o.classList.remove('active');};
+window.hu8SV=function(id,v){var e=$(id);if(e)e.textContent=v;hu8Preview()};
+window.hu8Off=function(){var s=$('hu8_live_style');if(s)s.remove()};
+window.hu8Sync=function(id){var c=$(id),h=$(id+'_hex');if(c&&h)h.value=c.value.toUpperCase()};
+window.hu8FromHex=function(id,v){var c=$(id);if(!c)return;if(/^#[0-9A-Fa-f]{6}$/.test(v)){c.value=v;hu8Preview()}};
+function addPrefix(sel){return sel.split(',').map(function(s){s=s.trim();if(!s)return'';if(/^html\b/i.test(s))return s;return'body:not(.theme-none) '+s+',body.theme-none '+s}).filter(Boolean).join(',')}
+function h2r(h,a){if(!h||h.length!==7)return h;return'rgba('+parseInt(h.slice(1,3),16)+','+parseInt(h.slice(3,5),16)+','+parseInt(h.slice(5,7),16)+','+a+')'}
+function expandText(sel){var out=[];sel.split(',').forEach(function(s){s=s.trim();if(!s)return;out.push(s,s+' font',s+' *')});return out.join(',')}
+function bgVal(m,a,g,al,md){if(md==='solid'||!a)return h2r(m,al);return'linear-gradient('+g+'deg,'+h2r(m,al)+','+h2r(a,al)+')'}
+window.hu8Preview=function(){
+var bg=$('hu8_bg_color').value,bgA=$('hu8_bg_assist').value,bgM=$('hu8_bg_mode').value;
+var ch=$('hu8_chat_color').value,chA=$('hu8_chat_assist').value,chM=$('hu8_chat_mode').value;
+var cd=$('hu8_card_color').value,cdA=$('hu8_card_assist').value,cdM=$('hu8_card_mode').value;
+var bt=$('hu8_btn_color').value,btA=$('hu8_btn_assist').value,btM=$('hu8_btn_mode').value;
+var tx=$('hu8_text_color').value;
+var bgC=$('hu8_bg_class').value,chC=$('hu8_chat_class').value,cdC=$('hu8_card_class').value,btC=$('hu8_btn_class').value,txC=$('hu8_text_class').value;
+var bgB=$('hu8_bg_blur').value,bgO=$('hu8_bg_opacity').value,bgG=$('hu8_bg_gradient').value;
+var chB=$('hu8_chat_blur').value,chO=$('hu8_chat_opacity').value,chG=$('hu8_chat_gradient').value,chR=$('hu8_chat_radius').value;
+var cdB=$('hu8_card_blur').value,cdO=$('hu8_card_opacity').value,cdG=$('hu8_card_gradient').value,cdR=$('hu8_card_radius').value;
+var btB=$('hu8_btn_blur').value,btO=$('hu8_btn_opacity').value,btG=$('hu8_btn_gradient').value,btR=$('hu8_btn_radius').value;
+var tz=$('hu8_text_size').value,tl=$('hu8_text_lineheight').value,tf=$('hu8_text_font').value,tlt=$('hu8_text_letter').value,to=$('hu8_text_opacity').value;
+var bgS=addPrefix(bgC),chS=addPrefix(chC),cdS=addPrefix(cdC),btS=addPrefix(btC),txS=addPrefix(expandText(txC));
+var tr=h2r(tx,to/100);
+var old=$('hu8_live_style');old&&old.remove();
+var st=document.createElement('style');st.id='hu8_live_style';
+st.innerHTML=
+bgS+'{background:'+bgVal(bg,bgA,bgG,bgO/100,bgM)+'!important;backdrop-filter:blur('+bgB+'px)!important;-webkit-backdrop-filter:blur('+bgB+'px)!important}'
++chS+'{background:'+bgVal(ch,chA,chG,chO/100,chM)+'!important;backdrop-filter:blur('+chB+'px)!important;-webkit-backdrop-filter:blur('+chB+'px)!important;border-radius:'+chR+'px!important;box-shadow:0 4px 15px rgba(0,0,0,0.15)!important;padding:9px 11px!important;position:relative!important}'
++cdS+'{background:'+bgVal(cd,cdA,cdG,cdO/100,cdM)+'!important;backdrop-filter:blur('+cdB+'px)!important;-webkit-backdrop-filter:blur('+cdB+'px)!important;border-radius:'+cdR+'px!important}'
++btS+'{background:'+bgVal(bt,btA,btG,btO/100,btM)+'!important;backdrop-filter:blur('+btB+'px)!important;-webkit-backdrop-filter:blur('+btB+'px)!important;border-radius:'+btR+'px!important;box-shadow:0 2px 8px rgba(0,0,0,0.08)!important}'
++txS+'{color:'+tr+'!important;font-size:'+tz+'px!important;line-height:'+(tl/100)+'!important;font-family:'+tf+'!important;letter-spacing:'+(tlt/10)+'px!important}';
+document.body.appendChild(st);};
+var K=['hu8_bg_color','hu8_bg_assist','hu8_bg_mode','hu8_chat_color','hu8_chat_assist','hu8_chat_mode','hu8_card_color','hu8_card_assist','hu8_card_mode','hu8_btn_color','hu8_btn_assist','hu8_btn_mode','hu8_text_color','hu8_bg_blur','hu8_bg_opacity','hu8_bg_gradient','hu8_chat_blur','hu8_chat_opacity','hu8_chat_gradient','hu8_chat_radius','hu8_card_blur','hu8_card_opacity','hu8_card_gradient','hu8_card_radius','hu8_btn_blur','hu8_btn_opacity','hu8_btn_gradient','hu8_btn_radius','hu8_text_size','hu8_text_lineheight','hu8_text_font','hu8_text_letter','hu8_text_opacity'];
+var V={
+peach:['#FFF0F5','#F0F8FF','gradient','#FFE0E6','#E6F3FA','gradient','#FFB8C6','#A8D8EA','gradient','#FFE0E6','#E6F3FA','gradient','#3A7CA8',0,100,180,0,95,115,12,0,100,135,15,0,80,135,12,14,150,"'Noto Sans SC',sans-serif",0,100],
+ice:['#F0FAFD','#E8F8FF','gradient','#E0F4F8','#D0EEF4','gradient','#7EC8D8','#A8E6F0','gradient','#E0F4F8','#D0EEF4','gradient','#1A4A5A',0,100,180,0,95,115,12,0,100,135,15,0,80,135,12,14,150,"'Noto Sans SC',sans-serif",0,100],
+violet:['#1A0A1A','#2D1A2D','gradient','#502060','#783270','gradient','#4A1E4A','#7B2C7B','gradient','#602868','#88428C','gradient','#E8C2E8',18,94,180,10,92,115,12,8,95,135,15,6,86,135,12,14,150,"'PingFang SC','Microsoft YaHei',sans-serif",0,100],
+rose:['#FFF8F5','#F5E8E0','gradient','#F5E1DA','#EED5C9','gradient','#E8C4B8','#D4A5A5','gradient','#F0DCD2','#E8C8BA','gradient','#8B4513',0,100,180,0,95,115,12,0,100,135,15,0,82,135,12,14,150,"'Noto Sans SC',sans-serif",0,100],
+mint:['#F0FAF5','#E0F5EC','gradient','#D8F0E4','#C8EAD8','gradient','#80D8A8','#A8E8C4','gradient','#D0EEDC','#B8E6CC','gradient','#1E5A3E',0,100,180,0,95,115,12,0,100,135,15,0,82,135,12,14,150,"'Noto Sans SC',sans-serif",0,100],
+night:['#0E1428','#1A2444','gradient','#2A3050','#3A4870','gradient','#4A3870','#6858A0','gradient','#323A60','#484080','gradient','#D8E0FF',20,95,180,12,92,115,12,8,94,135,15,6,85,135,12,14,150,"'PingFang SC','Microsoft YaHei',sans-serif",0,100]};
+window.hu8Preset=function(p){var d=V[p];if(!d)return;
+for(var i=0;i<K.length;i++){
+var el=$(K[i]);if(el)el.value=d[i];
+var sv=$(K[i]+'_val');
+if(sv){var v=d[i];
+if(K[i]==='hu8_text_lineheight')v=(v/100).toFixed(2);
+else if(K[i]==='hu8_text_letter')v=(v/10).toFixed(1)+'px';
+sv.textContent=v;}
+if(K[i].indexOf('_color')>-1||K[i].indexOf('_assist')>-1){var hx=$(K[i]+'_hex');if(hx)hx.value=String(d[i]).toUpperCase();}
+}
+hu8Preview();};
+window.hu8Reset=function(){
+$('hu8_bg_class').value='.chat-scope-box';
+$('hu8_chat_class').value='.content.left, .content.right, .prologue-content';
+$('hu8_card_class').value='.topTabbar, .chat-bottom-wapper, .chat-input-scope';
+$('hu8_btn_class').value='.shortcut-btn, .shortcut-button-scope .item';
+$('hu8_text_class').value='.content.left, .content.right, .prologue-content, .topTabbar, .sb-text';
+hu8Preset('peach');};
+})();
+</script>

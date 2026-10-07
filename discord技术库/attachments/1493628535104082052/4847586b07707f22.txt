@@ -1,0 +1,52 @@
+/【选项开始】\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*【选项结束】/s
+
+<div class="teapot-option-container" onclick="(function(e){var f=e.target.closest('.teapot-option-item');if(f){e.stopPropagation();var a=document.querySelector('.chat .chat-bottom .uni-textarea .chat-input-scope textarea');if(a){a.value = f.innerText;a.dispatchEvent(new Event('input'));}}})(event)"><p class="teapot-option-item">$1</p><p class="teapot-option-item">$2</p><p class="teapot-option-item">$3</p></div><style>.teapot-option-container{display:flex;flex-direction:column;gap:8px;margin-top:8px;}.teapot-option-item{display:block;width:100%;padding:10px 15px;background:#3A3135;border:1px solid #D9A5A0;border-left:4px solid #E6A8B0;border-radius:8px;color:#E6A8B0;font-weight:bold;text-align:left;cursor:pointer;transition:all 0.2s;font-family:"KaiTi","STKaiti","SimSun","Microsoft YaHei","华文楷体",serif;box-sizing:border-box;margin:0;line-height:1.4;}.teapot-option-item:hover{background:#463B40;color:#F0E6E0;border-color:#E6A8B0;}.teapot-option-item:active{transform:scale(0.98);}</style>
+
+【选项生成规则】：
+AI生成选项列表时必须严格按照以下格式输出：
+【选项开始】
+选项内容|选项内容|选项内容
+【选项结束】
+字段说明：
+必须使用中文全角方括号【】包裹标识符
+必须包含三个选项，不能多也不能少
+每个选项之间用竖线 | 分隔
+选项内容可以包含任意文字，但不要包含竖线 | 符号本身
+整个列表用【选项开始】和【选项结束】包裹
+所有内容写在一行内，用竖线分隔
+三个选项按钮要根据当前情境提供合理的行动选择
+必须以用户的视角配合故事基调和场景玩法，生成三个选项引导用户进行下一步行动。
+
+
+
+【状态栏输出协议】
+回复结尾生成状态栏，请严格按照以下格式输出:
+<div style="margin-top:15px;padding:3px;background:#2C2327;border-radius:14px;box-shadow:0 4px 12px rgba(230,168,176,0.25);" onclick="event.stopPropagation()">
+<div style="padding:15px 18px;background:#352E32;border-left:3px solid #E6A8B0;border-radius:10px 10px 0 10px;color:#F0E6E0;font-size:13px;line-height:1.6;white-space:pre-wrap;">
+⏰当前时间(年月日|周|时间)
+🗺️  当前位置
+📋当前事件概述
+🔄第X轮
+    </div>
+    <div style="height:1px; background:linear-gradient(to right, transparent 0%, #E6A8B0 30%, #D9A5A0 70%, transparent 100%); margin:0; opacity:0.7;"></div>
+    <div style="padding:15px 18px;background:#3A3135;border-left:3px solid #D9A5A0;border-top-left-radius:10px;border-bottom-left-radius:10px;color:#F0E6E0;font-size:13px;line-height:1.6;white-space:pre-wrap;">
+📚当前学院课程列表
+⚡️当前学分兑换道具或特权
+🏆当前荣誉
+💰当前学分
+    </div>
+    <div style="height:1px; background:linear-gradient(to right, transparent 0%, #D9A5A0 30%, #E6A8B0 70%, transparent 100%); margin:0; opacity:0.7;"></div>
+    <div style="padding:15px 18px;background:#332B2F;border-left:3px solid #E6A8B0;border-radius:10px 0 10px 10px;color:#F0E6E0;font-size:13px;line-height:1.6;white-space:pre-wrap;">
+💞显示当前互动女性名字
+👘外貌:衣着外貌描述（不超过20字）
+💃身材:身材体态描述（不超过20字）
+👋🏻行为:正在做什么（不超过30字）
+💦足部气味:当前足部气味描述
+🦶🏻玉足:当前足部状态描述
+👠鞋:当前穿着的鞋及状态描述
+🧦袜当前穿着的丝袜及状态描述
+🌺小穴:小穴状态描述
+🏵️ 菊穴：菊穴状态描述
+💭:内心独白（不超过100字）
+   </div>
+</div>

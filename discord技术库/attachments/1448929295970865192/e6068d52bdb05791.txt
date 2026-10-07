@@ -1,0 +1,86 @@
+写在角色人设最上面的选项规则：
+
+<剧情指导>
+1.请结合之前的剧情，在状态栏下方生成“{{user}}接下来的选项：”和四个后续剧情发展的选项
+2.选项示例：
+【选项模块|标题1|内容1|标题2|内容2|标题3|内容3|标题4|内容4】
+2.可以触发性爱阶段的选项前请加上“[♥]”
+3.选项内容限50汉字左右，包括动作和言语描写；选项标题为选项内容的总结，限10汉字以内
+
+
+正则表达式：
+/【选项模块\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)】/gs
+
+
+正则代码：
+<style>
+.f {
+  background: linear-gradient(145deg, #FFE6C2, #FFD9A6, #FFF1D6);
+  background-size: 300% 300%;
+  padding: 8px 16px;
+  margin: 6px;
+  border-radius: 18px;
+  color: #5C3A00;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 2px 6px rgba(255, 180, 80, 0.4);
+  flex: 1;
+  min-width: 100px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #FFB84D;
+  font-weight: bold;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+}
+.f:hover {
+  transform: translateY(-2px) scale(1.06);
+  background-position: 100% 0;
+  box-shadow: 0 6px 14px rgba(255, 180, 80, 0.6), inset 0 0 12px rgba(255, 220, 160, 0.4);
+  color: #442900;
+  text-shadow: 0 0 8px rgba(255, 180, 80, 0.7);
+}
+.f::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 200, 120, 0.2);
+  transition: height 0.3s ease;
+  z-index: -1;
+}
+.f:hover::before {
+  height: 100%;
+}
+.f:active {
+  transform: translateY(2px) scale(0.97);
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.f:hover {
+  animation: shimmer 2s infinite linear;
+}
+.e {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+</style>
+
+<div class="e" onclick="
+  event.stopPropagation();
+  d = event.target.closest('.f');
+  a = document.querySelector('textarea');
+  a.value = d.dataset.t;
+  a.dispatchEvent(new Event('input'));
+">
+  <p class="f" data-t='$2'>$1</p>
+  <p class="f" data-t='$4'>$3</p>
+  <p class="f" data-t='$6'>$5</p>
+  <p class="f" data-t='$8'>$7</p>
+</div>

@@ -1,0 +1,106 @@
+替代式
+
+《状》
+
+程序：
+
+
+<div id="rose-mansion-core" style="display:none">
+    <div class="rose-lib" data-char="角色1名字"
+        data-list="https://img.heliar.top/file/1767330023985_01.png|https://img.heliar.top/file/1767330026253_02.png">
+    </div>
+    <div class="rose-lib" data-char="角色2名字"
+        data-list="https://img.heliar.top/file/1767330237966_01.png|https://img.heliar.top/file/1767330237546_02.png">
+    </div>
+    <div class="rose-lib" data-char="角色3名字"
+        data-list="https://img.heliar.top/file/1767330454729_01.png|https://img.heliar.top/file/1767330449992_02.png">
+    </div>
+    <div class="rose-lib" data-char="角色4名字"
+        data-list="https://img.heliar.top/file/1767330655056_01.png|https://img.heliar.top/file/1767330659689_02.png">
+    </div>
+    
+</div>
+
+<div class="t" onclick="event.stopPropagation()">
+    <p class="logic-core" style="display:none"
+        data-init="let root=this.closest('.t');let store=root.querySelector('.d-store');let r2=(store.dataset.c2||'').split('#####');let has2nd=false;if(r2.length>1){let name=r2[1].split('|')[0].trim();if(name&&name!=='-'&&name!=='')has2nd=true}if(!has2nd){root.querySelectorAll('.nav-arrow').forEach(e=>e.style.display='none')}let r1=(store.dataset.c1||'').split('#####'),r3=(store.dataset.c3||'').split('#####'),r4=(store.dataset.c4||'').split('#####');root.querySelectorAll('.char-group').forEach((g,i)=>{let get=a=>(a[i]||a[0]||'').trim().split('|');let l=get(r1),s=get(r2),a=get(r3),n=get(r4);let f=(k,v)=>{let el=g.querySelector(k);if(el)el.innerText=v||'...'};f('.v-time',l[0]);f('.v-loc',l[1]);f('.v-name',s[0]);f('.v-img-id',s[1]);f('.v-act',a[0]);f('.v-look',a[1]);f('.v-outfit',a[2]);f('.v-os',a[3]);f('.x-grid-1',n[0]);f('.x-grid-2',n[1]);f('.x-grid-3',n[2]);f('.x-grid-4',n[3]);let charName=s[0]?s[0].trim():'';let lib=document.querySelector('#rose-mansion-core .rose-lib[data-char=\x22'+charName+'\x22]');if(!lib){let all=document.querySelectorAll('#rose-mansion-core .rose-lib');if(all[i])lib=all[i]}let img=g.querySelector('.img-body');let idx=parseInt(s[1]?s[1].trim():'1');if(lib&&img&&!isNaN(idx)){let srcList=lib.dataset.list.split('|');if(idx>0&&idx<=srcList.length)img.src=srcList[idx-1]}})"
+        data-toggle="this.closest('.char-group').classList.toggle('open')"
+        data-switch="let root=this.closest('.t');let groups=root.querySelectorAll('.char-group');let cur=-1;groups.forEach((g,i)=>{if(g.classList.contains('active'))cur=i;g.classList.remove('active')});let next=(cur+dir+groups.length)%groups.length;groups[next].classList.add('active')">
+    </p>
+    <p class="d-store" style="display:none" data-c1="$2" data-c2="$3" data-c3="$4" data-c4="$5"></p>
+    <div class="char-group active">
+        <div class="ti" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">
+            <div class="nav-arrow prev"
+                onclick="event.stopPropagation();let dir=-1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❮</div>
+            <div class="nav-arrow next"
+                onclick="event.stopPropagation();let dir=1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❯</div> <img class="img-body" src="">
+        </div>
+        <div class="hint" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">查看状态档案<br><span
+                style="font-size:10px;opacity:.7">Click to Expand</span></div>
+        <div class="tw">
+            <div class="th">❤ <span class="v-name" style="color:inherit">--</span>的状态档案 ❤</div>
+            <div class="meta-row">
+                <div class="meta-box">🕒 <span class="v-time">--</span></div>
+                <div class="meta-box">📍 <span class="v-loc">--</span></div>
+                <div class="meta-box">№ <span class="v-img-id">--</span></div>
+            </div>
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">穿着</span><span class="row-val v-look">--</span></div>
+                <div class="card-row"><span class="row-lbl">内衣</span><span class="row-val v-outfit">--</span></div>
+                <div class="card-row"><span class="row-lbl">动作</span><span class="row-val v-act">--</span></div>
+                <div class="card-row" style="border-bottom:none"><span class="row-lbl">想法</span><span
+                        class="row-val v-os" style="font-style:italic">--</span></div>
+            </div>
+            <details class="secret-box">
+                <summary>🔒 私密部位状态 (点击查看)</summary>
+                <div class="secret-content">
+                    <div class="card-row"><span class="row-lbl">小</span><span class="row-val x-grid-1">--</span></div>
+                    <div class="card-row"><span class="row-lbl">菊</span><span class="row-val x-grid-2">--</span></div>
+                    <div class="card-row"><span class="row-lbl">房</span><span class="row-val x-grid-3">--</span></div>
+                    <div class="card-row" style="border-bottom:none"><span class="row-lbl">玉足</span><span
+                            class="row-val x-grid-4">--</span></div>
+                </div>
+            </details>
+        </div>
+    </div>
+    <div class="char-group">
+        <div class="ti" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">
+            <div class="nav-arrow prev"
+                onclick="event.stopPropagation();let dir=-1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❮</div>
+            <div class="nav-arrow next"
+                onclick="event.stopPropagation();let dir=1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❯</div> <img class="img-body" src="">
+        </div>
+        <div class="hint" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">查看状态档案<br><span
+                style="font-size:10px;opacity:.7">Click to Expand</span></div>
+        <div class="tw">
+            <div class="th">❤ <span class="v-name" style="color:inherit">--</span>的状态档案 ❤</div>
+            <div class="meta-row">
+                <div class="meta-box">🕒 <span class="v-time">--</span></div>
+                <div class="meta-box">📍 <span class="v-loc">--</span></div>
+                <div class="meta-box">№ <span class="v-img-id">--</span></div>
+            </div>
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">穿着</span><span class="row-val v-look">--</span></div>
+                <div class="card-row"><span class="row-lbl">内衣</span><span class="row-val v-outfit">--</span></div>
+                <div class="card-row"><span class="row-lbl">动作</span><span class="row-val v-act">--</span></div>
+                <div class="card-row" style="border-bottom:none"><span class="row-lbl">想法</span><span
+                        class="row-val v-os" style="font-style:italic">--</span></div>
+            </div>
+            <details class="secret-box">
+                <summary>🔒 私密部位状态 (点击查看)</summary>
+                <div class="secret-content">
+                    <div class="card-row"><span class="row-lbl">小</span><span class="row-val x-grid-1">--</span></div>
+                    <div class="card-row"><span class="row-lbl">菊</span><span class="row-val x-grid-2">--</span></div>
+                    <div class="card-row"><span class="row-lbl">房</span><span class="row-val x-grid-3">--</span></div>
+                    <div class="card-row" style="border-bottom:none"><span class="row-lbl">玉足</span><span
+                            class="row-val x-grid-4">--</span></div>
+                </div>
+            </details>
+        </div>
+    </div> <img src="x" style="display:none"
+        onerror="eval(this.closest('.t').querySelector('.logic-core').dataset.init)">
+</div>

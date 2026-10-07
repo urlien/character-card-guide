@@ -1,0 +1,1 @@
+/<title>\s*([\s\S]*?)\s*<\/title>[\s\S]*?<content1>\s*([\s\S]*?)\s*<\/content1>[\s\S]*?<content2>\s*([\s\S]*?)\s*<\/content2>[\s\S]*?<content3>\s*([\s\S]*?)\s*<\/content3>[\s\S]*?<content4>\s*([\s\S]*?)\s*<\/content4>/

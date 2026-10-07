@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>粉色樱花 · 图鉴配置器</title>
+<style>
+:root{
+  --bg:#FDF7F9; --card:#FFFFFF; --soft:#FFE8F0; --border:#F5C6D8;
+  --ink:#4A2035; --muted:#9E6B80; --accent:#FF5C8A; --deep:#D43D6A;
+  --shadow:rgba(255,92,138,.14); --bad:#E0483F;
+}
+html.dark{
+  --bg:#22101C; --card:#33172A; --soft:#4A2438; --border:#6B3350;
+  --ink:#FFE8F0; --muted:#C99BAE; --accent:#FF7AA2; --deep:#FF9EBC;
+  --shadow:rgba(0,0,0,.45); --bad:#FF8A7A;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.6 'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  transition:background .25s,color .25s;
+}
+.top{
+  position:sticky;top:0;z-index:20;background:var(--soft);
+  border-bottom:1px solid var(--border);padding:12px 18px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.top h1{margin:0;font-size:17px;color:var(--accent);font-weight:700}
+.top .sub{font-size:12px;color:var(--muted);flex:1;min-width:180px}
+.btn{
+  font:inherit;font-size:13px;padding:6px 14px;border-radius:16px;cursor:pointer;
+  border:1px solid var(--accent);background:var(--card);color:var(--accent);
+  transition:background .18s,color .18s;white-space:nowrap;
+}
+.btn:hover{background:var(--accent);color:#fff}
+.btn.solid{background:var(--accent);color:#fff}
+.btn.solid:hover{background:var(--deep);border-color:var(--deep)}
+.btn.ghost{border-color:var(--border);color:var(--muted)}
+.btn.ghost:hover{background:var(--border);color:var(--ink)}
+.btn.tiny{font-size:11px;padding:2px 8px;border-radius:10px}
+.btn.danger{border-color:var(--bad);color:var(--bad)}
+.btn.danger:hover{background:var(--bad);color:#fff}
+
+main{
+  display:grid;grid-template-columns:210px minmax(320px,1fr) 380px;
+  gap:14px;padding:14px 18px 40px;align-items:start;
+}
+@media(max-width:1100px){main{grid-template-columns:190px 1fr}.col-prev{grid-column:1/-1}}
+@media(max-width:720px){main{grid-template-columns:1fr}.col-prev{grid-column:auto}}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 3px 14px var(--shadow)}
+.card>h2{
+  margin:0;padding:10px 14px;font-size:13px;font-weight:700;color:var(--accent);
+  border-bottom:1px solid var(--border);background:var(--soft);
+  border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.card>.inner{padding:12px 14px}
+
+/* 角色列表 */
+.chip{
+  display:flex;align-items:center;gap:6px;padding:7px 9px;margin-bottom:6px;
+  border:1px solid var(--border);border-radius:9px;cursor:pointer;background:var(--card);
+  transition:background .15s,border-color .15s;
+}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.on .cmeta,.chip.on .cidx{color:rgba(255,255,255,.85)}
+.cidx{font-size:11px;color:var(--muted);flex-shrink:0}
+.cname{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmeta{font-size:11px;color:var(--muted);flex-shrink:0}
+.cmove{display:flex;gap:2px;flex-shrink:0}
+.cmove span{cursor:pointer;opacity:.55;font-size:11px;line-height:1;padding:2px}
+.cmove span:hover{opacity:1}
+.chip.on .cmove span{opacity:.8}
+
+/* 表单 */
+label.f{display:block;font-size:12px;font-weight:700;color:var(--accent);margin:0 0 4px}
+.field{margin-bottom:14px}
+input.t,textarea.t{
+  width:100%;font:inherit;font-size:13px;padding:7px 10px;color:var(--ink);
+  border:1px solid var(--border);border-radius:8px;background:var(--bg);
+  outline:none;transition:border-color .15s;
+}
+input.t:focus,textarea.t:focus{border-color:var(--accent)}
+textarea.t{resize:vertical;min-height:64px;line-height:1.7}
+.hintline{font-size:11px;color:var(--muted);margin-top:3px}
+.urlrow{display:flex;gap:8px;align-items:flex-start}
+.urlrow input.t{flex:1}
+.pv{
+  width:62px;height:62px;flex-shrink:0;border:1px solid var(--border);border-radius:8px;
+  background:var(--soft);overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;color:var(--muted);text-align:center;padding:2px;
+}
+.pv img{width:100%;height:100%;object-fit:cover;display:block}
+.pv.big{width:100%;height:132px}
+
+.sub{border:1px solid var(--border);border-radius:9px;padding:9px 10px;margin-bottom:8px;background:var(--bg)}
+.sub .srow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.sub .srow:last-child{margin-bottom:0}
+.sub .srow input.t{flex:1}
+.sub .srow .lbl{flex:0 0 74px}
+.mini{width:26px;height:26px;flex-shrink:0;border:1px solid var(--border);border-radius:7px;
+  background:var(--card);color:var(--muted);cursor:pointer;font-size:13px;line-height:1;
+  display:flex;align-items:center;justify-content:center}
+.mini:hover{border-color:var(--bad);color:var(--bad)}
+.pthumb{width:44px;height:34px;flex-shrink:0;border:1px solid var(--border);border-radius:6px;
+  background:var(--soft);overflow:hidden;position:relative}
+.pthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pthumb.bad::after{content:'无图';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted)}
+
+.bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.sec{font-size:12px;font-weight:700;color:var(--accent);margin:18px 0 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sec:first-child{margin-top:0}
+
+/* 预览 */
+.phone{
+  width:100%;max-width:352px;margin:0 auto;aspect-ratio:9/16;max-height:600px;
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;background:#F6F1F4;
+  box-shadow:0 4px 18px var(--shadow);
+}
+.phone iframe{width:100%;height:100%;border:0;display:block;background:transparent}
+.seg{display:flex;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.seg button{font:inherit;font-size:11px;padding:2px 9px;border:0;background:var(--card);color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff}
+
+/* 弹层 */
+.mask{position:fixed;inset:0;z-index:100;background:rgba(48,14,30,.55);display:none;align-items:center;justify-content:center;padding:18px}
+.mask.on{display:flex}
+.dlg{background:var(--card);border:1px solid var(--border);border-radius:14px;width:min(860px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 12px 44px rgba(0,0,0,.3)}
+.dlg>h2{margin:0;padding:12px 16px;font-size:15px;color:var(--accent);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:14px 14px 0 0}
+.dlg .dbody{padding:14px 16px;overflow-y:auto}
+.dlg .x{cursor:pointer;font-size:20px;line-height:1;color:var(--muted);background:none;border:0}
+.dlg .x:hover{color:var(--bad)}
+pre.code,textarea.code{
+  width:100%;font:12px/1.55 Consolas,Menlo,'Courier New',monospace;
+  background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:9px;
+  padding:10px 12px;margin:0;overflow:auto;max-height:270px;white-space:pre;tab-size:2;
+}
+textarea.code{min-height:190px;resize:vertical;white-space:pre}
+.meter{display:flex;align-items:center;gap:9px;margin:9px 0;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.mtrack{flex:1;min-width:120px;height:7px;border-radius:4px;background:var(--soft);overflow:hidden;border:1px solid var(--border)}
+.mfill{height:100%;background:var(--accent);width:0;transition:width .25s}
+.meter.bad{color:var(--bad);font-weight:700}
+.meter.bad .mfill{background:var(--bad)}
+.note{font-size:12px;color:var(--muted);line-height:1.85;background:var(--soft);border-left:3px solid var(--accent);padding:9px 12px;border-radius:0 8px 8px 0;margin:0 0 12px}
+.note code{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:0 5px;font-size:11px;color:var(--deep)}
+.note b{color:var(--accent)}
+.tabs2{display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap}
+.tabs2 button{font:inherit;font-size:12px;padding:5px 13px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer}
+.tabs2 button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pane{display:none}.pane.on{display:block}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:200;background:rgba(74,32,53,.94);color:#fff;font-size:13px;padding:8px 18px;border-radius:16px;opacity:0;pointer-events:none;transition:opacity .25s}
+html.dark .toast{background:rgba(255,232,240,.94);color:#33172A}
+.toast.on{opacity:1}
+.kv{font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.9}
+.kv b{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>🌸 图鉴配置器</h1>
+  <span class="sub">填表 → 实时预览 → 导出「[图鉴数据]」正则代码。数据与图鉴本体各占一条正则，谁先谁后都能用。</span>
+  <button class="btn ghost" id="btnTheme" title="切换深浅色">🌓</button>
+  <button class="btn ghost" id="btnDemo">载入示例</button>
+  <button class="btn ghost" id="btnImport">导入</button>
+  <button class="btn solid" id="btnExport">导出代码</button>
+</header>
+
+<main>
+  <section class="card col-list">
+    <h2><span>角色 <span id="cnt">0</span></span></h2>
+    <div class="inner">
+      <div id="list"></div>
+      <button class="btn" id="addChar" style="width:100%;margin-top:4px">＋ 添加角色</button>
+      <p class="hintline" style="margin-top:10px">草稿自动存在本机浏览器，刷新不丢。</p>
+    </div>
+  </section>
+
+  <section class="card col-edit">
+    <h2><span id="edTitle">编辑角色</span><span style="display:flex;gap:6px">
+      <button class="btn tiny ghost" id="dupChar">复制</button>
+      <button class="btn tiny danger" id="delChar">删除</button>
+    </span></h2>
+    <div class="inner" id="editor"></div>
+  </section>
+
+  <section class="card col-prev">
+    <h2><span>实时预览</span>
+      <span class="seg" id="pvTheme">
+        <button data-th="" class="on">跟随</button><button data-th="light">浅色</button><button data-th="dark">深色</button>
+      </span>
+    </h2>
+    <div class="inner">
+      <div class="phone"><iframe id="pv" title="图鉴预览"></iframe></div>
+      <p class="hintline" style="text-align:center;margin-top:9px">
+        预览里跑的就是真正要装进平台的那份图鉴脚本，通过 <code>setData</code> 实时喂数据。
+      </p>
+    </div>
+  </section>
+</main>
+
+<div class="mask" id="maskExport">
+  <div class="dlg">
+    <h2><span>导出代码</span><button class="x" data-close>×</button></h2>
+    <div class="dbody">
+      <div class="tabs2" id="exTabs">
+        <button data-p="p1" class="on">① 图鉴数据（本工具生成）</button>
+        <button data-p="p2">② 图鉴本体（原样复制）</button>
+        <button data-p="p3">③ 取链工具（可选）</button>
+        <button data-p="p4">怎么装</button>
+      </div>
+
+      <div class="pane on" id="p1">
+        <p class="note">
+          这条正则是<b>纯数据</b>，不含界面代码。查找正则填 <code>/\[图鉴数据\]/</code>，
+          在开场白里加 <code>[图鉴数据]</code> 标记触发。<br>
+          它和「图鉴本体」<b>没有顺序要求</b>：数据先到，本体初始化时直接读到；数据后到，本体末尾那行
+          <code>setData</code> 会补渲染。
+        </p>
+        <div class="meter" id="m1"><span id="m1t">0 字符</span><span class="mtrack"><span class="mfill" id="m1f"></span></span><span>上限 20000</span></div>
+        <pre class="code" id="code1"></pre>
+        <div class="bar">
+          <button class="btn solid" data-copy="code1">复制这条</button>
+          <button class="btn" data-dl="图鉴数据">下载 .txt</button>
+        </div>
+      </div>
+
+      <div class="pane" id="p2">
+        <p class="note">
+          图鉴界面本体，<b>不含任何角色数据</b>，所以不管你加多少角色都不会把它挤爆。
+          查找正则填 <code>/\[图鉴\]/</code>，开场白里加 <code>[图鉴]</code>。
+        </p>
+        <div class="meter" id="m2"><span id="m2t">0 字符</span><span class="mtrack"><span class="mfill" id="m2f"></span></span><span>上限 20000</span></div>
+        <pre class="code" id="code2"></pre>
+        <div class="bar">
+          <button class="btn solid" data-copy="code2">复制这条</button>
+          <button class="btn" data-dl="图鉴系统">下载 .txt</button>
+        </div>
+      </div>
+
+      <div class="pane" id="p3">
+        <p class="note">
+          可选。把本地图片压成可粘贴的链接文本，装在左侧 <code>🔗</code> 浮标或图鉴面板右上角的「取链工具」。
+          查找正则填 <code>/\[取链\]/</code>，开场白里加 <code>[取链]</code>。<b>不装也不影响图鉴。</b>
+        </p>
+        <div class="meter" id="m3"><span id="m3t">0 字符</span><span class="mtrack"><span class="mfill" id="m3f"></span></span><span>上限 20000</span></div>
+        <pre class="code" id="code3"></pre>
+        <div class="bar">
+          <button class="btn solid" data-copy="code3">复制这条</button>
+          <button class="btn" data-dl="取链工具">下载 .txt</button>
+        </div>
+      </div>
+
+      <div class="pane" id="p4">
+        <p class="kv">
+          <b>为什么要拆成三条？</b><br>
+          平台限制单条正则的替换内容不能超过 2 万字符。图鉴本体本身就要 1.7 万，
+          数据一旦塞进去（几个角色 + 图片长链接 + 简介）立刻超限。拆开后三条各自有 2 万预算，
+          角色想加多少加多少。<br><br>
+          <b>装法</b><br>
+          ① 在角色卡的「正则替换」里新建三条规则，查找正则分别填
+          <code>/\[图鉴数据\]/</code>、<code>/\[图鉴\]/</code>、<code>/\[取链\]/</code>；<br>
+          ② 「替换为」分别粘上面三个标签页里的代码；<br>
+          ③ 在开场白任意位置写上 <code>[图鉴数据][图鉴]</code>（要取链工具就再加 <code>[取链]</code>）。
+          标记会被替换成空，读者看不到。<br><br>
+          <b>图片链接怎么来</b><br>
+          站外图床直链最好（体积小、加载快）。本地图片可以先装「取链工具」压成 base64，
+          但要注意：一张 480px 的细节图压完就有 6 万字符，<b>会直接超过单条正则上限</b>，
+          所以 base64 只适合小图标或纯色图，正经立绘请走图床外链。
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="maskImport">
+  <div class="dlg" style="width:min(680px,100%)">
+    <h2><span>导入已有配置</span><button class="x" data-close>×</button></h2>
+    <div class="dbody">
+      <p class="note">
+        把之前导出的「图鉴数据」代码整段粘进来，也可以只粘数组部分或标准 JSON。
+        解析<b>只在本页浏览器里进行</b>，不会上传任何内容。<br>
+        导入会<b>覆盖</b>当前所有角色。
+      </p>
+      <textarea class="code" id="impBox" placeholder="window.__sakuraGalleryData = [ ... ];"></textarea>
+      <div class="bar">
+        <button class="btn solid" id="impGo">解析并载入</button>
+        <button class="btn ghost" data-close>取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="text/plain" id="zgSrc">window.__sakuraGallery = window.__sakuraGallery || (() => {
+  if (document.getElementById('z-sakura-gallery')) return { ready: true };
+
+  /* 本脚本不含任何角色数据。数据由另一条正则「[图鉴数据]」单独提供，
+     两条正则谁先谁后都可以：数据先到就在下面初始化时读到，
+     数据后到则由它调用 setData 补渲染。手写数据时执行这两行即可：
+       window.__sakuraGalleryData = [ ... ];
+       if (window.__sakuraGallery && window.__sakuraGallery.setData) window.__sakuraGallery.setData(window.__sakuraGalleryData); */
+
+  const UI_KEY = 'CUSTOM_SAKURA_GALLERY_UI', SMIN = 1, SMAX = 4;
+
+  const CSS = `
+.zg-drawer,.zg-viewer,.zg-toast{--zg-bg:#FFF;--zg-soft:#FFE8F0;--zg-border:#F5C6D8;--zg-ink:#4A2035;--zg-muted:#9E6B80;--zg-accent:#FF5C8A;--zg-deep:#D43D6A;--zg-shadow:rgba(255,92,138,.18);--zg-veil:rgba(48,14,30,.9);font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+html.zg-dark .zg-drawer,html.zg-dark .zg-viewer,html.zg-dark .zg-toast{--zg-bg:#33172A;--zg-soft:#4A2438;--zg-border:#6B3350;--zg-ink:#FFE8F0;--zg-muted:#C99BAE;--zg-accent:#FF7AA2;--zg-deep:#FF9EBC;--zg-shadow:rgba(0,0,0,.45);--zg-veil:rgba(12,4,9,.95)}
+.zg-drawer *{box-sizing:border-box}
+.zg-drawer{position:fixed;left:0;top:50%;z-index:999990;display:flex;align-items:center;transform:translateY(-50%);transition:transform .3s}
+.zg-collapsed{transform:translateY(-50%) translateX(calc(-100% + 24px))}
+.zg-panel{width:300px;max-width:86vw;max-height:82vh;display:flex;flex-direction:column;background:var(--zg-bg);border:1px solid var(--zg-border);border-right:0;border-radius:10px 0 0 10px;box-shadow:0 4px 18px var(--zg-shadow);overflow:hidden}
+.zg-hd,.zg-tabs{flex-shrink:0;border-bottom:1px solid var(--zg-border)}
+.zg-hd{padding:9px 12px;background:var(--zg-soft);display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--zg-accent)}
+.zg-hdl{font-size:11px;font-weight:400;color:var(--zg-muted);border:1px dashed var(--zg-border);border-radius:10px;padding:2px 8px;cursor:pointer}
+.zg-hdl.zg-on,.zg-tabbtn.zg-on{background:var(--zg-accent);border-color:var(--zg-accent);color:#fff}
+.zg-tabs{display:flex;gap:6px;padding:8px 10px;overflow-x:auto}
+.zg-tabbtn{flex:0 0 auto;padding:4px 11px;font:inherit;font-size:12px;border-radius:14px;border:1px solid var(--zg-border);background:var(--zg-bg);color:var(--zg-muted);cursor:pointer;white-space:nowrap}
+.zg-body{padding:12px;overflow-y:auto;flex:1}
+.zg-hero{height:150px;position:relative;margin-bottom:10px;border-radius:8px}
+.zg-hero,.zg-info,.zg-thumb{border:1px solid var(--zg-border);background:var(--zg-soft);overflow:hidden}
+.zg-hero img,.zg-thumb img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}
+.zg-ph{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--zg-muted);font-size:12px;text-align:center;padding:4px}
+.zg-name{font-size:17px;font-weight:700;color:var(--zg-deep);margin-bottom:8px}
+.zg-info{border-radius:8px}
+.zg-irow{display:flex;padding:6px 10px;font-size:12px;border-bottom:1px solid var(--zg-border)}
+.zg-irow:nth-child(odd){background:var(--zg-soft)}
+.zg-irow:last-child{border-bottom:0}
+.zg-ilbl{width:52px;flex-shrink:0;color:var(--zg-accent);font-weight:700}
+.zg-ival{flex:1;color:var(--zg-ink);word-break:break-all}
+.zg-bio{border-left:3px solid var(--zg-accent);background:var(--zg-soft);padding:8px 10px;border-radius:0 8px 8px 0;font-size:12px;line-height:1.8;color:var(--zg-ink);margin:10px 0 12px}
+.zg-sec{font-size:12px;font-weight:700;color:var(--zg-accent);margin-bottom:8px}
+.zg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.zg-thumb{position:relative;padding-bottom:75%;border-radius:6px}
+.zg-noimg{border-style:dashed}
+.zg-cell.zg-has .zg-thumb{cursor:pointer}
+.zg-cname{margin-top:4px;font-size:11px;color:var(--zg-muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zg-empty,.zg-tip{text-align:center;color:var(--zg-muted);font-size:12px;padding:14px 0;line-height:1.8;white-space:pre-line}
+.zg-handle{width:24px;height:88px;flex-shrink:0;background:var(--zg-accent);color:#fff;border:1px solid var(--zg-border);border-left:0;border-radius:0 8px 8px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;box-shadow:2px 0 8px var(--zg-shadow);font-size:11px}
+.zg-viewer{position:fixed;left:0;top:0;right:0;bottom:0;z-index:1000000;background:var(--zg-veil);display:none;flex-direction:column}
+.zg-viewer.zg-show{display:flex}
+.zg-vtop{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:10px 14px}
+.zg-vcount{background:rgba(0,0,0,.35);color:#fff;font-size:12px;padding:4px 10px;border-radius:12px}
+.zg-vzoom{color:rgba(255,255,255,.7);font-size:11px}
+.zg-x{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:18px;line-height:30px;text-align:center;cursor:pointer}
+.zg-stage{flex:1;position:relative;overflow:hidden;touch-action:none}
+.zg-frame{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;transform-origin:0 0;transition:transform .18s}
+.zg-drag{transition:none}
+.zg-img{max-width:92%;max-height:92%;object-fit:contain;pointer-events:none;-webkit-user-drag:none}
+.zg-vcap{flex-shrink:0;text-align:center;color:rgba(255,255,255,.88);font-size:13px;padding:8px 20px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zg-vbar{flex-shrink:0;display:flex;justify-content:center;gap:8px;padding:8px 0 18px}
+.zg-tbtn{min-width:42px;padding:6px 12px;border-radius:16px;background:rgba(255,255,255,.16);color:#fff;font-size:14px;text-align:center;cursor:pointer}
+.zg-tbtn:active{background:var(--zg-accent)}
+.zg-toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:1000002;background:rgba(74,32,53,.92);color:#fff;font-size:12px;padding:7px 14px;border-radius:14px;opacity:0;pointer-events:none;transition:opacity .25s;max-width:80vw;text-align:center}
+.zg-toast.zg-show{opacity:1}
+`;
+
+  const st = document.createElement('style');
+  st.id = 'z-sakura-gallery';
+  st.textContent = CSS;
+  document.head.appendChild(st);
+
+  const el = (t, c, x) => {
+    const e = document.createElement(t);
+    if (c) e.className = c;
+    if (x != null) e.textContent = x;
+    return e;
+  };
+  const ph = (t) => el('div', 'zg-ph', t);
+  const $ = (s, r) => (r || document).querySelector(s);
+
+  const drawer = el('div', 'zg-drawer');
+  drawer.innerHTML =
+    '<div class="zg-panel">' +
+    '<div class="zg-hd"><span>🌸 图鉴</span><span class="zg-hdl" id="zg-lb">取链工具</span></div>' +
+    '<div class="zg-tabs"></div><div class="zg-body"></div></div>' +
+    '<div class="zg-handle" id="zg-hd"><span>图</span><span>鉴</span><span id="zg-ar">▶</span></div>';
+  document.body.appendChild(drawer);
+
+  const viewer = el('div', 'zg-viewer');
+  viewer.innerHTML =
+    '<div class="zg-vtop"><span class="zg-vcount"></span><span class="zg-vzoom">100%</span>' +
+    '<span class="zg-x" id="zg-vc">×</span></div>' +
+    '<div class="zg-stage"><div class="zg-frame"><img class="zg-img" alt=""></div></div>' +
+    '<div class="zg-vcap"></div>' +
+    '<div class="zg-vbar"><span class="zg-tbtn" id="zg-pl">‹</span>' +
+    '<span class="zg-tbtn" id="zg-zo">−</span><span class="zg-tbtn" id="zg-z0">1:1</span>' +
+    '<span class="zg-tbtn" id="zg-zi">＋</span><span class="zg-tbtn" id="zg-pr">›</span></div>';
+  document.body.appendChild(viewer);
+
+  const toast = el('div', 'zg-toast');
+  document.body.appendChild(toast);
+
+  const tabs = $('.zg-tabs', drawer), body = $('.zg-body', drawer);
+  const handle = $('#zg-hd', drawer), arrow = $('#zg-ar', drawer);
+  const stage = $('.zg-stage', viewer), frame = $('.zg-frame', viewer), img = $('.zg-img', viewer);
+  const vcount = $('.zg-vcount', viewer), vzoom = $('.zg-vzoom', viewer), vcap = $('.zg-vcap', viewer);
+
+  let tt = null;
+  const say = (m) => {
+    toast.textContent = m;
+    toast.classList.add('zg-show');
+    clearTimeout(tt);
+    tt = setTimeout(() => toast.classList.remove('zg-show'), 2000);
+  };
+
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let dark = null;
+  const theme = () => {
+    const a = document.documentElement.getAttribute('data-ahl-theme') ||
+      (document.body && document.body.getAttribute('data-ahl-theme'));
+    const d = a ? /dark/i.test(a) : !!(mq && mq.matches);
+    if (d === dark) return;
+    dark = d;
+    document.documentElement.classList.toggle('zg-dark', d);
+  };
+  theme();
+  if (mq) { mq.addEventListener ? mq.addEventListener('change', theme) : mq.addListener(theme); }
+  const mo = new MutationObserver(theme);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-ahl-theme'] });
+  if (document.body) mo.observe(document.body, { attributes: true, attributeFilter: ['data-ahl-theme'] });
+
+  const norm = (raw) => (Array.isArray(raw) ? raw : []).map((c, i) => ({
+    name: c.name || '角色 ' + (i + 1),
+    portrait: c.portrait || '',
+    info: c.info || [],
+    bio: c.bio || '',
+    photos: (c.photos || []).map((p, j) => ({ name: p.name || '照片 ' + (j + 1), url: p.url || '' }))
+  }));
+  let chars = norm(window.__sakuraGalleryData);
+
+  let ui = { open: false, cur: 0 };
+  try {
+    const s = JSON.parse(localStorage.getItem(UI_KEY) || '{}') || {};
+    ui.open = !!s.open; ui.cur = s.cur | 0;
+  } catch (e) {}
+  if (!(ui.cur >= 0 && ui.cur < chars.length)) ui.cur = 0;
+  const save = () => { try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch (e) {} };
+
+  const applyOpen = () => {
+    drawer.classList.toggle('zg-collapsed', !ui.open);
+    arrow.textContent = ui.open ? '◀' : '▶';
+    handle.title = ui.open ? '收起图鉴' : '展开图鉴';
+    save();
+  };
+  handle.addEventListener('click', () => { ui.open = !ui.open; applyOpen(); });
+
+  $('#zg-lb', drawer).addEventListener('click', () => {
+    if (window.__sakuraLink && window.__sakuraLink.open) window.__sakuraLink.open();
+    else say('取链工具是另一条正则，装上后才能用');
+  });
+
+  const renderTabs = () => {
+    tabs.innerHTML = '';
+    tabs.style.display = chars.length ? '' : 'none';
+    chars.forEach((c, i) => {
+      const b = el('button', 'zg-tabbtn' + (i === ui.cur ? ' zg-on' : ''), c.name);
+      b.addEventListener('click', () => {
+        if (ui.cur === i) return;
+        ui.cur = i; renderTabs(); renderBody(); save();
+      });
+      tabs.appendChild(b);
+    });
+  };
+
+  const onBad = (im, box, txt, cell) => im.addEventListener('error', () => {
+    if (im.parentNode) im.parentNode.removeChild(im);
+    box.classList.add('zg-noimg');
+    box.appendChild(ph(txt));
+    if (cell) cell.classList.remove('zg-has');
+  });
+
+  const renderBody = () => {
+    body.innerHTML = '';
+    if (!chars.length) { body.appendChild(el('div', 'zg-empty', '还没有角色数据\n用「图鉴配置器」生成 [图鉴数据] 正则')); return; }
+    const c = chars[ui.cur];
+    const hero = el('div', 'zg-hero');
+    if (c.portrait) {
+      const im = el('img'); im.alt = c.name; im.src = c.portrait;
+      onBad(im, hero, '立绘链接失效');
+      hero.appendChild(im);
+    } else hero.appendChild(ph('立绘未填写'));
+    body.appendChild(hero);
+    body.appendChild(el('div', 'zg-name', c.name));
+    if (c.info.length) {
+      const box = el('div', 'zg-info');
+      c.info.forEach((r) => {
+        const row = el('div', 'zg-irow');
+        row.appendChild(el('div', 'zg-ilbl', (r && r.label) || '项目'));
+        row.appendChild(el('div', 'zg-ival', (r && r.value) || '—'));
+        box.appendChild(row);
+      });
+      body.appendChild(box);
+    }
+    body.appendChild(el('div', 'zg-bio', c.bio || '暂无简介'));
+    const done = c.photos.filter((p) => p.url).length;
+    body.appendChild(el('div', 'zg-sec', '照片 ' + c.photos.length + (c.photos.length ? ' · 已填 ' + done : '')));
+    if (!c.photos.length) { body.appendChild(el('div', 'zg-empty', '这个角色还没有照片\n在配置器里给他加几张')); return; }
+    const grid = el('div', 'zg-grid');
+    c.photos.forEach((p) => {
+      const cell = el('div', 'zg-cell' + (p.url ? ' zg-has' : ''));
+      const th = el('div', 'zg-thumb' + (p.url ? '' : ' zg-noimg'));
+      if (p.url) {
+        const im = el('img'); im.alt = p.name; im.src = p.url;
+        onBad(im, th, '链接失效', cell);
+        th.appendChild(im);
+      } else th.appendChild(ph('未填写'));
+      cell.appendChild(th);
+      cell.appendChild(el('div', 'zg-cname', p.name));
+      cell.addEventListener('click', () => {
+        if (cell.classList.contains('zg-has')) openViewer(p);
+        else say('这张照片还没有填写链接');
+      });
+      grid.appendChild(cell);
+    });
+    body.appendChild(grid);
+  };
+
+  let view = [], cur = 0, scale = 1, tx = 0, ty = 0;
+
+  const applyT = () => {
+    frame.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+    vzoom.textContent = Math.round(scale * 100) + '%';
+  };
+  const clampPan = () => {
+    const W = stage.offsetWidth, H = stage.offsetHeight;
+    const iw = img.offsetWidth, ih = img.offsetHeight;
+    if (!iw || !ih) return;
+    const w = iw * scale, h = ih * scale, x0 = img.offsetLeft, y0 = img.offsetTop;
+    tx = w <= W ? W * (1 - scale) / 2 : Math.min(-x0 * scale, Math.max(W - w - x0 * scale, tx));
+    ty = h <= H ? H * (1 - scale) / 2 : Math.min(-y0 * scale, Math.max(H - h - y0 * scale, ty));
+  };
+  const zoomTo = (s, px, py) => {
+    s = Math.min(SMAX, Math.max(SMIN, s));
+    if (s === scale) return;
+    const k = s / scale;
+    tx = px - (px - tx) * k; ty = py - (py - ty) * k;
+    scale = s;
+    if (scale === 1) { tx = 0; ty = 0; }
+    clampPan(); applyT();
+  };
+  const zoomBy = (f) => zoomTo(scale * f, stage.offsetWidth / 2, stage.offsetHeight / 2);
+  const reset = () => { scale = 1; tx = 0; ty = 0; applyT(); };
+
+  const showPhoto = (i) => {
+    if (!view.length) return;
+    cur = ((i % view.length) + view.length) % view.length;
+    img.src = view[cur].url;
+    vcap.textContent = view[cur].name;
+    vcount.textContent = (cur + 1) + ' / ' + view.length;
+    reset();
+  };
+  const openViewer = (p) => {
+    view = chars[ui.cur].photos.filter((x) => x.url);
+    const i = view.indexOf(p);
+    if (i < 0) return;
+    viewer.classList.add('zg-show');
+    showPhoto(i);
+  };
+  const closeViewer = () => { viewer.classList.remove('zg-show'); ptr.clear(); mode = ''; };
+
+  img.addEventListener('load', () => { clampPan(); applyT(); });
+  img.addEventListener('error', () => say('图片加载失败'));
+  [['#zg-vc', closeViewer], ['#zg-pl', () => showPhoto(cur - 1)], ['#zg-pr', () => showPhoto(cur + 1)],
+   ['#zg-zi', () => zoomBy(1.25)], ['#zg-zo', () => zoomBy(0.8)], ['#zg-z0', reset]]
+    .forEach((x) => $(x[0], viewer).addEventListener('click', x[1]));
+
+  const ptr = new Map();
+  let mode = '', dTgt = null, dX = 0, dY = 0, lX = 0, lY = 0, pDist = 0, pScale = 1;
+  const gap = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+  stage.addEventListener('pointerdown', (e) => {
+    ptr.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (ptr.size === 1) {
+      dTgt = e.target; dX = lX = e.clientX; dY = lY = e.clientY; mode = 'pan';
+      frame.classList.add('zg-drag');
+      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    } else if (ptr.size === 2) {
+      mode = 'pinch'; dTgt = null;
+      const p = Array.from(ptr.values());
+      pDist = gap(p[0], p[1]); pScale = scale;
+    }
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!ptr.has(e.pointerId)) return;
+    ptr.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (mode === 'pan' && ptr.size === 1) {
+      if (scale > 1) { tx += e.clientX - lX; ty += e.clientY - lY; clampPan(); applyT(); }
+      lX = e.clientX; lY = e.clientY;
+    } else if (mode === 'pinch' && ptr.size === 2) {
+      const p = Array.from(ptr.values()), d = gap(p[0], p[1]);
+      if (pDist > 4 && d > 4) {
+        const r = stage.getBoundingClientRect();
+        zoomTo(pScale * d / pDist, (p[0].x + p[1].x) / 2 - r.left, (p[0].y + p[1].y) / 2 - r.top);
+      }
+    }
+  });
+  const up = (e) => {
+    if (mode === 'pan' && ptr.has(e.pointerId)) {
+      frame.classList.remove('zg-drag');
+      const dx = e.clientX - dX, dy = e.clientY - dY;
+      if (scale <= 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) showPhoto(cur + (dx < 0 ? 1 : -1));
+      else if (Math.abs(dx) < 8 && Math.abs(dy) < 8 && (dTgt === stage || dTgt === frame)) closeViewer();
+    }
+    ptr.delete(e.pointerId);
+    if (!ptr.size) mode = '';
+    else if (ptr.size === 1) {
+      mode = 'pan';
+      const p = Array.from(ptr.values())[0];
+      lX = dX = p.x; lY = dY = p.y;
+    }
+  };
+  stage.addEventListener('pointerup', up);
+  stage.addEventListener('pointercancel', up);
+  stage.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const r = stage.getBoundingClientRect();
+    zoomTo(scale * (e.deltaY < 0 ? 1.15 : 1 / 1.15), e.clientX - r.left, e.clientY - r.top);
+  }, { passive: false });
+
+  document.addEventListener('keydown', (e) => {
+    if (!viewer.classList.contains('zg-show')) return;
+    const k = e.key;
+    if (k === 'Escape') closeViewer();
+    else if (k === '+' || k === '=') zoomBy(1.25);
+    else if (k === '-' || k === '_') zoomBy(0.8);
+    else if (k === '0') reset();
+    else if (k === 'ArrowLeft') showPhoto(cur - 1);
+    else if (k === 'ArrowRight') showPhoto(cur + 1);
+    else return;
+    e.preventDefault();
+  });
+
+  const setData = (raw) => {
+    chars = norm(raw);
+    if (!(ui.cur >= 0 && ui.cur < chars.length)) ui.cur = 0;
+    closeViewer();
+    renderTabs(); renderBody();
+    return chars.length;
+  };
+
+  renderTabs(); renderBody(); applyOpen();
+  return { ready: true, setData: setData, get data() { return chars; } };
+})();</script>
+<script type="text/plain" id="zlSrc">window.__sakuraLink = window.__sakuraLink || (() => {
+  if (document.getElementById('z-sakura-link')) return { ready: true, open: () => {} };
+
+  const DIM = 480, Q = 0.72, WARN = 18000;
+
+  const CSS = `
+.zl-modal,.zl-toast,.zl-fab{--zl-bg:#FFF;--zl-soft:#FFE8F0;--zl-border:#F5C6D8;--zl-ink:#4A2035;--zl-muted:#9E6B80;--zl-accent:#FF5C8A;--zl-shadow:rgba(255,92,138,.18);font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+html.zl-dark .zl-modal,html.zl-dark .zl-toast,html.zl-dark .zl-fab{--zl-bg:#33172A;--zl-soft:#4A2438;--zl-border:#6B3350;--zl-ink:#FFE8F0;--zl-muted:#C99BAE;--zl-accent:#FF7AA2;--zl-shadow:rgba(0,0,0,.45)}
+.zl-modal *{box-sizing:border-box}
+.zl-modal{position:fixed;left:0;top:0;right:0;bottom:0;z-index:1000001;background:rgba(30,8,20,.6);display:none;align-items:center;justify-content:center;padding:16px}
+.zl-modal.zl-show{display:flex}
+.zl-box{width:100%;max-width:340px;max-height:86vh;display:flex;flex-direction:column;background:var(--zl-bg);border:1px solid var(--zl-border);border-radius:12px;overflow:hidden;box-shadow:0 8px 32px var(--zl-shadow)}
+.zl-hd{padding:10px 14px;background:var(--zl-soft);border-bottom:1px solid var(--zl-border);display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--zl-accent);flex-shrink:0}
+.zl-x{width:24px;height:24px;border-radius:50%;background:var(--zl-bg);border:1px solid var(--zl-border);color:var(--zl-muted);font-size:16px;line-height:22px;text-align:center;cursor:pointer;flex-shrink:0}
+.zl-bd{padding:12px 14px 14px;overflow-y:auto}
+.zl-tip{color:var(--zl-muted);font-size:11px;line-height:1.7}
+.zl-btn{display:block;width:100%;margin-top:10px;background:var(--zl-bg);border:1px solid var(--zl-accent);color:var(--zl-accent);border-radius:6px;padding:7px 0;font:inherit;font-size:12px;text-align:center;cursor:pointer}
+.zl-btn:active{background:var(--zl-accent);color:#fff}
+.zl-prev{display:none;width:100%;max-height:150px;object-fit:contain;border:1px solid var(--zl-border);border-radius:8px;background:var(--zl-soft);margin-top:10px}
+.zl-len{display:none;margin-top:8px}
+.zl-bad{color:#E4567A;font-weight:700}
+.zl-ta{display:none;width:100%;height:78px;margin-top:6px;padding:8px;font-size:11px;line-height:1.5;border:1px solid var(--zl-border);border-radius:6px;background:var(--zl-soft);color:var(--zl-ink);resize:none}
+.zl-row{display:none;gap:8px}
+.zl-row .zl-btn{flex:1}
+.zl-on{display:block}
+.zl-row.zl-on{display:flex}
+.zl-fab{position:fixed;left:0;bottom:24px;z-index:999989;width:26px;height:26px;border-radius:0 8px 8px 0;background:var(--zl-accent);color:#fff;font-size:13px;line-height:26px;text-align:center;cursor:pointer;box-shadow:2px 0 8px var(--zl-shadow)}
+.zl-toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);z-index:1000002;background:rgba(74,32,53,.92);color:#fff;font-size:12px;padding:7px 14px;border-radius:14px;opacity:0;pointer-events:none;transition:opacity .25s;max-width:80vw;text-align:center}
+.zl-toast.zl-show{opacity:1}
+`;
+
+  const st = document.createElement('style');
+  st.id = 'z-sakura-link';
+  st.textContent = CSS;
+  document.head.appendChild(st);
+
+  const el = (t, c, x) => {
+    const e = document.createElement(t);
+    if (c) e.className = c;
+    if (x != null) e.textContent = x;
+    return e;
+  };
+  const $ = (s, r) => (r || document).querySelector(s);
+
+  const modal = el('div', 'zl-modal');
+  modal.innerHTML =
+    '<div class="zl-box"><div class="zl-hd"><span>🔗 取链工具</span>' +
+    '<span class="zl-x" id="zl-x">×</span></div><div class="zl-bd">' +
+    '<div class="zl-tip">选一张本地图片，压到最长边 480px 后生成 base64。MMD 单条正则上限 2 万字符，base64 很容易超；正式使用请把图传到图床，再把外链填进图鉴配置器。</div>' +
+    '<div class="zl-btn" id="zl-pick">选择本地图片</div>' +
+    '<img class="zl-prev" alt=""><div class="zl-tip zl-len"></div>' +
+    '<textarea class="zl-ta" readonly></textarea>' +
+    '<div class="zl-row"><div class="zl-btn" id="zl-c1">复制链接</div>' +
+    '<div class="zl-btn" id="zl-c2">复制配置行</div></div></div></div>';
+  document.body.appendChild(modal);
+
+  const fab = el('div', 'zl-fab', '🔗');
+  fab.title = '取链工具';
+  document.body.appendChild(fab);
+
+  const toast = el('div', 'zl-toast');
+  document.body.appendChild(toast);
+  const fin = el('input');
+  fin.type = 'file'; fin.accept = 'image/*'; fin.style.display = 'none';
+  document.body.appendChild(fin);
+
+  const prev = $('.zl-prev', modal), len = $('.zl-len', modal);
+  const ta = $('.zl-ta', modal), row = $('.zl-row', modal);
+
+  let tt = null;
+  const say = (m) => {
+    toast.textContent = m;
+    toast.classList.add('zl-show');
+    clearTimeout(tt);
+    tt = setTimeout(() => toast.classList.remove('zl-show'), 2000);
+  };
+
+  const open = () => modal.classList.add('zl-show');
+  const shut = () => modal.classList.remove('zl-show');
+  fab.addEventListener('click', open);
+  $('#zl-x', modal).addEventListener('click', shut);
+  modal.addEventListener('click', (e) => { if (e.target === modal) shut(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') shut(); });
+  // 图鉴面板自带入口，装了图鉴就把这个浮动按钮藏起来，免得左侧叠两个。
+  setTimeout(() => { if (window.__sakuraGallery) fab.style.display = 'none'; }, 600);
+
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let dark = null;
+  const theme = () => {
+    const a = document.documentElement.getAttribute('data-ahl-theme') ||
+      (document.body && document.body.getAttribute('data-ahl-theme'));
+    const d = a ? /dark/i.test(a) : !!(mq && mq.matches);
+    if (d === dark) return;
+    dark = d;
+    document.documentElement.classList.toggle('zl-dark', d);
+  };
+  theme();
+  if (mq) { mq.addEventListener ? mq.addEventListener('change', theme) : mq.addListener(theme); }
+  new MutationObserver(theme)
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-ahl-theme'] });
+
+  // canvas 由 createElement 动态生成，不是替换文本里的 HTML 标签，不受平台标签过滤影响。
+  // 先铺白底再绘制，避免 PNG 透明区转 JPEG 后变黑。
+  const shrink = (src, dim, q) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => {
+      const k = Math.min(1, dim / Math.max(im.width, im.height));
+      const w = Math.max(1, Math.round(im.width * k)), h = Math.max(1, Math.round(im.height * k));
+      try {
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        const cx = cv.getContext('2d');
+        cx.fillStyle = '#FFF'; cx.fillRect(0, 0, w, h);
+        cx.drawImage(im, 0, 0, w, h);
+        res(cv.toDataURL('image/jpeg', q));
+      } catch (e) { res(src); }
+    };
+    im.onerror = () => res(src);
+    im.src = src;
+  });
+  const read = (f) => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(f);
+  });
+
+  let link = '';
+  $('#zl-pick', modal).addEventListener('click', () => fin.click());
+  fin.addEventListener('change', async () => {
+    const f = (fin.files || [])[0];
+    fin.value = '';
+    if (!f) return;
+    if (!/^image\//.test(f.type)) { say('请选择图片文件'); return; }
+    try { link = await shrink(await read(f), DIM, Q); }
+    catch (e) { say('读取失败'); return; }
+    prev.src = link; ta.value = link;
+    const n = link.length;
+    len.textContent = '共 ' + n + ' 字符 · 压到 ' + DIM + 'px / 质量 ' + Q + '。' +
+      (n > WARN ? '已超过单条正则 2 万字符上限，请改用图床外链。' : '可以粘进配置器的链接框，但会占用正则长度。');
+    len.classList.toggle('zl-bad', n > WARN);
+    [prev, len, ta, row].forEach((x) => x.classList.add('zl-on'));
+    say('已生成链接');
+  });
+
+  const hardCopy = (t) => {
+    const a = el('textarea');
+    a.value = t; a.style.position = 'fixed'; a.style.left = '-9999px';
+    document.body.appendChild(a); a.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(a);
+    say(ok ? '已复制' : '复制失败，请手动选中');
+  };
+  const copy = (t) => {
+    if (!t) { say('还没有生成链接'); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText)
+      navigator.clipboard.writeText(t).then(() => say('已复制'), () => hardCopy(t));
+    else hardCopy(t);
+  };
+  $('#zl-c1', modal).addEventListener('click', () => copy(link));
+  $('#zl-c2', modal).addEventListener('click', () => copy("{ name: '照片', url: '" + link + "' },"));
+
+  return { ready: true, open };
+})();</script>
+
+<script>
+(function () {
+  var LIMIT = 20000, DRAFT = 'CUSTOM_SAKURA_GALLERY_DRAFT', THEME = 'CUSTOM_SAKURA_CFG_THEME';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ---------- 深浅色 ---------- */
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var want = '';
+  try { want = localStorage.getItem(THEME) || ''; } catch (e) {}
+  function paint() {
+    var d = want ? want === 'dark' : !!(mq && mq.matches);
+    document.documentElement.classList.toggle('dark', d);
+    // srcdoc iframe 在 file:// 下可能是 opaque origin，访问 document 会抛，兜住。
+    try {
+      var f = pv.contentWindow;
+      if (f && f.document && f.document.documentElement) {
+        if (want) f.document.documentElement.setAttribute('data-ahl-theme', want);
+        else f.document.documentElement.removeAttribute('data-ahl-theme');
+      }
+    } catch (e) {}
+  }
+  $('#btnTheme').addEventListener('click', function () {
+    want = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    try { localStorage.setItem(THEME, want); } catch (e) {}
+    $$('#pvTheme button').forEach(function (b) { b.classList.toggle('on', b.dataset.th === want); });
+    paint();
+  });
+  $$('#pvTheme button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      want = b.dataset.th;
+      try { want ? localStorage.setItem(THEME, want) : localStorage.removeItem(THEME); } catch (e) {}
+      $$('#pvTheme button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      paint();
+    });
+  });
+  if (mq) { mq.addEventListener ? mq.addEventListener('change', function () { if (!want) paint(); }) : mq.addListener(function () { if (!want) paint(); }); }
+
+  /* ---------- 数据模型 ---------- */
+  function blankChar() {
+    return {
+      name: '', portrait: '', bio: '',
+      info: [{ label: '身份', value: '' }, { label: '年龄', value: '' }, { label: '身高', value: '' }, { label: '性格', value: '' }],
+      photos: [{ name: '', url: '' }, { name: '', url: '' }, { name: '', url: '' }]
+    };
+  }
+  function sanitize(raw) {
+    var a = Array.isArray(raw) ? raw : [];
+    return a.map(function (c) {
+      c = c && typeof c === 'object' ? c : {};
+      return {
+        name: typeof c.name === 'string' ? c.name : '',
+        portrait: typeof c.portrait === 'string' ? c.portrait : '',
+        bio: typeof c.bio === 'string' ? c.bio : '',
+        info: (Array.isArray(c.info) ? c.info : []).map(function (r) {
+          r = r && typeof r === 'object' ? r : {};
+          return { label: typeof r.label === 'string' ? r.label : '', value: typeof r.value === 'string' ? r.value : '' };
+        }),
+        photos: (Array.isArray(c.photos) ? c.photos : []).map(function (p) {
+          p = p && typeof p === 'object' ? p : {};
+          return { name: typeof p.name === 'string' ? p.name : '', url: typeof p.url === 'string' ? p.url : '' };
+        })
+      };
+    });
+  }
+
+  var chars = [blankChar()], sel = 0;
+  try {
+    var d = JSON.parse(localStorage.getItem(DRAFT) || 'null');
+    if (d && Array.isArray(d.chars) && d.chars.length) { chars = sanitize(d.chars); sel = Math.min(d.sel | 0, chars.length - 1); }
+  } catch (e) {}
+  function save() { try { localStorage.setItem(DRAFT, JSON.stringify({ chars: chars, sel: sel })); } catch (e) {} }
+
+  /* ---------- 代码生成 ---------- */
+  function q(s) {
+    return "'" + String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+      .replace(/\r?\n/g, '\\n').replace(/<\/\s*script/gi, '<\\/script') + "'";
+  }
+  function genArray(list) {
+    if (!list.length) return '[]';
+    var blocks = list.map(function (c) {
+      var info = c.info.map(function (r) { return '      { label: ' + q(r.label) + ', value: ' + q(r.value) + ' }'; });
+      var ph = c.photos.map(function (p) { return '      { name: ' + q(p.name) + ', url: ' + q(p.url) + ' }'; });
+      return ['  {',
+        '    name: ' + q(c.name) + ',',
+        '    portrait: ' + q(c.portrait) + ',',
+        '    info: [' + (info.length ? '\n' + info.join(',\n') + '\n    ' : '') + '],',
+        '    bio: ' + q(c.bio) + ',',
+        '    photos: [' + (ph.length ? '\n' + ph.join(',\n') + '\n    ' : '') + ']',
+        '  }'].join('\n');
+    });
+    return '[\n' + blocks.join(',\n') + '\n]';
+  }
+  function genRule(list) {
+    return '<scr' + 'ipt>\n' +
+      'window.__sakuraGalleryData = ' + genArray(list) + ';\n' +
+      'if (window.__sakuraGallery && window.__sakuraGallery.setData) window.__sakuraGallery.setData(window.__sakuraGalleryData);\n' +
+      '</scr' + 'ipt>';
+  }
+  function wrapRule(inner) { return '<scr' + 'ipt>\n' + inner + '\n</scr' + 'ipt>'; }
+  var ZG = $('#zgSrc').textContent.trim(), ZL = $('#zlSrc').textContent.trim();
+
+  /* ---------- 长度计 ---------- */
+  function meter(id, txt) {
+    var n = txt.length, box = $('#m' + id), fill = $('#m' + id + 'f');
+    $('#m' + id + 't').textContent = n + ' 字符' + (n > LIMIT ? ' · 超出 ' + (n - LIMIT) : ' · 余量 ' + (LIMIT - n));
+    fill.style.width = Math.min(100, n / LIMIT * 100) + '%';
+    box.classList.toggle('bad', n > LIMIT);
+    return n <= LIMIT;
+  }
+
+  /* ---------- 提示 ---------- */
+  var tt = null;
+  function say(m) {
+    var t = $('#toast');
+    t.textContent = m; t.classList.add('on');
+    clearTimeout(tt); tt = setTimeout(function () { t.classList.remove('on'); }, 2100);
+  }
+
+  /* ---------- 预览 iframe ---------- */
+  var pv = $('#pv'), pvReady = false, pvTimer = null;
+  pv.srcdoc = '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+    '<style>html,body{margin:0;height:100%;background:transparent}</style></head><body>' +
+    '<scr' + 'ipt>' + ZG + '</scr' + 'ipt></body></html>';
+  pv.addEventListener('load', function () { pvReady = true; paint(); pushPreview(true); });
+  function pushPreview(now) {
+    if (!pvReady) return;
+    clearTimeout(pvTimer);
+    if (now) { doPush(); return; }
+    pvTimer = setTimeout(doPush, 450);
+  }
+  function doPush() {
+    try {
+      var g = pv.contentWindow.__sakuraGallery;
+      if (!g || !g.setData) return;
+      g.setData(chars);
+      // 预览里的图鉴自己记着 ui.cur，setData 不会同步选中项，
+      // 不补这一下就会出现「编辑器在第 2 个角色、预览还停在第 1 个」。
+      var t = pv.contentDocument.querySelectorAll('.zg-tabbtn')[sel];
+      if (t && !t.classList.contains('zg-on')) t.click();
+    } catch (e) {}
+  }
+
+  /* ---------- 缩略图 ---------- */
+  function setThumb(box, url) {
+    var im = box.querySelector('img');
+    if (!url) { if (im) im.remove(); box.textContent = '无图'; box.classList.add('bad'); return; }
+    box.classList.remove('bad'); box.textContent = '';
+    if (!im) { im = document.createElement('img'); box.appendChild(im); }
+    im.onerror = function () { im.remove(); box.textContent = '失效'; box.classList.add('bad'); };
+    if (im.getAttribute('src') !== url) im.src = url;
+  }
+
+  /* ---------- 渲染：角色列表 ---------- */
+  function renderList() {
+    var box = $('#list'); box.innerHTML = '';
+    $('#cnt').textContent = chars.length;
+    chars.forEach(function (c, i) {
+      var chip = document.createElement('div');
+      chip.className = 'chip' + (i === sel ? ' on' : '');
+      var idx = document.createElement('span'); idx.className = 'cidx'; idx.textContent = (i + 1) + '.';
+      var nm = document.createElement('span'); nm.className = 'cname'; nm.textContent = c.name || '未命名';
+      var mt = document.createElement('span'); mt.className = 'cmeta'; mt.textContent = c.photos.length + '图';
+      var mv = document.createElement('span'); mv.className = 'cmove';
+      [['▲', -1], ['▼', 1]].forEach(function (p) {
+        var s = document.createElement('span'); s.textContent = p[0]; s.title = p[1] < 0 ? '上移' : '下移';
+        s.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var j = i + p[1];
+          if (j < 0 || j >= chars.length) return;
+          chars.splice(j, 0, chars.splice(i, 1)[0]); sel = j; renderAll();
+        });
+        mv.appendChild(s);
+      });
+      chip.appendChild(idx); chip.appendChild(nm); chip.appendChild(mt); chip.appendChild(mv);
+      chip.addEventListener('click', function () { sel = i; renderAll(); });
+      box.appendChild(chip);
+    });
+    $('#dupChar').disabled = $('#delChar').disabled = !chars.length;
+  }
+
+  /* ---------- 渲染：编辑区 ---------- */
+  function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+  function field(labelText, node, hint) {
+    var w = el('div', 'field');
+    w.appendChild(el('label', 'f', labelText));
+    w.appendChild(node);
+    if (hint) w.appendChild(el('div', 'hintline', hint));
+    return w;
+  }
+  function textInput(val, onIn, pholder) {
+    var i = el('input'); i.type = 'text'; i.className = 't'; i.value = val || '';
+    if (pholder) i.placeholder = pholder;
+    i.addEventListener('input', function () { onIn(i.value); });
+    return i;
+  }
+  function delBtn(title, fn) { var b = el('button', 'mini', '×'); b.type = 'button'; b.title = title; b.addEventListener('click', fn); return b; }
+
+  function renderEditor() {
+    var box = $('#editor'); box.innerHTML = '';
+    if (!chars.length) {
+      box.appendChild(el('div', 'hintline', '左边先添加一个角色。'));
+      $('#edTitle').textContent = '编辑角色';
+      return;
+    }
+    var c = chars[sel];
+    $('#edTitle').textContent = '编辑角色 ' + (sel + 1) + ' / ' + chars.length;
+
+    box.appendChild(field('角色名', textInput(c.name, function (v) { c.name = v; touchName(); }, '留空会显示「角色 N」'), '显示在标签页和大标题上。'));
+
+    /* 立绘 */
+    var pvBig = el('div', 'pv big'); setThumb(pvBig, c.portrait);
+    var urow = el('div', 'urlrow');
+    urow.appendChild(textInput(c.portrait, function (v) { c.portrait = v; schedThumb(pvBig, v); }, 'https://…'));
+    box.appendChild(field('立绘链接', urow, '面板顶部那张大图，建议横图或方图，会被裁成 300×150。'));
+    box.appendChild(pvBig); pvBig.style.marginBottom = '14px';
+
+    /* 信息卡 */
+    var iHead = el('div', 'sec');
+    iHead.appendChild(el('span', null, '信息卡 · ' + c.info.length + ' 行'));
+    var iAdd = el('button', 'btn tiny', '＋ 加一项'); iAdd.type = 'button';
+    iAdd.addEventListener('click', function () { c.info.push({ label: '', value: '' }); renderAll(); });
+    iHead.appendChild(iAdd);
+    box.appendChild(iHead);
+    c.info.forEach(function (r, i) {
+      var s = el('div', 'sub');
+      var row = el('div', 'srow');
+      var li = textInput(r.label, function (v) { r.label = v; }); li.className = 't lbl'; li.placeholder = '项目名';
+      var vi = textInput(r.value, function (v) { r.value = v; }); vi.placeholder = '内容，留空显示 —';
+      row.appendChild(li); row.appendChild(vi); row.appendChild(delBtn('删掉这一行', function () { c.info.splice(i, 1); renderAll(); }));
+      s.appendChild(row); box.appendChild(s);
+    });
+
+    /* 简介 */
+    var ta = el('textarea'); ta.className = 't'; ta.value = c.bio || ''; ta.placeholder = '一段人物简介，留空显示「暂无简介」';
+    ta.addEventListener('input', function () { c.bio = ta.value; changed(); });
+    box.appendChild(field('简介', ta));
+
+    /* 照片 */
+    var pHead = el('div', 'sec');
+    var pLabel = el('span');
+    var pCount = function () {
+      pLabel.textContent = '照片 · ' + c.photos.length + ' 张（已填链接 ' +
+        c.photos.filter(function (p) { return p.url; }).length + '）';
+    };
+    pCount();
+    pHead.appendChild(pLabel);
+    var pAdd = el('button', 'btn tiny', '＋ 加照片'); pAdd.type = 'button';
+    pAdd.addEventListener('click', function () { c.photos.push({ name: '', url: '' }); renderAll(); });
+    pHead.appendChild(pAdd);
+    box.appendChild(pHead);
+    c.photos.forEach(function (p, i) {
+      var s = el('div', 'sub');
+      var th = el('div', 'pthumb'); setThumb(th, p.url);
+      var r1 = el('div', 'srow');
+      r1.appendChild(th);
+      var ni = textInput(p.name, function (v) { p.name = v; }); ni.placeholder = '照片名，留空显示「照片 N」';
+      r1.appendChild(ni);
+      r1.appendChild(delBtn('删掉这张', function () { c.photos.splice(i, 1); renderAll(); }));
+      var r2 = el('div', 'srow');
+      var ui2 = textInput(p.url, function (v) { p.url = v; pCount(); schedThumb(th, v); }); ui2.placeholder = '图片链接';
+      r2.appendChild(ui2);
+      s.appendChild(r1); s.appendChild(r2); box.appendChild(s);
+    });
+  }
+
+  /* 局部刷新，避免整块重绘打断输入 */
+  var thumbTimers = new WeakMap();
+  function schedThumb(box, url) {
+    clearTimeout(thumbTimers.get(box));
+    thumbTimers.set(box, setTimeout(function () { setThumb(box, url); }, 420));
+    changed();
+  }
+  function touchName() {
+    var chip = $$('#list .chip')[sel];
+    if (chip) chip.querySelector('.cname').textContent = chars[sel].name || '未命名';
+    changed();
+  }
+  function changed() { save(); pushPreview(false); }
+  function renderAll() { renderList(); renderEditor(); save(); pushPreview(false); }
+
+  /* ---------- 按钮 ---------- */
+  $('#addChar').addEventListener('click', function () { chars.push(blankChar()); sel = chars.length - 1; renderAll(); });
+  $('#dupChar').addEventListener('click', function () {
+    if (!chars.length) return;
+    var cp = JSON.parse(JSON.stringify(chars[sel]));
+    cp.name = cp.name ? cp.name + ' 副本' : '';
+    chars.splice(sel + 1, 0, cp); sel++; renderAll(); say('已复制角色');
+  });
+  $('#delChar').addEventListener('click', function () {
+    if (!chars.length) return;
+    if (!confirm('删除角色「' + (chars[sel].name || '未命名') + '」？')) return;
+    chars.splice(sel, 1); sel = Math.max(0, Math.min(sel, chars.length - 1)); renderAll(); say('已删除');
+  });
+  $('#btnDemo').addEventListener('click', function () {
+    var U = 'https://meimoaiimg.com/user/2257198/148806472_p3.jpeg?i=1356088';
+    chars = sanitize([
+      { name: '苏婉儿', portrait: U, bio: '京城第一才女，琴棋书画样样精通。看似温婉，实则心思通透，早已看穿府中明争暗斗。',
+        info: [{ label: '身份', value: '丞相府嫡女' }, { label: '年龄', value: '十七' }, { label: '身高', value: '165cm' }, { label: '性格', value: '外柔内刚' }, { label: '喜好', value: '抚琴、收集绢帕' }],
+        photos: [{ name: '日常 · 白衣', url: U }, { name: '灯会', url: U }, { name: '未填写', url: '' }] },
+      { name: '柳如烟', portrait: '', bio: '',
+        info: [{ label: '身份', value: '江湖侠客' }, { label: '年龄', value: '' }],
+        photos: [{ name: '', url: '' }] },
+      { name: '', portrait: '', bio: '', info: [], photos: [] }
+    ]);
+    sel = 0; renderAll(); say('已载入示例（第 3 个角色是全空的，看看兜底效果）');
+  });
+
+  /* ---------- 弹层 ---------- */
+  function openMask(id) { $(id).classList.add('on'); }
+  function closeMasks() { $$('.mask').forEach(function (m) { m.classList.remove('on'); }); }
+  $$('[data-close]').forEach(function (b) { b.addEventListener('click', closeMasks); });
+  $$('.mask').forEach(function (m) { m.addEventListener('click', function (e) { if (e.target === m) closeMasks(); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMasks(); });
+
+  $$('#exTabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('#exTabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      $$('.pane').forEach(function (p) { p.classList.toggle('on', p.id === b.dataset.p); });
+    });
+  });
+
+  $('#btnExport').addEventListener('click', function () {
+    var r1 = genRule(chars), r2 = wrapRule(ZG), r3 = wrapRule(ZL);
+    $('#code1').textContent = r1; $('#code2').textContent = r2; $('#code3').textContent = r3;
+    var ok = meter(1, r1); meter(2, r2); meter(3, r3);
+    openMask('#maskExport');
+    if (!ok) say('数据超过 2 万字符了，建议精简简介或减少角色');
+  });
+
+  function copyText(txt) {
+    var done = function () { say('已复制到剪贴板'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function () { hardCopy(txt) && done(); });
+    } else { hardCopy(txt) && done(); }
+  }
+  function hardCopy(txt) {
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+    if (!ok) say('复制失败，请在代码框里手动全选复制');
+    return ok;
+  }
+  $$('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () { copyText($('#' + b.dataset.copy).textContent); });
+  });
+  $$('[data-dl]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var pane = b.closest('.pane');
+      var src = $('.code', pane).textContent;
+      var blob = new Blob(['\ufeff' + src], { type: 'text/plain;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '粉色樱花-' + b.dataset.dl + '-正则替换用.txt';
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
+      say('已下载 ' + a.download);
+    });
+  });
+
+  /* ---------- 导入 ---------- */
+  $('#btnImport').addEventListener('click', function () { $('#impBox').value = ''; openMask('#maskImport'); });
+  $('#impGo').addEventListener('click', function () {
+    var t = $('#impBox').value.trim();
+    if (!t) { say('先粘点东西进来'); return; }
+    var parsed;
+    try { parsed = parseData(t); } catch (e) { say('解析失败：' + e.message); return; }
+    if (!Array.isArray(parsed) || !parsed.length) { say('解析出来是空的'); return; }
+    chars = sanitize(parsed); sel = 0; renderAll(); closeMasks();
+    say('已载入 ' + chars.length + ' 个角色');
+  });
+  function parseData(txt) {
+    try { var j = JSON.parse(txt); if (Array.isArray(j)) return j; } catch (e) {}
+    var i = txt.indexOf('__sakuraGalleryData');
+    var s = i >= 0 ? txt.slice(i) : txt;
+    var a = s.indexOf('['), b = s.lastIndexOf(']');
+    if (a < 0 || b <= a) throw new Error('找不到数组');
+    s = s.slice(a, b + 1);
+    try { return JSON.parse(s); } catch (e) {}
+    var v = new Function('return (' + s + ')')();
+    if (!Array.isArray(v)) throw new Error('不是数组');
+    return v;
+  }
+
+  /* ---------- 启动 ---------- */
+  $$('#pvTheme button').forEach(function (b) { b.classList.toggle('on', b.dataset.th === want); });
+  paint();
+  renderAll();
+})();
+</script>
+</body>
+</html>

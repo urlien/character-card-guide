@@ -1,0 +1,3710 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MMD 美化积木工坊 · 新人作者 CSS 换肤生成器</title>
+<style>
+  /* ===== 工具自己的 UI 样式（与导出的皮肤 CSS 完全隔离：皮肤只作用于 Shadow DOM 预览区） ===== */
+  :root{
+    --ui-bg:#0b1220;
+    --ui-bg2:#101a2c;
+    --ui-panel:#121d31;
+    --ui-panel2:#17253c;
+    --ui-line:#22344f;
+    --ui-line2:#2d4462;
+    --ui-text:#e6eefb;
+    --ui-muted:#93a8c4;
+    --ui-accent:#5aa9ff;
+    --ui-accent2:#8ad0ff;
+    --ui-gold:#f0c674;
+    --ui-ok:#5fd39a;
+    --ui-warn:#ffcc66;
+    --ui-err:#ff7b8a;
+    --ui-radius:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:radial-gradient(1200px 600px at 15% -10%,#152742,transparent),var(--ui-bg);
+    color:var(--ui-text);
+    font:14px/1.55 "PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,select,input,textarea{font:inherit;color:inherit}
+  a{color:var(--ui-accent2)}
+
+  /* 顶栏 */
+  .bar{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 18px;border-bottom:1px solid var(--ui-line);
+    background:linear-gradient(180deg,rgba(23,37,60,.95),rgba(16,26,44,.92));
+    position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);
+  }
+  .brand{font-size:17px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:8px}
+  .brand .ver{font-size:11px;font-weight:500;color:var(--ui-muted);border:1px solid var(--ui-line2);border-radius:999px;padding:1px 8px}
+  .bar-grow{flex:1 1 auto}
+  .bar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+  .btn{
+    background:linear-gradient(180deg,#22406b,#1a3153);border:1px solid var(--ui-line2);
+    color:var(--ui-text);border-radius:10px;padding:7px 12px;cursor:pointer;transition:.15s;
+    white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--ui-accent);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn.primary{background:linear-gradient(180deg,#2b6cc4,#1f4f96);border-color:#3f86e0;font-weight:600}
+  .btn.ghost{background:transparent}
+  .btn.danger{background:transparent;border-color:#5a2b34;color:#ffb3bc}
+  .btn.tiny{padding:4px 9px;font-size:12px;border-radius:8px}
+
+  .select,.input{
+    background:var(--ui-panel2);border:1px solid var(--ui-line2);border-radius:9px;padding:6px 9px;
+    color:var(--ui-text);outline:none;max-width:100%;
+  }
+  .select:focus,.input:focus{border-color:var(--ui-accent)}
+  .input::placeholder{color:#6d84a3}
+
+  /* 三栏布局 */
+  .grid{
+    display:grid;grid-template-columns:352px minmax(360px,1fr) 440px;
+    gap:14px;padding:14px;align-items:start;
+  }
+  @media (max-width:1500px){ .grid{grid-template-columns:320px minmax(320px,1fr) 400px} }
+  @media (max-width:1180px){ .grid{grid-template-columns:1fr} }
+
+  .panel{
+    background:linear-gradient(180deg,rgba(23,37,60,.75),rgba(18,29,49,.85));
+    border:1px solid var(--ui-line);border-radius:var(--ui-radius);overflow:hidden;
+  }
+  .panel-h{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:10px 14px;border-bottom:1px solid var(--ui-line);
+    background:rgba(11,18,32,.5);font-weight:600;
+  }
+  .panel-h .sub{font-weight:400;color:var(--ui-muted);font-size:12px}
+  .panel-b{padding:12px 14px}
+  .blocks .panel-b{max-height:calc(100vh - 150px);overflow:auto;padding:10px 12px}
+  .out-body{max-height:calc(100vh - 150px);overflow:auto}
+
+  /* 积木分组 */
+  details.group{border:1px solid var(--ui-line);border-radius:10px;margin-bottom:8px;background:rgba(11,18,32,.35);overflow:hidden}
+  details.group>summary{
+    cursor:pointer;list-style:none;padding:9px 11px;font-weight:600;font-size:13.5px;
+    display:flex;align-items:center;gap:8px;user-select:none;
+  }
+  details.group>summary::-webkit-details-marker{display:none}
+  details.group>summary::before{content:"▸";color:var(--ui-accent);transition:.15s;display:inline-block}
+  details.group[open]>summary::before{transform:rotate(90deg)}
+  details.group[open]>summary{border-bottom:1px solid var(--ui-line)}
+  .group-body{padding:10px 11px 12px}
+  .group-hint{color:var(--ui-muted);font-size:12px;margin:0 0 9px;line-height:1.5}
+
+  .row{display:flex;align-items:center;gap:9px;margin-bottom:9px;min-height:28px}
+  .row>label{flex:0 0 108px;color:var(--ui-muted);font-size:12.5px}
+  .row .ctl{flex:1 1 auto;display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:wrap}
+  /* 提示文字必须自己占满一行：否则它会变成胶囊按钮旁边的一个 flex 项，被挤成一列一个字 */
+  .row .ctl>.mini-note{flex:1 1 100%;margin-top:3px}
+  .row .ctl .select,.row .ctl .input{flex:1 1 auto;min-width:0}
+  .row.stack{display:block}
+  .row.stack>label{display:block;margin-bottom:5px;flex:none}
+  .row.stack .ctl{display:block}
+
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;height:4px;border-radius:99px;
+    background:linear-gradient(90deg,var(--ui-accent),#2b4a75);outline:none;flex:1 1 auto;min-width:80px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:15px;height:15px;border-radius:50%;
+    background:#eaf4ff;border:2px solid var(--ui-accent);cursor:pointer;
+  }
+  .val{flex:0 0 46px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ui-accent2);font-size:12.5px}
+  input[type=color]{
+    -webkit-appearance:none;appearance:none;width:38px;height:26px;padding:0;border:1px solid var(--ui-line2);
+    border-radius:7px;background:transparent;cursor:pointer;flex:0 0 auto;
+  }
+  input[type=color]::-webkit-color-swatch-wrapper{padding:2px}
+  input[type=color]::-webkit-color-swatch{border:none;border-radius:5px}
+  .hex{flex:0 0 86px;font-family:ui-monospace,Consolas,monospace;font-size:12px;text-transform:uppercase}
+  .check{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px}
+  .check input{width:16px;height:16px;accent-color:var(--ui-accent);cursor:pointer}
+  .mini-note{color:var(--ui-muted);font-size:11.5px;margin-top:4px;line-height:1.5}
+  .pill-row{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{
+    background:var(--ui-panel2);border:1px solid var(--ui-line2);border-radius:999px;
+    padding:4px 11px;font-size:12.5px;cursor:pointer;transition:.15s;white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--ui-accent)}
+  .chip.active{background:linear-gradient(180deg,#2b6cc4,#1f4f96);border-color:#4a90e8;color:#fff;font-weight:600}
+  .chip.active.dirty{border-style:dashed}
+  .chip:disabled{opacity:.45;cursor:not-allowed;border-style:dashed}
+  .recipe-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 6px}
+
+  /* 预览区 */
+  .pv-wrap{padding:12px;display:flex;justify-content:center;background:
+    repeating-conic-gradient(from 0deg,#0d1526 0% 25%,#0f1929 0% 50%) 0 0/22px 22px;}
+  .preview-host{
+    width:100%;max-width:430px;height:min(76vh,760px);border-radius:16px;overflow:hidden;
+    position:relative;isolation:isolate;box-shadow:0 18px 50px rgba(0,0,0,.55);transition:max-width .2s;
+    background:#0d1620;
+  }
+  .preview-host.desktop{max-width:100%}
+  .pv-tip{color:var(--ui-muted);font-size:12px;text-align:center;padding:6px 10px 0}
+
+  /* 导出区 */
+  .tabs{display:flex;gap:6px;padding:10px 14px 0;flex-wrap:wrap}
+  .tab{
+    background:transparent;border:1px solid transparent;border-bottom:2px solid transparent;
+    padding:6px 10px;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ui-muted);font-size:13px;
+  }
+  .tab.active{color:var(--ui-text);background:rgba(11,18,32,.6);border-color:var(--ui-line);border-bottom-color:var(--ui-accent)}
+  .tab-pane{display:none;padding:12px 14px}
+  .tab-pane.active{display:block}
+  textarea.code{
+    width:100%;min-height:330px;resize:vertical;background:#0a1120;color:#cfe6ff;
+    border:1px solid var(--ui-line2);border-radius:10px;padding:10px 12px;
+    font:12.5px/1.6 ui-monospace,Consolas,"Courier New",monospace;white-space:pre;overflow:auto;
+  }
+  textarea.code.css{min-height:260px}
+  .stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .stat{
+    background:rgba(11,18,32,.55);border:1px solid var(--ui-line);border-radius:9px;
+    padding:6px 10px;font-size:12px;color:var(--ui-muted);
+  }
+  .stat b{color:var(--ui-text);font-variant-numeric:tabular-nums}
+  .stat.bad b{color:var(--ui-err)}
+  .meter{height:5px;border-radius:99px;background:#1b2b45;overflow:hidden;margin-top:5px}
+  .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--ui-ok),var(--ui-warn));width:0}
+  .meter.bad i{background:linear-gradient(90deg,var(--ui-warn),var(--ui-err))}
+
+  .issues{display:flex;flex-direction:column;gap:6px}
+  .issue{
+    border:1px solid var(--ui-line);border-left-width:3px;border-radius:8px;padding:7px 10px;
+    font-size:12.5px;background:rgba(11,18,32,.5);line-height:1.55;word-break:break-word;
+  }
+  .issue.ok{border-left-color:var(--ui-ok)}
+  .issue.err{border-left-color:var(--ui-err)}
+  .issue.warn{border-left-color:var(--ui-warn)}
+  .issue .k{font-weight:700;margin-right:6px}
+  .issue.err .k{color:var(--ui-err)}
+  .issue.warn .k{color:var(--ui-warn)}
+  .issue.ok .k{color:var(--ui-ok)}
+  .issue.info{border-left-color:var(--ui-accent)}
+  .issue.info .k{color:var(--ui-accent2)}
+
+  /* 拖放取色 */
+  .dropzone{
+    border:1.5px dashed var(--ui-line2);border-radius:10px;padding:15px 12px;text-align:center;
+    color:var(--ui-muted);font-size:12.5px;cursor:pointer;transition:.15s;background:rgba(11,18,32,.35);
+  }
+  .dropzone:hover,.dropzone.over{border-color:var(--ui-accent);color:var(--ui-accent2);background:rgba(90,169,255,.08)}
+  .swatch{width:26px;height:26px;border-radius:7px;border:1px solid var(--ui-line2);display:inline-block;cursor:default}
+  .swatch.big{width:34px;height:34px}
+
+  /* 医生报告里的小表格 */
+  .doc-table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
+  .doc-table th,.doc-table td{border:1px solid var(--ui-line);padding:4px 6px;text-align:left;vertical-align:top}
+  .doc-table th{background:rgba(11,18,32,.5);color:var(--ui-muted);font-weight:600}
+  .doc-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .doc-table td.bad{color:var(--ui-err)}
+
+  .help{font-size:13px;line-height:1.8;color:#d6e4f7}
+  .help h4{margin:14px 0 6px;font-size:14px;color:var(--ui-accent2)}
+  .help h4:first-child{margin-top:0}
+  .help ol,.help ul{margin:6px 0;padding-left:20px}
+  .help code{background:rgba(90,169,255,.14);border:1px solid rgba(90,169,255,.25);border-radius:5px;padding:1px 5px;font-size:12px}
+  .help .callout{border:1px solid var(--ui-line2);border-left:3px solid var(--ui-gold);border-radius:8px;padding:8px 11px;margin:8px 0;background:rgba(240,198,116,.06)}
+  .help .callout.bad{border-left-color:var(--ui-err);background:rgba(255,123,138,.06)}
+  .help table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12.5px}
+  .help th,.help td{border:1px solid var(--ui-line);padding:5px 8px;text-align:left;vertical-align:top}
+  .help th{background:rgba(11,18,32,.5);color:var(--ui-muted);font-weight:600}
+  .help details{border:1px solid var(--ui-line);border-radius:8px;padding:6px 10px;margin:8px 0;background:rgba(11,18,32,.35)}
+  .help summary{cursor:pointer;font-weight:600}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+    background:linear-gradient(180deg,#22406b,#1a3153);border:1px solid var(--ui-accent);
+    padding:9px 16px;border-radius:999px;font-size:13px;z-index:99;transition:.22s;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:#26395a;border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+  ::-webkit-scrollbar-thumb:hover{background:#33507c;background-clip:padding-box}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="brand">🐋 MMD 美化积木工坊 <span class="ver">v2.2</span></div>
+  <div class="bar-grow"></div>
+  <div class="bar-actions">
+    <select class="select" id="quickPreset" title="快速套用配色方案"></select>
+    <button class="btn tiny" id="btnRandom">🎲 随机配色</button>
+    <button class="btn tiny" id="btnSaveScheme">💾 保存这套方案</button>
+    <select class="select" id="schemeList" title="载入已保存的方案"><option value="">— 我的方案 —</option></select>
+    <button class="btn tiny danger" id="btnReset">↺ 全部重置</button>
+  </div>
+</header>
+
+<main class="grid">
+  <!-- 左：积木面板 -->
+  <aside class="panel blocks">
+    <div class="panel-h">🧱 积木面板 <span class="sub">像搭积木一样勾选</span></div>
+    <div class="panel-b" id="blocks"></div>
+  </aside>
+
+  <!-- 中：预览 -->
+  <section class="panel">
+    <div class="panel-h">
+      👀 实时预览
+      <span class="sub" id="pvModeLabel">夜间 · 桌面</span>
+      <div class="bar-grow"></div>
+      <button class="chip" id="pvDay">☀️ 日间</button>
+      <button class="chip active" id="pvNight">🌙 夜间</button>
+      <button class="chip active" id="pvDesktop">🖥️ 桌面</button>
+      <button class="chip" id="pvPhone">📱 手机</button>
+      <button class="chip active" id="pvToggleOn">开关按钮：开</button>
+    </div>
+    <div class="panel-b pv-wrap">
+      <div>
+        <div class="preview-host" id="previewHost"></div>
+        <div class="pv-tip">预览是模拟的聊天界面，里面的名字、对话、功能栏（好感 / 体力）全是示例占位，<b>不会写进你导出的包</b>。<br>点一下右下角／功能栏里的开关按钮，就能看到「一键关美化」的效果。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 右：导出 -->
+  <aside class="panel">
+    <div class="panel-h">📦 导出与检查</div>
+    <div class="tabs">
+      <button class="tab active" data-tab="json">导入正则 JSON</button>
+      <button class="tab" data-tab="css">纯 CSS</button>
+      <button class="tab" data-tab="check">自检报告</button>
+      <button class="tab" data-tab="doctor">🩺 皮肤医生</button>
+      <button class="tab" data-tab="help">怎么用</button>
+    </div>
+    <div class="out-body">
+      <div class="tab-pane active" data-pane="json">
+        <div class="stat-row" id="jsonStats"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn primary" id="btnCopyJson">📋 复制 JSON</button>
+          <button class="btn" id="btnDownloadJson">⬇️ 下载 .json</button>
+          <input class="input" id="fileBase" style="flex:1 1 160px" value="my-mmd-skin" title="导出的文件名（不含后缀）">
+        </div>
+        <textarea class="code" id="outJson" spellcheck="false" readonly></textarea>
+      </div>
+      <div class="tab-pane" data-pane="css">
+        <div class="stat-row" id="cssStats"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn primary" id="btnCopyCss">📋 复制 CSS</button>
+          <button class="btn" id="btnDownloadCss">⬇️ 下载 .css</button>
+        </div>
+        <textarea class="code css" id="outCss" spellcheck="false" readonly></textarea>
+      </div>
+      <div class="tab-pane" data-pane="check">
+        <div class="stat-row" id="checkStats"></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn primary" id="btnFixContrast">🔧 一键修正对比度</button>
+          <span class="mini-note" style="margin:0">保持色相，只推明度，把正文 / 次要文字 / 气泡字推到 ≥4.5:1，强调色 ≥3:1</span>
+        </div>
+        <div class="issues" id="issues"></div>
+      </div>
+      <div class="tab-pane" data-pane="doctor">
+        <div class="stat-row" id="docStats"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+          <button class="btn primary" id="btnDocFile">📂 选择 JSON 文件</button>
+          <button class="btn" id="btnDocSample">🧪 塞一个旧版示例</button>
+          <button class="btn danger tiny" id="btnDocClear">清空</button>
+          <input type="file" id="docFile" accept=".json,application/json,text/plain" style="display:none">
+        </div>
+        <textarea class="code" id="docInput" spellcheck="false" placeholder="把现成的「导入正则」JSON 粘到这里，或点上面的「选择 JSON 文件」……"></textarea>
+        <div class="mini-note" style="margin-top:6px">纯只读分析：医生不会改动那份包的任何一个字节。工作目录里《角色卡【315513】正则数据.json》这类文件也可以直接选进来。</div>
+        <div class="issues" id="docReport" style="margin-top:10px"></div>
+      </div>
+      <div class="tab-pane" data-pane="help" id="helpPane"></div>
+    </div>
+  </aside>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   MMD 美化积木工坊
+   单文件、零外链、离线可用。
+   左侧勾积木 → 中间实时预览 → 右侧导出「导入正则」JSON。
+   导出的每条规则都按平台硬上限与净化边界生成。
+   ========================================================================= */
+(function () {
+  'use strict';
+  // ---------------------------------------------------------------- 小工具
+  const $ = (sel, root) => (root || document).querySelector(sel);
+  const $$ = (sel, root) => Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  const clone = (o) => JSON.parse(JSON.stringify(o));
+  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+  const px = (n) => Number(n) + 'px';
+
+  let toastTimer = 0;
+  function toast(msg) {
+    const el = $('#toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  function getPath(obj, path) {
+    return path.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
+  }
+  function setPath(obj, path, value) {
+    const keys = path.split('.');
+    const last = keys.pop();
+    const target = keys.reduce((o, k) => (o[k] = o[k] || {}), obj);
+    target[last] = value;
+  }
+
+  /* 确定性伪随机：拖动滑杆时粒子的位置不会乱跳（同一个种子永远得到同一串数） */
+  function makeRng(seed) {
+    let s = (seed >>> 0) || 20260101;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  // ---------------------------------------------------------------- 配色预设
+  /* 每套预设都带「日间 / 夜间」两套颜色，对应平台 [data-chat="root"][data-theme="light|dark"] */
+  const PRESETS = [
+    {
+      id: 'moonwhale', name: '🐋 月光鲸歌（深蓝 + 天光蓝）',
+      dark:  { bg:'#0c1522', surface:'#152233', text:'#e9f1fb', muted:'#9db2cc', border:'#24374e', accent:'#7cc0ff', bubbleUser:'#1e3c5e', bubbleAi:'#152233', bubbleText:'#e9f1fb' },
+      light: { bg:'#f2f7fd', surface:'#ffffff', text:'#16233a', muted:'#5f7590', border:'#d8e4f2', accent:'#2f7fd6', bubbleUser:'#d6e8fb', bubbleAi:'#ffffff', bubbleText:'#16233a' },
+    },
+    {
+      id: 'inkjade', name: '🍃 墨青金（古风墨绿 + 金）',
+      dark:  { bg:'#101a1b', surface:'#1c2b2b', text:'#ede8da', muted:'#b8b9ac', border:'#33443f', accent:'#8f713e', bubbleUser:'#2b403b', bubbleAi:'#1c2b2b', bubbleText:'#ede8da' },
+      light: { bg:'#f6f3ea', surface:'#fffdf7', text:'#22302c', muted:'#6d7a70', border:'#ddd6c1', accent:'#a5834a', bubbleUser:'#e7e0cd', bubbleAi:'#fffdf7', bubbleText:'#22302c' },
+    },
+    {
+      id: 'sakura', name: '🌸 樱夜和风（粉樱 + 梅红）',
+      dark:  { bg:'#1a1116', surface:'#2a1b22', text:'#fbeef3', muted:'#cba7b6', border:'#462b34', accent:'#ff8fb1', bubbleUser:'#4a2634', bubbleAi:'#2a1b22', bubbleText:'#fbeef3' },
+      light: { bg:'#fdf5f7', surface:'#ffffff', text:'#3a2028', muted:'#8d6675', border:'#f0d9e1', accent:'#e46a92', bubbleUser:'#fbdce7', bubbleAi:'#ffffff', bubbleText:'#3a2028' },
+    },
+    {
+      id: 'neon', name: '🌃 赛博霓虹（电子青 + 紫）',
+      dark:  { bg:'#08080f', surface:'#131327', text:'#e7f6ff', muted:'#93a0c8', border:'#2a2a52', accent:'#00e5ff', bubbleUser:'#241a4d', bubbleAi:'#131327', bubbleText:'#e7f6ff' },
+      light: { bg:'#f2f4ff', surface:'#ffffff', text:'#161634', muted:'#66699a', border:'#d9dcf5', accent:'#00a3c4', bubbleUser:'#d9e8ff', bubbleAi:'#ffffff', bubbleText:'#161634' },
+    },
+    {
+      id: 'ocean', name: '🌊 深海极光（青绿极光）',
+      dark:  { bg:'#071b22', surface:'#0f2a33', text:'#e2f7fb', muted:'#93bfc9', border:'#1d4450', accent:'#3fd8c8', bubbleUser:'#12414a', bubbleAi:'#0f2a33', bubbleText:'#e2f7fb' },
+      light: { bg:'#effafb', surface:'#ffffff', text:'#10333a', muted:'#568088', border:'#cfe9ec', accent:'#12a396', bubbleUser:'#d3f2f2', bubbleAi:'#ffffff', bubbleText:'#10333a' },
+    },
+    {
+      id: 'amber', name: '🍂 琥珀黄昏（暖橙 + 奶油）',
+      dark:  { bg:'#1a1209', surface:'#2a1e11', text:'#fdf0dd', muted:'#cbb191', border:'#4a3620', accent:'#f0a44a', bubbleUser:'#4a2f14', bubbleAi:'#2a1e11', bubbleText:'#fdf0dd' },
+      light: { bg:'#fdf6ea', surface:'#ffffff', text:'#3a2a14', muted:'#8a7050', border:'#f0e0c6', accent:'#d98a2b', bubbleUser:'#fbe6c8', bubbleAi:'#ffffff', bubbleText:'#3a2a14' },
+    },
+    {
+      id: 'violet', name: '🔮 紫罗兰梦境（梦幻紫）',
+      dark:  { bg:'#130f22', surface:'#1f1935', text:'#efeaff', muted:'#b3a8d6', border:'#362c58', accent:'#b18cff', bubbleUser:'#33265c', bubbleAi:'#1f1935', bubbleText:'#efeaff' },
+      light: { bg:'#f7f4ff', surface:'#ffffff', text:'#241a3d', muted:'#75689c', border:'#e2daf7', accent:'#7c4dff', bubbleUser:'#e4dbff', bubbleAi:'#ffffff', bubbleText:'#241a3d' },
+    },
+    {
+      id: 'forest', name: '🌱 森野清风（苔绿）',
+      dark:  { bg:'#0e1a13', surface:'#17271d', text:'#e6f5ea', muted:'#9dbfa9', border:'#24402f', accent:'#6ecf9a', bubbleUser:'#1f4230', bubbleAi:'#17271d', bubbleText:'#e6f5ea' },
+      light: { bg:'#f2f8f4', surface:'#ffffff', text:'#16301f', muted:'#5d7f68', border:'#d7e8dc', accent:'#2f9e63', bubbleUser:'#d8f0e2', bubbleAi:'#ffffff', bubbleText:'#16301f' },
+    },
+    {
+      id: 'ink', name: '🖤 极简墨白（性冷淡风）',
+      dark:  { bg:'#14171a', surface:'#1d2126', text:'#e8eaed', muted:'#a0a6ad', border:'#2e343b', accent:'#9bb7d4', bubbleUser:'#2b3138', bubbleAi:'#1d2126', bubbleText:'#e8eaed' },
+      light: { bg:'#fafafa', surface:'#ffffff', text:'#1d2126', muted:'#6b7280', border:'#e5e7ea', accent:'#4f7cff', bubbleUser:'#e8effb', bubbleAi:'#ffffff', bubbleText:'#1d2126' },
+    },
+  ];
+
+  const COLOR_KEYS = [
+    { key: 'bg',         label: '整页背景' },
+    { key: 'surface',    label: '卡片/面板底' },
+    { key: 'text',       label: '正文颜色' },
+    { key: 'muted',      label: '次要文字' },
+    { key: 'border',     label: '边框颜色' },
+    { key: 'accent',     label: '强调色' },
+    { key: 'bubbleUser', label: '我的气泡底' },
+    { key: 'bubbleAi',   label: 'AI 气泡底' },
+    { key: 'bubbleText', label: '气泡里的字' },
+  ];
+
+  function presetById(id) {
+    return PRESETS.filter((p) => p.id === id)[0] || PRESETS[0];
+  }
+
+  // ---------------------------------------------------------------- 默认状态
+  function baseDefaults() {
+    const p = presetById('moonwhale');
+    return {
+      palette: {
+        preset: 'moonwhale',
+        mode: 'dual',            // dual=日夜各一套 / unified=一套走天下
+        base: 'dark',            // unified 模式下用哪一套
+        light: clone(p.light),
+        dark: clone(p.dark),
+        fontMode: 'system',
+        fontCustom: '',
+        fontSize: 15,
+        lineHeight: 1.7,
+        shadow: 2,
+        bgStyle: 'glow',
+        glass: true,
+      },
+      bubble: { on: true, radius: 16, border: true, borderWidth: 1, point: false, maxWidth: 78, gap: 12, padX: 13, padY: 10, shadow: 1, tint: true },
+      header: { on: true, gradient: true, blur: true, hairline: true, radius: 0 },
+      composer: { on: true, blur: true, border: true, send: 'accent', radius: 14, sendText: '' },
+      statusbar: { on: false, gradient: true, sticky: true, radius: 0, hairline: true },
+      avatar: { on: true, shape: 'circle', size: 34, ring: false, glow: false },
+      particles: { on: true, shape: 'star', color: '#8ad0ff', color2: '#f0c674', count: 26, size: 2, speed: 22, opacity: 55, dir: 'fall', layer2: true, twinkle: true },
+      motion: { on: true, gradientFlow: false, breathe: true, borderFlow: false, bubbleIn: true, speed: 1, reduceMotion: true },
+      toggle: { on: true, place: 'float', labelOn: '✦ 美化已开', labelOff: '✧ 美化已关', persist: 'session', defaultOn: true, style: 'pill', position: 'bottom-right', saveKey: 'mmdskin_off' },
+      host: { on: true, bridge: true, detailModels: true, detailModelSetting: true, detailPersona: true, detailSummary: true, radius: 12, popupHairline: true },
+      custom: { extraCss: '' },
+      meta: { fileBase: 'my-mmd-skin', beginning: '', statusbar: '', minify: false, recipe: '', safeLayout: true },
+    };
+  }
+
+  /** 只用来当「值类型基准」的快照（绝不要改它）：任何控件写进来的值都必须和这里同型 */
+  const BASE_SNAPSHOT = baseDefaults();
+
+  // ---------------------------------------------------------------- 风格配方
+  /**
+   * 一套「配方」＝整套风格选择 + 一份推荐配色。
+   * patch 里只写跟默认不同的项，键名必须是 baseDefaults() 里真实存在的路径
+   * （自测会逐个校验，写错键名会被点名）。
+   * 刻意不碰：palette.mode（日夜策略由用户决定）、custom.extraCss（用户自己写的东西）、
+   * statusbar.on（功能栏开不开由用户决定，配方只负责"如果开着长什么样"）。
+   */
+  const RECIPES = [
+    {
+      id: 'sakura', name: '🌸 樱花雨', pal: 'sakura',
+      desc: '花瓣飘落 + 圆角柔光，温柔日常',
+      patch: {
+        particles: { on: true, shape: 'petal', count: 22, size: 3, speed: 26, opacity: 60, dir: 'fall', layer2: true, twinkle: false },
+        motion: { on: true, bubbleIn: true, breathe: false, gradientFlow: false, borderFlow: false, speed: 1, reduceMotion: true },
+        palette: { glass: true, bgStyle: 'glow', shadow: 2, fontMode: 'round' },
+        bubble: { on: true, radius: 18, border: false, borderWidth: 1, point: false, gap: 12, padX: 13, padY: 10, shadow: 1, tint: false, maxWidth: 78 },
+        header: { on: true, gradient: true, blur: true, hairline: true, radius: 0 },
+        composer: { on: true, blur: true, border: true, send: 'accent', radius: 16, sendText: '' },
+        avatar: { on: true, shape: 'circle', size: 34, ring: false, glow: false },
+        toggle: { style: 'pill', position: 'bottom-right' },
+      },
+    },
+    {
+      id: 'whale', name: '🌊 深海鲸歌', pal: 'moonwhale',
+      desc: '气泡上浮 + 流光玻璃，安静通透',
+      patch: {
+        particles: { on: true, shape: 'bubble', count: 26, size: 2.5, speed: 30, opacity: 55, dir: 'rise', layer2: true, twinkle: true },
+        motion: { on: true, bubbleIn: true, breathe: true, gradientFlow: true, borderFlow: false, speed: 1, reduceMotion: true },
+        palette: { glass: true, bgStyle: 'diag', shadow: 2, fontMode: 'system' },
+        bubble: { on: true, radius: 20, border: true, borderWidth: 1, point: false, gap: 14, padX: 13, padY: 10, shadow: 2, tint: true, maxWidth: 78 },
+        header: { on: true, gradient: true, blur: true, hairline: true, radius: 0 },
+        composer: { on: true, blur: true, border: true, send: 'glow', radius: 16, sendText: '' },
+        avatar: { on: true, shape: 'circle', size: 36, ring: true, glow: true },
+        toggle: { style: 'pill', position: 'bottom-right' },
+      },
+    },
+    {
+      id: 'snow', name: '❄️ 雪夜静谧', pal: 'ink',
+      desc: '细雪下落 + 极轻阴影，适合长夜对话',
+      patch: {
+        particles: { on: true, shape: 'snow', count: 34, size: 2.5, speed: 34, opacity: 65, dir: 'fall', layer2: true, twinkle: false },
+        motion: { on: true, bubbleIn: true, breathe: false, gradientFlow: false, borderFlow: false, speed: 1, reduceMotion: true },
+        palette: { glass: true, bgStyle: 'dots', shadow: 1, fontMode: 'system', lineHeight: 1.8 },
+        bubble: { on: true, radius: 10, border: true, borderWidth: 1, point: false, gap: 10, padX: 12, padY: 9, shadow: 0, tint: false, maxWidth: 80 },
+        header: { on: true, gradient: false, blur: true, hairline: true, radius: 0 },
+        composer: { on: true, blur: true, border: true, send: 'ghost', radius: 10, sendText: '' },
+        avatar: { on: true, shape: 'circle', size: 32, ring: false, glow: false },
+        statusbar: { gradient: false, sticky: true, radius: 0, hairline: true },
+        toggle: { style: 'square', position: 'top-right' },
+      },
+    },
+    {
+      id: 'neon', name: '🌃 赛博霓虹', pal: 'neon',
+      desc: '硬边直角 + 网格 + 流光按钮，故障感',
+      patch: {
+        particles: { on: true, shape: 'star', count: 40, size: 1.5, speed: 60, opacity: 45, dir: 'still', layer2: false, twinkle: true },
+        motion: { on: true, bubbleIn: false, breathe: true, gradientFlow: true, borderFlow: true, speed: 1.6, reduceMotion: false },
+        palette: { glass: false, bgStyle: 'grid', shadow: 3, fontMode: 'mono', fontSize: 14, lineHeight: 1.6 },
+        bubble: { on: true, radius: 4, border: true, borderWidth: 1, point: true, gap: 10, padX: 12, padY: 9, shadow: 3, tint: true, maxWidth: 84 },
+        header: { on: true, gradient: true, blur: false, hairline: false, radius: 0 },
+        composer: { on: true, blur: false, border: false, send: 'glow', radius: 8, sendText: '' },
+        avatar: { on: true, shape: 'rounded', size: 34, ring: true, glow: true },
+        toggle: { style: 'square', position: 'bottom-left' },
+      },
+    },
+    {
+      id: 'zen', name: '🍵 极简禅意', pal: 'inkjade',
+      desc: '纯静态、无粒子，宽行距宋体，安静留白',
+      patch: {
+        particles: { on: false, shape: 'star', count: 26, size: 2, speed: 22, opacity: 55, dir: 'fall', layer2: true, twinkle: true },
+        motion: { on: false, bubbleIn: false, breathe: false, gradientFlow: false, borderFlow: false, speed: 1, reduceMotion: true },
+        palette: { glass: false, bgStyle: 'none', shadow: 0, fontMode: 'song', fontSize: 16, lineHeight: 1.9 },
+        bubble: { on: true, radius: 6, border: true, borderWidth: 1, point: false, gap: 16, padX: 16, padY: 12, shadow: 0, tint: false, maxWidth: 74 },
+        header: { on: true, gradient: false, blur: false, hairline: true, radius: 0 },
+        composer: { on: true, blur: false, border: true, send: 'ghost', radius: 8, sendText: '' },
+        avatar: { on: true, shape: 'squircle', size: 32, ring: false, glow: false },
+        statusbar: { gradient: false, sticky: true, radius: 0, hairline: true },
+        toggle: { style: 'icon', position: 'bottom-right' },
+      },
+    },
+    {
+      id: 'dreamy', name: '✨ 星尘梦境', pal: 'violet',
+      desc: '萤火飘移 + 顶栏圆角，柔光梦幻',
+      patch: {
+        particles: { on: true, shape: 'firefly', count: 30, size: 3, speed: 28, opacity: 60, dir: 'drift', layer2: true, twinkle: true },
+        motion: { on: true, bubbleIn: true, breathe: true, gradientFlow: true, borderFlow: false, speed: 1, reduceMotion: true },
+        palette: { glass: true, bgStyle: 'glow', shadow: 2, fontMode: 'system' },
+        bubble: { on: true, radius: 22, border: false, borderWidth: 1, point: false, gap: 14, padX: 14, padY: 11, shadow: 2, tint: false, maxWidth: 78 },
+        header: { on: true, gradient: true, blur: true, hairline: true, radius: 18 },
+        composer: { on: true, blur: true, border: true, send: 'glow', radius: 18, sendText: '' },
+        avatar: { on: true, shape: 'circle', size: 36, ring: true, glow: true },
+        toggle: { style: 'pill', position: 'bottom-right' },
+      },
+    },
+  ];
+
+  function recipeById(id) {
+    for (let i = 0; i < RECIPES.length; i += 1) if (RECIPES[i].id === id) return RECIPES[i];
+    return null;
+  }
+
+  /** 把配方写进 state（纯数据操作，自测直接调它） */
+  function applyRecipeToState(s, rec) {
+    const p = presetById(rec.pal);
+    s.palette.preset = rec.pal;
+    s.palette.light = clone(p.light);
+    s.palette.dark = clone(p.dark);
+    Object.keys(rec.patch).forEach((group) => {
+      Object.keys(rec.patch[group]).forEach((key) => { s[group][key] = rec.patch[group][key]; });
+    });
+    s.meta.recipe = rec.id;
+    return s;
+  }
+
+  /* ---------------- 配方的「可撤销」支持 ----------------
+   * 配方是「部分覆盖」：它只动自己 patch 里那几个键（外加推荐配色的 18 个颜色）。
+   * 所以撤销 = 把这批键还原成点它之前的值。为此在套用时先抓一份「改动前快照」。
+   */
+  const recipeCanonCache = {};
+  const recipePathCache = {};
+
+  /** 这套配方一共动了哪些路径（含推荐配色的 preset 与 18 个颜色） */
+  function recipePaths(rec) {
+    if (recipePathCache[rec.id]) return recipePathCache[rec.id];
+    const paths = ['palette.preset'];
+    PAL_KEYS.forEach((k) => { paths.push('palette.light.' + k); paths.push('palette.dark.' + k); });
+    Object.keys(rec.patch).forEach((group) => {
+      Object.keys(rec.patch[group]).forEach((key) => { paths.push(group + '.' + key); });
+    });
+    recipePathCache[rec.id] = paths;
+    return paths;
+  }
+
+  /** 这套配方「标准形态」的状态：拿它跟当前状态比，就知道有没有被混搭过 */
+  function canonicalRecipeState(rec) {
+    if (!recipeCanonCache[rec.id]) recipeCanonCache[rec.id] = applyRecipeToState(baseDefaults(), rec);
+    return recipeCanonCache[rec.id];
+  }
+
+  function captureRecipeValues(s, rec) {
+    const before = {};
+    recipePaths(rec).forEach((p) => { before[p] = clone(getPath(s, p)); });
+    return before;
+  }
+
+  /** 还原：有快照就用快照，没有（比如重新打开页面、或从分享链接来的）就回出厂默认值 */
+  function restoreRecipeValues(s, rec, values) {
+    recipePaths(rec).forEach((p) => {
+      const back = values && Object.prototype.hasOwnProperty.call(values, p) ? values[p] : getPath(BASE_SNAPSHOT, p);
+      if (back !== undefined) setPath(s, p, clone(back));
+    });
+    s.meta.recipe = '';
+    return s;
+  }
+
+  /** 当前这套配方有没有被混搭过（颜色换了预设、或动过它 patch 里的项，都算） */
+  function recipeDirty(s, rec) {
+    const canon = canonicalRecipeState(rec);
+    return recipePaths(rec).some((p) => JSON.stringify(getPath(s, p)) !== JSON.stringify(getPath(canon, p)));
+  }
+
+  const RECIPE_HTML = '<div class="pill-row">'
+    + RECIPES.map((r) => '<button class="chip recipe-chip" type="button" data-recipe="' + r.id
+      + '" title="' + escapeHtml(r.desc) + '">' + r.name + '</button>').join('')
+    + '</div>'
+    + '<div class="recipe-bar">'
+    + '<button class="chip" type="button" id="btnCancelRecipe">✕ 取消当前配方</button>'
+    + '<span class="mini-note" id="recipeStatus" style="margin:0"></span>'
+    + '</div>'
+    + '<div class="mini-note">点一下＝整套风格 <b>+</b> 推荐配色一起换（粒子 / 动效 / 圆角 / 阴影 / 按钮 / 字体）。<br>'
+    + '改任何一项都<b>不会</b>把配方弄丢 —— 它会留在原地并标注「已混搭」，想彻底回到点它之前的样子，点「✕ 取消当前配方」。<br>'
+    + '换另一套配方时会先把上一套整个还原，免得两套风格串味。</div>';
+
+  // ---------------------------------------------------------------- 积木清单
+  /* 每个 field：path 指向 state 里的位置；type 决定渲染成什么控件 */
+  const SECTIONS = [
+    {
+      id: 'recipe', icon: '🎀', title: '风格配方（一键整套风格）', open: true,
+      hint: '懒得一个个调就点一个配方：整套风格 + 推荐配色一起换。',
+      fields: [{ type: 'html', html: RECIPE_HTML }],
+    },
+    {
+      id: 'palette', icon: '🎨', title: '配色方案（微调颜色）', open: true,
+      hint: '选一套预设再微调。颜色全部走平台公开变量，所以日夜切换时会自动跟着变。',
+      fields: [
+        { type: 'html', html: '<div class="dropzone" id="imgDrop">🖼️ 把参考图拖进来（或点这里选图）→ 我按它的颜色生成日夜两套色板<br>'
+          + '<span style="font-size:11.5px;opacity:.8">只会读像素算主色，图片不上传、不保存</span></div>'
+          + '<input type="file" id="imgFile" accept="image/*" style="display:none">'
+          + '<div class="pill-row" id="imgSwatch" style="margin-top:8px"></div>' },
+        { path: 'palette.preset', label: '预设色板', type: 'select',
+          options: PRESETS.map((p) => ({ value: p.id, label: p.name })), apply: 'preset' },
+        { path: 'palette.mode', label: '日夜主题', type: 'chips', options: [
+          { value: 'dual', label: '☀️🌙 日夜各一套' },
+          { value: 'unified', label: '🎯 一套走天下' },
+        ], hint: '「日夜各一套」会分别生成日间 / 夜间两套颜色，跟随 MMD 自身主题切换。' },
+        { path: 'palette.base', label: '统一时用哪套', type: 'chips', when: (s) => s.palette.mode === 'unified', options: [
+          { value: 'dark', label: '用夜间那套' }, { value: 'light', label: '用日间那套' },
+        ] },
+        { type: 'colors', theme: 'light', label: '☀️ 日间配色', when: (s) => s.palette.mode === 'dual' },
+        { type: 'colors', theme: 'dark', label: '🌙 夜间配色' },
+        { path: 'meta.safeLayout', label: '🛡️ 保护自定义界面', type: 'check',
+          text: '不写「气泡最大宽度」和「消息入场动画」这两个会真正压坏卡界面的属性',
+          hint: '默认开着。卡的 UI 住在消息区里：**最大宽度**会把它的全宽面板挤成窄条，'
+            + '**消息入场动画**的 transform 会让它里面固定定位的元素在动画期间错位 —— 这两个才是真凶，所以受保护。'
+            + '内边距、消息间距、头像尺寸这些很温和，照常生效（气泡不会因此变挤）。'
+            + '卡里没有自定义界面、只想要收窄气泡的话，把它关掉即可。' },
+        { path: 'palette.fontSize', label: '正文字号', type: 'range', min: 12, max: 20, step: 0.5, unit: 'px' },
+        { path: 'palette.lineHeight', label: '行高', type: 'range', min: 1.3, max: 2.2, step: 0.05 },
+        { path: 'palette.fontMode', label: '字体', type: 'select', options: [
+          { value: 'system', label: '系统默认（最安全）' },
+          { value: 'hei', label: '黑体 / 无衬线' },
+          { value: 'song', label: '宋体 / 衬线（古风）' },
+          { value: 'round', label: '圆体（可爱）' },
+          { value: 'mono', label: '等宽（科技感）' },
+          { value: 'custom', label: '我自己写字体名' },
+        ] },
+        { path: 'palette.fontCustom', label: '字体名', type: 'text', placeholder: '例如 霞鹜文楷, 思源宋体', when: (s) => s.palette.fontMode === 'custom',
+          hint: '只能填用户设备上已装的字体名；平台不保证加载外链字体，所以这里不给外链。' },
+        { path: 'palette.shadow', label: '阴影强度', type: 'chips', options: [
+          { value: 0, label: '无阴影' }, { value: 1, label: '轻微' }, { value: 2, label: '标准' }, { value: 3, label: '厚重' },
+        ], hint: '作用在顶栏、功能栏和开关按钮上；气泡阴影在下面「气泡与消息」里单独调。' },
+        { path: 'palette.bgStyle', label: '背景纹理', type: 'select', options: [
+          { value: 'none', label: '纯色' },
+          { value: 'glow', label: '角落光晕（推荐）' },
+          { value: 'diag', label: '斜向渐变' },
+          { value: 'grid', label: '细网格' },
+          { value: 'dots', label: '星点噪点' },
+          { value: 'stripe', label: '细条纹' },
+        ] },
+        { path: 'palette.glass', label: '毛玻璃', type: 'check', text: '顶栏 / 底栏用半透明模糊（backdrop-filter）' },
+      ],
+    },
+    {
+      id: 'bubble', icon: '💬', title: '气泡与消息',
+      fields: [
+        { path: 'bubble.on', label: '启用', type: 'check', text: '给气泡换款式' },
+        { path: 'bubble.radius', label: '气泡圆角', type: 'range', min: 0, max: 28, step: 1, unit: 'px', when: (s) => s.bubble.on },
+        { path: 'bubble.padX', label: '左右内边距', type: 'range', min: 6, max: 26, step: 1, unit: 'px', when: (s) => s.bubble.on },
+        { path: 'bubble.padY', label: '上下内边距', type: 'range', min: 5, max: 22, step: 1, unit: 'px', when: (s) => s.bubble.on },
+        { path: 'bubble.maxWidth', label: '气泡最大宽度', type: 'range', min: 50, max: 92, step: 1, unit: '%', when: (s) => s.bubble.on && !s.meta.safeLayout,
+          hint: '这条受「保护自定义界面」管：卡的 UI 也住在消息里，收窄会把它一起挤坏，所以默认不写。' },
+        { path: 'bubble.gap', label: '消息间距', type: 'range', min: 0, max: 28, step: 1, unit: 'px', when: (s) => s.bubble.on },
+        { path: 'bubble.border', label: '气泡描边', type: 'check', text: '给气泡加一圈细描边', when: (s) => s.bubble.on },
+        { path: 'bubble.borderWidth', label: '描边粗细', type: 'range', min: 1, max: 3, step: 0.5, unit: 'px', when: (s) => s.bubble.on && s.bubble.border },
+        { path: 'bubble.point', label: '尖角感', type: 'check', text: '把靠说话人那一侧的圆角收小，做出「说话」的感觉（只改圆角，不用伪元素定位）', when: (s) => s.bubble.on },
+        { path: 'bubble.shadow', label: '气泡阴影', type: 'chips', options: [
+          { value: 0, label: '无' }, { value: 1, label: '轻' }, { value: 2, label: '中' }, { value: 3, label: '重' },
+        ], when: (s) => s.bubble.on },
+        { path: 'bubble.tint', label: '强调色点睛', type: 'check', text: '用自己的气泡底色做一点点强调色描边', when: (s) => s.bubble.on },
+      ],
+    },
+    {
+      id: 'header', icon: '🔝', title: '顶栏（头像 + 角色名那条）',
+      fields: [
+        { path: 'header.on', label: '启用', type: 'check', text: '美化顶栏' },
+        { path: 'header.gradient', label: '渐变底色', type: 'check', text: '顶栏用一层渐变而不是纯色', when: (s) => s.header.on },
+        { path: 'header.blur', label: '毛玻璃', type: 'check', text: '滚动时透出下面的内容', when: (s) => s.header.on },
+        { path: 'header.hairline', label: '底部细线', type: 'check', text: '顶栏和消息区之间加一条分隔线', when: (s) => s.header.on },
+        { path: 'header.radius', label: '底部圆角', type: 'range', min: 0, max: 26, step: 1, unit: 'px', when: (s) => s.header.on,
+          hint: '给顶栏下缘做圆角，会透出背景 → 有点「浮动卡片」的感觉；0 就是贴平。' },
+      ],
+    },
+    {
+      id: 'composer', icon: '⌨️', title: '底栏输入区',
+      hint: '这块是平台自己画背景的节点，工具已经按公开结构限定到输入框的直接父容器。',
+      fields: [
+        { path: 'composer.on', label: '启用', type: 'check', text: '美化输入区和发送按钮' },
+        { path: 'composer.blur', label: '毛玻璃', type: 'check', text: '底栏半透明模糊', when: (s) => s.composer.on },
+        { path: 'composer.border', label: '顶部细线', type: 'check', text: '底栏上方加一条分隔线', when: (s) => s.composer.on },
+        { path: 'composer.radius', label: '输入框圆角', type: 'range', min: 0, max: 30, step: 1, unit: 'px', when: (s) => s.composer.on },
+        { path: 'composer.send', label: '发送按钮', type: 'chips', options: [
+          { value: 'accent', label: '实心强调色' }, { value: 'ghost', label: '描边幽灵' }, { value: 'glow', label: '发光圆钮' },
+        ], when: (s) => s.composer.on },
+        { path: 'composer.sendText', label: '发送按钮文字', type: 'text', placeholder: '留空就用平台原来的图标/文字', when: (s) => s.composer.on,
+          hint: '注意：这个按钮是平台画的，文字不一定能改；改不动就留空。' },
+      ],
+    },
+    {
+      id: 'statusbar', icon: '📊', title: '功能栏（statusbar）',
+      hint: '⚠️ 功能栏的 HTML 由角色卡 statusbar 字段整块写入。只有把开关按钮放在功能栏时，工具才会去写这个字段，会覆盖你卡里原来的功能栏内容。',
+      fields: [
+        { path: 'statusbar.on', label: '启用', type: 'check', text: '给功能栏换底色（不影响内容）' },
+        { path: 'statusbar.gradient', label: '渐变底色', type: 'check', text: '功能栏用渐变', when: (s) => s.statusbar.on },
+        { path: 'statusbar.sticky', label: '吸顶', type: 'check', text: '滚动时固定在顶部', when: (s) => s.statusbar.on },
+        { path: 'statusbar.radius', label: '圆角', type: 'range', min: 0, max: 20, step: 1, unit: 'px', when: (s) => s.statusbar.on },
+        { path: 'statusbar.hairline', label: '底部细线', type: 'check', text: '加一条分隔线', when: (s) => s.statusbar.on },
+      ],
+    },
+    {
+      id: 'avatar', icon: '🙂', title: '头像',
+      hint: '按平台公开结构，头像在顶栏的 [data-chat="header-title"] 里。如果你的目标页结构不同，可能不命中——那就在预览里看不出来，也不影响其它积木。',
+      fields: [
+        { path: 'avatar.on', label: '启用', type: 'check', text: '统一头像形状' },
+        { path: 'avatar.shape', label: '形状', type: 'chips', options: [
+          { value: 'circle', label: '圆形' }, { value: 'rounded', label: '圆角方' }, { value: 'squircle', label: '超椭圆' },
+        ], when: (s) => s.avatar.on },
+        { path: 'avatar.size', label: '尺寸', type: 'range', min: 24, max: 56, step: 1, unit: 'px', when: (s) => s.avatar.on },
+        { path: 'avatar.ring', label: '描边环', type: 'check', text: '给头像加一圈强调色描边', when: (s) => s.avatar.on },
+        { path: 'avatar.glow', label: '外发光', type: 'check', text: '头像外圈一点点辉光', when: (s) => s.avatar.on },
+      ],
+    },
+    {
+      id: 'particles', icon: '✨', title: '粒子效果',
+      hint: '纯 CSS 伪元素 + 多层 radial-gradient 实现：不需要脚本、不占一个 DOM 节点、不吃 GPU 管线，脚本被平台抽走也能活。',
+      fields: [
+        { path: 'particles.on', label: '启用', type: 'check', text: '打开粒子' },
+        { path: 'particles.shape', label: '粒子形态', type: 'select', when: (s) => s.particles.on, options: [
+          { value: 'star', label: '✦ 星尘（细点亮闪）' },
+          { value: 'firefly', label: '🪰 萤火（柔光晕）' },
+          { value: 'snow', label: '❄️ 雪花（大小分层）' },
+          { value: 'petal', label: '🌸 花瓣（椭圆飘落）' },
+          { value: 'bubble', label: '🫧 气泡（空心圆上浮）' },
+        ] },
+        { path: 'particles.dir', label: '飘动方向', type: 'chips', when: (s) => s.particles.on, options: [
+          { value: 'fall', label: '↓ 下落' }, { value: 'rise', label: '↑ 上浮' }, { value: 'drift', label: '↘ 斜飘' }, { value: 'still', label: '◦ 原地闪烁' },
+        ] },
+        { type: 'colors2', label: '粒子配色', p1: 'particles.color', p2: 'particles.color2', when: (s) => s.particles.on },
+        { path: 'particles.count', label: '密度', type: 'range', min: 6, max: 60, step: 1, unit: '颗/层', when: (s) => s.particles.on },
+        { path: 'particles.size', label: '大小', type: 'range', min: 1, max: 6, step: 0.5, unit: 'px', when: (s) => s.particles.on },
+        { path: 'particles.speed', label: '速度', type: 'range', min: 6, max: 60, step: 1, unit: 's', invert: true, when: (s) => s.particles.on,
+          hint: '数字越大飘得越慢（一轮动画的秒数）。' },
+        { path: 'particles.opacity', label: '透明度', type: 'range', min: 10, max: 100, step: 5, unit: '%', when: (s) => s.particles.on },
+        { path: 'particles.layer2', label: '远近双层', type: 'check', text: '再叠一层更小更慢的粒子做纵深', when: (s) => s.particles.on },
+        { path: 'particles.twinkle', label: '闪烁', type: 'check', text: '让粒子淡淡地明暗呼吸', when: (s) => s.particles.on },
+      ],
+    },
+    {
+      id: 'motion', icon: '🌀', title: '动态效果',
+      fields: [
+        { path: 'motion.on', label: '总开关', type: 'check', text: '允许动起来（关了就是纯静态皮肤）' },
+        { path: 'motion.bubbleIn', label: '气泡入场', type: 'check', text: '每条消息淡入 + 上浮一点点（会给消息加 transform，卡的固定定位 UI 可能受影响）', when: (s) => s.motion.on && !s.meta.safeLayout },
+        { path: 'motion.breathe', label: '呼吸辉光', type: 'check', text: '强调色做很轻的明暗呼吸', when: (s) => s.motion.on },
+        { path: 'motion.gradientFlow', label: '渐变流动', type: 'check', text: '顶栏/底栏的渐变缓慢移动', when: (s) => s.motion.on },
+        { path: 'motion.borderFlow', label: '发送键流光', type: 'check', text: '发送按钮上一道光扫过去', when: (s) => s.motion.on },
+        { path: 'motion.speed', label: '动画速度', type: 'range', min: 0.5, max: 2.5, step: 0.1, unit: '×', when: (s) => s.motion.on },
+        { path: 'motion.reduceMotion', label: '照顾晕动症', type: 'check', text: '系统开了「减少动态效果」时自动静止（强烈建议留着）', when: (s) => s.motion.on },
+      ],
+    },
+    {
+      id: 'toggle', icon: '🎛️', title: '一键开关按钮',
+      hint: '给玩家一个按钮，随时把整套美化关掉／打开。关闭靠给根节点加一个 .mmdskin-off 类，所有样式都挂在 :not(.mmdskin-off) 下——不使用 :has()，不碰平台内部 class。',
+      fields: [
+        { path: 'toggle.on', label: '启用', type: 'check', text: '生成开关按钮与配套脚本' },
+        { path: 'toggle.place', label: '按钮位置', type: 'chips', when: (s) => s.toggle.on, options: [
+          { value: 'float', label: '悬浮角落（推荐）' },
+          { value: 'statusbar', label: '塞进功能栏' },
+        ], hint: '选「塞进功能栏」会占用 statusbar 字段，覆盖你卡里原本的功能栏内容。' },
+        { path: 'toggle.position', label: '悬浮在哪', type: 'chips', when: (s) => s.toggle.on && s.toggle.place === 'float', options: [
+          { value: 'bottom-right', label: '右下' }, { value: 'bottom-left', label: '左下' },
+          { value: 'top-right', label: '右上' }, { value: 'top-left', label: '左上' },
+        ] },
+        { path: 'toggle.labelOn', label: '开启时文字', type: 'text', when: (s) => s.toggle.on },
+        { path: 'toggle.labelOff', label: '关闭时文字', type: 'text', when: (s) => s.toggle.on },
+        { path: 'toggle.style', label: '按钮样式', type: 'chips', when: (s) => s.toggle.on, options: [
+          { value: 'pill', label: '胶囊' }, { value: 'square', label: '方形' }, { value: 'icon', label: '只留图标' },
+        ] },
+        { path: 'toggle.defaultOn', label: '默认状态', type: 'chips', when: (s) => s.toggle.on, options: [
+          { value: true, label: '默认开着' }, { value: false, label: '默认关着' },
+        ] },
+        { path: 'toggle.persist', label: '记住选择', type: 'chips', when: (s) => s.toggle.on, options: [
+          { value: 'session', label: '只记本次会话（cache）' },
+          { value: 'forever', label: '永久记住（save 存档）' },
+        ], hint: '永久记住会占用一个作者存档名（平台上限 10 个），写入受 20 次/分钟限频，只在点按钮时写一次。' },
+        { path: 'toggle.saveKey', label: '存档 key', type: 'text', when: (s) => s.toggle.on && s.toggle.persist === 'forever',
+          placeholder: 'mmdskin_off',
+          hint: '只允许字母 / 数字 / 下划线 / 点 / 横线。改个前缀可以避开你自己卡里的存档名冲突。' },
+      ],
+    },
+    {
+      id: 'host', icon: '🖥️', title: '宿主页面与弹窗换肤',
+      hint: 'MMD 新版分两个绘制文档：聊天内容是 iframe，模型设置／用户人设／记忆管理这些弹窗在父页面。父页面只能走「官方主题变量桥」和平台过滤后的 [data-host] CSS 两条公开通路，不能跨源写脚本。配色一律交给变量桥；[data-host] 只做主题无关的圆角与描边——父页面读不到 iframe 的 data-theme，写死颜色会在另一套主题下翻车。',
+      fields: [
+        { path: 'host.on', label: '启用', type: 'check', text: '把我的配色同步给底栏 / 弹窗' },
+        { path: 'host.bridge', label: '主题变量桥', type: 'check', text: '写满 18 个 --chat-* 宿主变量（底栏、输入框、会话列表、模型、人设、记忆管理都吃这套）', when: (s) => s.host.on },
+        { path: 'host.detailModels', label: '模型选择', type: 'check', text: '[data-host="models"] 根上补圆角', when: (s) => s.host.on },
+        { path: 'host.detailModelSetting', label: '模型设置卡片', type: 'check', text: '[data-host="model-setting"] 的 .mp-card 圆角（内部 class 属实测兼容层）', when: (s) => s.host.on },
+        { path: 'host.detailPersona', label: '用户人设选中项', type: 'check', text: '[data-host="persona"] 选中项圆角', when: (s) => s.host.on },
+        { path: 'host.detailSummary', label: '记忆管理面板', type: 'check', text: '[data-host="summary"] 根圆角（这个根本身就是 .summary-sheet，不要再叠一层后代）', when: (s) => s.host.on },
+        { path: 'host.radius', label: '弹窗圆角', type: 'range', min: 0, max: 22, step: 1, unit: 'px', when: (s) => s.host.on },
+        { path: 'host.popupHairline', label: '弹窗描边', type: 'check', text: '给弹窗卡片加一圈中性细描边（用变量 + 灰色兜底，两套主题都不会翻车）', when: (s) => s.host.on },
+      ],
+    },
+    {
+      id: 'custom', icon: '🧪', title: '高级：自定义 CSS',
+      fields: [
+        { type: 'html', html: '<div class="pill-row"><button class="chip" type="button" id="btnExportScheme">⬇️ 导出方案 JSON</button>'
+          + '<button class="chip" type="button" id="btnImportScheme">⬆️ 导入方案 JSON</button>'
+          + '<button class="chip" type="button" id="btnShareLink">🔗 复制分享链接</button>'
+          + '<input type="file" id="schemeFile" accept=".json,application/json" style="display:none"></div>'
+          + '<input class="input" id="shareOut" readonly placeholder="点「复制分享链接」后，链接会出现在这里" style="margin-top:8px;font-size:11.5px">'
+          + '<div class="mini-note">方案 = 你在这套工具里的全部选择（颜色 + 积木 + 文案），不含角色卡内容。<br>'
+          + '分享链接只编进「和默认不同的部分」，所以越简单越短。'
+          + '<b>注意</b>：本地用 file:// 打开时，链接只有在同样路径的电脑上才打得开；要让别人一键复现，得先把 index.html 挂到网上（单文件，丢任何静态托管都行）。</div>' },
+        { path: 'custom.extraCss', label: '追加 CSS', type: 'area', rows: 7,
+          placeholder: '只写 [data-chat="root"] … 或你自己的 .class 规则；别写 *{} / html{} / body{} / :root{}',
+          hint: '这段会被原样并进皮肤的 style 块；右侧「自检报告」会检查它有没有踩平台禁区。' },
+        { path: 'meta.minify', label: '导出压缩', type: 'check', text: '去掉 CSS 的注释与缩进（省字数；想读代码学写法就别开）',
+          hint: '只删注释、换行和行首缩进，绝不动一行之内的空格（calc 里的空格是语法要求）。单条超过 20000 字时无论如何都会自动拆成 -2 / -3 条。' },
+      ],
+    },
+    {
+      id: 'exportshape', icon: '📤', title: '导出形态（导入报「格式错误」时看这里）', open: true,
+      hint: '字段形态已对齐平台自己导出的「正则数据」文件：pageDepth + statusbar + beginning + regex_scripts。'
+        + '导出「一律缩进多行」—— 实测单行紧凑虽然能被导入页接受，但规则不生效，所以那个选项已经删掉了。'
+        + '注意 statusbar / beginning 是「会覆盖卡内容」的字段 —— 给已有卡导入时，把下面两项填成你卡里原本的内容；'
+        + '最稳的办法是用平台自带的导出功能导一次自己的卡，把它的这两个值原样贴进来，一点都不会丢。',
+      fields: [
+        { path: 'meta.statusbar', label: '功能栏 statusbar', type: 'text',
+          placeholder: '留空 = 空字符串（等于清掉卡里原本的功能栏触发串）',
+          hint: '上限 200 字。把开关按钮放进功能栏时，这里会被自动写成 {{skin-toggle}}，不用你填。' },
+        { path: 'meta.beginning', label: '第一句话 beginning', type: 'area', rows: 3,
+          placeholder: '留空 = 空字符串（等于清掉卡里原本的第一句话）',
+          hint: '上限 4000 字。新建卡留空没事；给已有卡导入就填回它原本的第一句话。' },
+      ],
+    },
+  ];
+
+  // ---------------------------------------------------------------- 状态
+  let state = baseDefaults();
+  let previewTheme = 'dark';
+  let previewToggleOff = false;
+  let previewDevice = 'phone';
+  let lastReport = { errors: [], warns: [] };
+
+  // ---------------------------------------------------------------- 颜色工具
+  function normHex(h) {
+    let s = String(h == null ? '' : h).trim();
+    if (/^#[0-9a-f]{3}$/i.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+    return /^#[0-9a-f]{6}$/i.test(s) ? s.toLowerCase() : '#000000';
+  }
+  function rgbOf(h) {
+    const s = normHex(h);
+    return [parseInt(s.slice(1, 3), 16), parseInt(s.slice(3, 5), 16), parseInt(s.slice(5, 7), 16)];
+  }
+  function rgba(h, a) { const c = rgbOf(h); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
+  function mix(h1, h2, t) {
+    const a = rgbOf(h1), b = rgbOf(h2);
+    return '#' + a.map((v, i) => Math.round(v + (b[i] - v) * t))
+      .map((v) => ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2)).join('');
+  }
+  function relLum(h) {
+    const c = rgbOf(h).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  /** WCAG 对比度，1~21 */
+  function contrast(h1, h2) {
+    const l1 = relLum(h1), l2 = relLum(h2);
+    const hi = Math.max(l1, l2), lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function bestTextOn(h) { return contrast(h, '#ffffff') >= contrast(h, '#111111') ? '#ffffff' : '#111111'; }
+  function escCssStr(s) { return String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/"/g, '\\"'); }
+
+  // ---------------------------------------------------------------- 颜色进阶
+  /* 9 个键就是平台公开的 9 个颜色变量，1:1 对应的 */
+  const PAL_KEYS = ['bg', 'surface', 'text', 'muted', 'border', 'accent', 'bubbleUser', 'bubbleAi', 'bubbleText'];
+  const LADDER_DARK = { bg: 9, surface: 15, text: 94, muted: 68, border: 25, accent: 66, bubbleUser: 26, bubbleAi: 15, bubbleText: 95 };
+  const LADDER_LIGHT = { bg: 97, surface: 100, text: 14, muted: 45, border: 88, accent: 42, bubbleUser: 91, bubbleAi: 100, bubbleText: 16 };
+
+  function rgbToHex(r, g, b) {
+    return '#' + [r, g, b].map((v) => ('0' + Math.max(0, Math.min(255, Math.round(v))).toString(16)).slice(-2)).join('');
+  }
+  function hexToHsl(hex) {
+    const c = rgbOf(hex).map((v) => v / 255);
+    const max = Math.max.apply(null, c), min = Math.min.apply(null, c);
+    const l = (max + min) / 2;
+    let h = 0, s = 0;
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === c[0]) h = (c[1] - c[2]) / d + (c[1] < c[2] ? 6 : 0);
+      else if (max === c[1]) h = (c[2] - c[0]) / d + 2;
+      else h = (c[0] - c[1]) / d + 4;
+      h *= 60;
+    }
+    return { h: h, s: s, l: l };
+  }
+
+  /** 拿一套颜色里的色相 + 饱和度，配指定明度阶梯重建出一整块色板 */
+  function rebuildThemeFromLadder(src, ladder) {
+    const seed = hexToHsl((src && (src.accent || src.bg)) || '#7cc0ff');
+    const out = {};
+    PAL_KEYS.forEach((k) => {
+      const s = src && src[k] ? hexToHsl(src[k]) : null;
+      let sat = (s ? s.s : seed.s) * 100;
+      if (k === 'bg' || k === 'surface' || k === 'bubbleAi') sat = clamp(sat, 6, 42);
+      else if (k === 'accent') sat = clamp(sat, 35, 92);
+      else sat = clamp(sat, 8, 60);
+      out[k] = hslHex(s ? s.h : seed.h, sat, ladder[k]);
+    });
+    return out;
+  }
+
+  /** 重建补齐：已有的键保留原样（保真），缺的键才用阶梯补 */
+  function completeTheme(partial, ladder) {
+    const src = {};
+    PAL_KEYS.forEach((k) => { if (partial && partial[k]) src[k] = partial[k]; });
+    const out = clone(rebuildThemeFromLadder(src, ladder));
+    PAL_KEYS.forEach((k) => { if (partial && partial[k]) out[k] = normHex(partial[k]); });
+    return out;
+  }
+
+  /** 保持色相，只把明度往「离背景更远」的方向推，直到对比度达标 */
+  function pushContrast(fg, bg, target) {
+    if (contrast(fg, bg) >= target) return fg;
+    const hsl = hexToHsl(fg);
+    const bgIsDark = relLum(bg) < 0.5;
+    let best = fg, bestRatio = contrast(fg, bg);
+    for (let i = 1; i <= 100; i += 1) {
+      const l = bgIsDark ? hsl.l + i / 100 : hsl.l - i / 100;
+      if (l < 0 || l > 1) break;
+      const cand = hslHex(hsl.h, hsl.s * 100, l * 100);
+      const r = contrast(cand, bg);
+      if (r > bestRatio) { best = cand; bestRatio = r; }
+      if (r >= target) return cand;
+    }
+    return best;
+  }
+
+  /** 给一整块色板做对比度修正，返回 {colors, changes} */
+  function fixThemeContrast(c) {
+    const out = clone(c);
+    const changes = [];
+    const jobs = [
+      { key: 'text', bgKey: 'bg', target: 7.0, label: '正文' },
+      { key: 'muted', bgKey: 'bg', target: 4.5, label: '次要文字' },
+      { key: 'bubbleText', bgKey: 'bubbleAi', target: 5.0, label: '气泡字/AI 气泡' },
+      { key: 'bubbleText', bgKey: 'bubbleUser', target: 4.5, label: '气泡字/我的气泡' },
+      { key: 'accent', bgKey: 'bg', target: 3.0, label: '强调色' },
+    ];
+    jobs.forEach((job) => {
+      const before = contrast(out[job.key], out[job.bgKey]);
+      if (before >= job.target) return;
+      const next = pushContrast(out[job.key], out[job.bgKey], job.target);
+      const after = contrast(next, out[job.bgKey]);
+      if (next.toLowerCase() === normHex(out[job.key])) return;
+      changes.push({ key: job.key, label: job.label, from: out[job.key], to: next, before: before, after: after });
+      out[job.key] = next;
+    });
+    /* 次要文字别和正文一样亮，否则层级没了 */
+    if (normHex(out.muted) === normHex(out.text)) {
+      const dim = pushContrast(mix(out.muted, out.bg, 0.2), out.bg, 4.5);
+      if (contrast(dim, out.bg) >= 4.5 && normHex(dim) !== normHex(out.text)) {
+        changes.push({ key: 'muted', label: '次要文字（拉开层级）', from: out.muted, to: dim, before: contrast(out.muted, out.bg), after: contrast(dim, out.bg) });
+        out.muted = dim;
+      }
+    }
+    return { colors: out, changes: changes };
+  }
+
+  // ---------------------------------------------------------------- CSS 瘦身与拆条
+  /** 保守压缩：只去注释、换行与行首缩进，绝不动一行之内的空格（calc 里的空格是语法要求） */
+  function minifyCss(cssText) {
+    return String(cssText)
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/[ \t]*\r?\n[ \t]*/g, '')
+      .replace(/;\s*}/g, '}')
+      .trim();
+  }
+
+  /** 按花括号深度安全拆条：只在深度 0（也就是规则之间）下刀，绝不切进 @media 或规则内部 */
+  function splitCss(cssText, budget) {
+    const lines = String(cssText).split('\n');
+    const chunks = [];
+    let cur = [];
+    let len = 0;
+    let depth = 0;
+    lines.forEach((line) => {
+      const lineLen = line.length + 1;
+      if (cur.length && depth === 0 && len + lineLen > budget) {
+        chunks.push(cur.join('\n'));
+        cur = [];
+        len = 0;
+      }
+      cur.push(line);
+      len += lineLen;
+      for (let i = 0; i < line.length; i += 1) {
+        if (line[i] === '{') depth += 1;
+        else if (line[i] === '}') depth = Math.max(0, depth - 1);
+      }
+    });
+    if (cur.length) chunks.push(cur.join('\n'));
+    return chunks.length ? chunks : [''];
+  }
+
+  // ---------------------------------------------------------------- 配色提取 / 图片取色
+  const CHAT_TO_KEY = {
+    'chat-bg': 'bg', 'chat-surface': 'surface', 'chat-text': 'text', 'chat-text-muted': 'muted',
+    'chat-border': 'border', 'chat-accent': 'accent', 'chat-bubble-user-bg': 'bubbleUser',
+    'chat-bubble-ai-bg': 'bubbleAi', 'chat-bubble-text': 'bubbleText',
+  };
+  
+  /**
+   * 从任意 CSS 里抓 --chat-* 颜色。关键是**按块解析**：
+   * 一个块里的变量天然属于同一套色板，所以把「块」本身记下来当配对证据，
+   * 比事后按明度排序猜日夜靠谱得多（暗色主题的强调色经常比亮色主题的还亮）。
+   */
+  function extractPaletteVars(text) {
+    const src = String(text == null ? '' : text).replace(/<script[\s\S]*?<\/script>/gi, '');
+    const byTheme = { dark: {}, light: {}, shared: {}, blocks: [] };
+    const blockRe = /([^{}]*)\{([^{}]*)\}/g;
+    const varRe = /--(chat-[a-z0-9-]+)\s*:\s*(#[0-9a-f]{3}|#[0-9a-f]{6})\b/gi;
+    let m;
+    while ((m = blockRe.exec(src)) !== null) {
+      const sel = m[1].toLowerCase();
+      const body = m[2];
+      const hasDark = /data-theme\s*=\s*["']?dark/.test(sel);
+      const hasLight = /data-theme\s*=\s*["']?light/.test(sel);
+      const slot = hasDark && !hasLight ? 'dark' : (hasLight && !hasDark ? 'light' : 'shared');
+      const counts = {};
+      let mm;
+      varRe.lastIndex = 0;
+      while ((mm = varRe.exec(body)) !== null) {
+        const name = mm[1].toLowerCase();
+        const value = normHex(mm[2]);
+        counts[name] = counts[name] || {};
+        counts[name][value] = (counts[name][value] || 0) + 1;
+      }
+      if (!Object.keys(counts).length) continue;
+      const resolved = {};
+      Object.keys(counts).forEach((name) => { resolved[name] = topValues(counts[name], 1)[0]; });
+      byTheme.blocks.push({ slot: slot, vars: resolved });
+      const bucket = byTheme[slot];
+      Object.keys(resolved).forEach((name) => {
+        bucket[name] = bucket[name] || {};
+        bucket[name][resolved[name]] = (bucket[name][resolved[name]] || 0) + 1;
+      });
+    }
+    if (!byTheme.blocks.length) {
+      /* 兜底：没有花括号结构的纯 CSS 片段，全文扫一遍丢进 shared */
+      let mm2;
+      varRe.lastIndex = 0;
+      while ((mm2 = varRe.exec(src)) !== null) {
+        const name = mm2[1].toLowerCase();
+        const value = normHex(mm2[2]);
+        byTheme.shared[name] = byTheme.shared[name] || {};
+        byTheme.shared[name][value] = (byTheme.shared[name][value] || 0) + 1;
+      }
+    }
+    return byTheme;
+  }
+
+  function topValues(bucket, max) {
+    return Object.keys(bucket || {}).sort((a, b) => bucket[b] - bucket[a]).slice(0, max || 2);
+  }
+
+  /**
+   * 把变量桶归一成日夜两套 9 键色板。
+   * 每个键的「归属策略」不一样，这是关键：
+   *  - bg / surface / border / bubble* ：暗色主题用暗的那支
+   *  - text / muted / bubbleText     ：暗色主题用亮的那支
+   *  - accent                        ：按「和该主题背景的对比度」挑，按明度排会挑反
+   * 缺的键用明度阶梯 + 同批颜色的色相饱和度补齐。
+   */
+  const KEY_STRATEGY = {
+    bg: 'lumAsc', surface: 'lumAsc', border: 'lumAsc', bubbleAi: 'lumAsc', bubbleUser: 'lumAsc',
+    text: 'lumDesc', muted: 'lumDesc', bubbleText: 'lumDesc',
+    accent: 'contrast',
+  };
+
+  function paletteFromVars(byTheme) {
+    const dark = {};
+    const light = {};
+    const found = {};
+    const shared = (byTheme && byTheme.shared) || {};
+    const blocks = (byTheme && byTheme.blocks) || [];
+    const varNameOf = (key) => Object.keys(CHAT_TO_KEY).filter((v) => CHAT_TO_KEY[v] === key)[0];
+    /* 先到先得：越可信的来源越先写，后面的 put 不会覆盖它 */
+    const put = (side, key, value) => {
+      if (!key || !value || side[key]) return;
+      side[key] = value;
+      found[key] = 1;
+    };
+
+    /* 1) 选择器带 data-theme 的块 —— 最可信，直接落位 */
+    blocks.forEach((b) => {
+      if (b.slot !== 'dark' && b.slot !== 'light') return;
+      const side = b.slot === 'dark' ? dark : light;
+      Object.keys(b.vars).forEach((v) => put(side, CHAT_TO_KEY[v], b.vars[v]));
+    });
+
+    /* 2) 没主题标记的块 —— 用它自己的 --chat-bg 判断这套颜色是深是浅，整块归位 */
+    blocks.forEach((b) => {
+      if (b.slot !== 'shared') return;
+      const bgVal = b.vars['chat-bg'];
+      if (!bgVal) return;
+      const side = relLum(bgVal) < 0.45 ? dark : light;
+      Object.keys(b.vars).forEach((v) => put(side, CHAT_TO_KEY[v], b.vars[v]));
+    });
+
+    /* 3) 还没落位的键（碎片化 CSS、块里没 bg）：按每个键各自的策略分 */
+    PAL_KEYS.forEach((k) => {
+      if (dark[k] && light[k]) return;
+      const bucket = shared[varNameOf(k)];
+      if (!bucket) return;
+      const list = topValues(bucket, 2);
+      if (!list.length) return;
+      const strategy = KEY_STRATEGY[k] || 'lumAsc';
+      if (list.length >= 2) {
+        if (strategy === 'contrast') {
+          const dBest = dark.bg ? list.slice().sort((a, b) => contrast(b, dark.bg) - contrast(a, dark.bg))[0] : list[0];
+          const lBest = light.bg ? list.slice().sort((a, b) => contrast(b, light.bg) - contrast(a, light.bg))[0] : list[list.length - 1];
+          put(dark, k, dBest);
+          put(light, k, lBest);
+        } else {
+          const sorted = list.slice().sort((a, b) => relLum(a) - relLum(b));
+          if (strategy === 'lumDesc') { put(dark, k, sorted[sorted.length - 1]); put(light, k, sorted[0]); }
+          else { put(dark, k, sorted[0]); put(light, k, sorted[sorted.length - 1]); }
+        }
+      } else {
+        const one = list[0];
+        if (strategy === 'contrast') { put(dark, k, one); put(light, k, one); }
+        else {
+          const darkSide = strategy === 'lumDesc' ? relLum(one) > 0.5 : relLum(one) < 0.45;
+          if (darkSide) put(dark, k, one); else put(light, k, one);
+        }
+      }
+    });
+
+    /* seed：给缺的键提供色相与饱和度 */
+    const seed = {};
+    PAL_KEYS.forEach((k) => { seed[k] = dark[k] || light[k]; });
+    return {
+      dark: buildSide(seed, dark, LADDER_DARK),
+      light: buildSide(seed, light, LADDER_LIGHT),
+      found: Object.keys(found).length,
+    };
+  }
+
+  /** 用 seed 的色相饱和度配阶梯打底，再让信得过的真实值覆盖上去 */
+  function buildSide(seed, trusted, ladder) {
+    const out = rebuildThemeFromLadder(seed, ladder);
+    Object.keys(trusted || {}).forEach((k) => { if (trusted[k]) out[k] = normHex(trusted[k]); });
+    return out;
+  }
+
+  /** 图片量化主色：4bit/通道分桶 + 频率排序 + 距离去重 */
+  function dominantColors(imageData, want) {
+    const px = imageData.data;
+    const buckets = {};
+    for (let i = 0; i < px.length; i += 4) {
+      if (px[i + 3] < 128) continue;
+      const r = px[i], g = px[i + 1], b = px[i + 2];
+      const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      if (lum < 0.05 || lum > 0.98) continue;
+      const key = (r >> 4) + ',' + (g >> 4) + ',' + (b >> 4);
+      const e = buckets[key] || (buckets[key] = { r: 0, g: 0, b: 0, n: 0 });
+      e.r += r; e.g += g; e.b += b; e.n += 1;
+    }
+    const list = Object.keys(buckets).map((k) => {
+      const e = buckets[k];
+      return { r: e.r / e.n, g: e.g / e.n, b: e.b / e.n, n: e.n };
+    }).sort((a, b) => b.n - a.n);
+    const picked = [];
+    list.forEach((c) => {
+      if (picked.length >= (want || 8)) return;
+      const far = picked.every((p) => Math.abs(p.r - c.r) + Math.abs(p.g - c.g) + Math.abs(p.b - c.b) > 54);
+      if (far) picked.push(c);
+    });
+    return picked.map((c) => rgbToHex(c.r, c.g, c.b));
+  }
+
+  /** 用图片主色推日夜两套色板：最艳的当强调色，最暗/最亮的当背景 */
+  function themeFromImage(colors) {
+    if (!colors || !colors.length) return null;
+    const scored = colors.map((hex) => {
+      const h = hexToHsl(hex);
+      return { hex: hex, h: h, score: h.s * 1.15 + (1 - Math.abs(h.l - 0.55)) * 0.35 };
+    }).sort((a, b) => b.score - a.score);
+    const accent = scored[0].hex;
+    const byLum = colors.slice().sort((a, b) => relLum(a) - relLum(b));
+    const darkest = byLum[0];
+    const lightest = byLum[byLum.length - 1];
+    const dark = completeTheme({ accent: accent, bg: darkest, surface: mix(darkest, accent, 0.14) }, LADDER_DARK);
+    const light = completeTheme({ accent: accent, bg: lightest, surface: '#ffffff' }, LADDER_LIGHT);
+    return { dark: dark, light: light, accent: accent, swatches: colors };
+  }
+
+  // ---------------------------------------------------------------- 皮肤医生
+  function inspectPack(raw) {
+    const out = {
+      ok: false, parseError: '', meta: {}, rules: [], legacy: [], advice: [],
+      checker: { errors: [], warns: [] }, palette: null, paletteFound: 0,
+    };
+    let pack = raw;
+    if (typeof raw === 'string') {
+      const text = raw.trim();
+      if (!text) { out.parseError = '还没有内容'; return out; }
+      try { pack = JSON.parse(text); }
+      catch (e) {
+        /* 也许是 JS 对象字面量，顺手救一下 */
+        try { pack = (new Function('return (' + text + ')'))(); }
+        catch (e2) { out.parseError = 'JSON 解析失败：' + e.message; return out; }
+      }
+    }
+    if (!pack || typeof pack !== 'object' || Array.isArray(pack)) { out.parseError = '顶层不是一个对象'; return out; }
+    out.ok = true;
+
+    const rules = Array.isArray(pack.regex_scripts) ? pack.regex_scripts : [];
+    out.meta.chatVersion = pack.chatVersion;
+    out.meta.pageDepth = pack.pageDepth;
+    out.meta.ruleCount = rules.length;
+    out.meta.topKeys = Object.keys(pack);
+    out.meta.unknownKeys = out.meta.topKeys.filter((k) => TOP_KEYS.indexOf(k) < 0);
+    out.meta.hasPersonality = typeof pack.personality === 'string' && pack.personality.trim() !== '';
+    out.meta.beginningLen = String(pack.beginning == null ? '' : pack.beginning).length;
+    out.meta.statusbarLen = String(pack.statusbar == null ? '' : pack.statusbar).length;
+
+    rules.forEach((r, i) => {
+      if (!r || typeof r !== 'object' || Array.isArray(r)) {
+        out.rules.push({ index: i + 1, name: '(不是对象)', bad: true });
+        return;
+      }
+      const body = typeof r.replaceString === 'string' ? r.replaceString : '';
+      const visible = stripStyleAndScript(body);
+      const kind = classifyPattern(r.findRegex);
+      out.rules.push({
+        index: i + 1,
+        name: String(r.scriptName == null ? '(无名)' : r.scriptName),
+        id: r.id,
+        find: String(r.findRegex == null ? '' : r.findRegex),
+        findKind: kind.kind === 'regex' ? '正则' : (kind.kind === 'literal' ? '字面量' : (kind.kind === 'bad-regex' ? '⚠️编不过' : '空')),
+        findLen: String(r.findRegex == null ? '' : r.findRegex).length,
+        replaceLen: body.length,
+        visibleLen: visible.trim().length,
+        hasStyle: /<style[\s>]/i.test(body),
+        hasScript: /<script[\s>]/i.test(body),
+        visibleHtml: visible.replace(/\s+/g, ' ').trim().slice(0, 90),
+      });
+    });
+
+    const allText = rules.map((r) => (r && typeof r.replaceString === 'string' ? r.replaceString : '') + '\n' + String((r && r.findRegex) || '')).join('\n')
+      + '\n' + String(pack.statusbar == null ? '' : pack.statusbar) + '\n' + String(pack.beginning == null ? '' : pack.beginning);
+
+    /* ---- 旧版特征 ---- */
+    if (pack.chatVersion !== 1) out.legacy.push('chatVersion = ' + JSON.stringify(pack.chatVersion) + '：给新建卡导入会落到旧聊天页，SDK 与 [data-chat] 选择器全部失效');
+    RAW_HOST_CLASSES.forEach((rc) => {
+      if (allText.indexOf(rc) >= 0) out.legacy.push('出现裸父页面选择器 ' + rc + '：新版弹窗在父页面且跨源，这样写命不中，要改成 [data-host="…"] 或只用主题变量');
+    });
+    if (/(^|[\s,};])(\*|html|body|:root)\s*\{/m.test(allText)) out.legacy.push('拿 * / html / body / :root 当 CSS 根：平台明令禁止全局 CSS，新版要写 [data-chat="root"]');
+    if (allText.indexOf('--chat-') < 0) out.legacy.push('完全没用到平台公开的 --chat-* 变量：颜色是写死的，日夜主题切换时会跟不上');
+    [['[status]', '旧 status 标记'], ['〖骰=', 'teapot 骰子协议'], ['teapot', 'teapot 插件'], ['$#char#$', '旧 char 占位符'], ['{{char}}', '旧 char 占位符'], ['onerror', '图片 onerror 兜底（旧写法）']].forEach((pair) => {
+      if (allText.indexOf(pair[0]) >= 0) out.legacy.push('含旧版特征：' + pair[1]);
+    });
+    if (/【[^】\n]{0,20}】/.test(allText)) out.legacy.push('用了【】旧版切片协议（例如【侧边栏1】）：新版不需要这种拆词标记，而且字面量匹配式很容易重复');
+    if (/\burl\s*\(/i.test(allText)) out.legacy.push('用了 url() 外链资源（字体/图片）：平台不保证白名单与跨域，加载失败会空一块');
+    if (allText.length > 400 && allText.indexOf('data-chat') < 0) {
+      out.legacy.push('整份包看不到 [data-chat] 选择器：新版聊天页靠这套稳定属性定位，看不到基本可以判断不是新版写法');
+    }
+
+    /* ---- 校验（复用同一套判定） ---- */
+    try { out.checker = runChecker(pack); }
+    catch (e) { out.checker = { errors: [{ where: '医生', msg: '这份包结构太不规整，检查中断：' + e.message }], warns: [] }; }
+
+    /* 说明：「id 全是 -1」是平台自己导出的常态（4 份真实文件逐条核对过），
+     * 导入时会统一重编号，所以检查器**根本不再对「重复」报警** —— 那是设计，不是问题。
+     * 这里什么都不用改。 */
+
+    /* ---- 会覆盖哪些卡内字段 ---- */
+    if (out.meta.statusbarLen) out.advice.push('这份包带 statusbar（' + out.meta.statusbarLen + ' 字）：导入会覆盖你卡里原有的功能栏内容');
+    if (out.meta.beginningLen) out.advice.push('这份包带 beginning（' + out.meta.beginningLen + ' 字）：导入会覆盖你卡里原本的第一句话');
+    if (out.meta.hasPersonality) out.advice.push('这份包带 personality：导入正则不会读它，要单独粘到创卡页的「角色人设」栏');
+    if (out.meta.unknownKeys.length) out.advice.push('顶层有导入页不认的键：' + out.meta.unknownKeys.join('、') + '（世界书要走独立入口）');
+
+    /* ---- 配色提取 ---- */
+    const vars = extractPaletteVars(allText);
+    out.paletteVars = vars;
+    const pal = paletteFromVars(vars);
+    out.paletteFound = pal.found;
+    out.palette = pal.found ? pal : null;
+    out.advice.push(out.paletteFound
+      ? '已经扒到 ' + pal.found + ' 个公开颜色变量，可以下面「用这套配色重建一份合规皮肤」直接继承它的审美。'
+      : '这份包没写平台公开的 --chat-* 变量，扒不出配色；换张参考图或挑一套预设更快。');
+
+    const longRules = out.rules.filter((r) => r.replaceLen > 15000);
+    longRules.forEach((r) => out.advice.push('规则 ' + r.index + '「' + r.name + '」替换内容 ' + r.replaceLen + ' 字，快贴着 20000 上限了，建议拆条'));
+    if (!rules.some((r) => /<script[\s>]/i.test(String((r && r.replaceString) || ''))) && /<button/i.test(allText)) {
+      out.advice.push('有按钮却没有配套脚本：那些按钮点下去不会动');
+    }
+    out.text = allText;
+    return out;
+  }
+
+  const SHADOWS = ['none', '0 1px 3px rgba(0,0,0,.18)', '0 6px 18px rgba(0,0,0,.26)', '0 14px 34px rgba(0,0,0,.40)'];
+  const BUBBLE_SHADOWS = ['none', '0 1px 2px rgba(0,0,0,.14)', '0 4px 12px rgba(0,0,0,.20)', '0 10px 24px rgba(0,0,0,.30)'];
+
+  function fontStack(p) {
+    switch (p.fontMode) {
+      case 'hei': return '"Helvetica Neue",Helvetica,"Microsoft YaHei","PingFang SC",sans-serif';
+      case 'song': return '"Songti SC","SimSun","Noto Serif SC",Georgia,serif';
+      case 'round': return '"PingFang SC","Yuanti SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+      case 'mono': return 'ui-monospace,Menlo,Consolas,"Courier New",monospace';
+      case 'custom': {
+        const name = String(p.fontCustom || '').split(',')[0].trim().replace(/["']/g, '');
+        if (!name) return 'system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+        return '"' + name + '",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+      }
+      default: return 'system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif';
+    }
+  }
+
+  // ---------------------------------------------------------------- 作用域助手
+  /**
+   * 皮肤的「总闸」：一键开关就是给 [data-chat="root"] 加/去一个 .mmdskin-off 类。
+   * 所有皮肤规则都挂在这个前缀下，所以关掉时整套样式（含伪元素粒子）自然失效，
+   * 不需要 :has()，也不需要覆盖平台内部 class。
+   */
+  function P(s) {
+    return s.toggle.on ? '[data-chat="root"]:not(.mmdskin-off)' : '[data-chat="root"]';
+  }
+  const ROOT = '[data-chat="root"]';
+
+  /** 当前的日间/夜间色板 */
+  function pickPalette(s) {
+    if (s.palette.mode === 'unified') {
+      const c = clone(s.palette[s.palette.base] || s.palette.dark);
+      return { base: c, light: c, dark: c, unified: true };
+    }
+    return { base: clone(s.palette.dark), light: clone(s.palette.light), dark: clone(s.palette.dark), unified: false };
+  }
+
+  /** 面板使用的「主色板」：预览与对比度检查都用它 */
+  function activePalette(s, theme) {
+    const p = pickPalette(s);
+    if (p.unified) return p.base;
+    return theme === 'light' ? p.light : p.dark;
+  }
+
+  // ---------------------------------------------------------------- CSS：变量
+  function themeSelector(s, theme) {
+    const pre = P(s);
+    if (s.palette.mode === 'unified') {
+      if (theme !== s.palette.base) return null;
+      return pre + '[data-theme="dark"],' + pre + '[data-theme="light"]';
+    }
+    return pre + '[data-theme="' + theme + '"]';
+  }
+
+  /** 18 个宿主变量：从同一套色板推导，保证 iframe 与父页面弹窗是同一套设计令牌 */
+  function hostBridgeVars(c) {
+    return [
+      '--chat-composer-bg:' + mix(c.surface, c.bg, 0.25),
+      '--chat-composer-text:' + c.text,
+      '--chat-shortcut-bg:' + mix(c.surface, c.accent, 0.14),
+      '--chat-shortcut-text:' + c.text,
+      '--chat-input-bg:' + mix(c.surface, c.bg, 0.5),
+      '--chat-input-text:' + c.text,
+      '--chat-input-placeholder:' + c.muted,
+      '--chat-input-border:' + c.border,
+      '--chat-modal-bg:' + c.surface,
+      '--chat-modal-surface:' + mix(c.surface, c.bg, 0.22),
+      '--chat-modal-text:' + c.text,
+      '--chat-modal-muted:' + c.muted,
+      '--chat-modal-accent:' + c.accent,
+      '--chat-modal-input-bg:' + mix(c.surface, c.bg, 0.5),
+      '--chat-modal-input-text:' + c.text,
+      '--chat-modal-cancel-bg:' + mix(c.surface, c.border, 0.6),
+      '--chat-modal-btn-bg:' + mix(c.surface, c.accent, 0.24),
+      '--chat-modal-btn-border:' + c.accent,
+    ];
+  }
+
+  function colorVarBlock(s, c) {
+    const lines = [
+      '--chat-bg:' + c.bg,
+      '--chat-surface:' + c.surface,
+      '--chat-text:' + c.text,
+      '--chat-text-muted:' + c.muted,
+      '--chat-border:' + c.border,
+      '--chat-accent:' + c.accent,
+      '--chat-bubble-user-bg:' + c.bubbleUser,
+      '--chat-bubble-ai-bg:' + c.bubbleAi,
+      '--chat-bubble-text:' + c.bubbleText,
+      /* 工具自己的派生令牌，全部由上面这套颜色算出来，不引入新颜色 */
+      '--mmdskin-accent:' + c.accent,
+      '--mmdskin-input-bg:' + mix(c.surface, c.bg, 0.5),
+      '--mmdskin-panel-bg:' + mix(c.surface, c.bg, 0.22),
+      '--mmdskin-on-accent:' + bestTextOn(c.accent),
+      /* 组件用的主题令牌：必须放在「每个主题」的变量块里，
+       * 否则顶栏/功能栏在日间模式下会顶着夜间算出来的深色底（深字压深底，糊一片）。
+       * 这些一律按当前主题的色板推导，日夜切换时跟着平台走。 */
+      '--mmdskin-header-bg:' + (s.palette.glass ? rgba(mix(c.surface, c.bg, 0.15), 0.78) : mix(c.surface, c.bg, 0.15)),
+      '--mmdskin-header-image:linear-gradient(120deg,' + mix(c.surface, c.accent, 0.22) + ',' + mix(c.surface, c.bg, 0.2) + ' 62%,' + mix(c.surface, c.accent, 0.10) + ')',
+      '--mmdskin-bar-bg:' + mix(c.surface, c.bg, 0.2),
+      '--mmdskin-bar-image:linear-gradient(90deg,' + mix(c.surface, c.accent, 0.26) + ',' + mix(c.surface, c.bg, 0.25) + ' 70%,' + mix(c.surface, c.accent, 0.14) + ')',
+      '--mmdskin-composer-bg:' + (s.palette.glass ? rgba(mix(c.surface, c.bg, 0.25), 0.82) : mix(c.surface, c.bg, 0.25)),
+      '--mmdskin-composer-image:linear-gradient(90deg,' + mix(c.surface, c.accent, 0.12) + ',' + mix(c.surface, c.bg, 0.28) + ' 52%,' + mix(c.surface, c.accent, 0.12) + ')',
+      '--mmdskin-bubble-border:' + rgba(c.accent, 0.45),
+      '--mmdskin-ring:' + rgba(c.accent, 0.18),
+      '--mmdskin-glow-soft:' + rgba(c.accent, 0.45),
+      '--mmdskin-glow:' + rgba(c.accent, 0.55),
+      '--mmdskin-glow-strong:' + rgba(c.accent, 0.40),
+      '--mmdskin-glow-none:' + rgba(c.accent, 0),
+    ];
+    if (s.host.on && s.host.bridge) lines.push.apply(lines, hostBridgeVars(c));
+    return '  ' + lines.join(';\n  ') + ';';
+  }
+
+  function buildVarsCss(s) {
+    const p = pickPalette(s);
+    const out = [];
+    out.push('/* ===== 1/4 皮肤变量 =====');
+    out.push(' * 颜色全部写在平台公开的 --chat-* 变量上，所以日夜主题切换、');
+    out.push(' * 底栏与弹窗同步都靠平台自己完成，不需要脚本。 */');
+    const geo = [
+      '--mmdskin-bubble-radius:' + px(s.bubble.radius),
+      '--mmdskin-bubble-maxw:' + s.bubble.maxWidth + '%',
+      '--mmdskin-gap:' + px(s.bubble.gap),
+      '--mmdskin-avatar:' + px(s.avatar.size),
+      '--mmdskin-input-radius:' + px(s.composer.radius),
+      '--mmdskin-shadow:' + SHADOWS[clamp(s.palette.shadow | 0, 0, 3)],
+      '--mmdskin-bubble-shadow:' + BUBBLE_SHADOWS[clamp(s.bubble.shadow | 0, 0, 3)],
+      '--mmdskin-font:' + fontStack(s.palette),
+      '--mmdskin-fs:' + px(s.palette.fontSize),
+      '--mmdskin-lh:' + s.palette.lineHeight,
+    ];
+    out.push(P(s) + '{');
+    out.push('  ' + geo.join(';\n  ') + ';');
+    out.push('  font-family:var(--mmdskin-font);');
+    out.push('  font-size:var(--mmdskin-fs);');
+    out.push('}');
+    /* 兜底：万一目标页根上没有 data-theme，也有一套完整颜色 */
+    out.push(P(s) + '{');
+    out.push(colorVarBlock(s, p.base));
+    out.push('}');
+    ['dark', 'light'].forEach((theme) => {
+      const sel = themeSelector(s, theme);
+      if (!sel) return;
+      out.push(sel + '{');
+      out.push(colorVarBlock(s, theme === 'light' ? p.light : p.dark));
+      out.push('}');
+    });
+    if (s.palette.bgStyle !== 'none') {
+      const p2 = pickPalette(s);
+      const selDark = themeSelector(s, 'dark');
+      const selLight = themeSelector(s, 'light');
+      out.push('/* 背景纹理（纯 CSS 渐变画的，不引外链图片） */');
+      if (selDark) out.push(selDark + '{ background-image:' + bgTexture(s, p2.dark) + '; }');
+      if (selLight) out.push(selLight + '{ background-image:' + bgTexture(s, p2.light) + '; }');
+      /* 只加纹理，不再显式写 background-color：整页底色由平台读 --chat-bg 自己上，
+       * 我多写一行反而会把「卡自己画的整页背景」盖掉 —— 这就是用户反馈的
+       * 「美化有时会直接渲染整个界面」。 */
+      out.push(P(s) + '{ background-attachment:fixed; }');
+      if (!s.meta.safeLayout) out.push(P(s) + ' [data-chat="messages"]{ background-color:transparent; }');
+    } else {
+      /* 没选纹理就完全不碰根的背景；但旧皮肤可能写过底纹，所以显式还原一次，避免残留 */
+      out.push(P(s) + '{ background-image:revert; }');
+    }
+    return out.join('\n');
+  }
+
+  function bgTexture(s, c) {
+    switch (s.palette.bgStyle) {
+      case 'glow':
+        return 'radial-gradient(120% 78% at 8% -12%,' + rgba(c.accent, 0.22) + ',transparent 60%),'
+          + 'radial-gradient(90% 62% at 102% 4%,' + rgba(c.accent, 0.12) + ',transparent 58%),'
+          + 'radial-gradient(80% 60% at 50% 120%,' + rgba(c.accent, 0.10) + ',transparent 62%)';
+      case 'diag':
+        return 'linear-gradient(158deg,' + mix(c.bg, c.surface, 0.55) + ',' + c.bg + ' 46%,'
+          + mix(c.bg, c.accent, 0.16) + ')';
+      case 'grid':
+        return 'linear-gradient(' + rgba(c.border, 0.75) + ' 1px,transparent 1px),'
+          + 'linear-gradient(90deg,' + rgba(c.border, 0.75) + ' 1px,transparent 1px)';
+      case 'dots':
+        return 'radial-gradient(' + rgba(c.text, 0.12) + ' 1px,transparent 1.4px)';
+      case 'stripe':
+        return 'repeating-linear-gradient(115deg,' + rgba(c.accent, 0.07) + ' 0 10px,transparent 10px 24px)';
+      default:
+        return 'none';
+    }
+  }
+
+  // ---------------------------------------------------------------- CSS：布局与组件
+  function buildLayoutCss(s) {
+    const c = activePalette(s, 'dark');
+    const out = [];
+    out.push('/* ===== 2/4 界面组件（顶栏 / 气泡 / 底栏 / 功能栏 / 头像 / 开关按钮） ===== */');
+
+    /* --- 顶栏 --- */
+    if (s.header.on) {
+      out.push(P(s) + ' [data-chat="header"]{');
+      /* 颜色一律走主题令牌：它们在每个 data-theme 的变量块里各算一份 */
+      out.push('  background-color:var(--mmdskin-header-bg);');
+      /* 关掉的项显式写 revert：把「平台原样」还回来。
+       * 不写的话，旧皮肤的规则还在合并样式表里赖着不走 —— 那就是「再次导入有残留」。 */
+      out.push(s.header.gradient ? '  background-image:var(--mmdskin-header-image);' : '  background-image:revert;');
+      if (s.header.blur && s.palette.glass) {
+        out.push('  -webkit-backdrop-filter:blur(14px);');
+        out.push('  backdrop-filter:blur(14px);');
+      } else {
+        out.push('  -webkit-backdrop-filter:revert;');
+        out.push('  backdrop-filter:revert;');
+      }
+      out.push(s.header.hairline ? '  border-bottom:1px solid var(--chat-border);' : '  border-bottom:revert;');
+      out.push(s.header.radius ? '  border-radius:0 0 ' + px(s.header.radius) + ' ' + px(s.header.radius) + ';' : '  border-radius:revert;');
+      out.push('  box-shadow:var(--mmdskin-shadow);');
+      out.push('}');
+      out.push(P(s) + ' [data-chat="header"] [data-chat="header-title"]{ color:var(--chat-text);font-weight:600;letter-spacing:.2px; }');
+      out.push(P(s) + ' [data-chat="header"] [data-chat="header-back"],');
+      out.push(P(s) + ' [data-chat="header"] [data-chat="header-actions"]{ color:var(--chat-accent); }');
+    }
+
+    /* --- 头像 --- */
+    if (s.avatar.on) {
+      const radius = s.avatar.shape === 'circle' ? '50%' : (s.avatar.shape === 'squircle' ? '32%' : px(Math.round(s.avatar.size * 0.28)));
+      out.push(P(s) + ' [data-chat="header-title"] img,');
+      out.push(P(s) + ' [data-chat="header-title"] > *:first-child{');
+      out.push('  width:var(--mmdskin-avatar);height:var(--mmdskin-avatar);');
+      out.push('  border-radius:' + radius + ';object-fit:cover;');
+      out.push(s.avatar.ring ? '  border:1.5px solid var(--chat-accent);' : '  border:revert;');
+      out.push(s.avatar.glow ? '  box-shadow:0 0 0 3px var(--mmdskin-ring),0 0 16px var(--mmdskin-glow-soft);' : '  box-shadow:revert;');
+      out.push('}');
+    }
+
+    /* --- 气泡 --- */
+    if (s.bubble.on) {
+      out.push('/* 气泡：视觉写在 message 上，内边距写在 message-body 上，');
+      out.push(' * 不去改平台结构性节点的 display / 宽高 / 外边距。 */');
+      out.push(P(s) + ' [data-chat="message"]{');
+      out.push('  border-radius:var(--mmdskin-bubble-radius);');
+      /* 最大宽度受「保护自定义界面」管：开着写 revert，免得旧皮肤留下的宽度继续作用在卡自己的界面上 */
+      out.push(s.meta.safeLayout ? '  max-width:revert;' : '  max-width:var(--mmdskin-bubble-maxw);');
+      out.push('  box-shadow:var(--mmdskin-bubble-shadow);');
+      out.push(s.bubble.border
+        ? '  border:' + px(s.bubble.borderWidth) + ' solid ' + (s.bubble.tint ? 'var(--mmdskin-bubble-border)' : 'var(--chat-border)') + ';'
+        : '  border:revert;');
+      out.push('}');
+      out.push(P(s) + ' [data-chat="message-body"]{');
+      /* 内边距照常写：它只是让气泡呼吸，不会把卡的面板压变形（真正压坏的是最大宽度） */
+      out.push('  padding:' + px(s.bubble.padY) + ' ' + px(s.bubble.padX) + ';');
+      out.push('  color:var(--chat-bubble-text);');
+      out.push('  font-size:var(--mmdskin-fs);line-height:var(--mmdskin-lh);');
+      out.push('}');
+      out.push(P(s) + ' [data-chat="message"][data-from="ai"]{ background-color:var(--chat-bubble-ai-bg); }');
+      out.push(P(s) + ' [data-chat="message"][data-from="user"]{ background-color:var(--chat-bubble-user-bg); }');
+      out.push(P(s) + ' [data-chat="list"]{ row-gap:var(--mmdskin-gap); }');
+      /* 尖角感：开与关都写。关的时候写回统一圆角，免得旧皮肤的 4 值圆角赖着不走 */
+      ['ai', 'user'].forEach((from) => {
+        const small = s.bubble.point ? '5px' : 'var(--mmdskin-bubble-radius)';
+        const radius = from === 'ai'
+          ? 'var(--mmdskin-bubble-radius) var(--mmdskin-bubble-radius) var(--mmdskin-bubble-radius) ' + small
+          : 'var(--mmdskin-bubble-radius) var(--mmdskin-bubble-radius) ' + small + ' var(--mmdskin-bubble-radius)';
+        out.push(P(s) + ' [data-chat="message"][data-from="' + from + '"]{ border-radius:' + radius + '; }');
+      });
+    }
+
+    /* --- 底栏输入区 --- */
+    if (s.composer.on) {
+      out.push(P(s) + ' [data-chat="composer"]{');
+      /* 毛玻璃开着就用半透明底（真的看得见），关着就走平台的变量桥；两者都是主题自适应的 */
+      if (s.palette.glass) out.push('  background-color:var(--mmdskin-composer-bg);');
+      else out.push('  background-color:var(--chat-composer-bg,var(--mmdskin-composer-bg));');
+      if (s.motion.on && s.motion.gradientFlow) out.push('  background-image:var(--mmdskin-composer-image);');
+      if (s.composer.blur && s.palette.glass) {
+        out.push('  -webkit-backdrop-filter:blur(14px);');
+        out.push('  backdrop-filter:blur(14px);');
+      } else {
+        out.push('  -webkit-backdrop-filter:revert;');
+        out.push('  backdrop-filter:revert;');
+      }
+      out.push(s.composer.border ? '  border-top:1px solid var(--chat-border);' : '  border-top:revert;');
+      out.push('}');
+      /* 新版里输入框的白底画在它的直接父容器上：公开配方用 :has() 定位 */
+      out.push(P(s) + ' [data-chat="composer"] :where(div):has(>[data-chat="input"]){');
+      out.push('  background-color:var(--mmdskin-input-bg);');
+      out.push('  border:1px solid var(--chat-input-border,var(--chat-border));');
+      out.push('  border-radius:var(--mmdskin-input-radius);');
+      out.push('}');
+      out.push(P(s) + ' [data-chat="input"]{ background-color:transparent;color:var(--chat-input-text,var(--chat-text));border:0; }');
+      out.push(P(s) + ' [data-chat="input"]::placeholder{ color:var(--chat-input-placeholder,var(--chat-text-muted)); }');
+      /* 发送按钮 */
+      out.push(P(s) + ' [data-chat="send"]{ border-radius:' + (s.composer.send === 'glow' ? '50%' : px(Math.max(6, s.composer.radius - 2))) + '; }');
+      if (s.composer.send === 'accent') {
+        out.push(P(s) + ' [data-chat="send"]{ background-color:var(--chat-accent);color:var(--mmdskin-on-accent);border:0; }');
+      } else if (s.composer.send === 'ghost') {
+        out.push(P(s) + ' [data-chat="send"]{ background-color:transparent;color:var(--chat-accent);border:1.5px solid var(--chat-accent); }');
+      } else {
+        out.push(P(s) + ' [data-chat="send"]{ background-color:var(--chat-accent);color:var(--mmdskin-on-accent);border:0;');
+        out.push('  box-shadow:0 0 16px var(--mmdskin-glow); }');
+      }
+      if (s.composer.sendText) {
+        out.push(P(s) + ' [data-chat="send"]::after{ content:"' + escCssStr(s.composer.sendText) + '";font-size:12px;margin-left:2px; }');
+      }
+    }
+
+    /* --- 功能栏 --- */
+    if (s.statusbar.on || (s.toggle.on && s.toggle.place === 'statusbar')) {
+      out.push(P(s) + ' [data-slot="statusbar"]{');
+      out.push('  display:flex;align-items:center;gap:8px;flex-wrap:wrap;');
+      /* 平台没给功能栏写任何样式，内边距得自己填 */
+      out.push('  padding:8px 12px;');
+      out.push('  background-color:var(--mmdskin-bar-bg);');
+      out.push(s.statusbar.gradient ? '  background-image:var(--mmdskin-bar-image);' : '  background-image:revert;');
+      out.push('  color:var(--chat-text);');
+      out.push(s.statusbar.sticky ? '  position:sticky;top:0;z-index:1100;' : '  position:revert;');
+      out.push(s.statusbar.radius ? '  border-radius:' + px(s.statusbar.radius) + ';' : '  border-radius:revert;');
+      out.push(s.statusbar.hairline ? '  border-bottom:1px solid var(--chat-border);' : '  border-bottom:revert;');
+      out.push('  box-shadow:var(--mmdskin-shadow);');
+      out.push('}');
+    }
+
+    /* --- 一键开关按钮（永远不跟着 .mmdskin-off 一起消失，否则就再也开不回来了） --- */
+    if (s.toggle.on) {
+      const isIcon = s.toggle.style === 'icon';
+      out.push('/* 开关按钮本体：不挂 .mmdskin-off 前缀，关掉美化后它依然在。 */');
+      out.push(ROOT + ' .mmdskin-btn{');
+      out.push('  display:inline-flex;align-items:center;justify-content:center;gap:4px;');
+      out.push('  font-family:var(--mmdskin-font,system-ui,sans-serif);');
+      out.push('  font-size:12px;line-height:1;');
+      out.push('  padding:' + (isIcon ? '9px' : '8px 13px') + ';');
+      out.push('  border-radius:' + (s.toggle.style === 'square' ? '8px' : '999px') + ';');
+      out.push('  cursor:pointer;user-select:none;');
+      out.push('  border:1px solid var(--mmdskin-accent,' + c.accent + ');');
+      out.push('  background-color:var(--mmdskin-panel-bg,' + mix(c.surface, c.bg, 0.22) + ');');
+      out.push('  color:var(--mmdskin-accent,' + c.accent + ');');
+      out.push('  box-shadow:var(--mmdskin-shadow,0 6px 18px rgba(0,0,0,.32));');
+      out.push('  transition:transform .15s ease,opacity .15s ease;');
+      out.push('  z-index:1500;');
+      out.push('}');
+      out.push(ROOT + ' .mmdskin-btn:active{ transform:scale(.95); }');
+      out.push(ROOT + ' .mmdskin-btn:focus-visible{ outline:2px solid var(--mmdskin-accent,' + c.accent + ');outline-offset:2px; }');
+      if (s.toggle.place === 'float') {
+        const pos = {
+          'bottom-right': 'right:14px;bottom:96px;',
+          'bottom-left': 'left:14px;bottom:96px;',
+          'top-right': 'right:14px;top:64px;',
+          'top-left': 'left:14px;top:64px;',
+        }[s.toggle.position] || 'right:14px;bottom:96px;';
+        out.push(ROOT + ' .mmdskin-float{ position:fixed;' + pos + 'margin:0; }');
+      } else {
+        out.push(ROOT + ' .mmdskin-btn{ flex:0 0 auto;margin-left:auto; }');
+      }
+      /* 关掉美化后主题变量就整块失效了，兜底样式按主题各写一份：
+       * 否则浅色页面上会挂着一颗按夜间色板算出来的深色药丸，看着就像 bug。 */
+      const lc = activePalette(s, 'light');
+      out.push(ROOT + '[data-theme="light"] .mmdskin-btn{ border-color:' + lc.accent + ';color:' + lc.accent + ';background-color:' + mix(lc.surface, lc.bg, 0.22) + '; }');
+    }
+    return out.join('\n');
+  }
+
+  // ---------------------------------------------------------------- CSS：粒子与动效
+  function particleLayer(s, layer) {
+    const pt = s.particles;
+    const rng = makeRng(layer === 1 ? 20260101 : 19700101);
+    const n = Math.max(3, Math.round(pt.count * (layer === 1 ? 1 : 0.55)));
+    const size = pt.size * (layer === 1 ? 1 : 0.6);
+    const W = layer === 1 ? 260 : 170;
+    const H = layer === 1 ? 380 : 250;
+    const dots = [];
+    for (let i = 0; i < n; i += 1) {
+      const x = (4 + rng() * 92).toFixed(2);
+      const y = (4 + rng() * 92).toFixed(2);
+      const col = rng() > 0.62 ? pt.color2 : pt.color;
+      const jitter = 0.75 + rng() * 0.6;
+      dots.push(dotGradient(pt.shape, x, y, size * jitter, col));
+    }
+    return { W: W, H: H, css: dots.join(',') };
+  }
+
+  function dotGradient(shape, x, y, size, col) {
+    const px1 = (size).toFixed(2);
+    switch (shape) {
+      case 'firefly':
+        return 'radial-gradient(' + (size * 2.4).toFixed(2) + 'px ' + (size * 2.4).toFixed(2) + 'px at ' + x + '% ' + y + '%,'
+          + rgba(col, 0.95) + ',' + rgba(col, 0.35) + ' 45%,transparent 76%)';
+      case 'snow':
+        return 'radial-gradient(' + px1 + 'px ' + px1 + 'px at ' + x + '% ' + y + '%,' + rgba(col, 0.95) + ',' + rgba(col, 0.25) + ' 70%,transparent 100%)';
+      case 'petal':
+        return 'radial-gradient(' + (size * 1.7).toFixed(2) + 'px ' + (size * 0.85).toFixed(2) + 'px at ' + x + '% ' + y + '%,'
+          + rgba(col, 0.92) + ',' + rgba(col, 0.3) + ' 70%,transparent 100%)';
+      case 'bubble':
+        return 'radial-gradient(' + (size * 2.1).toFixed(2) + 'px ' + (size * 2.1).toFixed(2) + 'px at ' + x + '% ' + y + '%,'
+          + 'transparent 0 52%,' + rgba(col, 0.85) + ' 60%,transparent 82%)';
+      default: /* star */
+        return 'radial-gradient(' + px1 + 'px ' + px1 + 'px at ' + x + '% ' + y + '%,' + rgba(col, 1) + ' 0%,'
+          + rgba(col, 0.55) + ' 45%,transparent 72%)';
+    }
+  }
+
+  function buildFxCss(s) {
+    const out = [];
+    const pt = s.particles;
+    const anim = s.motion.on;                 /* 关掉动效 = 纯静态皮肤 */
+    const animated = [];
+
+    out.push('/* ===== 3/4 粒子与动效 ===== */');
+
+    if (pt.on) {
+      const L1 = particleLayer(s, 1);
+      const L2 = pt.layer2 ? particleLayer(s, 2) : null;
+      const op1 = (pt.opacity / 100).toFixed(2);
+      const op2 = (pt.opacity / 100 * 0.7).toFixed(2);
+      out.push('/* 粒子是伪元素 + 多层 radial-gradient 平铺出来的：不新增 DOM、不写脚本，');
+      out.push(' * 脚本被平台抽走也照样在。动画走 transform，交合成层处理，不逐帧重绘。 */');
+      out.push(P(s) + '::before{');
+      out.push('  content:"";position:fixed;pointer-events:none;z-index:1000;');
+      out.push('  background-image:' + L1.css + ';');
+      out.push('  background-size:' + L1.W + 'px ' + L1.H + 'px;');
+      out.push('  opacity:' + op1 + ';');
+      out.push(particleBoxCss(s, L1));
+      out.push('}');
+      if (anim) {
+        out.push(P(s) + '::before{');
+        out.push('  animation:' + particleAnimList(s, 'mmdskin-mvA', L1, pt) + ';');
+        out.push('  will-change:transform,opacity;');
+        out.push('}');
+        animated.push(P(s) + '::before');
+      }
+      if (L2) {
+        out.push(P(s) + '::after{');
+        out.push('  content:"";position:fixed;pointer-events:none;z-index:1000;');
+        out.push('  background-image:' + L2.css + ';');
+        out.push('  background-size:' + L2.W + 'px ' + L2.H + 'px;');
+        out.push('  opacity:' + op2 + ';');
+        out.push(particleBoxCss(s, L2));
+        out.push('}');
+        if (anim) {
+          out.push(P(s) + '::after{');
+          out.push('  animation:' + particleAnimList(s, 'mmdskin-mvB', L2, pt) + ';');
+          out.push('  will-change:transform,opacity;');
+          out.push('}');
+          animated.push(P(s) + '::after');
+        }
+      }
+      if (anim && pt.dir !== 'still') {
+        out.push(moveKeyframes(s, 'mmdskin-mvA', L1));
+        if (L2) out.push(moveKeyframes(s, 'mmdskin-mvB', L2));
+      }
+      if (anim && pt.twinkle) {
+        out.push('@keyframes mmdskin-twA{ from{opacity:' + (pt.opacity / 100 * 0.38).toFixed(2) + ';} to{opacity:' + op1 + ';} }');
+        if (L2) out.push('@keyframes mmdskin-twB{ from{opacity:' + (pt.opacity / 100 * 0.26).toFixed(2) + ';} to{opacity:' + op2 + ';} }');
+      }
+      /* 粒子开着但动效总开关关着：把旧皮肤可能留下的动画还原，粒子保持静止 */
+      if (!anim) out.push(P(s) + '::before,' + P(s) + '::after{ animation:revert; }');
+    } else {
+      /* 粒子关掉时显式把伪元素还回去 —— 否则旧皮肤的粒子还会飘着（残留） */
+      out.push(P(s) + '::before,' + P(s) + '::after{ content:revert;animation:revert; }');
+    }
+
+    if (s.motion.on) {
+      /* 气泡入场 */
+      /* 气泡入场会给消息加 transform —— 卡里若有固定定位的面板，动画期间会跟着错位，所以受保护开关管 */
+      if (s.motion.bubbleIn && !s.meta.safeLayout) {
+        const t = (0.34 / s.motion.speed).toFixed(2);
+        out.push(P(s) + ' [data-chat="message"]{ animation:mmdskin-in ' + t + 's cubic-bezier(.2,.7,.3,1) both; }');
+        out.push('@keyframes mmdskin-in{ from{opacity:0;transform:translateY(7px);} to{opacity:1;transform:none;} }');
+        animated.push(P(s) + ' [data-chat="message"]');
+      } else {
+        out.push(P(s) + ' [data-chat="message"]{ animation:revert; }');
+      }
+      /* 呼吸辉光 */
+      if (s.motion.breathe) {
+        const t = (3.6 / s.motion.speed).toFixed(1);
+        out.push(P(s) + ' [data-chat="send"]{ animation:mmdskin-breathe ' + t + 's ease-in-out infinite; }');
+        out.push('@keyframes mmdskin-breathe{ 0%,100%{box-shadow:0 0 0 0 var(--mmdskin-glow-none);} 50%{box-shadow:0 0 14px 3px var(--mmdskin-glow-strong);} }');
+        animated.push(P(s) + ' [data-chat="send"]');
+      } else {
+        out.push(P(s) + ' [data-chat="send"]{ animation:revert; }');
+      }
+      /* 渐变流动 */
+      if (s.motion.gradientFlow) {
+        const targets = [];
+        if (s.header.on && s.header.gradient) targets.push(P(s) + ' [data-chat="header"]');
+        if (s.composer.on) targets.push(P(s) + ' [data-chat="composer"]');
+        if (s.statusbar.on) targets.push(P(s) + ' [data-slot="statusbar"]');
+        if (targets.length) {
+          const t = (9 / s.motion.speed).toFixed(1);
+          out.push(targets.join(',\n') + '{ background-size:230% 100%;animation:mmdskin-flow ' + t + 's ease-in-out infinite alternate; }');
+          out.push('@keyframes mmdskin-flow{ from{background-position:0% 50%;} to{background-position:100% 50%;} }');
+          animated.push.apply(animated, targets);
+        }
+      } else {
+        out.push(P(s) + ' [data-chat="header"],' + P(s) + ' [data-chat="composer"],' + P(s) + ' [data-slot="statusbar"]{ animation:revert;background-size:revert; }');
+      }
+      /* 发送键流光 */
+      if (s.motion.borderFlow && s.composer.on) {
+        const t = (2.6 / s.motion.speed).toFixed(1);
+        out.push(P(s) + ' [data-chat="send"]{ position:relative;overflow:hidden; }');
+        out.push(P(s) + ' [data-chat="send"]::before{ content:"";position:absolute;top:0;left:-60%;width:38%;height:100%;');
+        out.push('  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);');
+        out.push('  animation:mmdskin-sweep ' + t + 's linear infinite;pointer-events:none; }');
+        out.push('@keyframes mmdskin-sweep{ from{left:-60%;} to{left:120%;} }');
+        animated.push(P(s) + ' [data-chat="send"]::before');
+      } else {
+        out.push(P(s) + ' [data-chat="send"]::before{ content:revert; }');
+        out.push(P(s) + ' [data-chat="send"]{ position:revert;overflow:revert; }');
+      }
+    } else {
+      /* 动效总开关关着：把旧皮肤可能留下的动画与 transform 全部还原 */
+      out.push(P(s) + ' [data-chat="message"],' + P(s) + ' [data-chat="send"],' + P(s) + ' [data-chat="header"],'
+        + P(s) + ' [data-chat="composer"],' + P(s) + ' [data-slot="statusbar"]{ animation:revert;background-size:revert; }');
+      out.push(P(s) + ' [data-chat="send"]::before{ content:revert; }');
+      out.push(P(s) + ' [data-chat="send"]{ position:revert;overflow:revert; }');
+    }
+
+    /* 照顾晕动症：系统开了减少动态效果时，整套动画停掉 */
+    if (s.motion.reduceMotion && animated.length) {
+      out.push('@media (prefers-reduced-motion: reduce){');
+      out.push('  ' + animated.join(',\n  ') + '{ animation:none; }');
+      out.push('}');
+    }
+    if (!out.length) out.push('/* 粒子与动效都没开 */');
+    return out.join('\n');
+  }
+
+  function particleBoxCss(s, L) {
+    const dir = s.particles.dir;
+    const top = -L.H;
+    const height = 'calc(100% + ' + (L.H * 2) + 'px)';
+    if (dir === 'drift') {
+      return '  top:' + top + 'px;left:' + (-L.W) + 'px;width:calc(100% + ' + (L.W * 2) + 'px);height:' + height + ';';
+    }
+    return '  top:' + top + 'px;left:0;right:0;height:' + height + ';';
+  }
+
+  function animShorthand(s, keyframe, L, pt) {
+    if (pt.dir === 'still') return null;
+    const dur = (pt.speed / (s.motion.on ? s.motion.speed : 1)).toFixed(1);
+    return keyframe + ' ' + dur + 's linear infinite';
+  }
+
+  /** 一层的 animation 列表：飘动（可选）+ 明暗呼吸（可选，跟着 twinkle 开关走） */
+  function particleAnimList(s, mv, L, pt) {
+    const parts = [];
+    const move = animShorthand(s, mv, L, pt);
+    if (move) parts.push(move);
+    if (pt.twinkle) parts.push((mv === 'mmdskin-mvA' ? 'mmdskin-twA 6.5s' : 'mmdskin-twB 9s') + ' ease-in-out infinite alternate');
+    return parts.join(',');
+  }
+
+  function moveKeyframes(s, name, L) {
+    const dir = s.particles.dir;
+    if (dir === 'still') return '';
+    let from = 'translate3d(0,0,0)';
+    let to = 'translate3d(0,' + L.H + 'px,0)';
+    if (dir === 'rise') to = 'translate3d(0,-' + L.H + 'px,0)';
+    if (dir === 'drift') to = 'translate3d(' + L.W + 'px,' + L.H + 'px,0)';
+    return '@keyframes ' + name + '{ from{transform:' + from + ';} to{transform:' + to + ';} }';
+  }
+
+  // ---------------------------------------------------------------- CSS：宿主弹窗（受控通路）
+  function buildHostCss(s) {
+    const out = [];
+    const radius = px(s.host.radius);
+    const hair = s.host.popupHairline
+      ? 'border:1px solid var(--chat-modal-btn-border,rgba(128,128,128,.35));'
+      : '';
+    out.push('/* ===== 4/4 宿主弹窗（平台抽取 + 过滤后注入父页面） =====');
+    out.push(' * 每条规则都从精确的 [data-host="…"] 开放根开始、平铺书写；');
+    out.push(' * 不用 :has() / url() / 原生嵌套，也不写 .model-setting-scope 这类裸父页面 class。');
+    out.push(' * 这里只做「跟主题无关」的圆角与描边：父页面读不到 iframe 的 data-theme，');
+    out.push(' * 写死颜色会在另一套主题下翻车，颜色统一交给上一条规则的 18 个主题变量桥。');
+    out.push(' * 根里的内部 class 属于当前实现观察，换目标站点前请重新取证。 */');
+    if (s.host.detailModels) out.push('[data-host="models"]{ border-radius:' + radius + '; }');
+    if (s.host.detailModelSetting)
+      out.push('[data-host="model-setting"] .mp-card{ border-radius:' + radius + ';' + hair + ' }');
+    if (s.host.detailPersona)
+      out.push('[data-host="persona"] .gender-item.active{ border-radius:' + px(Math.max(6, s.host.radius - 6)) + '; }');
+    if (s.host.detailSummary) out.push('[data-host="summary"]{ border-radius:' + radius + '; }');
+    if (!s.host.detailModels && !s.host.detailModelSetting && !s.host.detailPersona && !s.host.detailSummary)
+      out.push('/* 没有勾任何弹窗细化项：配色全靠上一条规则里的 18 个主题变量桥 */');
+    return out.join('\n');
+  }
+
+  // ---------------------------------------------------------------- 生成的 HTML / 脚本
+  function buildToggleHtml(s) {
+    const t = s.toggle;
+    const first = t.defaultOn ? t.labelOn : t.labelOff;
+    return '<button type="button" class="mmdskin-btn' + (t.place === 'float' ? ' mmdskin-float' : '') + '"'
+      + ' aria-pressed="' + (t.defaultOn ? 'true' : 'false') + '">' + escapeHtml(first) + '</button>';
+  }
+
+  function escapeHtml(str) {
+    return String(str == null ? '' : str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function buildKitScript(s) {
+    const t = s.toggle;
+    /* 存档 key 只留安全字符，避免踩到平台存档名的怪脾气，也方便作者换前缀避冲突 */
+    const key = String(t.saveKey || '').replace(/[^A-Za-z0-9_.-]/g, '').slice(0, 40) || 'mmdskin_off';
+    const persist = t.persist === 'forever' ? 'forever' : 'session';
+    const L = [
+      '<script>',
+      '/* MMD 美化积木工坊 · 一键开关',
+      ' * 只做三件事：读取上次的选择、给根节点加/去 .mmdskin-off、更新按钮文字。',
+      ' * 皮肤本体全在 <style> 里，脚本被抽走也只是「关不掉」，不会样崩。 */',
+      '(function () {',
+      '  if (window.__mmdSkin && window.__mmdSkin.ready) return;',
+      '  var NS = window.__mmdSkin = window.__mmdSkin || {};',
+      '  NS.ready = true;',
+      '  var KEY = "' + key + '";',
+      '  var PERSIST = "' + persist + '";',
+      '  var PLACE = "' + (t.place === 'float' ? 'float' : 'statusbar') + '";',
+      '  var DEFAULT_OFF = ' + (t.defaultOn ? 'false' : 'true') + ';',
+      '  var LON = "' + escJs(t.labelOn) + '";',
+      '  var LOFF = "' + escJs(t.labelOff) + '";',
+      '  var off = DEFAULT_OFF;',
+      '',
+      '  function root() { return document.querySelector(\'[data-chat="root"]\'); }',
+      '',
+      '  function read() {',
+      '    try {',
+      '      var v = PERSIST === "forever" ? sdk.save.get(KEY) : sdk.cache.get(KEY);',
+      '      if (v === null || v === undefined || v === "") return DEFAULT_OFF;',
+      '      return v === 1 || v === "1" || v === true;',
+      '    } catch (e) { return DEFAULT_OFF; }',
+      '  }',
+      '',
+      '  function write(v) {',
+      '    try {',
+      '      if (PERSIST === "forever") sdk.save.set(KEY, v ? 1 : 0);',
+      '      else sdk.cache.set(KEY, v ? 1 : 0);',
+      '    } catch (e) {}',
+      '  }',
+      '',
+      '  function paint() {',
+      '    var r = root();',
+      '    if (r) { if (off) r.classList.add("mmdskin-off"); else r.classList.remove("mmdskin-off"); }',
+      '    var btns = document.querySelectorAll(".mmdskin-btn");',
+      '    for (var i = 0; i < btns.length; i++) {',
+      '      btns[i].textContent = off ? LOFF : LON;',
+      '      btns[i].setAttribute("aria-pressed", off ? "false" : "true");',
+      '    }',
+      '  }',
+      '',
+      '  function ensureButton() {',
+      '    if (PLACE !== "float") return;',
+      '    if (document.querySelector(".mmdskin-float")) return;',
+      '    var r = root();',
+      '    if (!r) return;',
+      '    var b = document.createElement("button");',
+      '    b.type = "button";',
+      '    b.className = "mmdskin-btn mmdskin-float";',
+      '    b.textContent = off ? LOFF : LON;',
+      '    b.setAttribute("aria-pressed", off ? "false" : "true");',
+      '    r.appendChild(b);',
+      '  }',
+      '',
+      '  function sync() { off = read(); ensureButton(); paint(); }',
+      '',
+      '  document.addEventListener("click", function (e) {',
+      '    var el = e.target;',
+      '    if (!el || !el.closest) return;',
+      '    var btn = el.closest(".mmdskin-btn");',
+      '    if (!btn) return;',
+      '    e.preventDefault();',
+      '    off = !off;',
+      '    write(off);',
+      '    paint();',
+      '  });',
+      '',
+      '  sdk.on("ready", sync);',
+      '  sdk.on("conversation:switch", sync);',
+      '  sdk.on("theme:change", paint);',
+      '})();',
+      '<\/script>',
+    ];
+    return L.join('\n');
+  }
+
+  function escJs(str) {
+    return String(str == null ? '' : str).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, ' ');
+  }
+
+  // ========================================================================
+  // 组装「导入正则」JSON
+  // ========================================================================
+  function buildRules(s) {
+    const rules = [];
+    /* id 一律写 -1，键顺序也照平台的来：{id, replaceString, scriptName, findRegex}。
+     *
+     * 为什么不是 -1 / -2 / -3：平台自己导出的正则数据文件里，**每条规则的 id 都是 -1**
+     * （4 份真实文件逐条核对过）。-1 很可能是「新建一条」的哨兵值，而别的负数可能被当成
+     * 「更新已存在的第 N 条」。既然目标是"导进去"，就用平台自己产出的那个值，别自作聪明。
+     * 本地 skill 的校验脚本会把「id 重复」报成 error —— 那条规则比平台实际行为更严，
+     * 工具自己的检查器干脆不报这条（重复是刻意的）。 */
+    const styleRule = (name, marker, cssText) => {
+      const body = s.meta.minify ? minifyCss(cssText) : cssText;
+      const chunks = splitCss(body, 18500);
+      chunks.forEach((chunk, i) => {
+        const nm = i === 0 ? name : name + '-' + (i + 1);
+        const mk = i === 0 ? marker : marker.replace('}}', '-' + (i + 1) + '}}');
+        rules.push({ id: -1, replaceString: '<style>\n' + chunk + '\n</style>', scriptName: nm, findRegex: mk });
+      });
+    };
+    styleRule('skin-vars', '{{skin-vars}}', buildVarsCss(s));
+    styleRule('skin-layout', '{{skin-layout}}', buildLayoutCss(s));
+    if (s.particles.on || s.motion.on) styleRule('skin-fx', '{{skin-fx}}', buildFxCss(s));
+    if (s.host.on && (s.host.detailModels || s.host.detailModelSetting || s.host.detailPersona || s.host.detailSummary))
+      styleRule('skin-host', '{{skin-host}}', buildHostCss(s));
+    if (s.custom.extraCss.trim()) styleRule('skin-custom', '{{skin-custom}}', classifyCustomCss(s.custom.extraCss));
+    if (s.toggle.on) {
+      if (s.toggle.place === 'statusbar') {
+        rules.push({ id: -1, replaceString: buildToggleHtml(s), scriptName: 'skin-btn', findRegex: '{{skin-toggle}}' });
+      }
+      rules.push({ id: -1, replaceString: buildKitScript(s), scriptName: 'skin-kit', findRegex: '{{skin-kit}}' });
+    }
+    return rules;
+  }
+
+  /** 自定义 CSS 原样并入；只有全局选择器会被改写成 [data-chat="root"] 前缀（平台明令禁止全局 CSS） */
+  function classifyCustomCss(text) {
+    return String(text).replace(/(^|[\n}])\s*(:root|html|body|\*)\s*\{/g, function (m, pre) {
+      return pre + '\n[data-chat="root"]{';
+    });
+  }
+
+  function buildPack(s) {
+    /* 字段形态对齐平台自己导出的「正则数据」文件：
+     * {"pageDepth":2,"statusbar":"…","beginning":"…","regex_scripts":[…]}
+     * statusbar / beginning 必须带着（哪怕空串）—— 少字段会被导入页判成「格式错误」，
+     * 这是真实踩过的坑：平台自己导出的 4 份文件里这两个键一个都没少。 */
+    const pack = { chatVersion: 1, pageDepth: 2 };
+    pack.statusbar = (s.toggle.on && s.toggle.place === 'statusbar') ? '{{skin-toggle}}' : String(s.meta.statusbar || '');
+    pack.beginning = String(s.meta.beginning || '');
+    pack.regex_scripts = buildRules(s);
+    return pack;
+  }
+
+  /**
+   * 导出文本：**缩进多行，不做单行紧凑**。
+   *
+   * 这条是实测出来的（用户拿真实导入页试了好几次）：
+   *   - 单行紧凑的 JSON：导入页不报错，但规则**不生效**；
+   *   - 缩进多行的 JSON：正常生效。
+   * 同样内容、只差外层排版，效果却不同 —— 平台内部怎么处理的不清楚，
+   * 但"能导进去"和"导进去有用"是两件事。所以这里只保留有效的那个形态，
+   * 单行选项已经删掉（谁也别再加回来；自测里有一条断言专门守着这个）。
+   */
+  function stringifyPack(pack) {
+    return JSON.stringify(pack, null, 2);
+  }
+
+  // ========================================================================
+  // 自检器：复刻 skill 里 validate.mjs 的判定
+  // ========================================================================
+  const LIMITS = { rules: 130, scriptName: 20, findRegex: 1000, replaceString: 20000, statusbar: 200, beginning: 4000 };
+  const TOP_KEYS = ['chatVersion', 'pageDepth', 'statusbar', 'beginning', 'personality', 'regex_scripts'];
+  const RULE_KEYS = ['id', 'scriptName', 'findRegex', 'replaceString'];
+  const BANNED_TAGS = ['iframe', 'link', 'meta', 'form', 'object', 'embed'];
+  const RESERVED_IN_PATTERN = ['html', 'head', 'body', 'css'];
+  const HOST_ROOTS = ['conversations', 'conv-delete', 'conv-rename', 'conv-limit', 'models', 'model-setting',
+    'persona', 'persona-confirm', 'extra', 'style', 'instructions', 'reset', 'background', 'assistant-intro',
+    'message-edit', 'message-delete', 'message-backtrack', 'share-role', 'share-records', 'summary'];
+  const RAW_HOST_CLASSES = ['.sandbox-host', '.model-setting-scope', '.model-switch-scope', '.role-profile-modal',
+    '.custom-instruction-scope', '.summary-sheet'];
+  const SDK_CAPS = ['input.get', 'input.set', 'input.add', 'input.insert', 'input.clear', 'input.focus', 'input.blur',
+    'input.getCursor', 'input.setCursor', 'composer.show', 'composer.hide', 'composer.visible', 'message.send',
+    'message.edit', 'cache.get', 'cache.set', 'cache.remove', 'save.get', 'save.set', 'save.remove', 'save.keys',
+    'stage.open', 'stage.close', 'stage.el', 'stage.visible', 'role.get', 'user.get', 'on', 'debug.log', 'version'];
+  const SDK_EVENTS = ['ready', 'message:new', 'message:done', 'message:stream', 'message:mount', 'message:unmount',
+    'input:change', 'conversation:switch', 'theme:change', 'back', 'stage:close', 'dispose'];
+
+  function classifyPattern(raw) {
+    const trimmed = String(raw == null ? '' : raw).trim().replace(/^`|`$/g, '');
+    if (!trimmed) return { kind: 'empty' };
+    const m = /^\/([\s\S]+)\/([gimsuy]*)$/.exec(trimmed);
+    if (!m) return { kind: 'literal', literal: trimmed };
+    let flags = m[2] || '';
+    if (flags.indexOf('g') < 0) flags += 'g';
+    try { new RegExp(m[1], flags); return { kind: 'regex' }; }
+    catch (e) { return { kind: 'bad-regex', message: e.message }; }
+  }
+  function stripStyleAndScript(str) {
+    return String(str).replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<script[\s\S]*?<\/script>/gi, '');
+  }
+  function styleBlocks(text) {
+    const out = []; const re = /<style\b[^>]*>([\s\S]*?)<\/style>/gi; let m;
+    while ((m = re.exec(String(text))) !== null) out.push(m[1]);
+    return out;
+  }
+  function hasWord(str, word) { return new RegExp('(^|[^A-Za-z])' + word + '([^A-Za-z]|$)', 'i').test(str); }
+
+  function checkHostCss(err, warn, where, replaceString) {
+    styleBlocks(replaceString).forEach((rawStyle) => {
+      const style = rawStyle.replace(/\/\*[\s\S]*?\*\//g, '');
+      const usesHostRoot = /\[data-host\b/i.test(style);
+      const usesRawHostClass = RAW_HOST_CLASSES.some((rc) => new RegExp(rc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![\\w-])').test(style));
+      if (!usesHostRoot && !usesRawHostClass) return;
+      if (/:has\s*\(/i.test(style)) err(where, '受控宿主 CSS 不能使用 :has()，平台会过滤掉');
+      if (/\burl\s*\(/i.test(style)) err(where, '受控宿主 CSS 不能使用 url()，平台会过滤掉');
+      const stack = []; let prelude = ''; let quote = ''; let escaped = false;
+      for (let i = 0; i < style.length; i += 1) {
+        const ch = style[i];
+        if (quote) {
+          prelude += ch;
+          if (!escaped && ch === quote) quote = '';
+          escaped = !escaped && ch === '\\';
+          continue;
+        }
+        if (ch === '"' || ch === "'") { quote = ch; prelude += ch; continue; }
+        if (ch === '{') {
+          const selector = prelude.trim();
+          const parentHostScope = stack.some((entry) => entry.hostScope);
+          const hasHostRoot = /\[data-host\b/i.test(selector);
+          if (parentHostScope) err(where, '受控宿主 CSS 必须平铺，不能在 [data-host] 规则里再嵌套');
+          selector.split(',').forEach((part) => {
+            const rawInPart = RAW_HOST_CLASSES.some((rc) => new RegExp(rc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![\\w-])').test(part));
+            const partHasHostRoot = /\[data-host\b/i.test(part);
+            if (rawInPart && !partHasHostRoot) err(where, '宿主内部选择器必须由 [data-host="…"] 根限定，不能裸写：' + part.trim());
+            if (partHasHostRoot) {
+              const mm = /^\s*\[data-host\s*=\s*(?:"([^"]+)"|'([^']+)')\]/.exec(part);
+              if (!mm) { err(where, '宿主选择器必须从精确 [data-host="…"] 根开始：' + part.trim()); return; }
+              const root = mm[1] || mm[2];
+              if (HOST_ROOTS.indexOf(root) < 0) err(where, '未知或未开放的 data-host 根 ' + root);
+              if (root === 'summary' && /^\s*\[data-host\s*=\s*(?:"summary"|'summary')\]\s+\.summary-sheet\b/.test(part))
+                err(where, 'summary 根本身就是 .summary-sheet，不要再加一层 .summary-sheet 后代');
+            }
+          });
+          stack.push({ hostScope: parentHostScope || hasHostRoot });
+          prelude = '';
+          continue;
+        }
+        if (ch === '}') { stack.pop(); prelude = ''; continue; }
+        prelude += ch;
+      }
+    });
+  }
+
+  function checkSdk(err, warn, where, code) {
+    const re = /\bsdk\.([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)?)/g; let m;
+    while ((m = re.exec(code)) !== null) {
+      const name = m[1];
+      if (SDK_CAPS.indexOf(name) >= 0) continue;
+      if (SDK_CAPS.indexOf(name.split('.')[0]) >= 0) continue;
+      err(where, 'contract.json 里没有 sdk.' + name + ' 这个能力');
+    }
+    const reEv = /\bsdk\.on\(\s*['"]([^'"]+)['"]/g;
+    while ((m = reEv.exec(code)) !== null) {
+      if (SDK_EVENTS.indexOf(m[1]) < 0) err(where, 'contract.json 里没有「' + m[1] + '」这个事件名');
+    }
+  }
+
+  function runChecker(pack) {
+    const errors = []; const warns = [];
+    const err = (w, m) => errors.push({ where: w, msg: m });
+    const warn = (w, m) => warns.push({ where: w, msg: m });
+
+    Object.keys(pack).forEach((key) => {
+      if (TOP_KEYS.indexOf(key) < 0) err('顶层', '多了一个键 ' + key + '，导入页不认');
+    });
+    if (pack.chatVersion !== 1) err('顶层', 'chatVersion 必须是 1，否则新建卡会落到旧聊天页');
+    if (pack.pageDepth !== 2) warn('顶层', 'pageDepth 建议固定 2');
+    ['statusbar', 'beginning'].forEach((key) => {
+      if (pack[key] === undefined) return;
+      if (typeof pack[key] !== 'string') err('顶层', key + ' 必须是字符串');
+      else if (pack[key].length > LIMITS[key]) err('顶层', key + ' ' + pack[key].length + ' 字，超上限 ' + LIMITS[key]);
+    });
+    const list = pack.regex_scripts || [];
+    if (!Array.isArray(list)) return { errors: [{ where: '顶层', msg: 'regex_scripts 必须是数组' }], warns: warns };
+    if (list.length > LIMITS.rules) err('顶层', list.length + ' 条规则，超上限 ' + LIMITS.rules);
+    if (!list.length) err('顶层', '一条规则都没有');
+
+    const soup = [pack.statusbar, pack.beginning].concat(list.map((r) => (r && typeof r.replaceString === 'string' ? r.replaceString : ''))).join('\n');
+    const seenLiteral = {}; const seenName = {};
+
+    list.forEach((rule, i) => {
+      /* 粘贴进来的包可能很不规整，这里绝不能抛异常，把话说清楚就行 */
+      if (!rule || typeof rule !== 'object' || Array.isArray(rule)) {
+        err('规则 ' + (i + 1), '不是一个对象，平台会跳过这一条');
+        return;
+      }
+      const where = '规则 ' + (i + 1) + '「' + (rule.scriptName || '无名') + '」';
+      RULE_KEYS.forEach((k) => { if (!(k in rule)) err(where, '缺字段 ' + k); });
+      Object.keys(rule).forEach((k) => { if (RULE_KEYS.indexOf(k) < 0) warn(where, '多了字段 ' + k); });
+      /* id 一律 -1 是刻意的（与平台自身导出同形，平台导入时会重编号），
+       * 所以这里只检查「是不是负整数」，不再对「重复」报警 —— 那是设计，不是问题。 */
+      if (!Number.isInteger(rule.id) || rule.id >= 0) err(where, 'id 要用负整数（平台按这个值重编号；用 -1 就行）');
+
+      const name = rule.scriptName;
+      if (typeof name !== 'string' || !name.trim()) err(where, 'scriptName 不能为空');
+      else {
+        if (name.length > LIMITS.scriptName) err(where, 'scriptName ' + name.length + ' 字，超上限 ' + LIMITS.scriptName);
+        if (seenName[name] !== undefined) warn(where, 'scriptName 与规则 ' + (seenName[name] + 1) + ' 重名');
+        else seenName[name] = i;
+      }
+
+      const find = rule.findRegex;
+      if (typeof find !== 'string' || !find.trim()) err(where, 'findRegex 不能为空');
+      else {
+        if (find.length > LIMITS.findRegex) err(where, 'findRegex ' + find.length + ' 字，超上限 ' + LIMITS.findRegex);
+        if (/<[a-zA-Z/]/.test(find)) err(where, 'findRegex 里有 HTML 标签，平台不建议');
+        RESERVED_IN_PATTERN.forEach((word) => {
+          if (hasWord(find, word)) warn(where, 'findRegex 含保留字 ' + word + '，创卡页文案不建议');
+        });
+        const kind = classifyPattern(find);
+        if (kind.kind === 'bad-regex') err(where, '写成 /…/ 但编不过：' + kind.message);
+        if (kind.kind === 'literal') {
+          if (seenLiteral[kind.literal] !== undefined) err(where, '字面量匹配式与规则 ' + (seenLiteral[kind.literal] + 1) + ' 重复，后一条永远匹配不到');
+          else seenLiteral[kind.literal] = i;
+        }
+      }
+
+      const body = rule.replaceString;
+      if (typeof body !== 'string') { err(where, 'replaceString 必须是字符串'); return; }
+      if (body.length > LIMITS.replaceString) err(where, 'replaceString ' + body.length + ' 字，超编辑器上限 ' + LIMITS.replaceString + '，要拆条');
+      checkSdk(err, warn, where, body);
+
+      const visible = stripStyleAndScript(body);
+      if (/<[a-zA-Z][^>]*\sdata-[a-zA-Z-]+\s*=/.test(visible)) warn(where, '标签上自写了 data-*，净化会删掉；按钮用 class 或 id');
+      BANNED_TAGS.forEach((tag) => {
+        if (new RegExp('<\\s*' + tag + '(?![A-Za-z0-9_-])', 'i').test(visible)) warn(where, '<' + tag + '> 在白名单外，会被删掉');
+      });
+      if (/^ {4,}</m.test(body)) warn(where, '有行以 4 个空格 + < 开头，会被 Markdown 当代码块原样显示');
+      if (/(^|[\s,};])(\*|html|body|:root)\s*\{/.test(body)) err(where, '出现全局 CSS（*{} / html{} / body{} / :root{}），平台禁止；改用 [data-chat="root"]');
+      const mountRe = /sdk\.on\(\s*['"]message:mount['"]/g; let mountM;
+      while ((mountM = mountRe.exec(body)) !== null) {
+        const block = body.slice(mountM.index + mountM[0].length, mountM.index + mountM[0].length + 1200);
+        if (/\bsdk\.on\(/.test(block)) warn(where, 'sdk.on 疑似写在 message:mount 回调里，每挂一条气泡会多订一份');
+      }
+      if (/message:done/.test(body) && /sdk\.message\.send\(/.test(body)) warn(where, '既订阅 message:done 又调 message.send，别做成自问自答死循环');
+      checkHostCss(err, warn, where, body);
+
+      const kind2 = classifyPattern(find);
+      if (kind2.kind === 'literal' && visible.trim() !== '') {
+        const count = soup.split(kind2.literal).length - 1;
+        if (count === 0) warn(where, '会产出可见内容，但触发串 ' + kind2.literal + ' 不在 statusbar / beginning / 其它规则里，页面上永远不出现');
+      }
+    });
+    return { errors: errors, warns: warns };
+  }
+
+  // ========================================================================
+  // 对比度体检
+  // ========================================================================
+  function contrastReport(s) {
+    const rows = [];
+    ['dark', 'light'].forEach((theme) => {
+      const c = activePalette(s, theme);
+      const label = theme === 'dark' ? '🌙 夜间' : '☀️ 日间';
+      rows.push({ group: label, name: '正文 / 背景', ratio: contrast(c.text, c.bg) });
+      rows.push({ group: label, name: '次要文字 / 背景', ratio: contrast(c.muted, c.bg) });
+      rows.push({ group: label, name: '气泡文字 / AI 气泡', ratio: contrast(c.bubbleText, c.bubbleAi) });
+      rows.push({ group: label, name: '气泡文字 / 我的气泡', ratio: contrast(c.bubbleText, c.bubbleUser) });
+      rows.push({ group: label, name: '强调色 / 背景', ratio: contrast(c.accent, c.bg) });
+      if (s.composer && s.composer.on && s.composer.send === 'accent') {
+        rows.push({ group: label, name: '发送键文字 / 强调色', ratio: contrast(bestTextOn(c.accent), c.accent), soft: true });
+      }
+    });
+    return rows;
+  }
+
+  // ========================================================================
+  // 积木面板渲染
+  // ========================================================================
+  const allCtl = [];
+
+  function el(tag, cls, html) {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (html !== undefined) node.innerHTML = html;
+    return node;
+  }
+
+  function renderBlocks() {
+    const host = $('#blocks');
+    host.innerHTML = '';
+    allCtl.length = 0;
+    SECTIONS.forEach((sec) => {
+      const box = el('details', 'group');
+      if (sec.open) box.open = true;
+      const sum = el('summary');
+      sum.textContent = sec.icon + ' ' + sec.title;
+      box.appendChild(sum);
+      const body = el('div', 'group-body');
+      if (sec.hint) body.appendChild(el('p', 'group-hint', sec.hint));
+      sec.fields.forEach((f) => body.appendChild(renderField(f)));
+      box.appendChild(body);
+      host.appendChild(box);
+    });
+    syncInputs();
+  }
+
+  function renderField(f) {
+    const wrap = el('div', 'row' + (f.type === 'area' || f.type === 'html' ? ' stack' : ''));
+    if (f.path) wrap.dataset.path = f.path;
+    if (f.label) { const lb = el('label'); lb.textContent = f.label; wrap.appendChild(lb); }
+    const ctl = el('div', 'ctl');
+    wrap.appendChild(ctl);
+
+    if (f.type === 'html') {
+      ctl.innerHTML = f.html || '';
+      return wrap;
+    }
+
+    if (f.type === 'colors') {
+      wrap.className = 'row stack';
+      COLOR_KEYS.forEach((ck) => {
+        const path = 'palette.' + f.theme + '.' + ck.key;
+        const line = el('div', 'row');
+        const lb = el('label'); lb.textContent = ck.label;
+        const c = el('div', 'ctl');
+        const color = el('input'); color.type = 'color'; color.dataset.path = path;
+        const hex = el('input', 'input hex'); hex.type = 'text'; hex.dataset.hexFor = path; hex.spellcheck = false;
+        c.appendChild(color); c.appendChild(hex);
+        line.appendChild(lb); line.appendChild(c);
+        ctl.appendChild(line);
+        allCtl.push({ field: { type: 'color', path: path }, el: color });
+      });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    if (f.type === 'colors2') {
+      wrap.className = 'row stack';
+      [['粒子主色', f.p1], ['粒子副色', f.p2]].forEach((pair) => {
+        const line = el('div', 'row');
+        const lb = el('label'); lb.textContent = pair[0];
+        const c = el('div', 'ctl');
+        const color = el('input'); color.type = 'color'; color.dataset.path = pair[1];
+        const hex = el('input', 'input hex'); hex.type = 'text'; hex.dataset.hexFor = pair[1]; hex.spellcheck = false;
+        c.appendChild(color); c.appendChild(hex);
+        line.appendChild(lb); line.appendChild(c);
+        ctl.appendChild(line);
+        allCtl.push({ field: { type: 'color', path: pair[1] }, el: color });
+      });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    if (f.type === 'check') {
+      const lab = el('label', 'check');
+      const cb = el('input'); cb.type = 'checkbox'; cb.dataset.path = f.path;
+      lab.appendChild(cb);
+      lab.appendChild(el('span', '', escapeHtml(f.text || f.label || '')));
+      ctl.appendChild(lab);
+      allCtl.push({ field: f, el: cb });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    if (f.type === 'select') {
+      const sel = el('select', 'select'); sel.dataset.path = f.path;
+      f.options.forEach((o) => {
+        const op = el('option'); op.value = String(o.value); op.textContent = o.label;
+        sel.appendChild(op);
+      });
+      ctl.appendChild(sel);
+      allCtl.push({ field: f, el: sel });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    if (f.type === 'chips') {
+      const row = el('div', 'pill-row');
+      f.options.forEach((o) => {
+        const chip = el('button', 'chip'); chip.type = 'button';
+        chip.dataset.value = String(o.value);
+        chip.textContent = o.label;
+        row.appendChild(chip);
+      });
+      ctl.appendChild(row);
+      allCtl.push({ field: f, el: ctl });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    if (f.type === 'range') {
+      const inp = el('input'); inp.type = 'range';
+      inp.min = f.min; inp.max = f.max; inp.step = f.step; inp.dataset.path = f.path;
+      const val = el('span', 'val');
+      ctl.appendChild(inp); ctl.appendChild(val);
+      allCtl.push({ field: f, el: inp, val: val });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    if (f.type === 'area') {
+      const ta = el('textarea', 'input'); ta.rows = f.rows || 5; ta.dataset.path = f.path;
+      if (f.placeholder) ta.placeholder = f.placeholder;
+      ta.spellcheck = false;
+      ctl.appendChild(ta);
+      allCtl.push({ field: f, el: ta });
+      attachWhen(wrap, f, ctl);
+      return wrap;
+    }
+
+    /* text */
+    const inp = el('input', 'input'); inp.type = 'text'; inp.dataset.path = f.path;
+    if (f.placeholder) inp.placeholder = f.placeholder;
+    ctl.appendChild(inp);
+    allCtl.push({ field: f, el: inp });
+    attachWhen(wrap, f, ctl);
+    return wrap;
+  }
+
+  const whenReg = [];
+  function attachWhen(wrap, f, ctl) {
+    if (f.hint) ctl.appendChild(el('div', 'mini-note', escapeHtml(f.hint)));
+    if (f.when) whenReg.push({ f: f, el: wrap });
+  }
+
+  function chipEq(a, b) {
+    if (typeof b === 'boolean') return a === String(b);
+    if (typeof b === 'number') return Number(a) === b;
+    return a === String(b);
+  }
+
+  function refreshConditions() {
+    whenReg.forEach((entry) => {
+      let show = true;
+      try { show = !!entry.f.when(state); } catch (e) { show = true; }
+      entry.el.style.display = show ? '' : 'none';
+    });
+  }
+
+  /**
+   * 把 state 刷到所有控件上。
+   * 两个讲究：
+   *  1) 值相同就别赋值 —— 否则正在输入的文本框光标会被顶到末尾；
+   *  2) 正在焦点里的控件不碰它的 value，但胶囊高亮 / 勾选框照刷。
+   */
+  function syncInputs() {
+    allCtl.forEach((entry) => {
+      const f = entry.field;
+      const v = getPath(state, f.path);
+      if (f.type === 'range') {
+        const next = String(v);
+        if (entry.el.value !== next) entry.el.value = next;
+        if (entry.val) entry.val.textContent = v + (f.unit || '');
+      } else if (f.type === 'color') {
+        const hexVal = normHex(v);
+        if (entry.el.value !== hexVal) entry.el.value = hexVal;
+        const hex = $('[data-hex-for="' + f.path + '"]');
+        if (hex && document.activeElement !== hex && hex.value !== hexVal) hex.value = hexVal;
+      } else if (f.type === 'check') {
+        if (entry.el.checked !== !!v) entry.el.checked = !!v;
+      } else if (f.type === 'chips') {
+        $$('.chip', entry.el).forEach((chip) => chip.classList.toggle('active', chipEq(chip.dataset.value, v)));
+      } else if (f.type === 'select') {
+        const next = String(v);
+        if (document.activeElement !== entry.el && entry.el.value !== next) entry.el.value = next;
+      } else {
+        const next = v == null ? '' : String(v);
+        if (document.activeElement !== entry.el && entry.el.value !== next) entry.el.value = next;
+      }
+    });
+    refreshConditions();
+  }
+
+  // ========================================================================
+  // 预览（Shadow DOM：皮肤 CSS 关在预览区里，绝不会漏到工具界面上）
+  // ========================================================================
+  const PV_BASE_CSS = [
+    ':host{display:block;height:100%}',
+    '[data-chat="root"]{position:relative;display:flex;flex-direction:column;height:100%;overflow:hidden;',
+    '  background:#ffffff;color:#212226;',
+    '  font:14px/1.65 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}',
+    '[data-chat="root"][data-theme="dark"]{background:#101114;color:#e9eaec}',
+    '[data-chat="header"]{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#ffffff;border-bottom:1px solid rgba(0,0,0,.08)}',
+    '[data-chat="root"][data-theme="dark"] [data-chat="header"]{background:#16181d;border-bottom-color:rgba(255,255,255,.08)}',
+    '[data-chat="header-back"]{font-size:19px;line-height:1;color:#17AAFD;cursor:pointer}',
+    '[data-chat="header-title"]{display:flex;align-items:center;gap:8px;font-weight:600;flex:1 1 auto;min-width:0}',
+    '[data-chat="header-title"]>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.pv-avatar{width:32px;height:32px;flex:0 0 auto;border-radius:50%;background:linear-gradient(140deg,#7cc0ff,#f0c674)}',
+    '[data-chat="header-actions"]{display:flex;gap:8px;font-size:12px;color:#17AAFD;flex:0 0 auto}',
+    '[data-slot="statusbar"]{padding:8px 12px;font-size:12px;background:#f3f5f8;color:#5b6570}',
+    '[data-chat="root"][data-theme="dark"] [data-slot="statusbar"]{background:#1a1d23;color:#9aa3ad}',
+    '[data-chat="messages"]{flex:1 1 auto;overflow:auto;padding:12px}',
+    '[data-chat="list"]{display:flex;flex-direction:column;row-gap:12px}',
+    '[data-chat="message-frame"]{display:flex}',
+    '[data-chat="message-frame"]:has([data-from="user"]){justify-content:flex-end}',
+    '[data-chat="message"]{max-width:80%;padding:9px 13px;border-radius:14px;background:#f1f3f5}',
+    '[data-chat="root"][data-theme="dark"] [data-chat="message"]{background:#22262d}',
+    '[data-chat="message"][data-from="user"]{background:#dceaf8}',
+    '[data-chat="root"][data-theme="dark"] [data-chat="message"][data-from="user"]{background:#1d3a55}',
+    '[data-chat="message-body"]{white-space:pre-wrap;word-break:break-word}',
+    '[data-chat="message-actions"]{margin-top:4px;font-size:11px;opacity:.55}',
+    '[data-chat="composer"]{flex:0 0 auto;padding:10px 12px;background:#ffffff;border-top:1px solid rgba(0,0,0,.08)}',
+    '[data-chat="root"][data-theme="dark"] [data-chat="composer"]{background:#16181d;border-top-color:rgba(255,255,255,.08)}',
+    '[data-chat="composer"] [data-slot="toolbar"]{display:flex;gap:6px;margin-bottom:8px}',
+    '.pv-chip{font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(23,170,253,.12);color:#17AAFD}',
+    '.pv-inputwrap{display:flex;align-items:center;gap:8px;background:#ffffff;border-radius:12px}',
+    '[data-chat="root"][data-theme="dark"] .pv-inputwrap{background:#1a1d23}',
+    '[data-chat="input"]{flex:1 1 auto;border:0;outline:0;background:transparent;color:inherit;font:inherit;',
+    '  padding:8px 10px;resize:none;min-height:34px;font-family:inherit}',
+    '[data-chat="send"]{flex:0 0 auto;width:32px;height:32px;display:flex;align-items:center;justify-content:center;',
+    '  border:0;border-radius:50%;background:#17AAFD;color:#fff;font-size:13px;cursor:pointer;padding:0}',
+  ].join('\n');
+
+  /* 预览专用护栏：把 position:fixed 的东西改成 absolute。
+   * fixed 是相对整个视口的，Shadow DOM 拦不住它 —— 所以皮肤里每一处 fixed 都必须在这儿钉回来。
+   * 皮肤里一共两处：粒子的 ::before / ::after，以及悬浮的开关按钮。 */
+  const PV_GUARD_CSS = [
+    ':host [data-chat="root"]{position:relative!important;overflow:hidden!important;height:100%}',
+    ':host [data-chat="root"]::before,',
+    ':host [data-chat="root"]::after{position:absolute!important;top:-400px!important;left:-300px!important;right:auto!important;',
+    '  width:calc(100% + 600px)!important;height:calc(100% + 800px)!important}',
+    ':host [data-chat="root"] .mmdskin-float{position:absolute!important}',
+  ].join('\n');
+
+  const PV_MOCK = [
+    '<div data-chat="header">',
+    '  <span data-chat="header-back">‹</span>',
+    '  <div data-chat="header-title"><span class="pv-avatar"></span><span>米塔</span></div>',
+    '  <div data-chat="header-actions">评论 · 分享</div>',
+    '</div>',
+    '<div data-slot="header-extra"></div>',
+    '<div data-slot="statusbar"><span>［示例］好感 72 · 体力 8/10</span></div>',
+    '<div data-chat="messages">',
+    '  <div data-chat="list">',
+    '    <div data-chat="message-frame"><div data-chat="message" data-from="ai" data-state="done">',
+    '      <div data-chat="message-body">实验记录我放桌上了，第三条我又改了一遍。</div>',
+    '      <div data-chat="message-actions">重新生成 · 编辑</div>',
+    '    </div></div>',
+    '    <div data-chat="message-frame"><div data-chat="message" data-from="user" data-state="done">',
+    '      <div data-chat="message-body">我看过了。第三条还是不对，你自己再想想。</div>',
+    '    </div></div>',
+    '    <div data-chat="message-frame"><div data-chat="message" data-from="ai" data-state="done">',
+    '      <div data-chat="message-body">……好吧。给我三分钟，我把整段重新推一遍。</div>',
+    '    </div></div>',
+    '  </div>',
+    '</div>',
+    '<div data-chat="composer">',
+    '  <div data-slot="toolbar"><span class="pv-chip">撒娇</span><span class="pv-chip">追问</span><span class="pv-chip">离开实验室</span></div>',
+    '  <div class="pv-inputwrap"><textarea data-chat="input" rows="1" placeholder="说点什么……"></textarea>',
+    '  <button data-chat="send" type="button">➤</button></div>',
+    '</div>',
+  ].join('\n');
+
+  let shadow = null;
+
+  function initPreview() {
+    shadow = $('#previewHost').attachShadow({ mode: 'open' });
+    shadow.innerHTML = '<style id="pv-base"></style><style id="pv-skin"></style><style id="pv-guard"></style>'
+      + '<div data-chat="root" data-theme="dark" data-composer="open">' + PV_MOCK + '</div>';
+    shadow.getElementById('pv-base').textContent = PV_BASE_CSS;
+    shadow.getElementById('pv-guard').textContent = PV_GUARD_CSS;
+    shadow.addEventListener('click', function (e) {
+      const t = e.target;
+      if (t && t.closest && t.closest('.mmdskin-btn')) {
+        previewToggleOff = !previewToggleOff;
+        if (state.toggle.persist === 'forever') { /* 预览不写存档 */ }
+        renderPreview();
+      }
+    });
+  }
+
+  function renderPreview() {
+    if (!shadow) return;
+    const s = state;
+    const root = shadow.querySelector('[data-chat="root"]');
+    if (!root) return;
+    root.setAttribute('data-theme', previewTheme);
+    root.classList.toggle('mmdskin-off', previewToggleOff);
+    Array.prototype.forEach.call(root.querySelectorAll('.mmdskin-btn'), (b) => b.remove());
+    const statusbar = root.querySelector('[data-slot="statusbar"]');
+    const statusbarUsed = s.statusbar.on || (s.toggle.on && s.toggle.place === 'statusbar');
+    statusbar.style.display = statusbarUsed ? '' : 'none';
+    if (s.toggle.on) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mmdskin-btn' + (s.toggle.place === 'float' ? ' mmdskin-float' : '');
+      btn.textContent = previewToggleOff ? s.toggle.labelOff : s.toggle.labelOn;
+      btn.setAttribute('aria-pressed', previewToggleOff ? 'false' : 'true');
+      if (s.toggle.place === 'statusbar') statusbar.appendChild(btn);
+      else root.appendChild(btn);
+    }
+    const css = [buildVarsCss(s), buildLayoutCss(s), buildFxCss(s)].join('\n\n');
+    shadow.getElementById('pv-skin').textContent = css;
+    $('#pvToggleOn').textContent = previewToggleOff ? '美化：关（点按钮开回来）' : '美化：开';
+    $('#pvToggleOn').classList.toggle('active', !previewToggleOff);
+    $('#pvModeLabel').textContent = (previewTheme === 'light' ? '日间' : '夜间') + ' · '
+      + (previewDevice === 'phone' ? '手机' : '桌面');
+  }
+
+  // ========================================================================
+  // 自检报告 / 统计
+  // ========================================================================
+  function reviewNotes(s, pack) {
+    const notes = [];
+    notes.push('导出形态与平台自己导出的「正则数据」同形：pageDepth + statusbar + beginning + regex_scripts，缩进多行。'
+      + 'statusbar / beginning 是必带的键（哪怕空串）—— 少了它们导入页会判「格式错误」，这个坑真踩过。'
+      + '另外：单行紧凑的 JSON 导入页收得下但规则不生效，所以只出缩进多行的（实测结论）。');
+    if (s.toggle.on && s.toggle.place === 'statusbar') {
+      notes.push('你选了「塞进功能栏」：statusbar 会被写成 {{skin-toggle}}，卡里原本的功能栏触发串会被替换掉。');
+    } else if (!String(s.meta.statusbar || '').trim()) {
+      notes.push('statusbar 现在是空字符串：导入时会把卡里原本的功能栏触发串清空。新建卡无所谓；给已有卡导入，请先在「导出形态」里把它填回原值。');
+    }
+    if (!String(s.meta.beginning || '').trim()) {
+      notes.push('beginning 现在是空字符串：导入时会把卡里原本的第一句话清空。新建卡无所谓；给已有卡导入，请先在「导出形态」里填回原内容。');
+    }
+    if (s.meta.safeLayout) {
+      notes.push('「保护自定义界面」开着（默认）：不写气泡最大宽度、不给消息加 transform'
+        + '（前者会把卡的全宽面板挤成窄条，后者会让固定定位元素在动画期间错位），这两个显式写 revert。'
+        + '内边距、消息间距、头像尺寸照常生效 —— 气泡不会因此变挤。');
+    } else {
+      notes.push('「保护自定义界面」关着：会写气泡最大宽度、并给消息加 transform。'
+        + '卡里若有自己的界面（尤其是固定定位的面板），这些会把它一起改坏。');
+    }
+    notes.push('所有「关掉」的开关都会显式写 revert（把平台原样还回来），所以同一个卡反复导入不会再叠加旧值。'
+      + '但如果平台是「追加规则」而不是替换，旧皮肤的规则仍在——看到残留就在卡的正则列表里删掉旧的皮肤规则；'
+      + '或者用一键开关把整套关掉：新旧规则都带 .mmdskin-off 前缀，会一起失效。');
+    if (s.host.on && (s.host.detailModels || s.host.detailModelSetting || s.host.detailPersona || s.host.detailSummary))
+      notes.push('受控宿主弹窗 CSS 属于「平台抽取 + 过滤后注入父页面」的通路：静态检查只能证明写法合规，不能证明你的目标站点已经注入。必须在真实聊天页打开对应弹窗，看根有没有命中、计算样式对不对。');
+    if (s.host.on && s.host.bridge)
+      notes.push('18 个宿主主题变量能不能同步到父页面弹窗，取决于目标站点版本；记忆管理、模型等入口是逐个接入的，可能有的已接、有的还是原生色。');
+    if (s.toggle.on)
+      notes.push('一键开关只能控制 iframe 里的皮肤（包括粒子）。父页面那些 [data-host] 细化规则是另一份文档里的静态 CSS，iframe 里的类管不到它——关掉美化后弹窗细化可能还在。');
+    if (s.composer.on)
+      notes.push('输入框那块白底在新版里画在输入框的父容器上，工具用的是平台公开的 :has() 配方来限定；目标页内核太老时不生效，输入框本体仍会是透明底。');
+    if (s.avatar.on)
+      notes.push('头像按公开结构定位到 [data-chat="header-title"] 里的图片/首个元素；如果你的目标页结构不同，这条可能不命中，删掉那条规则即可。');
+    if (s.bubble.on)
+      notes.push('气泡内边距写在 [data-chat="message-body"] 上而不是 message 上，避免去改平台结构性节点的内边距；平台自己那层内边距会叠加，所以实际留白会比滑杆数字略大。消息间距用 row-gap 写在 [data-chat="list"] 上，只影响气泡之间的空隙，不动任何节点的尺寸与定位。');
+    if (s.particles.on && !s.motion.on)
+      notes.push('动效总开关关着：粒子会是一张静止的星点底图，不飘不动。');
+    if (s.particles.on)
+      notes.push('粒子是伪元素 + 多层径向渐变，全屏合成层动画。手机低电量模式下系统可能自动降帧；嫌耗电就把密度和闪烁关掉。');
+    if (s.meta.minify)
+      notes.push('「导出压缩」开着：CSS 的注释、换行与行首缩进都被去掉了，字数更省，但输出不太好读。想照着学写法就把它关掉。');
+    if (pack && (pack.regex_scripts || []).some((r) => /-\d+$/.test(String((r && r.scriptName) || ''))))
+      notes.push('有规则被自动拆条了（名字带 -2 / -3）：单条替换内容超过编辑器 20000 字上限。拆点都落在 CSS 规则之间，不会切坏 @media 或某一条规则。');
+    if (s.toggle.on && s.toggle.persist === 'forever')
+      notes.push('永久记住开关状态会占用一个作者存档名「' + (String(s.toggle.saveKey || '').replace(/[^A-Za-z0-9_.-]/g, '') || 'mmdskin_off') + '」（平台上限 10 个）。如果你的卡自己也要用存档，建议给它加个项目前缀。');
+    return notes;
+  }
+
+  function buildNotes2(s, pack) { return reviewNotes(s, pack); }
+
+  function statHtml(label, value, bad, meter) {
+    return '<div class="stat' + (bad ? ' bad' : '') + '">' + label + ' <b>' + value + '</b>'
+      + (meter === undefined ? '' : '<div class="meter' + (bad ? ' bad' : '') + '"><i style="width:' + clamp(meter, 0, 100) + '%"></i></div>')
+      + '</div>';
+  }
+
+  function renderStats(pack, css) {
+    const rules = pack.regex_scripts || [];
+    const maxReplace = Math.max.apply(null, [0].concat(rules.map((r) => (r.replaceString || '').length)));
+    const maxFind = Math.max.apply(null, [0].concat(rules.map((r) => (r.findRegex || '').length)));
+    $('#jsonStats').innerHTML = statHtml('规则条数', rules.length + ' / ' + LIMITS.rules, false)
+      + statHtml('最长替换内容', maxReplace + ' / ' + LIMITS.replaceString + ' 字', maxReplace > LIMITS.replaceString * 0.9, maxReplace / LIMITS.replaceString * 100)
+      + statHtml('最长匹配式', maxFind + ' / ' + LIMITS.findRegex + ' 字', maxFind > LIMITS.findRegex, maxFind / LIMITS.findRegex * 100)
+      + statHtml('JSON 体积', (stringifyPack(pack).length / 1024).toFixed(1) + ' KB', false);
+    $('#cssStats').innerHTML = statHtml('CSS 字符数', css.length, false)
+      + statHtml('规则条数', rules.length, false);
+  }
+
+  function renderReport(rep, s, pack) {
+    const box = $('#issues');
+    box.innerHTML = '';
+    const add = (kind, key, text) => {
+      const d = el('div', 'issue ' + kind);
+      d.innerHTML = '<span class="k">' + key + '</span>' + escapeHtml(text);
+      box.appendChild(d);
+    };
+    const notes = buildNotes2(s, pack);
+    $('#checkStats').innerHTML = statHtml('错误', rep.errors.length, rep.errors.length > 0)
+      + statHtml('警告', rep.warns.length, false)
+      + statHtml('提示', notes.length, false);
+    if (!rep.errors.length) add('ok', '通过', '形状 / 上限 / 净化边界静态检查都过了：顶层字段、负数 id、脚本名长度、匹配式、替换内容、宿主 CSS 根，全部合规。');
+    rep.errors.forEach((e) => add('err', '错误', e.where + '：' + e.msg));
+    rep.warns.forEach((w) => add('warn', '警告', w.where + '：' + w.msg));
+
+    /* 对比度体检 */
+    const rows = contrastReport(s);
+    const head = el('div', 'issue ok');
+    head.innerHTML = '<span class="k">对比度</span>WCAG 对比度体检（≥4.5 适合正文，≥3 适合大字与非文本）';
+    box.appendChild(head);
+    rows.forEach((r) => {
+      const level = r.ratio >= 4.5 ? 'ok' : (r.ratio >= 3 ? 'warn' : 'err');
+      const tag = r.ratio >= 4.5 ? '合格' : (r.ratio >= 3 ? '偏低' : '太糊');
+      const d = el('div', 'issue ' + level);
+      d.innerHTML = '<span class="k">' + tag + '</span>' + escapeHtml(r.group + ' · ' + r.name + ' → ' + r.ratio.toFixed(2) + ':1');
+      box.appendChild(d);
+    });
+
+    /* 刚做过对比度修正的话，把改了什么列出来 */
+    if (lastFix && lastFix.items.length) {
+      lastFix.items.forEach((it) => {
+        const d = el('div', 'issue info');
+        d.innerHTML = '<span class="k">已修正</span>' + escapeHtml((it.theme === 'dark' ? '🌙 ' : '☀️ ') + it.label + '：'
+          + it.from + ' → ' + it.to + '（' + it.before.toFixed(2) + ':1 → ' + it.after.toFixed(2) + ':1）');
+        box.appendChild(d);
+      });
+    }
+
+    notes.forEach((n) => add('ok', '提示', n));
+  }
+
+  // ========================================================================
+  // 主更新
+  // ========================================================================
+  function update() {
+    const s = state;
+    const pack = buildPack(s);
+    const json = stringifyPack(pack);
+    const cssBody = [buildVarsCss(s), buildLayoutCss(s), buildFxCss(s)].join('\n\n');
+    let cssOut = cssBody;
+    if (s.host.on && (s.host.detailModels || s.host.detailModelSetting || s.host.detailPersona || s.host.detailSummary))
+      cssOut += '\n\n/* ---- 单独一条规则：宿主弹窗（平台抽取后注入父页面） ---- */\n' + buildHostCss(s);
+    if (s.custom.extraCss.trim())
+      cssOut += '\n\n/* ---- 你在「高级」里追加的 CSS ---- */\n' + classifyCustomCss(s.custom.extraCss);
+
+    $('#outJson').value = json;
+    $('#outCss').value = cssOut;
+    if ($('#fileBase').value !== s.meta.fileBase && s.meta.fileBase) $('#fileBase').value = s.meta.fileBase;
+
+    renderPreview();
+    renderStats(pack, cssOut);
+    renderReport(runChecker(pack), s, pack);
+    refreshConditions();
+    syncQuickPreset();
+    refreshRecipeBar();
+    saveLocalState();
+  }
+
+  /** 顶栏那个「快速套用配色」下拉必须跟着状态走：
+   * 随机配色 / 参考图取色 / 载入方案 / 医生套色 / 重置 都不经过控件层，漏同步就会显示成别的方案名。 */
+  function syncQuickPreset() {
+    const qp = $('#quickPreset');
+    if (!qp || !qp.options || !qp.options.length) return;
+    const want = String(state.palette.preset || 'custom');
+    if (qp.value !== want) qp.value = want;
+  }
+
+  /** 配方条：高亮当前配方、标注有没有混搭、控制「取消」按钮的可用状态 */
+  function refreshRecipeBar() {
+    const active = recipeById(state.meta.recipe);
+    const dirty = active ? recipeDirty(state, active) : false;
+    $$('[data-recipe]').forEach((chip) => {
+      const isActive = !!active && chip.dataset.recipe === active.id;
+      chip.classList.toggle('active', isActive);
+      chip.classList.toggle('dirty', isActive && dirty);
+    });
+    const status = $('#recipeStatus');
+    if (status) {
+      if (!active) status.textContent = '当前配方：无 —— 点上面任意一套试试，随时可以取消。';
+      else status.textContent = '当前配方：' + active.name + (dirty ? '（已混搭，不会自动跟着配方走；取消会还原它动过的那些项）' : '（原样）');
+    }
+    const btn = $('#btnCancelRecipe');
+    if (btn) btn.disabled = !active;
+  }
+
+  // ========================================================================
+  // 本地保存 / 方案管理
+  // ========================================================================
+  const LS_STATE = 'mmdskin.state.v1';
+  const LS_SCHEMES = 'mmdskin.schemes.v1';
+
+  function lsGet(key, fallback) {
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch (e) { return fallback; }
+  }
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* 隐私模式就算了 */ }
+  }
+  function saveLocalState() { lsSet(LS_STATE, state); }
+
+  function deepMerge(base, over) {
+    const out = clone(base);
+    Object.keys(over || {}).forEach((k) => {
+      const v = over[k];
+      if (v && typeof v === 'object' && !Array.isArray(v) && out[k] && typeof out[k] === 'object' && !Array.isArray(out[k]))
+        out[k] = deepMerge(out[k], v);
+      else out[k] = clone(v);
+    });
+    return out;
+  }
+
+  function applyPreset(id) {
+    const p = presetById(id);
+    if (!p || (id !== p.id)) return;
+    state.palette.preset = id;
+    state.palette.light = clone(p.light);
+    state.palette.dark = clone(p.dark);
+  }
+
+  /* 随机配色：同一色相推出一整套协调的颜色，再交替冷暖 */
+  function hslHex(h, sat, light) {
+    h = ((h % 360) + 360) % 360;
+    const s = clamp(sat, 0, 100) / 100;
+    const l = clamp(light, 0, 100) / 100;
+    const k = (n) => (n + h / 30) % 12;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n) => l - a * Math.max(-1, Math.min(Math.min(k(n) - 3, 9 - k(n)), 1));
+    const to = (v) => ('0' + Math.round(v * 255).toString(16)).slice(-2);
+    return '#' + to(f(0)) + to(f(8)) + to(f(4));
+  }
+  function randomPalette() {
+    const h = Math.floor(Math.random() * 360);
+    const h2 = h + 150 + Math.floor(Math.random() * 60);
+    state.palette.dark = {
+      bg: hslHex(h, 30, 8), surface: hslHex(h, 26, 15), text: hslHex(h, 20, 94), muted: hslHex(h, 16, 68),
+      border: hslHex(h, 22, 25), accent: hslHex(h2, 76, 66), bubbleUser: hslHex(h2, 32, 26),
+      bubbleAi: hslHex(h, 26, 15), bubbleText: hslHex(h, 18, 95),
+    };
+    state.palette.light = {
+      bg: hslHex(h, 40, 97), surface: '#ffffff', text: hslHex(h, 30, 14), muted: hslHex(h, 18, 45),
+      border: hslHex(h, 28, 88), accent: hslHex(h2, 62, 42), bubbleUser: hslHex(h2, 58, 91),
+      bubbleAi: '#ffffff', bubbleText: hslHex(h, 30, 16),
+    };
+    state.palette.preset = 'custom';
+    toast('换了一套随机配色 ✨');
+  }
+
+  function loadSchemes() {
+    const schemes = lsGet(LS_SCHEMES, {});
+    const sel = $('#schemeList');
+    sel.innerHTML = '<option value="">— 我的方案 —</option>';
+    Object.keys(schemes).forEach((name) => {
+      const op = el('option'); op.value = name; op.textContent = name;
+      sel.appendChild(op);
+    });
+    return schemes;
+  }
+
+  // ---------------------------------------------------------------- 分享链接
+  /** 只编「和默认值不一样」的部分：一条链接能短非常多 */
+  function diffState(s) {
+    const out = {};
+    /* 用的是现成预设（没手动改过色）时，18 个颜色值就不必编了：
+     * 收链接的人按预设 id 自己推得出来 —— 链接更短，而且以后我调整预设色值他也不会拿到过期的颜色。
+     * 这条不变式成立的原因：任何手动改色都会把 preset 置成 'custom'。 */
+    const pid = s.palette.preset;
+    const presetOnly = pid && pid !== 'custom' && presetById(pid).id === pid;
+    (function walk(node, baseNode, prefix) {
+      Object.keys(node).forEach((k) => {
+        const path = prefix ? prefix + '.' + k : k;
+        if (presetOnly && /^palette\.(light|dark)\./.test(path)) return;
+        const v = node[k];
+        const b = baseNode ? baseNode[k] : undefined;
+        if (v && typeof v === 'object' && !Array.isArray(v)) walk(v, b, path);
+        else if (JSON.stringify(v) !== JSON.stringify(b)) out[path] = v;
+      });
+    })(s, BASE_SNAPSHOT, '');
+    return out;
+  }
+
+  /** 从 diff 还原出一份完整状态；不认识的键直接丢掉，不污染 state */
+  function applySharedDiff(diff) {
+    const s = baseDefaults();
+    /* 颜色没编进链接的话，先按预设 id 把色板推回来 */
+    const pid = diff && diff['palette.preset'];
+    if (typeof pid === 'string' && pid !== 'custom' && presetById(pid).id === pid) {
+      const p = presetById(pid);
+      s.palette.preset = pid;
+      s.palette.light = clone(p.light);
+      s.palette.dark = clone(p.dark);
+    }
+    Object.keys(diff || {}).forEach((path) => {
+      if (getPath(BASE_SNAPSHOT, path) === undefined) return;
+      setPath(s, path, coerceControlValue(path, diff[path]));
+    });
+    return s;
+  }
+
+  function b64encodeUtf8(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 1) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function b64decodeUtf8(code) {
+    const s = String(code).replace(/-/g, '+').replace(/_/g, '/');
+    const pad = s.length % 4 ? '='.repeat(4 - (s.length % 4)) : '';
+    const bin = atob(s + pad);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i += 1) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  /** 编成链接里那一段（纯函数，自测直接调） */
+  function encodeShare(s) { return b64encodeUtf8(JSON.stringify(diffState(s))); }
+
+  /** 解码；任何脏数据都只回 null，绝不抛异常 */
+  function decodeShare(code) {
+    try {
+      const diff = JSON.parse(b64decodeUtf8(code));
+      if (!diff || typeof diff !== 'object' || Array.isArray(diff)) return null;
+      return diff;
+    } catch (e) { return null; }
+  }
+
+  function buildShareLink() { return location.href.split('#')[0] + '#s1=' + encodeShare(state); }
+
+  function copyShareLink() {
+    const link = buildShareLink();
+    const box = $('#shareOut');
+    if (box) box.value = link;
+    copyText(link, '分享链接已复制（' + link.length + ' 字符）');
+  }
+
+  /** 打开带 #s1=… 的地址时套用它；套完把 hash 清掉，免得每次刷新都覆盖你本地的工作 */
+  function readShareHash() {
+    const m = /[#&]s1=([A-Za-z0-9\-_]+)/.exec(location.hash || '');
+    if (!m) return null;
+    const diff = decodeShare(m[1]);
+    if (!diff) { toast('链接里的方案读不出来（可能被截断了）'); return null; }
+    toast('已套用分享链接里的方案 ✨');
+    return applySharedDiff(diff);
+  }
+
+  // ========================================================================
+  // 控件读写
+  // ========================================================================
+  function fieldByPath(path) {
+    for (let i = 0; i < SECTIONS.length; i += 1) {
+      const fs = SECTIONS[i].fields;
+      for (let j = 0; j < fs.length; j += 1) if (fs[j].path === path) return fs[j];
+    }
+    return null;
+  }
+  function pathOf(node) {
+    let n = node;
+    while (n && n.nodeType === 1) {
+      if (n.dataset && n.dataset.path) return n.dataset.path;
+      n = n.parentNode;
+    }
+    return null;
+  }
+  function chipValue(field, raw) {
+    const list = (field && field.options) || [];
+    for (let i = 0; i < list.length; i += 1) if (String(list[i].value) === raw) return list[i].value;
+    return raw;
+  }
+
+  /**
+   * 把控件送来的值强制成「默认状态里那个值的类型」。
+   *
+   * 这个函数是为了一个真实 bug 生的：复选框在 Chrome 里会先触发 input、再触发 change，
+   * 而 input 阶段 e.target.value 是字符串 "on" —— 写进 state 就是 truthy 的字符串，
+   * syncInputs 一看 !!v 就把框重新勾上，于是「勾上以后再也取消不掉」。
+   * 现在不管值从哪来，类型一律以 BASE_SNAPSHOT 为准。
+   */
+  function coerceControlValue(path, value) {
+    const baseVal = getPath(BASE_SNAPSHOT, path);
+    if (typeof baseVal === 'boolean') {
+      if (typeof value === 'string') return !(value === '' || value === 'false' || value === '0' || value === 'off');
+      return !!value;
+    }
+    if (typeof baseVal === 'number') {
+      const n = Number(value);
+      return isFinite(n) ? n : baseVal;
+    }
+    return value;
+  }
+
+  function applyControl(path, value) {
+    value = coerceControlValue(path, value);
+    setPath(state, path, value);
+    lastFix = null;   /* 手动动过颜色，之前那份「已修正」清单就过期了 */
+    /* 注意：这里刻意不碰 meta.recipe —— 改东西只是把配方变成「已混搭」，
+     * 绝不能让它以为配方没了（那样用户就再也取消不掉了）。 */
+    if (/^palette\.(light|dark)\./.test(path)) {
+      state.palette.preset = 'custom';
+      const ps = $('[data-path="palette.preset"]');
+      if (ps) ps.value = 'custom';
+      $('#quickPreset').value = 'custom';
+    }
+    if (path === 'palette.preset') applyPreset(value);
+    if (path === 'meta.fileBase') { /* 只是文件名 */ }
+    /* 关键：立刻把所有控件的视觉状态刷一遍。
+     * 少了这一步，点胶囊（比如「阴影强度」）只改了状态、高亮还停在旧的那颗，
+     * 得等刷新页面走一遍 init → syncInputs 才看着切过去 —— 就是这个 bug。 */
+    syncInputs();
+    update();
+  }
+
+  function validateHex(input) {
+    const path = input.dataset.hexFor;
+    const raw = String(input.value).trim();
+    if (/^#?[0-9a-f]{3}$/i.test(raw) || /^#?[0-9a-f]{6}$/i.test(raw)) {
+      const h = normHex(raw[0] === '#' ? raw : '#' + raw);
+      input.value = h;
+      applyControl(path, h);
+    } else {
+      input.value = normHex(getPath(state, path));
+      toast('颜色要写成 #RRGGBB 或 #RGB');
+    }
+  }
+
+  function bindBlocks() {
+    const host = $('#blocks');
+    host.addEventListener('click', (e) => {
+      /* 风格配方按钮：点一下整套风格 + 推荐配色 */
+      const rec = e.target.closest ? e.target.closest('[data-recipe]') : null;
+      if (rec) { applyRecipe(rec.dataset.recipe); return; }
+      const chip = e.target.closest ? e.target.closest('.chip') : null;
+      if (!chip) return;
+      const path = pathOf(chip);
+      if (!path) return;
+      applyControl(path, chipValue(fieldByPath(path), chip.dataset.value));
+    });
+    host.addEventListener('input', (e) => {
+      const t = e.target;
+      if (!t.dataset || t.dataset.hexFor || !t.dataset.path) return;
+      /* 复选框只在 change 阶段处理，这里必须让路：
+       * input 阶段它送来的是字符串 "on"，会把布尔值污染成 truthy 的字符串，
+       * 结果就是「勾上以后再也取消不掉」。 */
+      if (t.type === 'checkbox') return;
+      if (t.type === 'range' || t.type === 'color') applyControl(t.dataset.path, t.type === 'range' ? Number(t.value) : t.value);
+      else applyControl(t.dataset.path, t.value);
+    });
+    host.addEventListener('change', (e) => {
+      const t = e.target;
+      if (t.dataset && t.dataset.hexFor) { validateHex(t); return; }
+      if (!t.dataset || !t.dataset.path) return;
+      if (t.type === 'checkbox') applyControl(t.dataset.path, t.checked);
+      else if (t.tagName === 'SELECT') applyControl(t.dataset.path, t.value);
+      else if (t.type === 'color') applyControl(t.dataset.path, t.value);
+    });
+  }
+
+  // ========================================================================
+  // 皮肤医生：只读分析现成的「导入正则」包
+  // ========================================================================
+  let lastDoctor = null;
+
+  /** 一个旧版全局美化的样例，点「塞一个旧版示例」就能看到医生能挑出什么 */
+  const DOCTOR_SAMPLE = JSON.stringify({
+    chatVersion: 0,
+    statusbar: '{{hud}}',
+    beginning: '雨还在下。林澈把伞往 {{user}} 那边偏了偏，「到了。」',
+    personality: '<角色设定 名字：林澈>\n<基本信息>\n- 身份：夜间便利店店员\n</基本信息>\n<与{{user}}的关系>\n林澈把{{user}}当成熟客。\n</与{{user}}的关系>\n</角色设定>',
+    regex_scripts: [
+      {
+        id: 1, scriptName: '全局美化', findRegex: ':root, body',
+        replaceString: '<style>\n:root, body {\n  --chat-bg: #101a1b;\n  --chat-text: #ede8da;\n  --chat-surface: #1c2b2b;\n  --chat-accent: #8f713e;\n  --chat-bubble-user-bg: #2b403b;\n  --chat-bubble-ai-bg: #1c2b2b;\n  --chat-bubble-text: #ede8da;\n  background: #0d1414;\n}\n.model-setting-scope .mp-card { background: #1c2b2b; color: #ede8da; }\n</style>',
+      },
+      { id: 2, scriptName: 'hud', findRegex: '{{hud}}', replaceString: '<div class="hud">好感 <b>72</b></div>' },
+      { id: 3, scriptName: '打招呼', findRegex: '{{btn}}', replaceString: '<button class="act" data-act="say">打个招呼</button>' },
+      { id: 4, scriptName: '旧侧边栏', findRegex: '【侧边栏1】', replaceString: '<div class="side">状态面板</div>' },
+    ],
+  }, null, 2);
+
+  function pushIssue(box, kind, key, text) {
+    const d = el('div', 'issue ' + kind);
+    d.innerHTML = '<span class="k">' + key + '</span>' + escapeHtml(text);
+    box.appendChild(d);
+    return d;
+  }
+
+  function renderDoctor() {
+    const input = $('#docInput');
+    const stats = $('#docStats');
+    const box = $('#docReport');
+    if (!input || !stats || !box) return;
+    const text = input.value;
+    box.innerHTML = '';
+    if (!text.trim()) {
+      lastDoctor = null;
+      stats.innerHTML = '<div class="stat">把现成的「导入正则」JSON 粘进上面的框，或者点「选择 JSON 文件」</div>';
+      return;
+    }
+    const info = inspectPack(text);
+    lastDoctor = info;
+    if (info.parseError) {
+      stats.innerHTML = statHtml('解析', '失败', true);
+      pushIssue(box, 'err', '读不了', info.parseError + '（也可能是一份世界书或别的 JSON，不是「导入正则」包）');
+      return;
+    }
+    stats.innerHTML = statHtml('规则条数', info.meta.ruleCount, false)
+      + statHtml('chatVersion', JSON.stringify(info.meta.chatVersion === undefined ? '缺失' : info.meta.chatVersion), info.meta.chatVersion !== 1)
+      + statHtml('扒到颜色变量', info.paletteFound + ' / 9', info.paletteFound === 0)
+      + statHtml('错误 / 警告', info.checker.errors.length + ' / ' + info.checker.warns.length, info.checker.errors.length > 0);
+
+    if (info.legacy.length) {
+      pushIssue(box, 'info', '旧版特征', '共 ' + info.legacy.length + ' 处，逐条列在下面。');
+      info.legacy.forEach((t) => pushIssue(box, 'warn', '旧版', t));
+    } else {
+      pushIssue(box, 'ok', '没发现旧版特征', '选择器根、变量用法、标记协议都对得上新版聊天页。');
+    }
+    info.checker.errors.forEach((e) => pushIssue(box, 'err', '错误', e.where + '：' + e.msg));
+    info.checker.warns.forEach((w) => pushIssue(box, 'warn', '警告', w.where + '：' + w.msg));
+    info.advice.forEach((t) => pushIssue(box, 'info', '建议', t));
+
+    /* ---- 配色提取 ---- */
+    if (info.palette) {
+      const wrap = el('div', 'issue ok');
+      let html = '<span class="k">配色提取</span>把 --chat-* 变量归一成我的 9 键色板（缺的键用明度阶梯补齐）';
+      [['🌙 夜间', info.palette.dark], ['☀️ 日间', info.palette.light]].forEach((pair) => {
+        html += '<div style="margin-top:8px;font-size:12px;color:var(--ui-muted)">' + pair[0] + '</div>'
+          + '<div class="pill-row" style="margin-top:4px">';
+        PAL_KEYS.forEach((k) => {
+          html += '<span class="swatch" title="' + k + ' ' + pair[1][k] + '" style="background:' + pair[1][k] + '"></span>';
+        });
+        html += '</div>';
+      });
+      const rows = contrastReport({ palette: { mode: 'dual', dark: info.palette.dark, light: info.palette.light } });
+      const bad = rows.filter((r) => r.ratio < 4.5).length;
+      html += '<div style="margin-top:9px">对比度体检：'
+        + (bad ? '<b style="color:var(--ui-warn)">' + bad + ' 项低于 4.5:1</b>（套用后可以点「🔧 一键修正对比度」）'
+               : '<b style="color:var(--ui-ok)">全部达标</b>')
+        + '</div>';
+      html += '<div style="margin-top:9px"><button class="btn primary" type="button" id="docApplyPalette">🩹 用这套配色重建一份合规皮肤</button></div>';
+      wrap.innerHTML = html;
+      box.appendChild(wrap);
+    } else {
+      pushIssue(box, 'warn', '配色', '这份包没写平台公开的 --chat-* 变量，扒不出色板（旧版写死颜色的卡很常见）。想继承它的感觉，可以截一张它的界面图，丢进左边「配色方案」最上面的拖放区。');
+    }
+
+    /* ---- 规则清单 ---- */
+    const table = el('div', 'issue ok');
+    let t = '<span class="k">规则清单</span><table class="doc-table">'
+      + '<tr><th>#</th><th>名字</th><th>匹配式</th><th>替换内容</th><th>内容</th></tr>';
+    info.rules.forEach((r) => {
+      if (r.bad) {
+        t += '<tr><td class="num">' + r.index + '</td><td colspan="4" class="bad">不是一个对象，平台会跳过</td></tr>';
+        return;
+      }
+      t += '<tr><td class="num">' + r.index + '</td><td>' + escapeHtml(r.name) + '</td>'
+        + '<td>' + escapeHtml(r.findKind) + '<br><span style="font-size:11px;opacity:.75">' + escapeHtml(r.find.slice(0, 32)) + '</span></td>'
+        + '<td class="num' + (r.replaceLen > 19000 ? ' bad' : '') + '">' + r.replaceLen + '</td>'
+        + '<td>' + (r.hasStyle ? '样式 ' : '') + (r.hasScript ? '脚本 ' : '') + (r.visibleLen ? '可见HTML ' + r.visibleLen + '字' : '') + '</td></tr>';
+    });
+    t += '</table>';
+    table.innerHTML = t;
+    box.appendChild(table);
+  }
+
+  function applyDoctorPalette() {
+    if (!lastDoctor || !lastDoctor.palette) { toast('还没扒到可用配色'); return; }
+    state.palette.dark = clone(lastDoctor.palette.dark);
+    state.palette.light = clone(lastDoctor.palette.light);
+    state.palette.preset = 'custom';
+    lastFix = null;
+    syncInputs();
+    update();
+    switchTab('json');
+    toast('配色已套进积木面板，现在导出的就是一份合规皮肤 ✨');
+  }
+
+  function switchTab(name) {
+    $$('.tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
+    $$('.tab-pane').forEach((p) => p.classList.toggle('active', p.dataset.pane === name));
+  }
+
+  // ========================================================================
+  // 风格配方
+  // ========================================================================
+  /* 撤销快照放在 localStorage 的独立键里（不进 state）：
+   * 这样刷新后还能撤销，又不会把分享链接撑大。 */
+  const LS_RECIPE_UNDO = 'mmdskin.recipeundo.v1';
+  let recipeUndo = null;
+
+  function saveRecipeUndo() { lsSet(LS_RECIPE_UNDO, recipeUndo); }
+  function loadRecipeUndo() {
+    const v = lsGet(LS_RECIPE_UNDO, null);
+    return v && typeof v === 'object' && v.recipe && v.values && typeof v.values === 'object' ? v : null;
+  }
+
+  /** 取消当前配方：把它动过的那批键还原（有快照用快照，没有就回出厂默认） */
+  function revertActiveRecipe() {
+    const rec = recipeById(state.meta.recipe);
+    if (!rec) return null;
+    const undo = recipeUndo && recipeUndo.recipe === rec.id ? recipeUndo.values : null;
+    restoreRecipeValues(state, rec, undo);
+    recipeUndo = null;
+    saveRecipeUndo();
+    return rec;
+  }
+
+  function applyRecipe(id) {
+    const rec = recipeById(id);
+    if (!rec) return;
+    /* 换配方先把上一套整个还原：配方是部分覆盖，不还原会留下上一套的残渣 */
+    if (state.meta.recipe && state.meta.recipe !== id) revertActiveRecipe();
+    const before = captureRecipeValues(state, rec);
+    applyRecipeToState(state, rec);
+    recipeUndo = { recipe: id, values: before };
+    saveRecipeUndo();
+    lastFix = null;
+    syncInputs();
+    update();
+    toast('已套用配方：' + rec.name + '（想反悔就点「✕ 取消当前配方」）');
+  }
+
+  function cancelRecipe() {
+    const rec = revertActiveRecipe();
+    if (!rec) { toast('现在没有套用中的配方'); return; }
+    lastFix = null;
+    syncInputs();
+    update();
+    toast('已取消配方：' + rec.name + '（回到套用它之前的样子）');
+  }
+
+  // ========================================================================
+  // 对比度一键修正
+  // ========================================================================
+  let lastFix = null;
+
+  function applyContrastFix() {
+    const items = [];
+    ['dark', 'light'].forEach((theme) => {
+      const res = fixThemeContrast(state.palette[theme]);
+      if (!res.changes.length) return;
+      state.palette[theme] = res.colors;
+      res.changes.forEach((c) => items.push({ theme: theme, label: c.label, from: c.from, to: c.to, before: c.before, after: c.after }));
+    });
+    if (items.length) {
+      state.palette.preset = 'custom';
+      const ps = $('[data-path="palette.preset"]');
+      if (ps) ps.value = 'custom';
+      $('#quickPreset').value = 'custom';
+    }
+    lastFix = items.length ? { items: items } : null;
+    syncInputs();
+    update();
+    toast(items.length ? '修正了 ' + items.length + ' 处对比度，色相没动' : '对比度本来就都达标，一个颜色都没动');
+  }
+
+  // ========================================================================
+  // 参考图取色
+  // ========================================================================
+  function loadImagePalette(file) {
+    if (!file) return;
+    if (!/^image\//.test(file.type || '')) { toast('这不是图片文件'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 180;
+        const scale = Math.min(1, max / Math.max(img.width || 1, img.height || 1));
+        const w = Math.max(1, Math.round((img.width || 1) * scale));
+        const h = Math.max(1, Math.round((img.height || 1) * scale));
+        const cv = document.createElement('canvas');
+        cv.width = w;
+        cv.height = h;
+        const ctx = cv.getContext('2d');
+        if (!ctx) { toast('这台浏览器不支持 canvas 取色'); return; }
+        ctx.drawImage(img, 0, 0, w, h);
+        let data;
+        try { data = ctx.getImageData(0, 0, w, h); }
+        catch (e) { toast('这张图读不了像素（浏览器保护）'); return; }
+        const colors = dominantColors(data, 8);
+        const theme = themeFromImage(colors);
+        if (!theme) { toast('这张图没抽出可用颜色，换一张试试'); return; }
+        state.palette.dark = theme.dark;
+        state.palette.light = theme.light;
+        state.palette.preset = 'custom';
+        lastFix = null;
+        const sw = $('#imgSwatch');
+        if (sw) sw.innerHTML = colors.map((c) => '<span class="swatch big" title="' + c + '" style="background:' + c + '"></span>').join('');
+        syncInputs();
+        update();
+        toast('已按参考图生成日夜两套色板 ✨（不满意直接换图）');
+      };
+      img.onerror = () => toast('这张图解不开，换一张 PNG / JPG 试试');
+      img.src = String(reader.result);
+    };
+    reader.onerror = () => toast('文件读不了');
+    reader.readAsDataURL(file);
+  }
+
+  // ========================================================================
+  // 界面接线
+  // ========================================================================
+  function bindUI() {
+    /* 标签页 */
+    $$('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+
+    /* 顶栏：快速预设 */
+    const qp = $('#quickPreset');
+    PRESETS.forEach((p) => { const o = el('option'); o.value = p.id; o.textContent = p.name; qp.appendChild(o); });
+    const custom = el('option'); custom.value = 'custom'; custom.textContent = '🎨 自定义（我改过颜色）';
+    qp.appendChild(custom);
+    qp.addEventListener('change', () => {
+      if (qp.value === 'custom') { state.palette.preset = 'custom'; }
+      else applyPreset(qp.value);
+      syncInputs();
+      update();
+    });
+
+    $('#btnRandom').addEventListener('click', () => { randomPalette(); syncInputs(); update(); });
+
+    $('#btnSaveScheme').addEventListener('click', () => {
+      const name = ($('#fileBase').value || 'my-scheme').trim() || 'my-scheme';
+      const schemes = lsGet(LS_SCHEMES, {});
+      schemes[name] = state;
+      lsSet(LS_SCHEMES, schemes);
+      loadSchemes();
+      $('#schemeList').value = name;
+      toast('方案已存进浏览器：' + name);
+    });
+
+    loadSchemes();
+    $('#schemeList').addEventListener('change', (e) => {
+      const name = e.target.value;
+      if (!name) return;
+      const schemes = lsGet(LS_SCHEMES, {});
+      if (!schemes[name]) return;
+      state = deepMerge(baseDefaults(), schemes[name]);
+      syncInputs();
+      update();
+      toast('已载入方案：' + name);
+    });
+
+    $('#btnReset').addEventListener('click', () => {
+      state = baseDefaults();
+      syncInputs();
+      update();
+      toast('已经回到出厂设置');
+    });
+
+    $('#fileBase').addEventListener('input', (e) => {
+      state.meta.fileBase = e.target.value;
+      saveLocalState();
+    });
+
+    /* 方案导出 / 导入 */
+    $('#btnExportScheme').addEventListener('click', () => {
+      download(baseName() + '-scheme.json', JSON.stringify(state, null, 2), 'application/json');
+    });
+    $('#btnImportScheme').addEventListener('click', () => $('#schemeFile').click());
+    $('#schemeFile').addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          if (!parsed || typeof parsed !== 'object' || !parsed.palette) throw new Error('这不像一份方案文件');
+          state = deepMerge(baseDefaults(), parsed);
+          syncInputs();
+          update();
+          toast('方案已导入：' + file.name);
+        } catch (err) {
+          toast('导入失败：' + err.message);
+        }
+      };
+      reader.onerror = () => toast('文件读不了');
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    /* 分享链接 */
+    $('#btnShareLink').addEventListener('click', copyShareLink);
+
+    /* 取消当前风格配方 */
+    $('#btnCancelRecipe').addEventListener('click', cancelRecipe);
+
+    /* 复制 / 下载 */
+    $('#btnCopyJson').addEventListener('click', () => copyText($('#outJson').value, 'JSON 已复制，去创卡页「导入正则」贴进去'));
+    $('#btnCopyCss').addEventListener('click', () => copyText($('#outCss').value, 'CSS 已复制'));
+    $('#btnDownloadJson').addEventListener('click', () => download(baseName() + '-regex.json', $('#outJson').value, 'application/json'));
+    $('#btnDownloadCss').addEventListener('click', () => download(baseName() + '.css', $('#outCss').value, 'text/css'));
+
+    /* 预览工具条 */
+    $('#pvDay').addEventListener('click', () => { previewTheme = 'light'; syncPvChips(); renderPreview(); });
+    $('#pvNight').addEventListener('click', () => { previewTheme = 'dark'; syncPvChips(); renderPreview(); });
+    $('#pvDesktop').addEventListener('click', () => { previewDevice = 'desktop'; syncPvChips(); renderPreview(); });
+    $('#pvPhone').addEventListener('click', () => { previewDevice = 'phone'; syncPvChips(); renderPreview(); });
+    $('#pvToggleOn').addEventListener('click', () => { previewToggleOff = !previewToggleOff; renderPreview(); });
+
+    /* ---- 皮肤医生 ---- */
+    $('#btnDocFile').addEventListener('click', () => $('#docFile').click());
+    $('#docFile').addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      e.target.value = '';
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => { $('#docInput').value = String(reader.result); renderDoctor(); };
+      reader.onerror = () => toast('文件读不了');
+      reader.readAsText(f);
+    });
+    $('#btnDocSample').addEventListener('click', () => {
+      $('#docInput').value = DOCTOR_SAMPLE;
+      renderDoctor();
+      toast('塞了一份旧版全局美化的样例，看看医生挑出了什么');
+    });
+    $('#btnDocClear').addEventListener('click', () => { $('#docInput').value = ''; renderDoctor(); });
+    let docTimer = 0;
+    $('#docInput').addEventListener('input', () => {
+      clearTimeout(docTimer);
+      docTimer = setTimeout(renderDoctor, 260);
+    });
+    $('#docReport').addEventListener('click', (e) => {
+      if (e.target && e.target.closest && e.target.closest('#docApplyPalette')) applyDoctorPalette();
+    });
+
+    /* ---- 对比度一键修正 ---- */
+    $('#btnFixContrast').addEventListener('click', applyContrastFix);
+
+    /* ---- 参考图取色 ---- */
+    const dz = $('#imgDrop');
+    if (dz) {
+      dz.addEventListener('click', () => $('#imgFile').click());
+      ['dragenter', 'dragover'].forEach((ev) => {
+        dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add('over'); });
+      });
+      ['dragleave', 'drop'].forEach((ev) => {
+        dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove('over'); });
+      });
+      dz.addEventListener('drop', (e) => {
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) loadImagePalette(f);
+      });
+    }
+    $('#imgFile').addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      e.target.value = '';
+      if (f) loadImagePalette(f);
+    });
+    /* 别让拖歪的手势把浏览器直接带去打开那个文件 */
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    document.addEventListener('drop', (e) => e.preventDefault());
+
+    $('#helpPane').innerHTML = HELP_HTML;
+  }
+
+  function syncPvChips() {
+    $('#pvDay').classList.toggle('active', previewTheme === 'light');
+    $('#pvNight').classList.toggle('active', previewTheme === 'dark');
+    $('#pvDesktop').classList.toggle('active', previewDevice === 'desktop');
+    $('#pvPhone').classList.toggle('active', previewDevice === 'phone');
+    $('#previewHost').classList.toggle('desktop', previewDevice === 'desktop');
+  }
+
+  function baseName() {
+    return (state.meta.fileBase || 'my-mmd-skin').replace(/[\\/:*?"<>|]/g, '_').trim() || 'my-mmd-skin';
+  }
+
+  function copyText(text, okMsg) {
+    const done = () => toast(okMsg);
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      if (ok) done(); else toast('复制被浏览器拦了，请手动全选复制');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else fallback();
+  }
+
+  function download(filename, text, mime) {
+    const blob = new Blob([text], { type: (mime || 'text/plain') + ';charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast('已下载 ' + filename);
+  }
+
+  // ========================================================================
+  // 「怎么用」文案
+  // ========================================================================
+  const HELP_HTML = [
+    '<div class="help">',
+    '<h4>三步就出成品</h4>',
+    '<ol>',
+    '<li>左边勾积木（配色 → 气泡 → 粒子 → 开关按钮…），中间随时看效果。</li>',
+    '<li>点「复制 JSON」，或「下载 .json」存成文件。</li>',
+    '<li>回到 MMD 创卡页 → <b>导入正则</b> → 粘贴/选择这个 JSON；然后<b>回到聊天页</b>看真实效果（创卡页的预览是瘦环境，脚本和输入框都不生效）。</li>',
+    '</ol>',
+    '<div class="callout">新建卡时必须在创卡页确认这张卡走的是<b>新版聊天页</b>。导入 JSON 里的 <code>chatVersion: 1</code> 只在新建卡时被读取；给已有卡导入时它会被忽略。</div>',
+    '<h4>这套工具在替你避什么坑</h4>',
+    '<table>',
+    '<tr><th>平台限制</th><th>工具怎么处理</th></tr>',
+    '<tr><td><code>replaceString</code> 上限 20000 字，超了作者一进编辑器就被截断</td><td>拆成 变量 / 组件 / 粒子 / 宿主 多条规则，右上角有容量进度条</td></tr>',
+    '<tr><td>匹配式里不能出现 HTML 标签，也不建议出现 html / head / body / css 这些保留字</td><td>匹配式一律用 <code>{{skin-xxx}}</code> 占位串，一个保留字都不带</td></tr>',
+    '<tr><td>替换内容里禁止 <code>*{}</code> / <code>html{}</code> / <code>body{}</code> / <code>:root{}</code> 这类全局 CSS</td><td>所有选择器都从 <code>[data-chat="root"]</code> 开始；你在「高级」里写全局选择器会被自动改写并报错</td></tr>',
+    '<tr><td>父页面弹窗不能跨源写脚本，只能靠官方主题变量桥和过滤后的 <code>[data-host]</code> CSS</td><td>宿主积木只生成这两条合法通路，且每条选择器都从精确开放根开始、平铺书写，不带 <code>:has()</code> / <code>url()</code></td></tr>',
+    '<tr><td>自写的 <code>data-*</code> 会被净化删掉</td><td>按钮只用 class 与 id，所有自定义类都带 <code>mmdskin-</code> 前缀</td></tr>',
+    '<tr><td>作者层 z-index 只能用 1000–1999</td><td>粒子 1000、开关按钮 1500，都在区间内</td></tr>',
+    '<tr><td>脚本整张卡只跑一次；多条脚本各自独立作用域</td><td>开关脚本自己带 <code>window.__mmdSkin</code> 幂等守卫，重复注入也不会多绑事件</td></tr>',
+    '</table>',
+    '<h4>一键开关是怎么实现的</h4>',
+    '<p>所有皮肤规则都挂在 <code>[data-chat="root"]:not(.mmdskin-off)</code> 下。按钮被点一下就切换根节点上的 <code>.mmdskin-off</code> 类：整套颜色、布局、粒子同时失效，回到平台原生样子。没有用 <code>:has()</code>，也没有覆盖平台内部 class。</p>',
+    '<div class="callout">关闭状态可以记在 <code>sdk.cache</code>（刷新即失）或 <code>sdk.save</code>（永久，占一个作者存档名，写入限频 20 次/分钟，只在点按钮时写一次）。</div>',
+    '<h4>粒子为什么不用脚本</h4>',
+    '<p>粒子是 <code>::before</code> / <code>::after</code> 两个伪元素，用多层 <code>radial-gradient</code> 平铺出上百个点，动画走 <code>transform</code> 交合成层处理。好处：不新增 DOM、不写脚本（脚本被平台抽走也照样在）、不逐帧重绘整页。形态、密度、速度、颜色都能在左侧调。</p>',
+    '<h4>🩺 皮肤医生：手里已经有一份包的时候</h4>',
+    '<p>右上「皮肤医生」页可以粘一份现成的「导入正则」JSON（也可以直接选文件，比如工作目录里那份《角色卡【315513】正则数据.json》）。它是<b>只读</b>的，不会改动那份包的任何一个字节，只会告诉你：</p>',
+    '<ul>',
+    '<li>旧版特征：<code>chatVersion</code> 不是 1、裸父页面选择器（<code>.sandbox-host</code> / <code>.model-setting-scope</code>…）、拿 <code>:root/body</code> 当 CSS 根、完全没用 <code>--chat-*</code>、<code>url()</code> 外链、旧标记协议</li>',
+    '<li>硬伤：超长替换内容、重复的匹配式、编造的能力名、会产出可见内容却没接触发串</li>',
+    '<li>会覆盖你卡里什么：这份包带着 <code>statusbar</code> / <code>beginning</code> / <code>personality</code> 的话，导入时会盖掉对应字段</li>',
+    '<li><b>配色提取</b>：把它的 <code>--chat-*</code> 变量归一成我的 9 键色板，能分日夜两套；点「用这套配色重建一份合规皮肤」就把色板套进左边的积木面板</li>',
+    '</ul>',
+    '<div class="callout">推荐的迁移姿势：先用医生扒出它的配色 → 套进积木面板 → 按现在的积木重新生成一份合规包。<b>不要</b>把旧版那种 <code>:root, body</code> 的写法原样搬进新版。</div>',
+    '<h4>🔧 对比度一键修正</h4>',
+    '<p>「自检报告」页里每条对比度都标了 WCAG 比值。点「🔧 一键修正对比度」会<b>保持色相、只推明度</b>，把正文推到 7:1、次要文字与气泡字推到 4.5:1、强调色推到 3:1，然后逐条列出「旧色 → 新色（前比值 → 后比值）」。</p>',
+    '<p>它只动颜色值，不动你的积木结构；手动改过任何一个颜色，之前那份「已修正」清单就自动作废（免得你看的是过期信息）。</p>',
+    '<h4>🖼️ 拖一张参考图进来</h4>',
+    '<p>不能只勾积木、又不会配色的时候最有用：把喜欢的插画／截图拖进「配色方案」最上面那块斜框里，工具会在本地把图缩到 180px、按 4bit 分桶量化出主色，取最艳的那个当强调色、最暗最亮的当背景，再用明度阶梯生成<b>日夜两套</b>色板并自动套用。</p>',
+    '<div class="callout">图片只在你的浏览器内存里算像素，不上传、不保存。想换个感觉就换张图，或者再点一下「🎲 随机配色」。</div>',
+    '<h4>顺手能省事的两处</h4>',
+    '<ul>',
+    '<li><b>导出压缩</b>：只删 CSS 注释、换行与行首缩进，绝不动一行之内的空格（<code>calc(100% + 760px)</code> 里的空格是语法要求）。嫌输出不好读就关掉它。</li>',
+    '<li><b>自动拆条</b>：单条替换内容一旦超过编辑器 20000 字上限，会自动按 CSS 规则边界拆成 <code>-2</code> / <code>-3</code> 条，绝不切进 <code>@media</code> 或某条规则内部。</li>',
+    '<li><b>存档 key</b>：选「永久记住」时可以改 key 前缀，避开你自己卡里的存档名冲突（平台只有 10 个存档名）。</li>',
+    '</ul>',
+    '<h4>🎀 风格配方（最省事的一步）</h4>',
+    '<p>积木面板最上面那排按钮就是。点一下＝<b>整套风格 + 推荐配色</b>一起换：粒子形态与密度、动效开关、圆角、阴影、按钮样式、字体一次就位。6 套：樱花雨 / 深海鲸歌 / 雪夜静谧 / 赛博霓虹 / 极简禅意 / 星尘梦境。</p>',
+    '<p><b>随时可以取消</b>：点「✕ 取消当前配方」会把这套配方动过的那些项还原成<b>点它之前的值</b>（快照存在浏览器本地，刷新之后依然有效）。你在套用它之后自己改过的项，也一并按这个规则还原 —— 这一点工具里写在配方提示里了。</p>',
+    '<p>改任何一项都<b>不会</b>把配方弄丢：它会留在原地并标注「<b>已混搭</b>」，状态那一行会告诉你现在挂的是哪套、有没有被改过。换另一套配方时会先把上一套整个还原，免得两套风格串味。</p>',
+    '<p>配方刻意不碰两样东西：<b>你的自定义 CSS</b>，和<b>日夜主题策略</b>（一套走天下 / 日夜各一套由你自己定）。</p>',
+    '<h4>🔗 分享链接</h4>',
+    '<p>「高级」里点「🔗 复制分享链接」：它只把<b>和默认不同的那部分</b>压进网址的 <code>#s1=</code> 后面，所以配置越简单链接越短。实测：</p>',
+    '<table>',
+    '<tr><th>你的配置</th><th>链接长度</th></tr>',
+    '<tr><td>出厂默认</td><td>约 45 字符</td></tr>',
+    '<tr><td>只换了个配色预设</td><td>约 76 字符</td></tr>',
+    '<tr><td>一整套风格配方</td><td>约 466 字符</td></tr>',
+    '<tr><td>配方 + 手改颜色 + 自定义 CSS + 开场白</td><td>约 1.9K 字符</td></tr>',
+    '</table>',
+    '<p>拿了链接的人打开就会自动套用，然后地址里的 <code>#s1=</code> 会被自动清掉 —— 否则他每次刷新都会被你的方案覆盖掉自己的改动。</p>',
+    '<div class="callout bad">本地用 <code>file://</code> 打开时，链接只有在<b>同样路径</b>的电脑上才打得开。要让别人一键复现，得先把 <code>index.html</code> 挂到网上（单文件，丢任何静态托管都行）。配置很大的话，用「导出方案 JSON」把文件发过去更稳妥。</div>',
+    '<h4>🛡️ 为什么有的卡会被皮肤「改坏」</h4>',
+    '<p>因为<b>卡自己的界面就住在聊天消息里</b> —— 它和 AI 的文字气泡是同一批节点（<code>[data-chat="message"]</code> / <code>message-body</code>）。'
+    + '所以只要皮肤去改气泡的<b>盒模型</b>（内边距、最大宽度、行间距、头像尺寸、给消息加 transform），卡自己那套面板就会被一起改掉，看起来就像"美化直接渲染了整个界面"。</p>',
+    '<p>工具默认开着 <b>「🛡️ 保护自定义界面」</b>，但只保护<b>真的会压坏界面的那两个属性</b>：<b>气泡最大宽度</b>（会把卡的全宽面板挤成窄条）和 <b>消息入场动画的 transform</b>（会让固定定位的元素错位）—— 这两个显式写 <code>revert</code>，对应的滑杆/开关也会藏起来。</p>',
+    '<p><b>内边距、消息间距、头像尺寸照常生效</b> —— 它们很温和，不会把面板压变形。'
+    + '（这里返工过一次：最初保护得太宽，连内边距一起 revert，气泡里的字就紧贴边缘、看着"挤成一团"。）</p>',
+    '<h4>🧹 再次导入为什么会有残留</h4>',
+    '<p>平台的样式是<b>把所有规则的 <code>&lt;style&gt;</code> 合成一张表</b>。如果新皮肤对某个属性<b>不写</b>，旧皮肤写过的那个值就还留着 —— 于是你会看到"新配色 + 旧圆角"这种混搭。</p>',
+    '<p>所以工具现在<b>每一个「关掉」的开关都显式写 <code>revert</code></b>，主动把平台原样还回来。自测里有 19 种"关掉某开关"的状态在守这条。</p>',
+    '<div class="callout">如果还看到残留：说明平台是<b>追加</b>规则而不是替换。两个办法 —— 在卡的正则列表里把旧的皮肤规则删掉再导入；或者用一键开关把整套关掉（新旧规则都带 <code>.mmdskin-off</code> 前缀，会一起失效）。</div>',
+    '<h4>导出前请自己过一遍</h4>',
+    '<div class="callout bad"><b>导入报「格式错误」？</b>先看积木面板最后的「导出形态」：字段必须齐 —— '
+    + '<code>pageDepth</code> + <code>statusbar</code> + <code>beginning</code> + <code>regex_scripts</code>，'
+    + '缺 <code>statusbar</code> / <code>beginning</code> 会被导入页判成格式错误（哪怕值是空串也得带着）。'
+    + '导出<b>一律缩进多行</b>：实测单行紧凑虽然能被导入页接受，但规则不生效，所以那个选项已经删掉了。</div>',
+    '<ul>',
+    '<li>右侧「自检报告」里不该有<b>错误</b>；警告逐条看一眼是不是误报。</li>',
+    '<li>对比度体检：正文低于 4.5:1 的，建议把文字色或底色调一调。</li>',
+    '<li>静态全过 ≠ 线上生效。宿主弹窗、头像、输入框落点这些必须在真实目标站开一遍。</li>',
+    '</ul>',
+    '<h4>手机上看效果</h4>',
+    '<p>调试时给聊天页地址加 <code>?sdkDebug=1</code>，就能看到页内调试面板与 <code>sdk.debug.log</code> 的输出。</p>',
+    '<div class="callout bad"><b>别指望工具替你做的事：</b>它不会改你卡里的人设、开场白、世界书和存档数据；也不会替你验证某个具体域名的弹窗是否已接入主题桥。这两件事只能你在真实页面上确认。</div>',
+    '</div>',
+  ].join('\n');
+
+  // ========================================================================
+  // 初始化
+  // ========================================================================
+  function init() {
+    /* 带 #s1=… 的地址优先：那是别人分享过来的方案 */
+    const shared = readShareHash();
+    if (shared) {
+      state = shared;
+      /* 从分享链接来的方案：本地的旧撤销快照跟它没关系，清掉免得「取消」还原成别人机器上的值 */
+      recipeUndo = null;
+      lsSet(LS_RECIPE_UNDO, null);
+      try { history.replaceState(null, '', location.href.split('#')[0]); }
+      catch (e) { /* file:// 上万一不让改地址就算了，hash 留着也不影响 */ }
+    } else {
+      state = deepMerge(baseDefaults(), lsGet(LS_STATE, {}));
+      recipeUndo = loadRecipeUndo();
+    }
+    syncPvChips();
+    renderBlocks();
+    initPreview();
+    bindUI();
+    bindBlocks();
+    renderDoctor();
+    update();
+  }
+
+  /* 给 node 自测用的出口：不依赖 DOM */
+  window.__MMDSKIN__ = {
+    baseDefaults: baseDefaults,
+    presets: PRESETS,
+    sections: SECTIONS,
+    colorKeys: COLOR_KEYS,
+    buildPack: buildPack,
+    stringifyPack: stringifyPack,
+    runChecker: runChecker,
+    buildCss: function (s) { return [buildVarsCss(s), buildLayoutCss(s), buildFxCss(s)].join('\n\n'); },
+    buildVarsCss: buildVarsCss,
+    buildLayoutCss: buildLayoutCss,
+    buildFxCss: buildFxCss,
+    buildHostCss: buildHostCss,
+    buildKitScript: buildKitScript,
+    buildToggleHtml: buildToggleHtml,
+    previewGuardCss: PV_GUARD_CSS,
+    coerceControlValue: coerceControlValue,
+    baseSnapshot: BASE_SNAPSHOT,
+    /* 皮肤医生与颜色工具，供自测直接调用 */
+    inspectPack: inspectPack,
+    runDoctor: function (raw) { return inspectPack(raw); },
+    fixThemeContrast: fixThemeContrast,
+    pushContrast: pushContrast,
+    contrastReport: contrastReport,
+    minifyCss: minifyCss,
+    splitCss: splitCss,
+    paletteFromVars: paletteFromVars,
+    extractPaletteVars: extractPaletteVars,
+    paletteFromText: function (text) { return paletteFromVars(extractPaletteVars(text)); },
+    completeTheme: completeTheme,
+    themeFromImage: themeFromImage,
+    dominantColors: dominantColors,
+    hexToHsl: hexToHsl,
+    contrast: contrast,
+    palKeys: PAL_KEYS,
+    doctorSample: DOCTOR_SAMPLE,
+    /* 风格配方与分享链接 */
+    recipes: RECIPES,
+    applyRecipeToState: applyRecipeToState,
+    recipeById: recipeById,
+    recipePaths: recipePaths,
+    canonicalRecipeState: canonicalRecipeState,
+    captureRecipeValues: captureRecipeValues,
+    restoreRecipeValues: restoreRecipeValues,
+    recipeDirty: recipeDirty,
+    diffState: diffState,
+    applySharedDiff: applySharedDiff,
+    encodeShare: encodeShare,
+    decodeShare: decodeShare,
+    b64encodeUtf8: b64encodeUtf8,
+    b64decodeUtf8: b64decodeUtf8,
+    makePack: function (mut) {
+      const s = baseDefaults();
+      if (mut) mut(s);
+      return { pack: buildPack(s), state: s };
+    },
+  };
+
+  if (typeof document !== 'undefined' && document.getElementById && document.getElementById('blocks')) init();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>全局美化</title>
+
+<style class="gal-beauty-style">
+:root {
+    /* 默认主题：柔和暖白/纯黑文字高对比度风 */
+    --t-dark: #000000; 
+    --t-dark-solid: #000000; 
+    --t-pale: #fff0f5; 
+    --t-mid: rgba(255, 228, 235, 0.85);
+    --g-blur: 10px;
+    
+    /* 独立控制的变量 */
+    --msg-color: #000000;
+    --inp-bg: var(--t-mid);
+    --inp-blr: blur(var(--g-blur));
+    --inp-bd: 1px solid #ffc0cb;
+    
+    /* 新增：全局线条与字体变量 */
+    --y-line: #ffc0cb; 
+    --y-font-family: 楷体, KaiTi, 楷体_GB2312, 楷体-简, STKaiti, serif;
+}
+
+/* 全局背景与字体基调 */
+.chat-page, body, #app { 
+    background: var(--t-pale) !important; 
+    background-color: var(--t-pale) !important;
+    background-attachment: fixed !important; 
+    font-family: var(--y-font-family) !important;
+}
+
+.chat {
+    --background-color: var(--t-pale); 
+    --card-background-color: var(--t-mid); 
+    --primary-font-color: var(--msg-color);
+    background-color: var(--t-pale) !important;
+    color: var(--msg-color) !important;
+    font-family: var(--y-font-family) !important;
+}
+
+/* 【修改处1：用具体标签代替通配符 * 】只针对常规的文本和区块强制换字体，放过特殊图标元素 */
+.chat p, .chat span, .chat div, .chat h1, .chat h2, .chat h3, .chat h4, .chat h5, .chat h6, .chat a, .chat li, .chat td, .chat th,
+.prologue-scope p, .prologue-scope span, .prologue-scope div {
+    box-sizing: border-box !important;
+    font-family: var(--y-font-family) !important;
+}
+
+/* 覆盖所有开场白、卡片、气泡、设置面板，防止透明 */
+.prologue-scope .prologue-content, .msg-option-scope .msg-content-box, .msg-option-scope .msg-options-box,
+.chat .chat-scope-box .content, .chat .chat-bottom .uni-textarea .chat-input-scope, .chat .chat-bottom .shortcut-button-scope .item,
+.model-setting-scope .power-scope, .model-setting-scope .stream-switch-scope, .confirm-scope, .confirm-edit-scope,
+.model-help-scope .content, .history-setting-scope .history-item, .conversation-list-scope .conversation-item,
+.custom-instruction-scope .content-scope .item, .u-popup__content,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.right,
+.chat .chat-scope-box .scroll-view .chat-body .item .touch-scope .content.left {
+    background: var(--t-mid) !important;
+    backdrop-filter: blur(var(--g-blur)) !important;
+    -webkit-backdrop-filter: blur(var(--g-blur)) !important;
+    border: 1px solid var(--y-line) !important;
+    color: var(--msg-color) !important;
+    will-change: auto !important;
+}
+
+/* 【修改处2：顶部和底部栏】将原本死板的粉色改成了变量 --t-mid，让它跟随卡片主题变色 */
+.chat .topTabbar, .chat .chat-bottom .send-msg, .chat .chat-bottom .more-scope {
+    background: var(--t-mid) !important; 
+    backdrop-filter: blur(var(--g-blur)) !important;
+    -webkit-backdrop-filter: blur(var(--g-blur)) !important;
+    border-bottom: 1px solid var(--y-line) !important;
+    will-change: auto !important;
+    color: var(--t-dark-solid) !important; 
+}
+
+/* 独立控制输入框的背景与透明度 */
+.chat .chat-bottom .uni-textarea .chat-input-scope {
+    background: var(--inp-bg) !important;
+    backdrop-filter: var(--inp-blr) !important;
+    -webkit-backdrop-filter: var(--inp-blr) !important;
+    border: var(--inp-bd) !important;
+    color: var(--msg-color) !important; 
+}
+
+/* 【修改处3：替换正文内容的通配符 * 】确保正文内部文字变色，不影响图标 */
+.chat .content, .chat .content p, .chat .content span, .chat .content div, .chat .content a, .chat .content h1, .chat .content h2, .chat .content h3, .chat .content li, 
+.prologue-scope .prologue-content, .msg-option-scope .msg-content-box {
+    color: var(--msg-color) !important;
+}
+
+/* 渐变色文字支持 */
+.chat .content font, .prologue-scope .prologue-content font, .msg-option-scope .msg-content-box font,
+.chat .topTabbar .header-center, .chat .topTabbar .header-roleName,
+.chat .chat-bottom .uni-textarea .chat-input-scope textarea {
+    background: var(--t-dark) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important;
+}
+
+/* 占位符颜色 */
+.chat .chat-bottom .uni-textarea .chat-input-scope textarea::placeholder {
+    color: var(--msg-color) !important;
+    -webkit-text-fill-color: var(--msg-color) !important;
+    opacity: 0.6 !important;
+}
+
+/* 特殊强调与按钮样式 */
+.teapot-button, .msg-option-scope .option-item, .modify-btn, .confirm-scope .ok-btn, .model-setting-scope .bottom .btn {
+    background: linear-gradient(to bottom, rgba(255, 182, 193, 0.9), rgba(219, 112, 147, 0.75)) !important;
+    border: 1px solid var(--y-line) !important;
+    transform: translateZ(0) !important;
+    color: #000 !important;
+}
+
+.model-setting-scope .selected, .u-switch--on {
+    background: rgba(255, 105, 180, 0.6) !important;
+}
+
+.chat .item .touch-scope .content.left font[color="#DC8333"] {
+    color: #d2691e !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+/* 【修改处4：代码高亮区去掉通配符 * 】隔离楷体，保持等宽字体和彩色语法 */
+.chat pre, .chat code, .chat pre span, .chat pre div {
+    font-family: "Consolas", "Monaco", "Courier New", monospace !important;
+}
+.chat pre code span, .chat .hljs-string, .chat .hljs-quote, .chat .hljs-symbol {
+    color: #c71585 !important;
+    text-shadow: none !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+.msg-option-scope .msg-options-box .option-separator, .history-item+.history-item {
+    border-color: var(--y-line) !important; 
+}
+
+/* 顶部/底部图标 */
+.icon-back div, .header-meun div, .icon-battery div, .chat-input-scope .btn-icon div {
+    filter: brightness(0) !important;
+}
+</style>
+
+<style>
+.gal-trigger-v7 { position: fixed; left: 0; bottom: 25%; z-index: 99999; background: rgba(255,240,245,0.95); border: 1px solid #ffb6c1; border-left: none; padding: 12px 6px; cursor: pointer; writing-mode: vertical-lr; font-size: 12px; border-radius: 0 8px 8px 0; box-shadow: 2px 0 10px rgba(216,27,96,0.15); transition: 0.3s; backdrop-filter: blur(5px); color: #000; font-weight: bold; letter-spacing: 1px;}
+.gal-panel-v7 { position: fixed; left: 0; bottom: -120vh; width: 100%; background: rgba(255, 250, 252, 0.95); border-top: 2px solid #ffb6c1; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 25px rgba(216,27,96,0.15); z-index: 100000; font-family: sans-serif; transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1); backdrop-filter: blur(15px); color: #333; box-sizing: border-box; }
+.gal-p-header { padding: 16px 20px 10px 20px; font-weight: bold; font-size: 15px; color: #000; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #ffe4e1; }
+.p-close { cursor: pointer; font-size: 22px; color: #000; width: 30px; text-align: right; line-height: 1;}
+
+.gal-p-body { padding: 15px 20px 0 20px; display: flex; flex-direction: column; gap: 15px; max-height: 80vh; overflow-y: auto; overflow-x: hidden; }
+.gal-p-body > * { flex-shrink: 0 !important; }
+
+.h-scroll-box { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; align-items: flex-start; margin: 0 -20px; padding: 0 20px 10px 20px;}
+.h-scroll-box::-webkit-scrollbar { height: 0; display: none; } 
+.s-group { flex: 0 0 85%; scroll-snap-align: center; border: 1px solid #ffe4e1; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.8); box-sizing: border-box; box-shadow: 0 2px 8px rgba(216,27,96,0.05); }
+
+.s-title { font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #000; display: flex; justify-content: space-between; align-items: center;}
+.s-item { display: flex; flex-direction: column; gap: 6px; font-size: 12px; margin-bottom: 8px; color: #555;}
+.s-row { display: flex; justify-content: space-between; align-items: center; }
+input[type="color"] { border: 1px solid #ffb6c1; width: 26px; height: 26px; padding: 0; border-radius: 6px; cursor: pointer; background: none; -webkit-appearance: none; }
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: none; border-radius: 5px; }
+input[type="range"] { width: 100%; height: 4px; border-radius: 2px; accent-color: #ffb6c1; background: #ffe4e1; -webkit-appearance: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: #000; border-radius: 50%; }
+
+.gf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(255,240,245,0.6); padding: 12px; border-radius: 12px; border: 1px solid #ffe4e1;}
+.gf-grid .s-item { margin-bottom: 0; }
+
+.btn-group { display: flex; gap: 10px; margin-top: 5px; }
+.g-btn { padding: 6px 10px; border: 1px solid #ffb6c1; border-radius: 6px; cursor: pointer; text-align: center; font-size: 11px; transition: 0.2s; background: #fff; color: #000;}
+.btn-group .g-btn { flex: 1; padding: 12px; font-size: 13px; font-weight: bold; border-radius: 10px; }
+.btn-main { background: #000; color: #fff; border: none; }
+
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+.p-btn { font-weight: bold; border-radius: 8px; padding: 10px; font-size: 12px; border: 1px solid;}
+.p-btn[data-t="x"] { background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%); border-color: #ffb6c1; color: #000; }
+.p-btn[data-t="w"] { background: linear-gradient(135deg, #fdf5e6 0%, #faebd7 100%); border-color: #e6c280; color: #8b4513; }
+.p-btn[data-t="s"] { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-color: #ce93d8; color: #4a148c; }
+.p-btn[data-t="g"] { background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%); border-color: #adb5bd; color: #495057; }
+.p-btn[data-t="d"] { background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border-color: #ff4d4f; color: #ff8a80; }
+.copyright { font-size: 10px; color: #ffb6c1; text-align: center; margin-top: 5px; font-weight: bold;}
+</style>
+</head>
+<body>
+
+<div class="gal-v7-container" onclick="event.stopPropagation()">
+    <div class="gal-trigger-v7">美化</div>
+
+    <div class="gal-panel-v7">
+        <div class="gal-p-header">👑 魔法工坊<span style="font-size:11px; color:#ffb6c1; font-weight:normal; margin-left:10px;">左右滑动切换色彩 ↔️</span> <span class="p-close">×</span></div>
+        <div class="gal-p-body">
+            
+            <div class="h-scroll-box">
+                <div class="s-group">
+                    <div class="s-title"><span>📝 主色调 (文字)</span> <div class="g-btn b-d-tog">开启渐变</div></div>
+                    <div class="s-row"><label>基础/起始色</label><input type="color" class="i-d-1" value="#000000"></div>
+                    <div class="box-d" style="display:none; flex-direction:column; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed #ffe4e1;">
+                        <div class="s-row"><label>渐变结束色</label><input type="color" class="i-d-2" value="#333333"></div>
+                        <div><label style="font-size:11px; color:#666;">角度: <span class="v-d-deg">135</span>°</label><input type="range" class="i-d-deg" min="0" max="360" value="135"></div>
+                        <div><label style="font-size:11px; color:#666;">占比: <span class="v-d-pct">0</span>%</label><input type="range" class="i-d-pct" min="0" max="100" value="0"></div>
+                    </div>
+                </div>
+
+                <div class="s-group">
+                    <div class="s-title"><span>🌌 背景色 (全局)</span> <div class="g-btn b-p-tog">开启渐变</div></div>
+                    <div class="s-row"><label>基础/起始色</label><input type="color" class="i-p-1" value="#fff0f5"></div>
+                    <div class="box-p" style="display:none; flex-direction:column; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed #ffe4e1;">
+                        <div class="s-row"><label>渐变结束色</label><input type="color" class="i-p-2" value="#ffe4e1"></div>
+                        <div><label style="font-size:11px; color:#666;">角度: <span class="v-p-deg">135</span>°</label><input type="range" class="i-p-deg" min="0" max="360" value="135"></div>
+                        <div><label style="font-size:11px; color:#666;">占比: <span class="v-p-pct">0</span>%</label><input type="range" class="i-p-pct" min="0" max="100" value="0"></div>
+                    </div>
+                </div>
+
+                <div class="s-group">
+                    <div class="s-title"><span>🪞 辅色调 (卡片)</span> <div class="g-btn b-m-tog">开启渐变</div></div>
+                    <div class="s-row"><label>基础/起始色</label><input type="color" class="i-m-1" value="#ffe4eb"></div>
+                    <div class="box-m" style="display:none; flex-direction:column; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed #ffe4e1;">
+                        <div class="s-row"><label>渐变结束色</label><input type="color" class="i-m-2" value="#ffb6c1"></div>
+                        <div><label style="font-size:11px; color:#666;">角度: <span class="v-m-deg">135</span>°</label><input type="range" class="i-m-deg" min="0" max="360" value="135"></div>
+                        <div><label style="font-size:11px; color:#666;">占比: <span class="v-m-pct">0</span>%</label><input type="range" class="i-m-pct" min="0" max="100" value="0"></div>
+                    </div>
+                </div>
+                
+                <div class="s-group">
+                    <div class="s-title"><span>💬 扩展功能</span></div>
+                    <div class="s-row" style="margin-bottom:12px;"><label>消息正文颜色</label><input type="color" class="i-msg" value="#000000"></div>
+                    <div class="s-row">
+                        <label>全局字体</label>
+                        <select class="i-font" style="border: 1px solid #ffb6c1; border-radius: 6px; padding: 4px; background: #fff; color: #000; font-size: 11px; outline: none; flex: 1; margin-left: 10px;">
+                            <option value='楷体, KaiTi, 楷体_GB2312, 楷体-简, STKaiti, serif'>楷体 (默认)</option>
+                            <option value='system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'>系统默认</option>
+                            <option value='"Microsoft YaHei", 微软雅黑, sans-serif'>微软雅黑</option>
+                            <option value='SimSun, 宋体, serif'>宋体</option>
+                            <option value='FangSong, 仿宋, serif'>仿宋</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gf-grid">
+                <div class="s-item"><label style="font-weight:bold; color:#000;">滤镜模糊: <span class="v-blur">10</span>px</label><input type="range" class="i-blur" min="0" max="40" value="0"></div>
+                <div class="s-item"><label style="font-weight:bold; color:#000;">卡片透明度: <span class="v-op">85</span>%</label><input type="range" class="i-op" min="0" max="100" value="95"></div>
+            </div>
+
+            <div class="btn-group">
+                <div class="g-btn b-reset">恢复默认美化 (默认)</div>
+                <div class="g-btn btn-main b-power">关闭美化效果</div>
+            </div>
+
+            <div style="font-size: 13px; font-weight: bold; color: #000; margin-top: 10px;">✨ 沉浸式情境主题 (一键换装)</div>
+            <div class="preset-grid">
+                <div class="g-btn p-btn" data-t="x">🎀 默认</div>
+                <div class="g-btn p-btn" data-t="w">🍎 堕落</div>
+                <div class="g-btn p-btn" data-t="s">🍷 诱惑</div>
+                <div class="g-btn p-btn" data-t="g">🍏 青春</div>
+                <div class="g-btn p-btn" style="grid-column: span 2;" data-t="d">⛓️ 禁忌</div>
+            </div>
+            
+            <div class="copyright">by 小雪菜</div>
+            
+            <div style="height: 140px; width: 100%;"></div>
+        </div>
+    </div>
+
+    <img src="x" style="display:none" onerror="(function(img){var d=document,r=d.documentElement,c=img.closest('.gal-v7-container');if(!c)return;var tg=c.querySelector('.gal-trigger-v7'),pn=c.querySelector('.gal-panel-v7');tg.onclick=function(){pn.style.bottom='0';tg.style.left='-40px'};c.querySelector('.p-close').onclick=function(){pn.style.bottom='-120vh';tg.style.left='0'};var up=function(k,v){r.style.setProperty(k,v)};var h2r=function(h){return parseInt(h.slice(1,3),16)+','+parseInt(h.slice(3,5),16)+','+parseInt(h.slice(5,7),16)};var uds=[];var build=function(px,vn){var i1=c.querySelector('.i-'+px+'-1'),i2=c.querySelector('.i-'+px+'-2'),dg=c.querySelector('.i-'+px+'-deg'),pt=c.querySelector('.i-'+px+'-pct'),b=c.querySelector('.b-'+px+'-tog'),bx=c.querySelector('.box-'+px),isG=false;var ud=function(){var op=(px==='m')?c.querySelector('.i-op').value/100:1;var c1='rgba('+h2r(i1.value)+','+op+')',c2='rgba('+h2r(i2.value)+','+op+')';if(px==='d')up(vn+'-solid',i1.value);if(isG){up(vn,'linear-gradient('+dg.value+'deg, '+c1+' '+pt.value+'%, '+c2+')')}else{up(vn,c1)}};i1.oninput=ud;i2.oninput=ud;dg.oninput=function(){c.querySelector('.v-'+px+'-deg').innerText=this.value;ud()};pt.oninput=function(){c.querySelector('.v-'+px+'-pct').innerText=this.value;ud()};b.onclick=function(){isG=!isG;bx.style.display=isG?'flex':'none';this.innerText=isG?'关闭渐变':'开启渐变';this.style.background=isG?'#ffe4e1':'#fff';ud()};uds.push(ud)};build('d','--t-dark');build('p','--t-pale');build('m','--t-mid');var iMsg=c.querySelector('.i-msg');iMsg.oninput=function(){up('--msg-color',this.value)};var iFont=c.querySelector('.i-font');iFont.onchange=function(){up('--y-font-family',this.value)};c.querySelector('.i-blur').oninput=function(){up('--g-blur',this.value+'px');c.querySelector('.v-blur').innerText=this.value};c.querySelector('.i-op').oninput=function(){c.querySelector('.v-op').innerText=this.value;uds[2]()};c.querySelector('.b-power').onclick=function(){var s=d.querySelectorAll('.gal-beauty-style'),off=false;if(s.length>0){off=!s[0].disabled;for(var i=0;s.length>i;i++)s[i].disabled=off}this.innerText=off?'开启美化效果':'关闭美化效果'};c.querySelector('.b-reset').onclick=function(){var df={'d':['#000000','#333333',135,0],'p':['#fff0f5','#ffe4e1',135,0],'m':['#ffe4eb','#ffb6c1',135,0]};var ps=['d','p','m'];for(var i=0;ps.length>i;i++){var p=ps[i],a=df[p];c.querySelector('.i-'+p+'-1').value=a[0];c.querySelector('.i-'+p+'-2').value=a[1];c.querySelector('.i-'+p+'-deg').value=a[2];c.querySelector('.v-'+p+'-deg').innerText=a[2];c.querySelector('.i-'+p+'-pct').value=a[3];c.querySelector('.v-'+p+'-pct').innerText=a[3];var b=c.querySelector('.b-'+p+'-tog');if(b.innerText==='关闭渐变')b.click()}c.querySelector('.i-blur').value=10;c.querySelector('.v-blur').innerText=10;up('--g-blur','10px');c.querySelector('.i-op').value=85;c.querySelector('.v-op').innerText=85;iMsg.value='#000000';up('--msg-color','#000000');iFont.value='楷体, KaiTi, 楷体_GB2312, 楷体-简, STKaiti, serif';up('--y-font-family','楷体, KaiTi, 楷体_GB2312, 楷体-简, STKaiti, serif');for(var j=0;uds.length>j;j++)uds[j]()};var P={'x':[['#000000','#333333',135,0],['#fff0f5','#ffe4e1',135,0],['#ffe4eb','#ffb6c1',135,0],10,85],'w':[['#5d4037','#3e2723',135,0],['#fdf5e6','#faebd7',135,0],['#fff8dc','#ffe4c4',135,0],15,80],'s':[['#4a148c','#311b92',135,0],['#f3e5f5','#e1bee7',135,0],['#fce4ec','#f8bbd0',135,0],12,65],'g':[['#212529','#343a40',135,0],['#e9ecef','#dee2e6',135,0],['#f8f9fa','#e9ecef',135,0],5,90],'d':[['#ff8a80','#ff5252',135,0],['#212121','#000000',135,0],['#424242','#212121',135,0],20,50]};var aP=function(k){var a=P[k];var df={'d':a[0],'p':a[1],'m':a[2]};var ps=['d','p','m'];for(var i=0;ps.length>i;i++){var p=ps[i],av=df[p];c.querySelector('.i-'+p+'-1').value=av[0];c.querySelector('.i-'+p+'-2').value=av[1];c.querySelector('.i-'+p+'-deg').value=av[2];c.querySelector('.v-'+p+'-deg').innerText=av[2];c.querySelector('.i-'+p+'-pct').value=av[3];c.querySelector('.v-'+p+'-pct').innerText=av[3];var bt=c.querySelector('.b-'+p+'-tog');if(bt.innerText==='开启渐变'){bt.click()}else{uds[i]()}}c.querySelector('.i-blur').value=a[3];c.querySelector('.v-blur').innerText=a[3];up('--g-blur',a[3]+'px');c.querySelector('.i-op').value=a[4];c.querySelector('.v-op').innerText=a[4];iMsg.value=a[0][0];up('--msg-color',a[0][0]);for(var j=0;uds.length>j;j++)uds[j]()};var pB=c.querySelectorAll('.p-btn');for(var i=0;pB.length>i;i++){pB[i].onclick=function(){aP(this.getAttribute('data-t'))}};img.remove()})(this)">
+</div>
+
+</body>
+</html>

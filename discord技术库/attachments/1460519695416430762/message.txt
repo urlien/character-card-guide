@@ -1,0 +1,349 @@
+<div id="rose-mansion-core" style="display:none">
+    <div class="rose-lib" data-char="角色1名字"
+        data-list="https://img.heliar.top/file/1767330023985_01.png|https://img.heliar.top/file/1767330026253_02.png">
+    </div>
+    <div class="rose-lib" data-char="角色2名字"
+        data-list="https://img.heliar.top/file/1767330237966_01.png|https://img.heliar.top/file/1767330237546_02.png">
+    </div>
+    <div class="rose-lib" data-char="角色3名字"
+        data-list="https://img.heliar.top/file/1767330454729_01.png|https://img.heliar.top/file/1767330449992_02.png">
+    </div>
+    <div class="rose-lib" data-char="角色4名字"
+        data-list="https://img.heliar.top/file/1767330655056_01.png|https://img.heliar.top/file/1767330659689_02.png">
+    </div>
+    
+</div>
+<style>
+    .t {
+        background: #f9ecec;
+        border: 1px solid #efe3dd;
+        border-radius: 16px;
+        overflow: hidden;
+        margin: 10px auto;
+        font-family: 'YouYuan', 'Microsoft YaHei', sans-serif;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(215, 196, 190, .35);
+        padding-bottom: 10px;
+        position: relative
+    }
+
+    .ti {
+        background: #fff;
+        padding: 10px 10px 30px;
+        margin: 20px auto;
+        width: 85%;
+        border: 1px solid #f2e9e9;
+        box-shadow: 5px 5px 15px rgba(220, 190, 190, .2);
+        transform: rotate(-2deg);
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+        transition: transform .2s
+    }
+
+    .ti:hover {
+        transform: rotate(-2deg) translateY(-3px)
+    }
+
+    .ti img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid #fcf6f6;
+        border-radius: 12px;
+        pointer-events: none
+    }
+
+    .nav-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, .85);
+        border: 1px solid #e6cec8;
+        border-radius: 50%;
+        color: #c48b96;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        user-select: none;
+        transition: all .2s;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(196, 139, 150, .2)
+    }
+
+    .nav-arrow:hover {
+        background: #fff0f3;
+        color: #d0828a;
+        transform: translateY(-50%) scale(1.1)
+    }
+
+    .nav-arrow.prev {
+        left: -12px
+    }
+
+    .nav-arrow.next {
+        right: -12px
+    }
+
+    .char-group {
+        display: none
+    }
+
+    .char-group.active {
+        display: block
+    }
+
+    .char-group .tw {
+        display: none;
+        opacity: 0;
+        transition: opacity .3s ease;
+        padding: 0 15px 15px
+    }
+
+    .char-group .hint {
+        display: block;
+        text-align: center;
+        padding: 10px;
+        color: #d7ccc8;
+        font-size: 12px;
+        cursor: pointer;
+        animation: breath 2s infinite ease-in-out
+    }
+
+    .char-group.open .tw {
+        display: block;
+        animation: slideDown .4s ease forwards
+    }
+
+    .char-group.open .hint {
+        display: none
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px)
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0)
+        }
+    }
+
+    @keyframes breath {
+
+        0%,
+        100% {
+            opacity: .6
+        }
+
+        50% {
+            opacity: 1
+        }
+    }
+
+    .th {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #c48b96;
+        text-align: center;
+        letter-spacing: 2px
+    }
+
+    .meta-row {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px
+    }
+
+    .meta-box {
+        flex: 1;
+        background: #fff;
+        border: 1px solid #ebd4cd;
+        border-radius: 8px;
+        padding: 4px 2px;
+        font-size: 11px;
+        color: #a1887f;
+        box-shadow: 0 2px 5px rgba(220, 200, 200, .1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        white-space: nowrap
+    }
+
+    .meta-box span {
+        font-weight: 700;
+        color: #8d6e63
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #e6cec8;
+        border-radius: 12px;
+        padding: 0 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 8px rgba(220, 190, 190, .1)
+    }
+
+    .card-row {
+        display: flex;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px dashed #eadcd9;
+        font-size: 13px
+    }
+
+    .row-lbl {
+        width: 45px;
+        flex-shrink: 0;
+        color: #bc9c9c;
+        font-weight: 700;
+        font-size: 12px;
+        margin-top: 2px
+    }
+
+    .row-val {
+        flex: 1;
+        color: #6d5854;
+        line-height: 1.4;
+        padding-left: 10px;
+        border-left: 2px solid #fce4ec
+    }
+
+    .secret-box {
+        background: rgba(255, 255, 255, .6);
+        border: 1px solid #e6cec8;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all .3s
+    }
+
+    .secret-box summary {
+        padding: 10px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        color: #d0828a;
+        font-weight: 700;
+        list-style: none;
+        user-select: none;
+        background: #fff0f3;
+        transition: background .2s
+    }
+
+    .secret-box summary:hover {
+        background: #ffebf0
+    }
+
+    .secret-box summary::-webkit-details-marker {
+        display: none
+    }
+
+    .secret-box[open] summary {
+        border-bottom: 1px solid #f0d0d0;
+        background: #ffebee
+    }
+
+    .secret-content {
+        padding: 0 12px;
+        background: #fffcfb
+    }
+
+    .secret-content .row-lbl {
+        color: #d0828a
+    }
+
+    .secret-content .row-val {
+        color: #8d6e63;
+        border-left-color: #f8bbd0
+    }
+</style>
+<div class="t" onclick="event.stopPropagation()">
+    <p class="logic-core" style="display:none"
+        data-init="let root=this.closest('.t');let store=root.querySelector('.d-store');let r2=(store.dataset.c2||'').split('#####');let has2nd=false;if(r2.length>1){let name=r2[1].split('|')[0].trim();if(name&&name!=='-'&&name!=='')has2nd=true}if(!has2nd){root.querySelectorAll('.nav-arrow').forEach(e=>e.style.display='none')}let r1=(store.dataset.c1||'').split('#####'),r3=(store.dataset.c3||'').split('#####'),r4=(store.dataset.c4||'').split('#####');root.querySelectorAll('.char-group').forEach((g,i)=>{let get=a=>(a[i]||a[0]||'').trim().split('|');let l=get(r1),s=get(r2),a=get(r3),n=get(r4);let f=(k,v)=>{let el=g.querySelector(k);if(el)el.innerText=v||'...'};f('.v-time',l[0]);f('.v-loc',l[1]);f('.v-name',s[0]);f('.v-img-id',s[1]);f('.v-act',a[0]);f('.v-look',a[1]);f('.v-outfit',a[2]);f('.v-os',a[3]);f('.x-grid-1',n[0]);f('.x-grid-2',n[1]);f('.x-grid-3',n[2]);f('.x-grid-4',n[3]);let charName=s[0]?s[0].trim():'';let lib=document.querySelector('#rose-mansion-core .rose-lib[data-char=\x22'+charName+'\x22]');if(!lib){let all=document.querySelectorAll('#rose-mansion-core .rose-lib');if(all[i])lib=all[i]}let img=g.querySelector('.img-body');let idx=parseInt(s[1]?s[1].trim():'1');if(lib&&img&&!isNaN(idx)){let srcList=lib.dataset.list.split('|');if(idx>0&&idx<=srcList.length)img.src=srcList[idx-1]}})"
+        data-toggle="this.closest('.char-group').classList.toggle('open')"
+        data-switch="let root=this.closest('.t');let groups=root.querySelectorAll('.char-group');let cur=-1;groups.forEach((g,i)=>{if(g.classList.contains('active'))cur=i;g.classList.remove('active')});let next=(cur+dir+groups.length)%groups.length;groups[next].classList.add('active')">
+    </p>
+    <p class="d-store" style="display:none" data-c1="$2" data-c2="$3" data-c3="$4" data-c4="$5"></p>
+    <div class="char-group active">
+        <div class="ti" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">
+            <div class="nav-arrow prev"
+                onclick="event.stopPropagation();let dir=-1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❮</div>
+            <div class="nav-arrow next"
+                onclick="event.stopPropagation();let dir=1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❯</div> <img class="img-body" src="">
+        </div>
+        <div class="hint" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">查看状态档案<br><span
+                style="font-size:10px;opacity:.7">Click to Expand</span></div>
+        <div class="tw">
+            <div class="th">❤ <span class="v-name" style="color:inherit">--</span>的状态档案 ❤</div>
+            <div class="meta-row">
+                <div class="meta-box">🕒 <span class="v-time">--</span></div>
+                <div class="meta-box">📍 <span class="v-loc">--</span></div>
+                <div class="meta-box">№ <span class="v-img-id">--</span></div>
+            </div>
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">穿着</span><span class="row-val v-look">--</span></div>
+                <div class="card-row"><span class="row-lbl">内衣</span><span class="row-val v-outfit">--</span></div>
+                <div class="card-row"><span class="row-lbl">动作</span><span class="row-val v-act">--</span></div>
+                <div class="card-row" style="border-bottom:none"><span class="row-lbl">想法</span><span
+                        class="row-val v-os" style="font-style:italic">--</span></div>
+            </div>
+            <details class="secret-box">
+                <summary>🔒 私密部位状态 (点击查看)</summary>
+                <div class="secret-content">
+                    <div class="card-row"><span class="row-lbl">小穴</span><span class="row-val x-grid-1">--</span></div>
+                    <div class="card-row"><span class="row-lbl">菊穴</span><span class="row-val x-grid-2">--</span></div>
+                    <div class="card-row"><span class="row-lbl">乳房</span><span class="row-val x-grid-3">--</span></div>
+                    <div class="card-row" style="border-bottom:none"><span class="row-lbl">玉足</span><span
+                            class="row-val x-grid-4">--</span></div>
+                </div>
+            </details>
+        </div>
+    </div>
+    <div class="char-group">
+        <div class="ti" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">
+            <div class="nav-arrow prev"
+                onclick="event.stopPropagation();let dir=-1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❮</div>
+            <div class="nav-arrow next"
+                onclick="event.stopPropagation();let dir=1;eval(this.closest('.t').querySelector('.logic-core').dataset.switch)">
+                ❯</div> <img class="img-body" src="">
+        </div>
+        <div class="hint" onclick="eval(this.closest('.t').querySelector('.logic-core').dataset.toggle)">查看状态档案<br><span
+                style="font-size:10px;opacity:.7">Click to Expand</span></div>
+        <div class="tw">
+            <div class="th">❤ <span class="v-name" style="color:inherit">--</span>的状态档案 ❤</div>
+            <div class="meta-row">
+                <div class="meta-box">🕒 <span class="v-time">--</span></div>
+                <div class="meta-box">📍 <span class="v-loc">--</span></div>
+                <div class="meta-box">№ <span class="v-img-id">--</span></div>
+            </div>
+            <div class="info-card">
+                <div class="card-row"><span class="row-lbl">穿着</span><span class="row-val v-look">--</span></div>
+                <div class="card-row"><span class="row-lbl">内衣</span><span class="row-val v-outfit">--</span></div>
+                <div class="card-row"><span class="row-lbl">动作</span><span class="row-val v-act">--</span></div>
+                <div class="card-row" style="border-bottom:none"><span class="row-lbl">想法</span><span
+                        class="row-val v-os" style="font-style:italic">--</span></div>
+            </div>
+            <details class="secret-box">
+                <summary>🔒 私密部位状态 (点击查看)</summary>
+                <div class="secret-content">
+                    <div class="card-row"><span class="row-lbl">小穴</span><span class="row-val x-grid-1">--</span></div>
+                    <div class="card-row"><span class="row-lbl">菊穴</span><span class="row-val x-grid-2">--</span></div>
+                    <div class="card-row"><span class="row-lbl">乳房</span><span class="row-val x-grid-3">--</span></div>
+                    <div class="card-row" style="border-bottom:none"><span class="row-lbl">玉足</span><span
+                            class="row-val x-grid-4">--</span></div>
+                </div>
+            </details>
+        </div>
+    </div> <img src="x" style="display:none"
+        onerror="eval(this.closest('.t').querySelector('.logic-core').dataset.init)">
+</div>

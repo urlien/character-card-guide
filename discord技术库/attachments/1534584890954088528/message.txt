@@ -1,0 +1,62 @@
+<script>
+if(!window.__wfSelectorLoaded){window.__wfSelectorLoaded=true;class WfSelector extends HTMLElement{constructor(){super();this.attachShadow({mode:"open"});this.categories=[{id:"race",title:"⚔ 种族",icon:"🧝",options:["人类","精灵","矮人","半兽人","龙裔","提夫林","半精灵","地精","暗精灵","树人"]},{id:"class",title:"🛡 职业",icon:"⚔",options:["战士","法师","游侠","盗贼","圣骑士","术士","吟游诗人","德鲁伊","武僧","死灵法师"]},{id:"talent",title:"✨ 天赋",icon:"💫",options:["战斗直觉","魔力亲和","暗视","元素抗性","野性感知","亡灵交感","龙语者","命运之眼","铁壁体质","灵魂共鸣"]},{id:"magic",title:"📖 魔法流派",icon:"🔮",options:["元素魔法","死灵术","幻术","附魔","召唤术","时空魔法","神圣魔法","血魔法","符文学","炼金术"]},{id:"trait",title:"📜 背景特质",icon:"🏰",options:["流亡贵族","孤儿","佣兵","学者","教团弃徒","复仇者","预言之子","罪人","异界来客","守墓人"]},{id:"equip",title:"🗡 装备偏好",icon:"🏹",options:["重甲长剑","轻甲双匕","法杖长袍","弓箭皮甲","盾牌战锤","链甲长矛","暗器斗篷","魔导书","双手巨剑","权杖圣衣"]}];this.selected={};this.customInputs={};this.categories.forEach(c=>{this.selected[c.id]=[];this.customInputs[c.id]=""})}connectedCallback(){this.render();this.init()}render(){this.shadowRoot.innerHTML=`<style>
+*{margin:0;padding:0;box-sizing:border-box}
+.wf-wrapper{position:relative;width:100%;max-width:900px;margin:0 auto;background:linear-gradient(135deg,#1a1225 0%,#2a1f3d 40%,#1e1533 100%);border:2px solid #8b6914;border-radius:12px;padding:20px;font-family:"Segoe UI",sans-serif;color:#e8dcc8}
+.wf-title-bar{text-align:center;padding:16px 0 20px;border-bottom:1px solid rgba(139,105,20,0.4);margin-bottom:16px}
+.wf-title-bar h2{font-size:22px;color:#ffd866;text-shadow:0 0 12px rgba(255,216,102,0.3);letter-spacing:4px;margin-bottom:6px}
+.wf-title-bar p{font-size:12px;color:#9a8b72;letter-spacing:1px}
+.wf-categories{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.wf-cat{background:linear-gradient(180deg,rgba(42,31,61,0.8),rgba(26,18,37,0.9));border:1px solid rgba(139,105,20,0.35);border-radius:8px;padding:14px;transition:border-color 0.3s}
+.wf-cat:hover{border-color:rgba(255,216,102,0.5)}
+.wf-cat-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(139,105,20,0.2)}
+.wf-cat-header span.wf-cat-icon{font-size:18px}
+.wf-cat-header span.wf-cat-title{font-size:15px;font-weight:bold;color:#ffd866;letter-spacing:1px}
+.wf-cat-header span.wf-cat-count{margin-left:auto;font-size:11px;color:#7a6b55;background:rgba(139,105,20,0.15);padding:2px 8px;border-radius:10px}
+.wf-options{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.wf-opt{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1px solid rgba(139,105,20,0.25);border-radius:16px;font-size:12px;color:#c4b59a;cursor:pointer;transition:all 0.2s;user-select:none;background:rgba(26,18,37,0.6)}
+.wf-opt:hover{border-color:rgba(255,216,102,0.5);color:#e8dcc8;background:rgba(42,31,61,0.8)}
+.wf-opt.wf-active{border-color:#ffd866;color:#ffd866;background:rgba(255,216,102,0.1);box-shadow:0 0 8px rgba(255,216,102,0.15)}
+.wf-opt .wf-check{width:14px;height:14px;border:1px solid rgba(139,105,20,0.4);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all 0.2s}
+.wf-opt.wf-active .wf-check{border-color:#ffd866;background:rgba(255,216,102,0.2);color:#ffd866}
+.wf-custom-row{display:flex;gap:6px;align-items:center}
+.wf-custom-input{flex:1;background:rgba(26,18,37,0.8);border:1px solid rgba(139,105,20,0.25);border-radius:6px;padding:7px 10px;color:#e8dcc8;font-size:12px;outline:none;transition:border-color 0.3s}
+.wf-custom-input::placeholder{color:#6a5c48}
+.wf-custom-input:focus{border-color:rgba(255,216,102,0.5)}
+.wf-custom-btn{padding:7px 12px;background:rgba(139,105,20,0.2);border:1px solid rgba(139,105,20,0.35);border-radius:6px;color:#c4b59a;font-size:12px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.wf-custom-btn:hover{background:rgba(139,105,20,0.35);color:#ffd866}
+.wf-footer{margin-top:18px;display:flex;gap:10px;justify-content:center;padding-top:16px;border-top:1px solid rgba(139,105,20,0.3)}
+.wf-btn{padding:10px 28px;border-radius:8px;font-size:14px;cursor:pointer;transition:all 0.25s;letter-spacing:2px;border:none}
+.wf-btn-confirm{background:linear-gradient(135deg,#8b6914,#c9952a);color:#1a1225;font-weight:bold;box-shadow:0 2px 12px rgba(139,105,20,0.3)}
+.wf-btn-confirm:hover{background:linear-gradient(135deg,#a07a1a,#daa832);box-shadow:0 4px 20px rgba(255,216,102,0.3);transform:translateY(-1px)}
+.wf-btn-clear{background:rgba(139,105,20,0.1);border:1px solid rgba(139,105,20,0.3);color:#9a8b72}
+.wf-btn-clear:hover{background:rgba(139,105,20,0.2);color:#c4b59a}
+.wf-toast{position:absolute;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2a4a1a,#1a3a10);border:1px solid #4a8a2a;color:#a0e070;padding:10px 24px;border-radius:8px;font-size:13px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:10;white-space:nowrap}
+.wf-toast.wf-show{opacity:1}
+.wf-summary{margin-top:12px;background:rgba(26,18,37,0.6);border:1px solid rgba(139,105,20,0.2);border-radius:8px;padding:12px;display:none;max-height:200px;overflow-y:auto}
+.wf-summary.wf-visible{display:block}
+.wf-summary-title{font-size:13px;color:#ffd866;margin-bottom:8px;letter-spacing:1px}
+.wf-summary-item{font-size:12px;color:#c4b59a;margin-bottom:4px;padding-left:8px;border-left:2px solid rgba(139,105,20,0.3)}
+.wf-summary-item span{color:#ffd866}
+@media(max-width:700px){
+.wf-categories{grid-template-columns:1fr}
+.wf-wrapper{padding:14px;border-radius:8px}
+.wf-title-bar h2{font-size:18px;letter-spacing:2px}
+.wf-opt{padding:6px 8px;font-size:11px}
+.wf-footer{flex-direction:column;gap:8px}
+.wf-btn{width:100%;text-align:center}
+}
+</style>
+
+<div class="wf-wrapper">
+<div class="wf-toast" id="wfToast"></div>
+<div class="wf-title-bar"><h2>📜 冒险者铸造所 📜</h2><p>选择你的命运之路 · 可多选 · 支持自定义</p></div>
+<div class="wf-categories" id="wfCats"></div>
+<div class="wf-summary" id="wfSummary"><div class="wf-summary-title">📋 当前配置总览</div><div id="wfSummaryContent"></div></div>
+<div class="wf-footer">
+<button class="wf-btn wf-btn-confirm" data-action="confirm">✦ 铸造确认 ✦</button>
+<button class="wf-btn wf-btn-clear" data-action="clear">↺ 重置</button>
+<button class="wf-btn wf-btn-clear" data-action="preview">◉ 预览</button>
+</div>
+</div>`}init(){const root=this.shadowRoot;if(!root)return;const catsEl=root.getElementById("wfCats");if(!catsEl||!this.categories)return;this.categories.forEach(cat=>{const div=document.createElement("div");div.className="wf-cat";div.dataset.catId=cat.id;let optsHtml=cat.options.map(o=>`<div class="wf-opt" data-cat="${cat.id}" data-val="${o}"><span class="wf-check"></span><span>${o}</span></div>`).join("");div.innerHTML=`<div class="wf-cat-header"><span class="wf-cat-icon">${cat.icon}</span><span class="wf-cat-title">${cat.title}</span><span class="wf-cat-count" data-counter="${cat.id}">已选 0</span></div><div class="wf-options">${optsHtml}</div><div class="wf-custom-row"><input class="wf-custom-input" data-cat-input="${cat.id}" placeholder="自定义输入，如：${cat.options[0]}…" /><button class="wf-custom-btn" data-cat-add="${cat.id}">+ 添加</button></div>`;catsEl.appendChild(div)});root.addEventListener("click",e=>{const opt=e.target.closest(".wf-opt");if(opt){const catId=opt.dataset.cat;const val=opt.dataset.val;if(!catId||!val)return;const idx=this.selected[catId].indexOf(val);if(idx>-1){this.selected[catId].splice(idx,1);opt.classList.remove("wf-active");opt.querySelector(".wf-check").textContent=""}else{this.selected[catId].push(val);opt.classList.add("wf-active");opt.querySelector(".wf-check").textContent="✓"}this.updateCounter(catId);return}const addBtn=e.target.closest("[data-cat-add]");if(addBtn){const catId=addBtn.dataset.catAdd;const input=root.querySelector(`[data-cat-input="${catId}"]`);if(!input)return;const val=input.value.trim();if(!val){this.showToast("请输入内容");return}if(this.selected[catId].includes(val)){this.showToast("该选项已存在");return}this.selected[catId].push(val);const optContainer=addBtn.closest(".wf-cat").querySelector(".wf-options");const newOpt=document.createElement("div");newOpt.className="wf-opt wf-active";newOpt.dataset.cat=catId;newOpt.dataset.val=val;newOpt.innerHTML=`<span class="wf-check">✓</span><span>${val}</span>`;optContainer.appendChild(newOpt);input.value="";this.updateCounter(catId);this.showToast(`已添加「${val}」`);return}const actionBtn=e.target.closest("[data-action]");if(actionBtn){const action=actionBtn.dataset.action;if(action==="confirm")this.doConfirm();else if(action==="clear")this.doClear();else if(action==="preview")this.doPreview()}});root.addEventListener("keydown",e=>{if(e.key==="Enter"){const input=e.target.closest(".wf-custom-input");if(input){const catId=input.dataset.catInput;const addBtn=root.querySelector(`[data-cat-add="${catId}"]`);if(addBtn)addBtn.click()}}});this.updateAllCounters()}updateCounter(catId){const root=this.shadowRoot;if(!root)return;const counter=root.querySelector(`[data-counter="${catId}"]`);if(counter)counter.textContent=`已选 ${this.selected[catId].length}`}updateAllCounters(){this.categories.forEach(c=>this.updateCounter(c.id))}showToast(msg){const toast=this.shadowRoot.getElementById("wfToast");if(!toast)return;toast.textContent=msg;toast.classList.add("wf-show");setTimeout(()=>toast.classList.remove("wf-show"),1800)}buildOutput(){let lines=["【冒险者铸造配置单】"];this.categories.forEach(cat=>{const sel=this.selected[cat.id];if(sel.length>0){lines.push(`${cat.title}：${sel.join("、")}`)}});return lines.join("\n")}doConfirm(){const hasAny=this.categories.some(c=>this.selected[c.id].length>0);if(!hasAny){this.showToast("请至少选择一项");return}const output=this.buildOutput();const ta=document.querySelector("textarea");if(ta){ta.value=output;ta.dispatchEvent(new Event("input",{bubbles:true}));this.showToast("已填入输入框")}else{const inp=document.querySelector("input[type='text']")||document.querySelector("[contenteditable]");if(inp){if(inp.getAttribute("contenteditable")!==null){inp.textContent=output}else{inp.value=output}inp.dispatchEvent(new Event("input",{bubbles:true}));this.showToast("已填入输入框")}else{this.showToast("配置已生成（未找到输入框）");console.log(output)}}}doClear(){this.categories.forEach(cat=>{this.selected[cat.id]=[]});const root=this.shadowRoot;root.querySelectorAll(".wf-opt.wf-active").forEach(el=>{el.classList.remove("wf-active");el.querySelector(".wf-check").textContent=""});root.querySelectorAll(".wf-custom-input").forEach(el=>el.value="");this.updateAllCounters();const summary=root.getElementById("wfSummary");if(summary)summary.classList.remove("wf-visible");this.showToast("已全部重置")}doPreview(){const root=this.shadowRoot;const summary=root.getElementById("wfSummary");const content=root.getElementById("wfSummaryContent");if(!summary||!content)return;const hasAny=this.categories.some(c=>this.selected[c.id].length>0);if(!hasAny){summary.classList.remove("wf-visible");this.showToast("暂无选择项");return}let html="";this.categories.forEach(cat=>{const sel=this.selected[cat.id];if(sel.length>0){html+=`<div class="wf-summary-item">${cat.icon} <span>${cat.title}</span>：${sel.join("、")}</div>`}});content.innerHTML=html;summary.classList.toggle("wf-visible");if(summary.classList.contains("wf-visible"))this.showToast("预览已展开")}}customElements.define("wf-selector",WfSelector)}
+</script>
+<wf-selector></wf-selector>

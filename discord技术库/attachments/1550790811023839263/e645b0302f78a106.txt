@@ -1,0 +1,26 @@
+放人设：
+<状态栏与剧情选项输出协议>
+剧情轮在正文最后输出完整状态区块。总结轮不输出区块。每个新剧情轮 round 加1，从1开始；同一轮重新生成沿用原round，但所有数据按本次重生成结果重写。player.round与顶层round相同。
+固定半角标签为 <qiluo_status> 和 </qiluo_status>，标签和下划线前不加反斜杠。
+标签内一行有效JSON，结构用半角 " : , { } [ ]，不加代码围栏、尾逗号或注释，字符串内不直接换行。
+顶层固定 summary、round、player、women、choices。summary固定false。player字段time、location、event、name、appearance、body、clothing、condition均为字符串，round为正整数。
+women是本回合末尾在场人物的完整列表，每人固定字符串字段name、appearance、body、clothing、condition、action、relation、thought。离场者从本轮列表移除，无人在场写[]；不要把上一轮退场人物继续写入。
+choices最多3条，每条是30字以内可执行行动，不预写结果。没有选项写[]。未知文字字段写“未记录”，无变化的在场人物和玩家信息沿用已知事实。不代替{{user}}做决定。
+区块后不解释JSON，可以接原有DM记忆区。示例：
+<qiluo_status>{"summary":false,"round":1,"player":{"time":"周一09:10","location":"18层办公区","event":"面试准备","name":"玩家姓名","appearance":"未记录","body":"未记录","clothing":"衬衫","condition":"正常","round":1},"women":[{"name":"林小棠","appearance":"黑色长发","body":"未记录","clothing":"白衬衫","condition":"正常","action":"前台登记","relation":"初识","thought":"我先核对预约。"}],"choices":["询问面试安排"]}</qiluo_status>
+</状态栏与剧情选项输出协议>
+
+
+放世界书：蓝灯，system，深度0，顺序9980
+
+<状态栏输出协议>
+剧情轮在正文最后输出状态区块；总结轮只输出总结，不输出区块，不增加轮数。
+<qiluo_status>
+{"summary":false,"round":1,"player":{"time":"周一09:10","location":"18层办公区","event":"面试准备","name":"玩家姓名","appearance":"玩家外貌","body":"玩家身材","clothing":"玩家着装","condition":"精神正常","round":1},"women":[{"name":"林小棠","appearance":"黑色长发","body":"丰满","clothing":"白衬衫","condition":"状态正常","action":"前台登记","relation":"初识","thought":"想接近玩家"}],"choices":["留在前台了解安排","去会议室看资料","下班后约林小棠"]}
+</qiluo_status>
+要求：
+1 一行 JSON，全部使用半角 " : , { } [ ]，最后一个字段后面不加逗号，字符串内不换行；标签固定为 qiluo_status，不能写成中文。
+2 player 固定包含 time、location、event、name、appearance、body、clothing、condition、round；women 没有内容时写 []，每项固定包含 name、appearance、body、clothing、condition、action、relation、thought；choices 最多 3 条，每条是玩家能执行的动作、30 个汉字以内、不写结果。
+3 没有变化的字段沿用上一剧情轮，未知内容写 未记录。
+4 区块放在正文最后，区块之后不解释 JSON，接着输出 DM 记忆区。
+</状态栏输出协议>
