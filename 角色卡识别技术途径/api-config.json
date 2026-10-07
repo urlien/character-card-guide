@@ -1,0 +1,65 @@
+# SexyAI API 配置
+
+## 当前 Token（2026-06-24 获取）
+
+```json
+{
+  "base_url": "https://www.sexyai.ai",
+  "authorization": "Bearer RkFLRS4xNzgyMDUyNjMxOTI1LmRjZDMyM2Y3LTdhOTItNDVhMi04MTgxLTdlNjgwNDVlYTI4NQ==",
+  "rptoken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3ODIwNTI2MzEsImV4cCI6MTc4NDY0NDYzMSwiVUlEIjozNzA0NH0.7YEmL8AKpooRu49BUl5kkWOMK2Msp9viiK9WLTo2fQQ",
+  "user_id": 37044,
+  "email": "uerling271@gmail.com",
+  "nickname": "Uerling"
+}
+```
+
+## Token 过期判断
+
+- rptoken 是 JWT，`exp` 字段为过期时间戳（当前 token 过期时间：2026-07-16）
+- 如果 API 返回 `{"code":401,"message":"需要登录后访问。"}`，说明 token 已过期
+- 过期后需要重新获取：F12 → 网络 → 找 POST /api/ 请求 → 复制 Authorization + Cookie 里的 rptoken
+
+## 快速调用示例
+
+### cURL
+```bash
+curl -X POST "https://www.sexyai.ai/api/role/query" \
+  -H "Authorization: Bearer RkFLRS4xNzgyMDUyNjMxOTI1LmRjZDMyM2Y3LTdhOTItNDVhMi04MTgxLTdlNjgwNDVlYTI4NQ==" \
+  -H "Content-Type: application/json" \
+  -H "lang: ZH" \
+  -b "rptoken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3ODIwNTI2MzEsImV4cCI6MTc4NDY0NDYzMSwiVUlEIjozNzA0NH0.7YEmL8AKpooRu49BUl5kkWOMK2Msp9viiK9WLTo2fQQ" \
+  -d '{"id":144742}'
+```
+
+### Python
+```python
+import requests
+
+TOKEN = "Bearer RkFLRS4xNzgyMDUyNjMxOTI1LmRjZDMyM2Y3LTdhOTItNDVhMi04MTgxLTdlNjgwNDVlYTI4NQ=="
+RPTOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3ODIwNTI2MzEsImV4cCI6MTc4NDY0NDYzMSwiVUlEIjozNzA0NH0.7YEmL8AKpooRu49BUl5kkWOMK2Msp9viiK9WLTo2fQQ"
+
+headers = {"Authorization": TOKEN, "Content-Type": "application/json", "lang": "ZH"}
+cookies = {"rptoken": RPTOKEN}
+
+# 查询任意角色卡
+r = requests.post("https://www.sexyai.ai/api/role/query", headers=headers, cookies=cookies, json={"id": 144742})
+card = r.json()["data"]
+print(f"卡名: {card['name']}, 作者: {card['authorName']}, 使用量: {card['usageNum']}")
+
+# 获取自己的卡列表
+r = requests.post("https://www.sexyai.ai/api/role/customize/list", headers=headers, cookies=cookies, json={"pageNo":1,"pageSize":10,"viewStatus":[1]})
+for c in r.json()["data"]["content"]:
+    print(f"  {c['name']} - {c['usageNum']}次使用")
+```
+
+## 常用查询
+
+| 需求 | 参数 |
+|------|------|
+| 查自己的卡 | `/api/role/customize/list` body: `{"pageNo":1,"pageSize":10,"viewStatus":[1]}` |
+| 查草稿卡 | `/api/role/customize/list` body: `{"pageNo":1,"pageSize":10,"viewStatus":[0]}` |
+| 查任意卡详情 | `/api/role/query` body: `{"id":卡ID}` |
+| 卡评论 | `/api/role/comment/page` body: `{"id":卡ID,"pageNo":1,"pageSize":10}` |
+| 世界书 | `/api/role/lorebooks/fetch` body: `{"id":卡ID}` |
+| 热门卡 | `/api/role/list/hot` body: `{"pageNo":1,"pageSize":10}` |
+| 用户信息 | `/api/user/info` body: `{}` |
