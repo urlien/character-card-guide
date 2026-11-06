@@ -58,3 +58,10 @@ character-card-guide/
 - **剧情索引**：`https://r2.m31ns.top/zh_CN/gamedata/excel/story_review_table.json`
 - **剧情原文**：`https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/story/[storyTxt].txt`
 - **干员语音**：`https://wiki.biligame.com/arknights/index.php?title=[干员名]/默认/中文-普通话&action=raw`
+
+## MMD写卡Skill-优化版
+
+整合了 MMD（魅魔岛）角色卡制作的完整工作流与规范。包含：
+- 角色卡制作指南（分步流程、排版规范）
+- 世界书、人设、正则、状态栏的完整组装与校验逻辑
+- 大量可直接套用的 HTML/CSS/DOM 模板与 SDK 示例
