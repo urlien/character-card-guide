@@ -1,0 +1,4 @@
+interface:
+  display_name: "角色卡与世界书生成"
+  short_description: "生成标签人设、独立世界书数据与可导入的互动界面规则"
+  default_prompt: "使用 $generating-role-card 按本次需求生成或修复角色人设、世界书或正则界面，并校验对应交付文件。"

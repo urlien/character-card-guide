@@ -1,0 +1,26 @@
+<script>
+var authorSendPending = false;
+function reportAuthorSendFailure(error) {
+  var code = error && error.code;
+  sdk.debug.log(code === 'BUSY' ? '上一条仍在发送或生成，请稍后手动发送' : '发送未完成', code);
+}
+function sendOnce() {
+  if (authorSendPending) return;
+  authorSendPending = true;
+  var request;
+  try {
+    // 直接在用户点击的当帧调用，前面不 await、不使用定时器。
+    request = sdk.message.send('我准备好了');
+  } catch (error) {
+    authorSendPending = false;
+    reportAuthorSendFailure(error);
+    return;
+  }
+  Promise.resolve(request).then(function () {
+    authorSendPending = false;
+  }, function (error) {
+    authorSendPending = false;
+    reportAuthorSendFailure(error);
+  });
+}
+</script>
