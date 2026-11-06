@@ -34,6 +34,8 @@ character-card-guide/
 ├── 角色卡识别技术途径/       ← sexyai.ai API 接入与技术文档
 │   ├── README.md           ← API 快速开始
 │   └── sexyai-api-guide.md ← 完整调用指南
+├── MMD写卡Skill-优化版/      ← MMD（魅魔岛）角色卡制作规范与代码模板
+│   └── generating-role-card/ ← 核心技能包（规范、模板、脚本等）
 └── README.md               ← 本文件
 ```
 
@@ -52,16 +54,10 @@ character-card-guide/
 - 2026-07-10：新增「明日方舟剧情」目录，465个活动全部剧情原文（463个txt），数据来源：ArknightsGameData GitHub 镜像
 - 2026-11-01：新增「时间啊，向前！」活动剧情（TL-ST-1 ~ TL-ST-4 共 24 段），数据来源：Kengxxiao/ArknightsGameData
 - 2026-11-02：全量补齐叙事类剧情（生息演算、肉鸽事件、主线特殊关、骑兵与猎人、愚人节活动等），共 2965 个章节文件
+- 2026-11-07：新增「MMD写卡Skill-优化版」目录，包含整合的 MMD 角色卡制作规范与代码模板
 
 ## 🔧 明日方舟剧情数据 API
 
 - **剧情索引**：`https://r2.m31ns.top/zh_CN/gamedata/excel/story_review_table.json`
 - **剧情原文**：`https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/story/[storyTxt].txt`
 - **干员语音**：`https://wiki.biligame.com/arknights/index.php?title=[干员名]/默认/中文-普通话&action=raw`
-
-## MMD写卡Skill-优化版
-
-整合了 MMD（魅魔岛）角色卡制作的完整工作流与规范。包含：
-- 角色卡制作指南（分步流程、排版规范）
-- 世界书、人设、正则、状态栏的完整组装与校验逻辑
-- 大量可直接套用的 HTML/CSS/DOM 模板与 SDK 示例
